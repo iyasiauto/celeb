@@ -1,0 +1,30 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.venv/
+venv/
+ENV/
+
+# Large Media Files & Caches
+*.mp4
+*.mp3
+*.wav
+*.png
+*.jpg
+*.jpeg
+*.webp
+segments/
+voice_chunks/
+webp_cache/
+temp/
+*.log
+.system_generated/
+
+# Data Folders
+clips/
+"Real images data"/
+"Bg music"/
+"gird-pattern-background-design"/
+video*/
