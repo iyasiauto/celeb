@@ -1,4 +1,4 @@
-﻿"""
+"""
 Universal Multi-Provider Voiceover Engine.
 Supports:
 1. 'edge-tts'  -> 100% FREE, ZERO Credits, Unlimited, Microsoft Azure Neural Voices (Guy, Christopher, Eric).
@@ -71,6 +71,40 @@ class VoiceoverEngine:
         dur = self.get_duration(mp3_path)
         tot_t = time.time() - t0
         self.log(f"Chunk {chunk_idx}/{total_chunks} generated (100% FREE, 0 Credits!) in {tot_t:.1f}s ({dur:.1f}s audio).")
+        return chunk_idx, mp3_path, c_words, dur, tot_t
+
+    def process_chunk_omnivoice(self, text, chunk_idx, total_chunks, voice_chunks_dir, ref_voice=None):
+        mp3_path = os.path.join(voice_chunks_dir, f"chunk_{chunk_idx:03d}.mp3")
+        c_words = len(text.split())
+        if os.path.exists(mp3_path) and os.path.getsize(mp3_path) > 10000:
+            dur = self.get_duration(mp3_path)
+            self.log(f"Chunk {chunk_idx}/{total_chunks} cached ({dur:.1f}s).")
+            return chunk_idx, mp3_path, c_words, dur, 0.0
+
+        t0 = time.time()
+        url = "http://127.0.0.1:8001/api/tts"
+        import requests
+        data = {
+            "text": text,
+            "language": "English",
+            "format": "mp3",
+            "steps": 16,
+            "speed": self.speed
+        }
+        files = {}
+        ref = ref_voice or getattr(self, "ref_voice_path", None)
+        if ref and os.path.exists(ref):
+            files["voice"] = open(ref, "rb")
+
+        resp = requests.post(url, data=data, files=files if files else None, timeout=120)
+        if resp.status_code != 200:
+            raise Exception(f"OmniVoice error {resp.status_code}: {resp.text}")
+        with open(mp3_path, "wb") as f:
+            f.write(resp.content)
+
+        dur = self.get_duration(mp3_path)
+        tot_t = time.time() - t0
+        self.log(f"Chunk {chunk_idx}/{total_chunks} synthesized on local RTX 3070 Ti (0 CREDITS) in {tot_t:.1f}s ({dur:.1f}s audio).")
         return chunk_idx, mp3_path, c_words, dur, tot_t
 
     def submit_twospeaker(self, text, chunk_idx):
@@ -151,7 +185,12 @@ class VoiceoverEngine:
         t_start = time.time()
         results = {}
         
-        if self.provider == "edge-tts":
+        if self.provider == "omnivoice":
+            self.log("Using Local OmniVoice Studio (RTX 3070 Ti GPU) -> 0 CREDITS CONSUMED (100% FREE FOREVER)!")
+            for i, c in enumerate(chunks, 1):
+                idx, mp3_p, c_words, dur, tot_t = self.process_chunk_omnivoice(c, i, len(chunks), voice_chunks_dir)
+                results[idx] = {"chunk": idx, "path": mp3_p, "words": c_words, "audio_seconds": dur, "api_latency_sec": round(tot_t, 2)}
+        elif self.provider == "edge-tts":
             self.log(f"Using Microsoft Azure Neural Speech ({self.voice_id}) -> 0 CREDITS CONSUMED (100% FREE FOREVER)!")
             with ThreadPoolExecutor(max_workers=5) as pool:
                 futures = {
@@ -198,7 +237,7 @@ class VoiceoverEngine:
                 json.dump({
                     "provider": self.provider,
                     "voice_id": self.voice_id,
-                    "credits_consumed": 0 if self.provider == "edge-tts" else total_words * 6.5,
+                    "credits_consumed": 0 if self.provider in ["edge-tts", "omnivoice"] else total_words * 6.5,
                     "total_words": total_words,
                     "chunks_count": len(chunks),
                     "total_audio_seconds": total_vo_dur,
