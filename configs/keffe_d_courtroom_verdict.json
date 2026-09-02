@@ -1,0 +1,26 @@
+{
+  "_generated_by": "init_project.py",
+  "_root": "C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac",
+  "images_dir": "C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\01_Tupac_Shakur;C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\02_Keffe_D_Courtroom_Verdict;C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\03_Keffe_D_Mugshots_Archive;C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\04_Orlando_Anderson;C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\05_Suge_Knight_1996;C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\06_Crime_Scene_Las_Vegas;C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac\\07_Judge_Prosecutors_Courtroom",
+  "clips_dir": "C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac",
+  "grid_dir": "",
+  "entity_root": "C:\\Users\\ninja\\AppData\\Local\\Temp\\claude\\C--Users-ninja-Downloads-Dolly-Parton\\91651fdd-ca4f-4db7-bf6c-b792c29d4fae\\scratchpad\\mock_tupac",
+  "generic_dirs": [],
+  "entity_root_skip": [],
+  "tags": [
+    "Keffe D Courtroom Verdict"
+  ],
+  "hashtags": [
+    "#Documentary"
+  ],
+  "chapter_titles": [
+    "Introduction",
+    "Background",
+    "The Turning Point",
+    "The Reckoning",
+    "Aftermath",
+    "Legacy"
+  ],
+  "min_image_bytes": 5000,
+  "min_image_px": 200
+}

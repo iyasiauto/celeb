@@ -1,4 +1,4 @@
-﻿# Complete High-Throughput 30+ Minute YouTube Documentary Pipeline Blueprint
+# Complete High-Throughput 30+ Minute YouTube Documentary Pipeline Blueprint
 
 > **End-to-End Automated Production Architecture**: Generates Full HD 1080p broadcast-grade 30+ minute documentaries in **under 9 minutes total** utilizing 100% NVIDIA GPU NVENC acceleration, multi-threaded Async Burst TTS synthesis, dynamic zero-shake Ken Burns perspective motion, grid margin background overlays, loud voice audio matrix muxing, and human-written SEO metadata.
 

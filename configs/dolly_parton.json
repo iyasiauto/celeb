@@ -1,0 +1,104 @@
+{
+  "_comment": "Topic config for Dolly Parton documentaries. Everything here used to be hardcoded inside timeline_engine.py / render_engine.py.",
+
+  "clips_dir": "C:\\Users\\ninja\\Downloads\\Dolly Parton\\dolly clips",
+  "images_dir": "C:\\Users\\ninja\\Downloads\\Dolly Parton\\Real images data",
+  "grid_dir": "C:\\Users\\ninja\\Downloads\\Dolly Parton\\gird-pattern-background-design",
+  "bgm": "C:\\Users\\ninja\\Downloads\\Dolly Parton\\Bg music\\Dreamland - Aakash Gandhi.mp3",
+
+  "default_entity": "dolly parton",
+  "entity_root": "C:\\Users\\ninja\\Downloads\\Dolly Parton",
+  "entity_root_skip": [
+    "Bg music",
+    "gird-pattern-background-design",
+    "youtube-longform-documentary-pipeline",
+    "pipeline",
+    "pipeline_30min",
+    "speed_optimizations",
+    "competitor_forensics",
+    "ken-burns"
+  ],
+
+  "topic_asset_weight": 8,
+  "triptych_count": 18,
+  "grid_card_count": 30,
+  "exclude_keywords": ["watermark", "getty", "alamy", "stock"],
+
+  "clip_groups": [
+    {
+      "name": "cancer_news_broadcast",
+      "keywords": ["cancer"],
+      "start": 1350,
+      "end": 1600
+    },
+    {
+      "name": "death_announcement_news",
+      "keywords": ["death"],
+      "start": 1600,
+      "end": 1850
+    }
+  ],
+
+  "split_cards": [
+    ["Imagination Library", "300 Million Books Gifted Worldwide"],
+    ["Dolly Parton", "The Queen of American Music"],
+    ["Robert Lee Parton", "Honoring Her Fathers Silent Pain"],
+    ["1995 Sevier County", "The Birth of a Literacy Revolution"],
+    ["Dream Big Dreams", "Learn Everything You Can"],
+    ["Colonel Tom Parker", "The 1974 Stand for Sovereignty"],
+    ["The Graduation Note", "I Will Always Love You, Dolly"],
+    ["Brentwood Farm", "Morning Prayers by Candlelight"],
+    ["Vanderbilt Vaccine", "One Million Dollars to Heal Humanity"],
+    ["The Sacred Vault", "An Eternal Endowment for Children"],
+    ["Coat of Many Colors", "Dignity for Every Humble Child"],
+    ["The Little Engine", "I Think I Can, I Know I Can"],
+    ["Two Sovereign Queens", "One Immortal Legacy"],
+    ["A Crown of Dignity", "Unshakeable Creative Freedom"]
+  ],
+
+  "headlines": [
+    "1995: 1,760 Books in Sevierville",
+    "300 Million Books Gifted Worldwide",
+    "Honoring Robert Lee Parton",
+    "Dream Big Dreams, Learn Everything",
+    "The Little Engine That Could",
+    "1974: The Stand Against Colonel Parker",
+    "1 Million Dollar Vanderbilt Gift",
+    "The Letter That Moved the World",
+    "Waking at 3 AM to Write by Candlelight"
+  ],
+
+  "quotes": [
+    "Dream big dreams; learn everything you can learn.",
+    "Care for all those who care for you.",
+    "You can be anyone you want to be.",
+    "She taught every child that their mind is a treasure.",
+    "She proved that true greatness is measured by love.",
+    "The books will never stop coming.",
+    "Remember you belong only to God and your family."
+  ],
+
+  "hook_assets": [
+    "dolly_graduation_letter_01.jpg",
+    "dolly_holding_books.jpg",
+    "dolly_graduation_letter_02.png"
+  ],
+
+  "alt_titles": [
+    "The Fortress Behind Dolly Partons Smile",
+    "How Dolly Parton Kept Control of Everything She Built",
+    "Dolly Parton: The Steel Under the Sparkle"
+  ],
+  "description": "A full-length documentary on how Dolly Parton built and defended one of the most independent careers in American music.",
+  "tags": ["Dolly Parton", "Documentary", "Country Music", "Biography", "Music History", "Nashville"],
+  "hashtags": ["#DollyParton", "#Documentary", "#CountryMusic"],
+  "chapter_titles": [
+    "The Fortress and the Smile",
+    "Sevier County Beginnings",
+    "The Porter Wagoner Years",
+    "1974: Walking Away",
+    "Owning the Catalogue",
+    "The Imagination Library",
+    "What She Built to Outlast Her"
+  ]
+}

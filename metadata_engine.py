@@ -1,4 +1,4 @@
-﻿"""
+"""
 YouTube Upload Metadata Generator.
 Generates human-written titles, character-counted alt titles, descriptions with timestamps, tags, hashtags, and checklists.
 """

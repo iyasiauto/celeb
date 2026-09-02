@@ -1,352 +1,642 @@
-﻿import os, sys, time, json, random, subprocess, glob
-from PIL import Image
+"""
+Semantic Asset & Dynamic Timeline Engine.
+
+Builds a segment timeline (JSON) that fills the master voiceover duration with a
+mix of video clips, curated photographs and generated graphic cards.
+
+All topic-specific content (card captions, keyword-matched clip groups, hook
+assets) comes from a topic config dict, so the same engine drives any subject.
+"""
+
+import os
+import json
+import glob
+import time
+import random
+import subprocess
+from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 
-WORK_DIR = r"C:\Users\ninja\Downloads\Dolly Parton\video21_dolly_final_letter_children"
-TOPIC_ASSETS = os.path.join(WORK_DIR, "topic_assets")
-MASTER_CLIPS_DIR = r"C:\Users\ninja\Downloads\Dolly Parton\dolly clips"
-CLIPS_DIR = r"C:\Users\ninja\Downloads\Dolly Parton\clips"
-IMAGES_DIR = r"C:\Users\ninja\Downloads\Dolly Parton\Real images data"
-GRID_DIR = r"C:\Users\ninja\Downloads\Dolly Parton\gird-pattern-background-design"
-MASTER_VOICE_MP3 = os.path.join(WORK_DIR, "voiceover.mp3")
-TIMELINE_FILE = os.path.join(WORK_DIR, "timeline.json")
-GRAPHICS_DIR = os.path.join(WORK_DIR, "generated_graphics")
-os.makedirs(GRAPHICS_DIR, exist_ok=True)
+from PIL import Image
 
-sys.path.append(r"C:\Users\ninja\Downloads\MASTER_YOUTUBE_DOCUMENTARY_PIPELINE")
 from graphic_compositor import GraphicCompositor
+from semantic_matcher import (AssetIndex, ScriptTimeline, SemanticMatcher,
+                              folder_entity, load_tags)
+
+VIDEO_EXTS = (".mp4", ".mov", ".mkv", ".webm", ".m4v")
+IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp", ".bmp")
+DEFAULT_EXCLUDE = ("watermark", "getty", "alamy", "stock")
+
 
 def log(msg):
     print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
-def quick_valid_photo(p):
-    try:
-        if os.path.getsize(p) < 18000: return None
-        with Image.open(p) as im:
-            w, h = im.size
-            if w < 300 or h < 300: return None
-            im.verify()
-        with Image.open(p) as im:
-            im.convert("RGB")
-        return p
-    except:
-        return None
-
-def quick_valid_grid(p):
-    try:
-        if os.path.getsize(p) < 4000: return None
-        with Image.open(p) as im:
-            im.verify()
-        with Image.open(p) as im:
-            im.convert("RGB")
-        return p
-    except:
-        return None
-
-def quick_valid_clip(p):
-    try:
-        sz = os.path.getsize(p)
-        if sz < 200000: return None
-        bn = os.path.basename(p).lower()
-        if any(k in bn for k in ['watermark', 'getty', 'alamy', 'stock']): return None
-        return {"path": p, "duration": 5.0, "has_audio": False, "source_id": os.path.basename(p).split("_")[0]}
-    except:
-        return None
 
 def get_duration(media_file):
-    res = subprocess.run([
-        "ffprobe", "-v", "error", "-show_entries", "format=duration",
-        "-of", "default=noprint_wrappers=1:nokey=1", media_file
-    ], capture_output=True, text=True)
-    try: return float(res.stdout.strip())
-    except: return 0.0
+    """Return media duration in seconds, or 0.0 if it cannot be probed."""
+    res = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+         "-of", "default=noprint_wrappers=1:nokey=1", media_file],
+        capture_output=True, text=True)
+    try:
+        return float(res.stdout.strip())
+    except ValueError:
+        return 0.0
 
-def main():
-    total_vo_dur = get_duration(MASTER_VOICE_MP3)
-    log(f"Building Fast 32+ Min Timeline for Dolly Viral Letter (Target: {total_vo_dur:.2f}s / {total_vo_dur/60:.2f} mins)...")
-    
-    topic_files = glob.glob(os.path.join(TOPIC_ASSETS, "*.*"))
-    dolly_raw = glob.glob(os.path.join(IMAGES_DIR, "*.*"))
-    grid_raw = glob.glob(os.path.join(GRID_DIR, "*.*"))
-    
-    with ThreadPoolExecutor(max_workers=32) as pool:
-        dolly_images = [f for f in pool.map(quick_valid_photo, dolly_raw) if f]
-        grids = [g for g in pool.map(quick_valid_grid, grid_raw) if g]
-    
-    random.seed(1515)
-    random.shuffle(dolly_images)
-    
-    all_curated_images = topic_files * 8 + dolly_images[:350]
-    random.seed(999)
-    random.shuffle(all_curated_images)
-    
-    raw_clips = (
-        glob.glob(os.path.join(MASTER_CLIPS_DIR, "*.mp4")) +
-        glob.glob(os.path.join(CLIPS_DIR, "*.mp4"))
-    )
-    
-    with ThreadPoolExecutor(max_workers=32) as pool:
-        parsed_clips = [c for c in pool.map(quick_valid_clip, raw_clips) if c]
-        
-    topic_opening_clip = os.path.join(MASTER_CLIPS_DIR, "dolly_death_news.mp4")
-    if not os.path.exists(topic_opening_clip):
-        topic_opening_clip = os.path.join(MASTER_CLIPS_DIR, "8aHU5RSHW5Y_s012.mp4")
-        
-    clean_clips = []
-    cancer_news_clips = []
-    death_news_clips = []
-    
-    for c in parsed_clips:
-        if c["path"] == topic_opening_clip: continue
-        bn = os.path.basename(c["path"])
-        if any(k in bn for k in ['cancer', 'CNN_dolly_cancer', 'Dolly_cancer']):
-            cancer_news_clips.append(c)
-        elif any(k in bn for k in ['death', '8aHU5RSHW5Y_s001', '8aHU5RSHW5Y_s002', '8aHU5RSHW5Y_s014']):
-            death_news_clips.append(c)
+
+def _as_dir_list(value):
+    """Accept a single path, a list of paths, or an os.pathsep-joined string."""
+    if not value:
+        return []
+    if isinstance(value, (list, tuple)):
+        dirs = list(value)
+    else:
+        dirs = value.split(os.pathsep) if os.pathsep in value else [value]
+    return [d for d in (p.strip() for p in dirs) if d and os.path.isdir(d)]
+
+
+class TimelineEngine:
+    """Builds a documentary timeline from a pool of clips, photos and grids."""
+
+    def __init__(self, clips_dir, images_dir, grid_dir,
+                 topic_assets_dir=None, graphics_dir=None, topic_config=None,
+                 opening_lead_s=4.5, hook_end_s=22.5,
+                 seg_min_s=4.5, seg_max_s=5.8,
+                 clip_cooldown=15, max_images=350, hook_count=7,
+                 asset_seed=1515, curate_seed=999, scan_workers=32,
+                 semantic=True, script_text=None, voice_manifest=None,
+                 asset_tags=None, entity_boost=6.0,
+                 width=1920, height=1080):
+        self.clips_dirs = _as_dir_list(clips_dir)
+        self.images_dirs = _as_dir_list(images_dir)
+        self.grid_dirs = _as_dir_list(grid_dir)
+        self.topic_assets_dir = (topic_assets_dir
+                                 if topic_assets_dir and os.path.isdir(topic_assets_dir)
+                                 else None)
+        self.graphics_dir = graphics_dir
+        self.cfg = dict(topic_config or {})
+
+        self.opening_lead_s = float(opening_lead_s)
+        self.hook_end_s = float(hook_end_s)
+        self.seg_min_s = float(seg_min_s)
+        self.seg_max_s = float(seg_max_s)
+        self.clip_cooldown = int(clip_cooldown)
+        self.max_images = int(max_images)
+        self.hook_count = int(hook_count)
+        self.asset_seed = asset_seed
+        self.curate_seed = curate_seed
+        self.scan_workers = int(scan_workers)
+
+        self.exclude_keywords = tuple(
+            k.lower() for k in self.cfg.get("exclude_keywords", DEFAULT_EXCLUDE))
+
+        # Quality floors. They keep thumbnails and broken downloads out of a
+        # documentary, but a legitimately small library must be able to lower
+        # them rather than be told nothing was found.
+        self.min_image_bytes = int(self.cfg.get("min_image_bytes", 18000))
+        self.min_image_px = int(self.cfg.get("min_image_px", 300))
+        self.min_clip_bytes = int(self.cfg.get("min_clip_bytes", 200000))
+
+        self.width = int(width)
+        self.height = int(height)
+        self.semantic = bool(semantic)
+        self.script_text = script_text
+        self.voice_manifest = voice_manifest
+        self.asset_tags = asset_tags or {}
+        self.entity_boost = float(entity_boost)
+        self.matcher = None
+
+    # ------------------------------------------------------------- semantics
+
+    def _entity_dirs(self):
+        """Directories whose folder name identifies who or what is depicted."""
+        pairs = []
+        for entity, path in (self.cfg.get("entity_dirs") or {}).items():
+            if os.path.isdir(path):
+                pairs.append((entity.lower(), path))
+
+        root = self.cfg.get("entity_root")
+        if root and os.path.isdir(root):
+            skip = {s.lower() for s in self.cfg.get("entity_root_skip", [])}
+            owned = {os.path.normcase(os.path.abspath(d))
+                     for d in self.clips_dirs + self.images_dirs + self.grid_dirs}
+            for name in sorted(os.listdir(root)):
+                path = os.path.join(root, name)
+                if not os.path.isdir(path) or name.lower() in skip:
+                    continue
+                if os.path.normcase(os.path.abspath(path)) in owned:
+                    continue
+                entity = folder_entity(path)
+                if entity:
+                    pairs.append((entity, path))
+        return pairs
+
+    def build_matcher(self, vo_duration, lead):
+        """Index every labelled asset and align the script to wall-clock time."""
+        index = AssetIndex()
+        default_entity = (self.cfg.get("default_entity") or "").lower() or None
+
+        # An asset directory is either a generic pool (label everything with the
+        # documentary's own subject) or a subject folder (label by folder name).
+        # Getting this wrong collapses every folder into one entity and silently
+        # disables folder-based matching, so it is stated explicitly in config.
+        declared = self.cfg.get("generic_dirs")
+        if declared is None:
+            generic = None          # legacy: treat every asset dir as generic
         else:
-            clean_clips.append(c)
-            
-    random.seed(1515)
-    random.shuffle(clean_clips)
-    random.seed(42)
-    random.shuffle(cancer_news_clips)
-    random.shuffle(death_news_clips)
-    
-    # Pre-generate 90+ custom graphic cards
-    log("Pre-generating 90+ custom graphic cards specifically for Dolly's Final Letter & Literacy Mission...")
-    custom_graphics = []
-    
-    split_cards = [
-        ("Imagination Library", "300 Million Books Gifted Worldwide"),
-        ("Dolly Parton", "The Queen of American Music"),
-        ("Robert Lee Parton", "Honoring Her Fathers Silent Pain"),
-        ("1995 Sevier County", "The Birth of a Literacy Revolution"),
-        ("Dream Big Dreams", "Learn Everything You Can"),
-        ("Colonel Tom Parker", "The 1974 Stand for Sovereignty"),
-        ("The Graduation Note", "I Will Always Love You, Dolly"),
-        ("Brentwood Farm", "Morning Prayers by Candlelight"),
-        ("August 25 2026", "A Global Wave of Grief and Love"),
-        ("Vanderbilt Vaccine", "One Million Dollars to Heal Humanity"),
-        ("The Sacred Vault", "An Eternal Endowment for Children"),
-        ("Coat of Many Colors", "Dignity for Every Humble Child"),
-        ("The Little Engine", "I Think I Can, I Know I Can"),
-        ("Two Sovereign Queens", "One Immortal Legacy"),
-        ("A Crown of Dignity", "Unshakeable Creative Freedom")
-    ]
+            generic = {os.path.normcase(os.path.abspath(d))
+                       for d in _as_dir_list(declared)}
 
-    headlines = [
-        "August 25, 2026: A Global Farewell",
-        "1995: 1,760 Books in Sevierville",
-        "300 Million Books Gifted Worldwide",
-        "Honoring Robert Lee Parton",
-        "Dream Big Dreams, Learn Everything",
-        "The Little Engine That Could",
-        "1974: The Stand Against Colonel Parker",
-        "1 Million Dollar Vanderbilt Gift",
-        "The Graduation Letter That Moved the World",
-        "Waking at 3 AM to Write by Candlelight",
-        "The Passing of Carl Dean in March 2025",
-        "Rest in Peace, Queen of the Smoky Mountains"
-    ]
+        def label_for(d):
+            if generic is None or os.path.normcase(os.path.abspath(d)) in generic:
+                return default_entity
+            return folder_entity(d) or default_entity
 
-    quotes = [
-        "Dream big dreams; learn everything you can learn.",
-        "Care for all those who care for you.",
-        "You can be anyone you want to be.",
-        "I Will Always Love You, Dolly.",
-        "Dolly was the conscience of American music.",
-        "She taught every child that their mind is a treasure.",
-        "She proved that true greatness is measured by love.",
-        "God didnt give me children so all children could be mine.",
-        "I will always love you, Dolly.",
-        "The books will never stop coming.",
-        "Remember you belong only to God and your family.",
-        "Dollys love will outlive the mountains."
-    ]
+        for d in self.images_dirs:
+            index.add_dir(d, "image", entity=label_for(d))
+        for d in self.clips_dirs:
+            index.add_dir(d, "clip", entity=label_for(d))
 
-    img_i = 0
-    grid_i = 0
+        entity_pairs = self._entity_dirs()
+        for entity, path in entity_pairs:
+            index.add_dir(path, "image", entity=entity)
+            index.add_dir(path, "clip", entity=entity)
 
-    # 1. Style 3: Split Typography Cards
-    for title, subtitle in split_cards:
-        safe_fn = f"split_{title.lower().replace(' ', '_').replace('&', 'and').replace('\'', '')}.jpg"
-        out_p = os.path.join(GRAPHICS_DIR, safe_fn)
-        GraphicCompositor.style3_split_typography_card(all_curated_images[img_i % len(all_curated_images)], grids[grid_i % len(grids)], title, subtitle, out_p)
-        custom_graphics.append(out_p)
-        img_i += 1
-        grid_i += 1
+        applied = index.apply_tags(self.asset_tags)
+        index.build_idf()
 
-    # 2. Style 4: Centered Headlines
-    for h_text in headlines:
-        safe_fn = f"headline_{h_text[:14].lower().replace(' ', '_').replace(':', '').replace(',', '').replace('\'', '')}.jpg"
-        out_p = os.path.join(GRAPHICS_DIR, safe_fn)
-        GraphicCompositor.style4_centered_headline(all_curated_images[img_i % len(all_curated_images)], h_text, out_p)
-        custom_graphics.append(out_p)
-        img_i += 1
+        if self.voice_manifest:
+            script = ScriptTimeline.from_manifest(self.voice_manifest, lead=lead)
+            source = "voiceover manifest (exact chunk timing)"
+        elif self.script_text:
+            script = ScriptTimeline.from_text(self.script_text, vo_duration, lead=lead)
+            source = "proportional estimate from script"
+        else:
+            log("Semantic matching disabled: no script text or voice manifest.")
+            return None
 
-    # 3. Style 5: Quote Captions
-    for q_text in quotes:
-        safe_fn = f"quote_{q_text[:14].lower().replace(' ', '_').replace(',', '').replace('\'', '')}.jpg"
-        out_p = os.path.join(GRAPHICS_DIR, safe_fn)
-        GraphicCompositor.style5_quote_caption(all_curated_images[img_i % len(all_curated_images)], q_text, out_p)
-        custom_graphics.append(out_p)
-        img_i += 1
+        stats = index.stats()
+        log(f"Semantic index: {stats['total']} assets "
+            f"({stats['images']} images, {stats['clips']} clips), "
+            f"{stats['entities']} entities, {stats['describable']} with usable terms.")
+        if applied:
+            log(f"Applied {applied} tag entries from the asset tags file.")
+        log(f"Script alignment: {len(script.spans)} spans from {source}.")
 
-    # 4. Style 2: Triptych Layouts (3 Dolly & Book photos side-by-side)
-    for i in range(18):
-        out_p = os.path.join(GRAPHICS_DIR, f"triptych_{i+1:02d}.jpg")
-        bg_p = all_curated_images[img_i % len(all_curated_images)]
-        three_p = [all_curated_images[(img_i + 1) % len(all_curated_images)], all_curated_images[(img_i + 2) % len(all_curated_images)], all_curated_images[(img_i + 3) % len(all_curated_images)]]
-        GraphicCompositor.style2_triptych_overlay(bg_p, three_p, out_p)
-        custom_graphics.append(out_p)
-        img_i += 4
+        return SemanticMatcher(index, script, entity_boost=self.entity_boost,
+                               cooldown=self.clip_cooldown,
+                               default_entity=default_entity)
 
-    # 5. Style 1: Rounded Grid Cards (Dolly over colorful grids)
-    for i in range(30):
-        out_p = os.path.join(GRAPHICS_DIR, f"grid_card_{i+1:02d}.jpg")
-        GraphicCompositor.style1_rounded_card_on_grid(all_curated_images[img_i % len(all_curated_images)], grids[grid_i % len(grids)], out_p)
-        custom_graphics.append(out_p)
-        img_i += 1
-        grid_i += 1
+    # ---------------------------------------------------------------- assets
 
-    log(f"Pre-generated {len(custom_graphics)} high-density graphic cards!")
+    def _validate_photo(self, path):
+        """Return the path, or a short reason the photo was rejected."""
+        try:
+            if os.path.getsize(path) < self.min_image_bytes:
+                return "too small on disk (<%d bytes)" % self.min_image_bytes
+            with Image.open(path) as im:
+                w, h = im.size
+                if w < self.min_image_px or h < self.min_image_px:
+                    return "below %dpx" % self.min_image_px
+                im.verify()
+            with Image.open(path) as im:
+                im.convert("RGB")
+            return path
+        except Exception as e:
+            return "unreadable (%s)" % type(e).__name__
 
-    segments = []
-    current_time = 0.0
-    seg_idx = 0
-    img_cursor = img_i
-    cg_cursor = 0
-    used_clip_sources = {}
-    used_clip_paths = set()
-    cancer_news_cursor = 0
-    death_news_cursor = 0
-    mot_modes = ["zoomin", "zoomout", "panright", "panleft"]
+    def _validate_grid(self, path):
+        try:
+            if os.path.getsize(path) < 4000:
+                return None
+            with Image.open(path) as im:
+                im.verify()
+            with Image.open(path) as im:
+                im.convert("RGB")
+            return path
+        except Exception:
+            return None
 
-    # Segment 0: Opening Real Breaking News Video Clip with Anchor Soundbite (4.5s)
-    segments.append({
-        "index": 0, "start": 0.0, "end": 4.5, "duration": 4.5,
-        "type": "headline", "file": topic_opening_clip,
-        "grid_file": None, "motion": "none",
-        "postcard": False, "has_audio": True, "section": "breaking_death_news_opening"
-    })
-    current_time = 4.5
-    seg_idx = 1
+    def _validate_clip(self, path):
+        """Return a clip record, or a short reason it was rejected."""
+        try:
+            if os.path.getsize(path) < self.min_clip_bytes:
+                return "too small on disk (<%d bytes)" % self.min_clip_bytes
+            name = os.path.basename(path).lower()
+            hit = next((k for k in self.exclude_keywords if k in name), None)
+            if hit:
+                return "excluded by keyword %r" % hit
+            return {"path": path,
+                    "has_audio": False,
+                    "source_id": os.path.basename(path).split("_")[0]}
+        except OSError as e:
+            return "unreadable (%s)" % type(e).__name__
 
-    def pick_next_clip(current_seg):
-        for c in clean_clips:
-            if c["path"] in used_clip_paths: continue
-            src_id = c["source_id"]
-            if current_seg - used_clip_sources.get(src_id, -999) >= 10:
-                used_clip_paths.add(c["path"])
-                used_clip_sources[src_id] = current_seg
-                return c
-        for c in clean_clips:
-            if c["path"] not in used_clip_paths:
-                used_clip_paths.add(c["path"])
-                used_clip_sources[c["source_id"]] = current_seg
-                return c
-        return None
+    def _scan(self, dirs, exts):
+        found = []
+        for d in dirs:
+            for entry in glob.glob(os.path.join(d, "*.*")):
+                if entry.lower().endswith(exts):
+                    found.append(entry)
+        return found
 
-    # Fast Hook (4.5s to 22.5s) -> 100% Curated Viral Letter & Dolly with Books Assets!
-    letter_1 = os.path.join(TOPIC_ASSETS, "dolly_graduation_letter_01.jpg")
-    holding_b = os.path.join(TOPIC_ASSETS, "dolly_holding_books.jpg")
-    letter_2 = os.path.join(TOPIC_ASSETS, "dolly_graduation_letter_02.png")
-    
-    hook_assets = [
-        letter_1 if os.path.exists(letter_1) else all_curated_images[0],
-        os.path.join(GRAPHICS_DIR, "split_imagination_library.jpg") if os.path.exists(os.path.join(GRAPHICS_DIR, "split_imagination_library.jpg")) else custom_graphics[1],
-        holding_b if os.path.exists(holding_b) else all_curated_images[1],
-        os.path.join(GRAPHICS_DIR, "quote_dream_big_drea.jpg") if os.path.exists(os.path.join(GRAPHICS_DIR, "quote_dream_big_drea.jpg")) else custom_graphics[2],
-        letter_2 if os.path.exists(letter_2) else all_curated_images[2],
-        os.path.join(GRAPHICS_DIR, "triptych_01.jpg") if os.path.exists(os.path.join(GRAPHICS_DIR, "triptych_01.jpg")) else custom_graphics[3],
-        os.path.join(GRAPHICS_DIR, "headline_300_million_bo.jpg") if os.path.exists(os.path.join(GRAPHICS_DIR, "headline_300_million_bo.jpg")) else custom_graphics[4]
-    ]
+    def collect_assets(self):
+        """Scan and validate every asset pool. Returns (images, grids, clips)."""
+        raw_images = self._scan(self.images_dirs, IMAGE_EXTS)
+        raw_grids = self._scan(self.grid_dirs, IMAGE_EXTS)
+        raw_clips = self._scan(self.clips_dirs, VIDEO_EXTS)
 
-    for h_img in hook_assets:
-        dur = round((22.5 - current_time) / (len(hook_assets) - (seg_idx - 1)), 2)
-        if dur < 2.0: dur = 2.5
-        if current_time + dur > 22.5: dur = round(22.5 - current_time, 2)
-        segments.append({
-            "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-            "type": "image", "file": h_img, "motion": random.choice(mot_modes), "has_audio": False, "section": "fast_hook_viral_letter"
-        })
-        current_time = round(current_time + dur, 2)
-        seg_idx += 1
+        with ThreadPoolExecutor(max_workers=self.scan_workers) as pool:
+            img_results = list(pool.map(self._validate_photo, raw_images))
+            grids = [g for g in pool.map(self._validate_grid, raw_grids) if g]
+            clip_results = list(pool.map(self._validate_clip, raw_clips))
 
-    # Documentary Body (22.5s to total_vo_dur + 4.5s)
-    # High-Density Video Clips (Every 2-3 segments!) + High-Density Graphic Cards
-    target_total = total_vo_dur + 4.5
-    while current_time < target_total:
-        dur = round(random.uniform(4.5, 5.8), 2)
-        if current_time + dur > target_total:
-            dur = round(target_total - current_time, 2)
-            if dur < 1.0:
-                segments[-1]["duration"] = round(segments[-1]["duration"] + dur, 2)
-                segments[-1]["end"] = target_total
-                break
+        raw_image_set = set(raw_images)
+        images = [r for r in img_results if r in raw_image_set]
+        clips = [r for r in clip_results if isinstance(r, dict)]
 
-        # Cancer news clip moments (around 1350s to 1600s)
-        is_cancer_news_moment = (1350.0 <= current_time <= 1600.0) and (cancer_news_cursor < len(cancer_news_clips)) and (seg_idx % 2 == 0)
-        # Death news clip moments (around 1600s to 1850s)
-        is_death_news_moment = (1600.0 <= current_time <= 1850.0) and (death_news_cursor < len(death_news_clips)) and (seg_idx % 2 == 0)
+        rejects = Counter(r for r in img_results if r not in raw_image_set)
+        rejects.update(r for r in clip_results if isinstance(r, str))
 
-        # High clip density: every 2nd or 3rd segment is a video clip!
-        is_clip = (seg_idx % 2 == 0)
-        is_custom_graphic = (seg_idx % 3 == 0) and len(custom_graphics) > 0
-        
-        if is_cancer_news_moment:
-            c_clip = cancer_news_clips[cancer_news_cursor % len(cancer_news_clips)]
-            cancer_news_cursor += 1
-            segments.append({
-                "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-                "type": "clip", "file": c_clip["path"], "motion": "none", "postcard": False, "has_audio": False, "section": "cancer_news_broadcast_clip"
-            })
-        elif is_death_news_moment:
-            d_clip = death_news_clips[death_news_cursor % len(death_news_clips)]
-            death_news_cursor += 1
-            segments.append({
-                "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-                "type": "clip", "file": d_clip["path"], "motion": "none", "postcard": False, "has_audio": False, "section": "death_announcement_news_clip"
-            })
-        elif is_clip:
-            c = pick_next_clip(seg_idx)
-            if c:
-                segments.append({
-                    "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-                    "type": "clip", "file": c["path"], "motion": random.choice(mot_modes), "postcard": False, "has_audio": c["has_audio"], "section": "documentary_clip"
-                })
+        log(f"Assets validated: {len(images)} photos, {len(grids)} grids, {len(clips)} clips.")
+        if rejects:
+            summary = ", ".join(f"{n} {why}" for why, n in rejects.most_common(4))
+            log(f"Rejected {sum(rejects.values())} files: {summary}")
+
+        if not images and not clips:
+            found = len(raw_images) + len(raw_clips)
+            if found:
+                # Reporting "nothing found" when the filters threw everything
+                # away sends you looking in entirely the wrong place.
+                detail = "; ".join(f"{n} {why}" for why, n in rejects.most_common())
+                raise RuntimeError(
+                    f"Found {found} media files but none passed validation: {detail}. "
+                    f"Lower min_image_bytes / min_image_px / min_clip_bytes in the "
+                    f"topic config if these files are genuinely usable.")
+            raise RuntimeError(
+                f"No media files found at all. Scanned {len(self.images_dirs)} image "
+                f"and {len(self.clips_dirs)} clip directories - check --images-dir "
+                f"and --clips-dir.")
+        return images, grids, clips
+
+    def curate_images(self, images):
+        """Shuffle deterministically and weight topic assets more heavily."""
+        topic_files = []
+        if self.topic_assets_dir:
+            topic_files = self._scan([self.topic_assets_dir], IMAGE_EXTS)
+
+        random.seed(self.asset_seed)
+        pool = list(images)
+        random.shuffle(pool)
+
+        weight = int(self.cfg.get("topic_asset_weight", 8))
+        curated = topic_files * weight + pool[:self.max_images]
+        if not curated:
+            raise RuntimeError("No usable photographs after validation.")
+
+        random.seed(self.curate_seed)
+        random.shuffle(curated)
+        return curated, topic_files
+
+    def group_clips(self, clips, opening_clip):
+        """Split clips into the generic pool plus keyword-matched groups."""
+        groups = {g["name"]: [] for g in self.cfg.get("clip_groups", [])}
+        generic = []
+
+        for c in clips:
+            if opening_clip and os.path.abspath(c["path"]) == os.path.abspath(opening_clip):
+                continue
+            name = os.path.basename(c["path"]).lower()
+            for g in self.cfg.get("clip_groups", []):
+                if any(k.lower() in name for k in g.get("keywords", [])):
+                    groups[g["name"]].append(c)
+                    break
             else:
-                img = all_curated_images[img_cursor % len(all_curated_images)]
-                img_cursor += 1
+                generic.append(c)
+
+        random.seed(self.asset_seed)
+        random.shuffle(generic)
+        for name in groups:
+            random.shuffle(groups[name])
+        return generic, groups
+
+    # -------------------------------------------------------------- graphics
+
+    def generate_graphics(self, curated, grids):
+        """Pre-render the graphic cards described by the topic config."""
+        if not self.graphics_dir:
+            return []
+        os.makedirs(self.graphics_dir, exist_ok=True)
+
+        made = []
+        img_i = 0
+        grid_i = 0
+
+        def next_img():
+            nonlocal img_i
+            p = curated[img_i % len(curated)]
+            img_i += 1
+            return p
+
+        def next_grid():
+            nonlocal grid_i
+            if not grids:
+                return None
+            g = grids[grid_i % len(grids)]
+            grid_i += 1
+            return g
+
+        def safe(prefix, text, i):
+            slug = "".join(ch if ch.isalnum() else "_" for ch in text.lower())[:28].strip("_")
+            return os.path.join(self.graphics_dir, f"{prefix}_{i:02d}_{slug or 'card'}.jpg")
+
+        for i, item in enumerate(self.cfg.get("split_cards", [])):
+            grid = next_grid()
+            if not grid:
+                break
+            if isinstance(item, (list, tuple)):
+                title = item[0] if len(item) > 0 else ""
+                subtitle = item[1] if len(item) > 1 else ""
+            else:
+                title, subtitle = str(item), ""
+            out = safe("split", title, i)
+            try:
+                GraphicCompositor.style3_split_typography_card(
+                    next_img(), grid, title, subtitle, out,
+                    width=self.width, height=self.height)
+                made.append(out)
+            except Exception as e:
+                log(f"  split card '{title}' failed: {e}")
+
+        for i, text in enumerate(self.cfg.get("headlines", [])):
+            out = safe("headline", text, i)
+            try:
+                GraphicCompositor.style4_centered_headline(
+                    next_img(), text, out, width=self.width, height=self.height)
+                made.append(out)
+            except Exception as e:
+                log(f"  headline '{text[:24]}' failed: {e}")
+
+        for i, text in enumerate(self.cfg.get("quotes", [])):
+            out = safe("quote", text, i)
+            try:
+                GraphicCompositor.style5_quote_caption(
+                    next_img(), text, out, width=self.width, height=self.height)
+                made.append(out)
+            except Exception as e:
+                log(f"  quote '{text[:24]}' failed: {e}")
+
+        for i in range(int(self.cfg.get("triptych_count", 18))):
+            out = os.path.join(self.graphics_dir, f"triptych_{i + 1:02d}.jpg")
+            bg = curated[img_i % len(curated)]
+            three = [curated[(img_i + k) % len(curated)] for k in (1, 2, 3)]
+            try:
+                GraphicCompositor.style2_triptych_overlay(
+                    bg, three, out, width=self.width, height=self.height)
+                made.append(out)
+            except Exception as e:
+                log(f"  triptych {i + 1} failed: {e}")
+            img_i += 4
+
+        if grids:
+            for i in range(int(self.cfg.get("grid_card_count", 30))):
+                out = os.path.join(self.graphics_dir, f"grid_card_{i + 1:02d}.jpg")
+                try:
+                    GraphicCompositor.style1_rounded_card_on_grid(
+                        next_img(), next_grid(), out,
+                        width=self.width, height=self.height)
+                    made.append(out)
+                except Exception as e:
+                    log(f"  grid card {i + 1} failed: {e}")
+
+        log(f"Generated {len(made)} graphic cards into {self.graphics_dir}")
+        return made
+
+    # -------------------------------------------------------------- timeline
+
+    def _resolve_hook_assets(self, curated, graphics, topic_files):
+        """Config-named hook assets first, then topic photos, graphics, curated."""
+        resolved = []
+        for entry in self.cfg.get("hook_assets", []):
+            cand = entry
+            if not os.path.isabs(cand) and self.topic_assets_dir:
+                cand = os.path.join(self.topic_assets_dir, entry)
+            if os.path.exists(cand):
+                resolved.append(cand)
+
+        fillers = list(topic_files) + list(graphics) + list(curated)
+        fi = 0
+        while len(resolved) < self.hook_count and fi < len(fillers):
+            if fillers[fi] not in resolved:
+                resolved.append(fillers[fi])
+            fi += 1
+        return resolved[:self.hook_count]
+
+    def build_timeline(self, vo_duration, opening_clip, out_path):
+        """Build the full segment list and write it to out_path as JSON."""
+        vo_duration = float(vo_duration)
+        images, grids, clips = self.collect_assets()
+        curated, topic_files = self.curate_images(images)
+
+        has_opening = bool(opening_clip and os.path.exists(opening_clip))
+        if opening_clip and not has_opening:
+            log(f"WARNING: opening clip not found, skipping: {opening_clip}")
+        lead = self.opening_lead_s if has_opening else 0.0
+
+        generic_clips, clip_groups = self.group_clips(
+            clips, opening_clip if has_opening else None)
+        graphics = self.generate_graphics(curated, grids)
+
+        self.matcher = self.build_matcher(vo_duration, lead) if self.semantic else None
+        if self.matcher and has_opening:
+            self.matcher.used_paths.add(opening_clip)
+
+        segments = []
+        seg_idx = 0
+        current = 0.0
+        used_paths = set()
+        used_sources = {}
+        group_cursors = {name: 0 for name in clip_groups}
+        img_cursor = 0
+        cg_cursor = 0
+        motions = ["zoomin", "zoomout", "panright", "panleft"]
+
+        random.seed(self.asset_seed)
+
+        # Segment 0 - opening soundbite, keeps its native audio.
+        if has_opening:
+            segments.append({
+                "index": 0, "start": 0.0, "end": lead, "duration": lead,
+                "type": "headline", "file": opening_clip, "motion": "none",
+                "postcard": False, "has_audio": True, "section": "opening_soundbite",
+            })
+            current = lead
+            seg_idx = 1
+
+        # Fast hook - front-loaded curated assets up to hook_end_s.
+        hook_assets = self._resolve_hook_assets(curated, graphics, topic_files)
+        if hook_assets and self.hook_end_s > current:
+            remaining = len(hook_assets)
+            for asset in hook_assets:
+                if current >= self.hook_end_s:
+                    break
+                dur = round((self.hook_end_s - current) / max(1, remaining), 2)
+                dur = max(dur, 2.0)
+                if current + dur > self.hook_end_s:
+                    dur = round(self.hook_end_s - current, 2)
+                if dur < 1.0:
+                    break
                 segments.append({
-                    "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-                    "type": "image", "file": img, "motion": random.choice(mot_modes), "postcard": (seg_idx % 5 == 0), "has_audio": False, "section": "dolly_body"
+                    "index": seg_idx, "start": round(current, 2),
+                    "end": round(current + dur, 2), "duration": dur,
+                    "type": "image", "file": asset, "motion": random.choice(motions),
+                    "postcard": False, "has_audio": False, "section": "fast_hook",
                 })
-        elif is_custom_graphic:
-            cg_file = custom_graphics[cg_cursor % len(custom_graphics)]
-            cg_cursor += 1
-            segments.append({
-                "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-                "type": "image", "file": cg_file, "motion": "zoomout", "postcard": False, "has_audio": False, "section": "custom_graphic"
-            })
-        else:
-            img = all_curated_images[img_cursor % len(all_curated_images)]
-            img_cursor += 1
-            segments.append({
-                "index": seg_idx, "start": current_time, "end": round(current_time + dur, 2), "duration": dur,
-                "type": "image", "file": img, "motion": random.choice(mot_modes), "postcard": (seg_idx % 5 == 0), "has_audio": False, "section": "dolly_body"
-            })
-        current_time = round(current_time + dur, 2)
-        seg_idx += 1
+                current = round(current + dur, 2)
+                seg_idx += 1
+                remaining -= 1
 
-    log(f"Timeline Built! Total Segments: {len(segments)} ({current_time:.2f}s / {current_time/60:.2f} mins).")
-    log(f"Custom Graphics Embedded: {cg_cursor + 4} CARDS (APPEARING FREQUENTLY THROUGHOUT VIDEO!)")
-    log(f"Cancer & Death News Clips Embedded: {cancer_news_cursor + death_news_cursor} news clips in health and memorial chapters.")
-    
-    with open(TIMELINE_FILE, "w", encoding="utf-8") as f:
-        json.dump({"total_duration": current_time, "custom_graphics_count": cg_cursor + 4, "segments": segments}, f, indent=2)
-        
-    log(f"Saved timeline to {TIMELINE_FILE}")
+        def pick_clip(at_index, start, end):
+            """Semantic pick when available, else cooldown-ordered round robin."""
+            if self.matcher:
+                asset, _score, _ents = self.matcher.pick(start, end, "clip", at_index)
+                if asset:
+                    return {"path": asset.path, "has_audio": False,
+                            "source_id": asset.source_id}
+            for c in generic_clips:
+                if c["path"] in used_paths:
+                    continue
+                last = used_sources.get(c["source_id"], -10 ** 9)
+                if at_index - last >= self.clip_cooldown:
+                    used_paths.add(c["path"])
+                    used_sources[c["source_id"]] = at_index
+                    return c
+            for c in generic_clips:
+                if c["path"] not in used_paths:
+                    used_paths.add(c["path"])
+                    used_sources[c["source_id"]] = at_index
+                    return c
+            return None
 
-if __name__ == "__main__":
-    main()
+        def group_for(t, index):
+            """Return the keyword clip group whose time window covers t."""
+            if index % 2 != 0:
+                return None
+            for g in self.cfg.get("clip_groups", []):
+                name = g["name"]
+                pool = clip_groups.get(name) or []
+                if not pool or group_cursors[name] >= len(pool):
+                    continue
+                if float(g.get("start", 0)) <= t <= float(g.get("end", 0)):
+                    return g
+            return None
+
+        target = vo_duration + lead
+
+        while current < target:
+            dur = round(random.uniform(self.seg_min_s, self.seg_max_s), 2)
+            if current + dur > target:
+                dur = round(target - current, 2)
+                if dur < 1.0 and segments:
+                    segments[-1]["duration"] = round(segments[-1]["duration"] + dur, 2)
+                    segments[-1]["end"] = round(target, 2)
+                    break
+
+            def add_image(section, postcard):
+                nonlocal img_cursor
+                img = None
+                if self.matcher:
+                    asset, _score, _ents = self.matcher.pick(
+                        current, current + dur, "image", seg_idx)
+                    if asset:
+                        img = asset.path
+                if img is None:
+                    img = curated[img_cursor % len(curated)]
+                    img_cursor += 1
+                segments.append({
+                    "index": seg_idx, "start": round(current, 2),
+                    "end": round(current + dur, 2), "duration": dur,
+                    "type": "image", "file": img, "motion": random.choice(motions),
+                    "postcard": postcard, "has_audio": False, "section": section,
+                })
+
+            group = group_for(current, seg_idx)
+            if group:
+                name = group["name"]
+                c = clip_groups[name][group_cursors[name]]
+                group_cursors[name] += 1
+                segments.append({
+                    "index": seg_idx, "start": round(current, 2),
+                    "end": round(current + dur, 2), "duration": dur,
+                    "type": "clip", "file": c["path"], "motion": "none",
+                    "postcard": False, "has_audio": False, "section": name,
+                })
+            elif seg_idx % 2 == 0:
+                c = pick_clip(seg_idx, current, current + dur)
+                if c:
+                    segments.append({
+                        "index": seg_idx, "start": round(current, 2),
+                        "end": round(current + dur, 2), "duration": dur,
+                        "type": "clip", "file": c["path"], "motion": "none",
+                        "postcard": False, "has_audio": False,
+                        "section": "documentary_clip",
+                    })
+                else:
+                    add_image("body", seg_idx % 5 == 0)
+            elif seg_idx % 3 == 0 and graphics:
+                segments.append({
+                    "index": seg_idx, "start": round(current, 2),
+                    "end": round(current + dur, 2), "duration": dur,
+                    "type": "image", "file": graphics[cg_cursor % len(graphics)],
+                    "motion": "zoomout", "postcard": False, "has_audio": False,
+                    "section": "custom_graphic",
+                })
+                cg_cursor += 1
+            else:
+                add_image("body", seg_idx % 5 == 0)
+
+            current = round(current + dur, 2)
+            seg_idx += 1
+
+        counts = {}
+        for s in segments:
+            counts[s["type"]] = counts.get(s["type"], 0) + 1
+
+        data = {
+            "total_duration": round(current, 2),
+            "voiceover_duration": vo_duration,
+            "opening_lead_s": lead,
+            "segment_count": len(segments),
+            "type_counts": counts,
+            "custom_graphics_used": cg_cursor,
+            "graphics_available": len(graphics),
+            "semantic": bool(self.matcher),
+            "segments": segments,
+        }
+
+        if self.matcher:
+            cov = self.matcher.coverage()
+            data["semantic_coverage"] = cov
+            slots = cov["named_subject_slots"]
+            log(f"Semantic picks: {cov['picks']} ({cov['scored']} scored on real terms)")
+            if slots:
+                reachable = cov["named_correct"] + cov["named_missed_despite_available"]
+                pct = 100 * cov["named_correct"] / max(1, reachable)
+                log(f"Named-subject slots: {slots} | right person shown "
+                    f"{cov['named_correct']}/{reachable} ({pct:.0f}% of slots where "
+                    f"they were available) | {cov['named_none_left_to_show']} had "
+                    f"none left in the library")
+                log(f"Wrong person shown: {cov['wrong_person_shown']} "
+                    f"({100 * cov['wrong_person_shown'] / max(1, slots):.1f}% of "
+                    f"named-subject slots)")
+            with open(os.path.splitext(out_path)[0] + "_matches.json", "w",
+                      encoding="utf-8") as f:
+                json.dump(self.matcher.match_log, f, indent=2)
+
+        os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+
+        log(f"Timeline: {len(segments)} segments, {current / 60:.2f} min, types={counts}")
+        log(f"Saved timeline to {out_path}")
+        return data
