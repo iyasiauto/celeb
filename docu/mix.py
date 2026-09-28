@@ -356,7 +356,10 @@ def duck_curve(vo, depth_db=-9.0, floor_db=-12.5):
 
 # ------------------------------------------------------------------ build
 
-def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None):
+def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None, music_floor_db=-12.5, music_duck_db=-9.0,
+              sfx_gain=0.7):
+    """music_floor_db: the bed's level in the gaps; music_duck_db: how much further it
+    dips under the narrator; sfx_gain: overall level of the sound design."""
     total = float(total)
     n = int(total * SR) + SR
     vo = load(vo_path)
@@ -365,7 +368,7 @@ def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None):
     voice[:len(vo)] = vo[:n]
 
     music = music_bed(plan or [], kit_dir, total)[:n]
-    g = duck_curve(voice)
+    g = duck_curve(voice, depth_db=music_duck_db, floor_db=music_floor_db)
     music *= g[:len(music), None]
 
     sfx = np.zeros((n, 2), np.float32)
@@ -388,7 +391,7 @@ def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None):
     # keep sound design under the narrator too, but less than the music
     sfx *= (0.55 + 0.45 * (g / g.max()))[:n, None]
 
-    mix = voice + music + sfx * 0.7
+    mix = voice + music + sfx * sfx_gain
     tmp = out_wav + ".raw.wav"
     save_wav(tmp, mix)
     # loudness to YouTube's reference with a true-peak ceiling

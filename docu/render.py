@@ -56,6 +56,12 @@ def _browser(cfg):
     return page, cdp
 
 
+def _grain(cfg):
+    """Film grain per project: it reads as texture, but it is also most of the bitrate."""
+    g = float(cfg.get("grain", 5))
+    return f"noise=alls={g:g}:allf=t" if g > 0 else "null"
+
+
 def _frames(scene):
     return max(1, int(round(scene["duration"] * FPS)))
 
@@ -76,7 +82,7 @@ def render_browser_scene(scene, out_path, cfg, quality=90, only_times=None, stil
     tmp = out_path + ".part.mp4"
     ff = subprocess.Popen(
         ["ffmpeg", "-v", "error", "-y", "-f", "image2pipe", "-framerate", str(FPS), "-c:v", "mjpeg",
-         "-i", "-", "-vf", scene.get("vf", "noise=alls=5:allf=t"), "-threads", "2"] + X264 + [tmp],
+         "-i", "-", "-vf", scene.get("vf", _grain(cfg)), "-threads", "2"] + X264 + [tmp],
         stdin=subprocess.PIPE)
     for f in range(n):
         page.evaluate(f"window.renderFrame({f / FPS})")
@@ -94,6 +100,7 @@ def render_browser_scene(scene, out_path, cfg, quality=90, only_times=None, stil
 GRADES = {
     "doc": "eq=saturation=0.84:contrast=1.05:gamma=0.98,colorbalance=rs=0.02:bs=-0.02:rh=0.03:bh=-0.03",
     "bw": "hue=s=0,eq=contrast=1.12",
+    "cool": "eq=saturation=0.8:contrast=1.07:gamma=0.98,colorbalance=rs=-0.02:bs=0.03:rh=-0.01:bh=0.02",
     "warm": "eq=saturation=0.92:contrast=1.04,colorbalance=rh=0.05:bh=-0.05",
     "none": "",
 }
@@ -131,7 +138,7 @@ def render_clip_scene(scene, out_path, cfg):
     g = GRADES.get(scene.get("grade", "doc"), scene.get("grade", ""))
     if g:
         post.append(g)
-    post += ["vignette=PI/5", "noise=alls=5:allf=t"]
+    post += ["vignette=PI/5", _grain(cfg)]
     if scene.get("fadein"):
         post.append(f"fade=t=in:st=0:d={scene['fadein']}")
     if scene.get("fadeout"):

@@ -125,7 +125,7 @@ SCENES.words = async (s, root) => {
 
 SCENES.ledger = async (s, root) => {
   const board = el("div", "full", root, { transformOrigin: "50% 50%" });
-  pic("parchment.jpg", board, { width: W + "px", height: H + "px" });
+  pic(ground("parchment", "parchment.jpg"), board, { width: W + "px", height: H + "px" });
   const lines = (s.lines || []).map((ln, i) => {
     const d = el("div", "abs", board, {
       left: (ln.x || 360) + "px", top: (ln.y != null ? ln.y : 200 + i * 110) + "px", font: `${ln.size || 64}px '${ln.font || "GaramondI"}'`,
@@ -180,7 +180,8 @@ SCENES.timeline = async (s, root) => {
   const nodes = ev.map((e, i) => {
     const x = W / 2 + i * gap;
     const dot = el("div", "abs", track, { left: x - 13 + "px", top: "548px", width: "26px", height: "26px", borderRadius: "50%", background: PAL.cream, boxShadow: "0 0 0 6px rgba(217,164,65,0)" });
-    const yr = el("div", "abs", track, { left: x - 250 + "px", width: "500px", top: "380px", textAlign: "center", font: "140px 'Garamond'", color: "#F6F1E6" }, esc(e.year));
+    const ys = s.ysize || (String(e.year).length > 5 ? 104 : 140);
+    const yr = el("div", "abs", track, { left: x - 300 + "px", width: "600px", top: 380 + (140 - ys) + "px", textAlign: "center", font: `${ys}px 'Garamond'`, color: "#F6F1E6", whiteSpace: "nowrap" }, esc(e.year));
     const lb = el("div", "abs", track, { left: x - 240 + "px", width: "480px", top: "610px", textAlign: "center", font: "40px 'GaramondI'", color: "#E8E0CF", lineHeight: "1.2" }, esc(e.label));
     return { dot, yr, lb };
   });
@@ -219,7 +220,7 @@ SCENES.measure = async (s, root) => {
     return { b, lab, bar, val, y };
   });
   const stamp = s.stamp ? el("div", "abs", root, {
-    left: (s.stamp.x || 1300) + "px", top: (s.stamp.y || 820) + "px", font: "92px 'Anton'", color: PAL.red, border: `8px solid ${PAL.red}`,
+    left: (s.stamp.x || 1300) + "px", top: (s.stamp.y || 820) + "px", font: "92px 'Stamp'", color: PAL.red, border: `8px solid ${PAL.red}`,
     padding: "2px 26px 0", transformOrigin: "50% 50%", webkitMaskImage: `url('${asset("grunge.png")}')`, webkitMaskSize: "600px 300px", opacity: 0,
   }, esc(s.stamp.text)) : null;
   return t => {

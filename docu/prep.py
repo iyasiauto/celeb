@@ -45,6 +45,19 @@ def grade(im, kind):
         a = np.asarray(g, dtype=np.float32) / 255.0
         rgb = np.stack([a * 1.06 + 0.02, a * 0.96 + 0.01, a * 0.80], -1)
         return Image.fromarray(np.clip(rgb * 255, 0, 255).astype(np.uint8))
+    if kind == "xray":
+        # radiograph look: inverted luminance, cyan tint, lifted contrast
+        g = ImageOps.invert(ImageEnhance.Contrast(ImageOps.grayscale(im)).enhance(1.35))
+        a = np.asarray(g, dtype=np.float32) / 255.0
+        rgb = np.stack([a * 0.62, a * 0.93, a * 1.0], -1) ** 1.1
+        return Image.fromarray(np.clip(rgb * 255, 0, 255).astype(np.uint8))
+    if kind == "cool":
+        # the forensic grade: cooler, cleaner, a little more contrast
+        im = ImageEnhance.Color(im).enhance(0.78)
+        im = ImageEnhance.Contrast(im).enhance(1.08)
+        a = np.asarray(im, dtype=np.float32) / 255.0
+        a = a * np.array([0.96, 1.0, 1.04], np.float32)
+        return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
     if kind == "doc":
         # the documentary grade: slightly muted, warm highlights, cool shadows
         im = ImageEnhance.Color(im).enhance(0.82)
@@ -219,6 +232,33 @@ def make_surfaces(out_dir, kit_dir):
     paper("paper_tan.jpg", (214, 202, 174), 0.10, 11)
     paper("parchment.jpg", (226, 208, 168), 0.22, 23)
     paper("newsprint.jpg", (236, 229, 211), 0.05, 37, fibers=False)
+
+    lab = os.path.join(out_dir, "paper_lab.jpg")
+    if not os.path.exists(lab):
+        # engineering graph paper: cool off-white, fine and bold grid, faint fold
+        n = 0.6 * _noise(H, W, 120, 51) + 0.4 * _noise(H, W, 8, 52)
+        img = np.ones((H, W, 3), np.float32) * np.array([232, 236, 234], np.float32) / 255
+        img *= (0.94 + 0.08 * n)[..., None]
+        yy, xx = np.mgrid[0:H, 0:W]
+        fine = ((xx % 24) == 0) | ((yy % 24) == 0)
+        bold = ((xx % 120) == 0) | ((yy % 120) == 0)
+        img[fine] *= np.array([0.93, 0.96, 0.98])
+        img[bold] *= np.array([0.84, 0.91, 0.95])
+        vig = 1 - 0.22 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)
+        img *= vig[..., None]
+        Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.4)).save(lab, quality=92)
+    lb = os.path.join(out_dir, "lightbox.jpg")
+    if not os.path.exists(lb):
+        # a dark lightbox / evidence table: graphite with a cool glow in the middle
+        n = 0.7 * _noise(H, W, 160, 61) + 0.3 * _noise(H, W, 5, 62)
+        yy, xx = np.mgrid[0:H, 0:W]
+        r = np.sqrt(((xx - W / 2) / (W * 0.6)) ** 2 + ((yy - H / 2) / (H * 0.6)) ** 2)
+        glow = np.clip(1 - r, 0, 1) ** 1.6
+        base = np.array([16, 22, 26], np.float32) / 255
+        img = base * (0.85 + 0.25 * n)[..., None] + glow[..., None] * np.array([0.05, 0.11, 0.13], np.float32)
+        grid = ((xx % 80) == 0) | ((yy % 80) == 0)
+        img[grid] += np.array([0.02, 0.05, 0.06])
+        Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.5)).save(lb, quality=92)
 
     pm = os.path.join(out_dir, "paper_map.jpg")
     if not os.path.exists(pm):

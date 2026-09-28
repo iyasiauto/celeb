@@ -95,6 +95,33 @@ const FONTS = {
   "InterK": "Inter-Black.ttf", "Caveat": "Caveat.ttf", "Archivo": "ArchivoBlack.ttf",
   "Stencil": "SairaStencilOne.ttf", "Mono": "SpaceMono-Bold.ttf", "Montserrat": "Montserrat-ExtraBold.ttf",
 };
+/* ---- themes: one engine, a different look per video ------------------------
+   A theme remaps the font families the scenes use, overrides the palette and names
+   the surfaces the paper scenes stand on. CFG.theme picks one; "paper" is the default. */
+FONTS.Stamp = FONTS.Anton;
+const THEMES = {
+  paper: { fonts: {}, pal: {}, grounds: {} },
+  /* forensic: a lab report / case file - graph paper, stencil stamps, cyan and amber */
+  forensic: {
+    fonts: {
+      Anton: "Oswald-Bold.ttf", Stamp: "SairaStencilOne.ttf", Elite: "CourierPrime.ttf",
+      DMSerif: "PlayfairDisplay.ttf", Garamond: "InterDisplay-Black.ttf", GaramondI: "Lora-Italic.ttf",
+      Caveat: "PatrickHand.ttf",
+    },
+    pal: {
+      mustard: "#F2B134", red: "#E5484D", gold: "#F2B134", cyan: "#3FC7D6", green: "#3DBE7A",
+      ink: "#15191C", cream: "#EEF1F0",
+    },
+    grounds: { paper: "paper_lab.jpg", map: "paper_lab.jpg", cork: "lightbox.jpg", parchment: "paper_lab.jpg" },
+  },
+};
+const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
+Object.assign(FONTS, THEME.fonts);
+Object.assign(PAL, THEME.pal);
+if (!PAL.cyan) PAL.cyan = "#3FC7D6";
+if (!PAL.green) PAL.green = "#3DBE7A";
+function ground(kind, fallback) { return THEME.grounds[kind] || fallback; }
+
 function loadFonts() {
   const st = document.createElement("style");
   st.textContent = Object.entries(FONTS)

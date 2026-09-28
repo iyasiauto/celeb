@@ -24,10 +24,10 @@ function tornClip(seed, amp = 1.2, n = 22, sides = "tblr") {
 }
 
 function paperGround(root, kind) {
-  if (kind === "cork") return pic("kit:kits/frames/gen_cork.jpg", root, { width: W + "px", height: H + "px" });
+  if (kind === "cork") return pic(ground("cork", "kit:kits/frames/gen_cork.jpg"), root, { width: W + "px", height: H + "px" });
   if (kind === "dark") return el("div", "full", root, { background: "radial-gradient(ellipse at 50% 45%, #2b2824 0%, #141312 62%, #080808 100%)" });
   if (kind === "desk") return pic("desk.jpg", root, { width: W + "px", height: H + "px" });
-  const g = pic(kind === "map" ? "paper_map.jpg" : "paper_tan.jpg", root, { width: W + "px", height: H + "px" });
+  const g = pic(kind === "map" ? ground("map", "paper_map.jpg") : ground("paper", "paper_tan.jpg"), root, { width: W + "px", height: H + "px" });
   return g;
 }
 
@@ -89,7 +89,7 @@ const ITEMS = {
   stamp(board, it) {
     const c = it.color || PAL.red;
     const s = el("div", "abs", board, {
-      left: 0, top: 0, font: `${it.size || 86}px 'Anton'`, color: c, border: `${Math.round((it.size || 86) / 12)}px solid ${c}`,
+      left: 0, top: 0, font: `${it.size || 86}px 'Stamp'`, color: c, border: `${Math.round((it.size || 86) / 12)}px solid ${c}`,
       padding: "4px 26px 0", letterSpacing: ".04em", whiteSpace: "nowrap", opacity: 0.92, transformOrigin: "50% 50%",
       webkitMaskImage: `url('${asset("grunge.png")}')`, webkitMaskSize: "600px 300px", willChange: "transform",
     }, esc(it.text));
@@ -357,7 +357,7 @@ SCENES.baskets = async (s, root) => {
     el("div", "abs", body, { left: "40px", top: "60px", font: "92px 'Anton'", color: "rgba(40,28,10,.85)" }, String(i + 1).padStart(2, "0"));
     el("div", "abs", body, { left: "40px", top: "190px", width: "440px", font: "54px 'Anton'", lineHeight: "1.05", color: "#231a0c" }, esc(lab));
     const st = el("div", "abs", body, {
-      left: "60px", top: "420px", font: "72px 'Anton'", color: colors[i], border: `6px solid ${colors[i]}`, padding: "2px 22px 0",
+      left: "60px", top: "420px", font: "72px 'Stamp'", color: colors[i], border: `6px solid ${colors[i]}`, padding: "2px 22px 0",
       transform: "rotate(-9deg)", webkitMaskImage: `url('${asset("grunge.png")}')`, webkitMaskSize: "600px 300px", opacity: 0,
     }, esc(stamps[i]));
     return { f, st };
