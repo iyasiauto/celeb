@@ -100,6 +100,7 @@ def render_browser_scene(scene, out_path, cfg, quality=90, only_times=None, stil
 GRADES = {
     "doc": "eq=saturation=0.84:contrast=1.05:gamma=0.98,colorbalance=rs=0.02:bs=-0.02:rh=0.03:bh=-0.03",
     "bw": "hue=s=0,eq=contrast=1.12",
+    "warmsepia": "eq=saturation=0.74:contrast=1.02,colorbalance=rs=0.04:gs=0.01:bs=-0.06:rm=0.03:bm=-0.04",
     "cool": "eq=saturation=0.8:contrast=1.07:gamma=0.98,colorbalance=rs=-0.02:bs=0.03:rh=-0.01:bh=0.02",
     "warm": "eq=saturation=0.92:contrast=1.04,colorbalance=rh=0.05:bh=-0.05",
     "none": "",

@@ -33,6 +33,13 @@ async function topo(name) {
   return MAPLIB.topo[name];
 }
 
+/* map palette: the dark teal explainer by default, a theme may swap in its own */
+const MAPC = Object.assign({
+  bg0: "#0E3440", bg1: "#04141A", sea: "#0B2A34", rim: "rgba(120,200,215,.35)", grat: "rgba(120,190,205,.08)",
+  land: "#18505E", border: "rgba(160,220,232,.45)", admin: "150,210,222", hi: "47,150,168", text: "#F4EFE4",
+  sub: "#CFE3E6", dot: "#EAF2F3", dotText: "#DDEBED", name: "rgba(214,232,236,.8)", shadow: "rgba(0,0,0,.7)", paper: null,
+}, (THEME && THEME.map) || {});
+
 SCENES.map = async (s, root) => {
   await mapLibs();
   const detail = s.detail || "geo_mid.json";
@@ -61,6 +68,8 @@ SCENES.map = async (s, root) => {
 
   const cv = el("canvas", "full", root); cv.width = W; cv.height = H;
   const c = cv.getContext("2d");
+  let paperImg = null;
+  if (MAPC.paper) { paperImg = new Image(); WAITS.push(new Promise(r => { paperImg.onload = r; paperImg.onerror = r; })); paperImg.src = asset(MAPC.paper); }
   const over = el("div", "full", root);
   vignette(root, 0.55);
 
@@ -99,20 +108,20 @@ SCENES.map = async (s, root) => {
     const side = p.side || "left";
     const lab = el("div", "abs", g, { top: "-40px", whiteSpace: "nowrap", textAlign: side === "left" ? "right" : "left" });
     if (side === "left") lab.style.right = (p.gap || 170) + "px"; else lab.style.left = (p.gap || 170) + "px";
-    el("div", "", lab, { font: `${p.size || 54}px 'DMSerif'`, color: "#F4EFE4", textShadow: "0 3px 16px rgba(0,0,0,.7)", letterSpacing: ".02em" }, esc((p.label || "").toUpperCase()));
-    if (p.sub) el("div", "", lab, { font: "22px 'Barlow'", color: "#CFE3E6", letterSpacing: ".08em", marginTop: "2px", textShadow: "0 2px 10px rgba(0,0,0,.8)" }, esc(p.sub));
+    el("div", "", lab, { font: `${p.size || 54}px 'DMSerif'`, color: MAPC.text, textShadow: `0 3px 16px ${MAPC.shadow}`, letterSpacing: ".02em" }, esc((p.label || "").toUpperCase()));
+    if (p.sub) el("div", "", lab, { font: "22px 'Barlow'", color: MAPC.sub, letterSpacing: ".08em", marginTop: "2px", textShadow: "0 2px 10px rgba(0,0,0,.8)" }, esc(p.sub));
     const lead = el("div", "abs", g, { top: "-14px", height: "2px", background: "rgba(244,239,228,.85)" });
     if (side === "left") lead.style.right = "22px"; else lead.style.left = "22px";
     return { p, g, ring1, ring2, head, lab, lead };
   });
   const dots = (s.dots || []).map(d => {
     const g = el("div", "abs", over, { left: 0, top: 0 });
-    el("div", "abs", g, { left: "-7px", top: "-7px", width: "14px", height: "14px", borderRadius: "50%", background: "#EAF2F3", boxShadow: "0 0 0 4px rgba(234,242,243,.18)" });
-    el("div", "abs", g, { left: "16px", top: "-16px", font: "26px 'Barlow'", color: "#DDEBED", letterSpacing: ".06em", whiteSpace: "nowrap", textShadow: "0 2px 8px rgba(0,0,0,.9)" }, esc(d.label));
+    el("div", "abs", g, { left: "-7px", top: "-7px", width: "14px", height: "14px", borderRadius: "50%", background: MAPC.dot, boxShadow: "0 0 0 4px rgba(234,242,243,.18)" });
+    el("div", "abs", g, { left: "16px", top: "-16px", font: "26px 'Barlow'", color: MAPC.dotText, letterSpacing: ".06em", whiteSpace: "nowrap", textShadow: "0 2px 8px rgba(0,0,0,.9)" }, esc(d.label));
     return { d, g };
   });
   const names = (s.names || []).map(n => {
-    const e = el("div", "abs", over, { left: 0, top: 0, font: `${n.size || 34}px 'Barlow'`, letterSpacing: ".45em", color: n.color || "rgba(214,232,236,.8)", whiteSpace: "nowrap", textShadow: "0 2px 12px rgba(0,0,0,.7)" }, esc(n.text.toUpperCase()));
+    const e = el("div", "abs", over, { left: 0, top: 0, font: `${n.size || 34}px 'Barlow'`, letterSpacing: ".45em", color: n.color || MAPC.name, whiteSpace: "nowrap", textShadow: "0 2px 12px rgba(0,0,0,.7)" }, esc(n.text.toUpperCase()));
     return { n, e };
   });
   const title = s.title ? el("div", "abs", over, { left: "110px", top: "90px", font: "30px 'BarlowB'", letterSpacing: ".35em", color: PAL.mustard }, esc(s.title)) : null;
@@ -121,27 +130,28 @@ SCENES.map = async (s, root) => {
     const cam = camera(t);
     proj.rotate([-cam.lon, -cam.lat]).scale(cam.scale);
     const g = c.createRadialGradient(W / 2, H / 2, 100, W / 2, H / 2, 1200);
-    g.addColorStop(0, "#0E3440"); g.addColorStop(1, "#04141A");
+    g.addColorStop(0, MAPC.bg0); g.addColorStop(1, MAPC.bg1);
     c.fillStyle = g; c.fillRect(0, 0, W, H);
+    if (paperImg) { c.globalAlpha = 0.9; c.drawImage(paperImg, 0, 0, W, H); c.globalAlpha = 1; }
     /* ocean disc with a soft rim when the whole globe is in view */
     c.beginPath(); path({ type: "Sphere" });
-    c.fillStyle = "#0B2A34"; c.fill();
-    if (cam.scale < 900) { c.lineWidth = 2; c.strokeStyle = "rgba(120,200,215,.35)"; c.stroke(); }
-    c.beginPath(); path(grat); c.lineWidth = 1; c.strokeStyle = "rgba(120,190,205,.08)"; c.stroke();
+    c.fillStyle = MAPC.sea; c.fill();
+    if (cam.scale < 900) { c.lineWidth = 2; c.strokeStyle = MAPC.rim; c.stroke(); }
+    c.beginPath(); path(grat); c.lineWidth = 1; c.strokeStyle = MAPC.grat; c.stroke();
     /* land */
     const vis_ = countries.filter(f => inView(f, cam));
     const land = new Path2D(d3.geoPath(proj)({ type: "FeatureCollection", features: vis_ }) || "");
-    c.fillStyle = "#18505E"; c.fill(land);
+    c.fillStyle = MAPC.land; c.fill(land);
     if (water.length && cam.scale > 1500) {
       const wv = water.filter(f => inView(f, cam));
-      if (wv.length) { c.fillStyle = "#0B2A34"; c.fill(new Path2D(d3.geoPath(proj)({ type: "FeatureCollection", features: wv }) || "")); }
+      if (wv.length) { c.fillStyle = MAPC.sea; c.fill(new Path2D(d3.geoPath(proj)({ type: "FeatureCollection", features: wv }) || "")); }
     }
     if (adminUse.length && cam.scale > 2200) {
       const av = adminUse.filter(f => inView(f, cam));
-      c.lineWidth = 1; c.strokeStyle = `rgba(150,210,222,${cl((cam.scale - 2200) / 3000, 0, 0.22).toFixed(3)})`;
+      c.lineWidth = 1; c.strokeStyle = `rgba(${MAPC.admin},${cl((cam.scale - 2200) / 3000, 0, 0.22).toFixed(3)})`;
       c.stroke(new Path2D(d3.geoPath(proj)({ type: "FeatureCollection", features: av }) || ""));
     }
-    c.lineWidth = 1.4; c.strokeStyle = "rgba(160,220,232,.45)"; c.stroke(land);
+    c.lineWidth = 1.4; c.strokeStyle = MAPC.border; c.stroke(land);
     /* highlighted countries / provinces */
     (s.highlight || []).forEach(h => {
       const f = byId[h.id] || adminById[h.id];
@@ -149,7 +159,7 @@ SCENES.map = async (s, root) => {
       const a = eOut(seg(t, h.at || 0, 0.8)) * (h.out != null ? 1 - seg(t, h.out, 0.5) : 1);
       if (a <= 0) return;
       c.beginPath(); path(f);
-      c.fillStyle = h.fill || `rgba(47,150,168,${(0.75 * a).toFixed(3)})`; c.globalAlpha = h.fill ? a : 1; c.fill(); c.globalAlpha = 1;
+      c.fillStyle = h.fill || `rgba(${MAPC.hi},${((MAPC.hiA || 0.75) * a).toFixed(3)})`; c.globalAlpha = h.fill ? a : 1; c.fill(); c.globalAlpha = 1;
       c.lineWidth = 3; c.strokeStyle = `rgba(217,164,65,${a.toFixed(3)})`; c.stroke();
     });
     /* radius circles (e.g. "29 km") */
@@ -172,7 +182,7 @@ SCENES.map = async (s, root) => {
         const m = proj(interp(0.5));
         if (m) {
           const q = eOut(seg(t, (r.at || 0) + (r.d || 1.2), 0.4));
-          c.globalAlpha = q; c.font = "44px 'Anton'"; c.fillStyle = "#F4EFE4"; c.textAlign = "center";
+          c.globalAlpha = q; c.font = "44px 'Anton'"; c.fillStyle = MAPC.text; c.textAlign = "center";
           c.shadowColor = "rgba(0,0,0,.8)"; c.shadowBlur = 14;
           c.fillText(r.label, m[0] + (r.lx || 0), m[1] + (r.ly || -24)); c.shadowBlur = 0; c.globalAlpha = 1;
         }

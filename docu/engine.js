@@ -114,6 +114,24 @@ const THEMES = {
     },
     grounds: { paper: "paper_lab.jpg", map: "paper_lab.jpg", cork: "lightbox.jpg", parchment: "paper_lab.jpg" },
   },
+  /* expedition: an explorer's field journal and a courtroom - ruled journal pages, a leather
+     desk, an antique parchment map, brass and oxblood, evidence tags and the scales */
+  expedition: {
+    fonts: {
+      Anton: "BebasNeue.ttf", DMSerif: "Cinzel.ttf", Elite: "SpecialElite.ttf", GaramondI: "EB-Garamond-Italic.ttf",
+    },
+    pal: {
+      mustard: "#C8963E", red: "#9E2B25", gold: "#C8963E", cyan: "#2F6F7E", green: "#5E8A3E",
+      ink: "#241A10", cream: "#F1E6CF",
+    },
+    grounds: { paper: "paper_journal.jpg", map: "parchment.jpg", cork: "leather.jpg", parchment: "parchment.jpg" },
+    map: {
+      bg0: "#E9DCBC", bg1: "#CDB88E", sea: "rgba(118,146,146,.55)", rim: "rgba(80,55,30,.5)", grat: "rgba(90,60,30,.18)",
+      land: "rgba(238,226,196,.94)", border: "rgba(90,60,30,.7)", admin: "110,80,45", hi: "158,43,37", hiA: 0.42, text: "#2A1E12",
+      sub: "#4A3A26", dot: "#9E2B25", dotText: "#2A1E12", name: "rgba(60,40,20,.75)", shadow: "rgba(255,245,225,.85)",
+      paper: "parchment.jpg",
+    },
+  },
 };
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);

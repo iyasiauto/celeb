@@ -58,6 +58,13 @@ def grade(im, kind):
         a = np.asarray(im, dtype=np.float32) / 255.0
         a = a * np.array([0.96, 1.0, 1.04], np.float32)
         return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
+    if kind == "warmsepia":
+        # the expedition grade: warm, slightly faded, like a print in a field journal
+        im = ImageEnhance.Color(im).enhance(0.72)
+        a = np.asarray(im, dtype=np.float32) / 255.0
+        a = a * np.array([1.06, 1.0, 0.86], np.float32) + np.array([0.02, 0.01, 0.0], np.float32)
+        a = 0.06 + 0.9 * a
+        return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
     if kind == "doc":
         # the documentary grade: slightly muted, warm highlights, cool shadows
         im = ImageEnhance.Color(im).enhance(0.82)
@@ -247,6 +254,32 @@ def make_surfaces(out_dir, kit_dir):
         vig = 1 - 0.22 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2)
         img *= vig[..., None]
         Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.4)).save(lab, quality=92)
+    jn = os.path.join(out_dir, "paper_journal.jpg")
+    if not os.path.exists(jn):
+        # an explorer's field journal: warm cream, faint blue rules, a red margin, worn edges
+        n = 0.55 * _noise(H, W, 150, 71) + 0.3 * _noise(H, W, 30, 72) + 0.15 * _noise(H, W, 5, 73)
+        img = np.ones((H, W, 3), np.float32) * np.array([238, 226, 198], np.float32) / 255
+        img *= (0.9 + 0.14 * n)[..., None]
+        yy, xx = np.mgrid[0:H, 0:W]
+        rules = ((yy - 150) % 54 == 0) & (yy > 120)
+        img[rules] = img[rules] * 0.55 + np.array([0.55, 0.66, 0.78]) * 0.45
+        margin = (np.abs(xx - 210) <= 1)
+        img[margin] = img[margin] * 0.4 + np.array([0.75, 0.3, 0.28]) * 0.6
+        st = _noise(H, W, 240, 74)
+        img *= (1 - 0.14 * np.clip((st - 0.6) * 3, 0, 1))[..., None] * np.array([1, 0.97, 0.9])
+        vig = 1 - 0.34 * (((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) ** 1.4
+        img *= vig[..., None]
+        Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.5)).save(jn, quality=92)
+    lt = os.path.join(out_dir, "leather.jpg")
+    if not os.path.exists(lt):
+        # a dark leather desk: warm brown grain with a pool of lamplight
+        n = 0.45 * _noise(H, W, 3, 81) + 0.35 * _noise(H, W, 14, 82) + 0.2 * _noise(H, W, 90, 83)
+        yy, xx = np.mgrid[0:H, 0:W]
+        r = np.sqrt(((xx - W * 0.5) / (W * 0.62)) ** 2 + ((yy - H * 0.42) / (H * 0.7)) ** 2)
+        lamp = np.clip(1 - r, 0, 1) ** 1.3
+        base = np.array([46, 28, 17], np.float32) / 255
+        img = base * (0.75 + 0.45 * n)[..., None] + lamp[..., None] * np.array([0.16, 0.10, 0.05], np.float32)
+        Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.6)).save(lt, quality=92)
     lb = os.path.join(out_dir, "lightbox.jpg")
     if not os.path.exists(lb):
         # a dark lightbox / evidence table: graphite with a cool glow in the middle

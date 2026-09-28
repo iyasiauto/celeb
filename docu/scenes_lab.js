@@ -16,8 +16,8 @@
 SCENES.filter = async (s, root) => {
   paperGround(root, s.bg || "cork");
   const heads = s.heads || ["OBSERVED", "CLAIMED", "CONFIRMED"];
-  const cols = [PAL.cyan, PAL.mustard, PAL.green];
-  const X = [360, 960, 1560], CW = 520;
+  const cols = s.colors || [PAL.cyan, PAL.mustard, PAL.green];
+  const X = heads.length === 2 ? [560, 1360] : [360, 960, 1560], CW = heads.length === 2 ? 700 : 520;
   const colEls = heads.map((h, i) => {
     const box = el("div", "abs", root, {
       left: X[i] - CW / 2 + "px", top: "190px", width: CW + "px", height: "820px",
@@ -30,7 +30,7 @@ SCENES.filter = async (s, root) => {
     const bar = el("div", "abs", root, { left: X[i] - CW / 2 + "px", top: "172px", height: "5px", width: "0", background: cols[i] });
     return { box, hd, bar };
   });
-  const stacks = [0, 0, 0];
+  const stacks = heads.map(() => 0);
   const cards = (s.items || []).map((it, k) => {
     const c = el("div", "abs", root, {
       left: 0, top: 0, width: CW - 60 + "px", background: PAL.cream, color: PAL.ink, padding: "18px 22px",
@@ -42,8 +42,9 @@ SCENES.filter = async (s, root) => {
   });
   let zero = null;
   if (s.zeroAt != null) {
-    zero = el("div", "abs", root, { left: X[2] - 200 + "px", top: "420px", width: "400px", textAlign: "center" });
-    el("div", "", zero, { font: "260px 'Garamond'", color: cols[2], lineHeight: "1" }, "0");
+    const zc = s.zeroCol != null ? s.zeroCol : heads.length - 1;
+    zero = el("div", "abs", root, { left: X[zc] - 200 + "px", top: "420px", width: "400px", textAlign: "center" });
+    el("div", "", zero, { font: "260px 'Garamond'", color: cols[zc], lineHeight: "1" }, esc(s.zeroValue || "0"));
     el("div", "", zero, { font: "34px 'Elite'", color: PAL.cream, marginTop: "10px" }, esc(s.zeroText || "nothing confirmed yet"));
   }
   vignette(root, 0.5);
@@ -61,7 +62,7 @@ SCENES.filter = async (s, root) => {
         setO(o.hd, a * k); setO(o.box, a * k);
       }
     });
-    let y0 = [230, 230, 230];
+    let y0 = heads.map(() => 230);
     cards.forEach(({ c, it, slot, rot }) => {
       const at = it.at || 0;
       if (t < at) { vis(c, false); return; }

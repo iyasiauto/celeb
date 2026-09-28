@@ -241,6 +241,7 @@ const ITEMS = {
     const d = el("div", "abs", board, {
       left: 0, top: 0, width: (it.w || 800) + "px", font: `${it.size || 40}px '${it.font || "Lora"}'`,
       color: it.color || PAL.ink, lineHeight: it.lh || "1.3", textAlign: it.align || "left", transformOrigin: "50% 50%",
+      whiteSpace: "pre-line",
     }, esc(it.text));
     return placer(d, it, it.from || "fade");
   },
