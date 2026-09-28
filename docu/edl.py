@@ -28,7 +28,8 @@ P = {}                           # project settings
 
 
 def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade="doc", grain=5.0,
-          tail=4.8, image_dirs=None, music_floor_db=-12.5, music_duck_db=-9.0, sfx_gain=0.7):
+          tail=4.8, image_dirs=None, music_floor_db=-12.5, music_duck_db=-9.0, sfx_gain=0.7, xfade=0.0,
+          sfx_style="full"):
     """Paths and look for one project. Call before declaring any shot."""
     global KIT, FOOT, WORK, ASSETS, SEGS, VO, SCRIPT, WORDS, OUT, IMG_DIRS, CUTS, VOX_TAIL
     KIT, FOOT, WORK, OUT = kit, footage, work, out
@@ -40,7 +41,7 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade=
     VOX_TAIL = tail
     CAT[:] = json.load(open(f"{data}/catalog_all.json"))
     P.update(name=name, theme=theme, grade=grade, grain=grain, music_floor_db=music_floor_db,
-             music_duck_db=music_duck_db, sfx_gain=sfx_gain)
+             music_duck_db=music_duck_db, sfx_gain=sfx_gain, xfade=xfade, sfx_style=sfx_style)
 
 
 def at(cue, scene):
@@ -245,6 +246,12 @@ def resolve(T, vo_dur):
             return o
         s = fix(s)
         s["id"] = f"s{k:03d}"
+        # dissolves: every scene but the last renders a little longer and overlaps the next one
+        xf = s.pop("xfade", None)
+        if k + 1 < len(E):
+            xf = P.get("xfade", 0.0) if xf is None else xf
+            if xf:
+                s["pad"] = round(float(xf), 3)
         s["t0"] = round(st, 3)
         s["duration"] = dur
         s["cue"] = cue if isinstance(cue, str) else f"{cue}"
@@ -325,10 +332,14 @@ def main(music=()):
     if cmd in ("mix", "all"):
         import mix
         mix.build_mix(scenes, VO, KIT, f"{WORK}/mix.wav", vo_dur + VOX_TAIL, plan=music_plan(scenes, music),
-                      music_floor_db=P["music_floor_db"], music_duck_db=P["music_duck_db"], sfx_gain=P["sfx_gain"])
+                      music_floor_db=P["music_floor_db"], music_duck_db=P["music_duck_db"], sfx_gain=P["sfx_gain"],
+                      sfx_style=P.get("sfx_style", "full"))
     if cmd in ("final", "all"):
         import mix
-        render.concat(scenes, SEGS, f"{WORK}/video.mp4")
+        if P.get("xfade"):
+            render.concat_xfade(scenes, SEGS, f"{WORK}/video.mp4")
+        else:
+            render.concat(scenes, SEGS, f"{WORK}/video.mp4")
         out = os.path.join(OUT, P["name"] + ".mp4")
         mix.mux(f"{WORK}/video.mp4", f"{WORK}/mix.wav", out)
         print("final:", out)

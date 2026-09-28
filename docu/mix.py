@@ -278,8 +278,16 @@ def bank():
 
 # ------------------------------------------------------------------ spotting
 
-def spot(scenes):
-    """(time, name, gain_db, extra) for every sound the picture calls for."""
+CALM_KEEP = {"paper", "pen", "type", "ping", "roll", "pop", "clank"}
+
+
+def spot(scenes, style="full"):
+    """(time, name, gain_db, extra) for every sound the picture calls for.
+    style="calm" (documentary): no whooshes on cuts, no stamps or impacts - only soft,
+    physical sounds (paper, pen, typing, a ping on a map pin), a few dB lower."""
+    if style == "calm":
+        ev = spot(scenes, "full")
+        return [(t, n, db - 4, kw) for t, n, db, kw in ev if n in CALM_KEEP]
     ev = []
 
     def add(t, name, db=0.0, **kw):
@@ -405,6 +413,12 @@ def spot(scenes):
                 add(t0 + float(it.get("at", 0)) + 0.25, "pen", -12)
             if s.get("stamp"):
                 add(t0 + float(s["stamp"]["at"]), "stamp", -5)
+        if ty == "ledgerlist":
+            for i, it in enumerate(s.get("items", [])):
+                add(t0 + float(it.get("at", 0.8 + i * 0.5)), "pen", -12)
+        if ty == "bars":
+            for i, b in enumerate(s.get("bars", [])):
+                add(t0 + float(b.get("at", 0.8 + i * 0.6)) + 0.2, "roll", -18, d=1.2)
         if ty == "segment":
             add(t0 - 0.2, "whoosh", -11)
             add(t0 + 0.55, "sting", -12)
@@ -502,7 +516,7 @@ def duck_curve(vo, depth_db=-9.0, floor_db=-12.5):
 # ------------------------------------------------------------------ build
 
 def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None, music_floor_db=-12.5, music_duck_db=-9.0,
-              sfx_gain=0.7):
+              sfx_gain=0.7, sfx_style="full"):
     """music_floor_db: the bed's level in the gaps; music_duck_db: how much further it
     dips under the narrator; sfx_gain: overall level of the sound design."""
     total = float(total)
@@ -518,7 +532,7 @@ def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None, music_floor_d
 
     sfx = np.zeros((n, 2), np.float32)
     B = bank()
-    for t, name, db, kw in spot(scenes):
+    for t, name, db, kw in spot(scenes, sfx_style):
         if name == "type":
             x = typewriter(kw.get("d", 0.8))
         elif name == "roll":

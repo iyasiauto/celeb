@@ -67,8 +67,13 @@ def _grain(cfg):
     return f"noise=alls={g:g}:allf=t" if g > 0 else "null"
 
 
+def _length(scene):
+    """Rendered length: the scene's own time plus the overlap a dissolve into the next scene needs."""
+    return scene["duration"] + float(scene.get("pad", 0.0))
+
+
 def _frames(scene):
-    return max(1, int(round(scene["duration"] * FPS)))
+    return max(1, int(round(_length(scene) * FPS)))
 
 
 def render_browser_scene(scene, out_path, cfg, quality=90, only_times=None, still_dir=None):
@@ -115,7 +120,7 @@ GRADES = {
 
 def render_clip_scene(scene, out_path, cfg):
     """Trim, conform and grade one clip - or several shots cut together - to an exact length."""
-    dur = scene["duration"]
+    dur = _length(scene)
     parts = [dict(src=scene["src"], start=float(scene.get("start", 0)), end=float(scene.get("end", 0)))]
     parts += scene.get("more", [])
     avail = sum(max(0.3, p["end"] - p["start"]) for p in parts)
@@ -183,7 +188,7 @@ def render_overlay_video(scene, out_mov, cfg):
     moving over footage). The overlay page sees the clip's own t0, so a ticker runs on
     continuously across cuts."""
     page, cdp = _browser(cfg)
-    spec = {"type": "blank", "duration": scene["duration"], "t0": scene.get("t0", 0), "bgcolor": "transparent",
+    spec = {"type": "blank", "duration": _length(scene), "t0": scene.get("t0", 0), "bgcolor": "transparent",
             "overlays": scene["overlays"]}
     page.evaluate("s => window.setupScene(s)", spec)
     page.evaluate("document.documentElement.style.background='transparent';document.body.style.background='transparent';"
@@ -266,6 +271,49 @@ def concat(scenes, out_dir, out_path):
                         "-c", "copy", out_path], capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(r.stderr[-1500:])
+
+
+def concat_xfade(scenes, out_dir, out_path, batch=24):
+    """Join scene segments with dissolves. Each segment was rendered `pad` seconds longer than
+    its slot; the dissolve into the next scene happens over that overlap, so every cut still
+    lands exactly on its word. A scene with xfade=0 (or no pad) cuts hard.
+    Runs in batches (a few dozen decoders at a time), then joins the batches the same way."""
+    def join(items, out, crf):
+        # items: [(path, slot_seconds, pad_seconds)]
+        inputs, fc, last, t = [], [], "[0:v]", 0.0
+        for k, (p, slot, pad) in enumerate(items):
+            inputs += ["-i", p]
+        for k in range(1, len(items)):
+            t += items[k - 1][1]
+            pad = items[k - 1][2]
+            d = max(1.0 / FPS, pad)
+            lab = f"[x{k}]"
+            if pad > 0.01:
+                fc.append(f"{last}[{k}:v]xfade=transition=fade:duration={d:.3f}:offset={t:.3f}{lab}")
+            else:
+                fc.append(f"{last}[{k}:v]concat=n=2:v=1:a=0{lab}")
+            last = lab
+        total = sum(x[1] for x in items) + items[-1][2]
+        cmd = ["ffmpeg", "-v", "error", "-y"] + inputs
+        if fc:
+            cmd += ["-filter_complex", ";".join(fc), "-map", last]
+        cmd += ["-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", str(crf), "-pix_fmt", "yuv420p",
+                "-r", str(FPS), "-threads", "4", out]
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        if r.returncode != 0:
+            raise RuntimeError(r.stderr[-1500:])
+        return total
+    items = [(os.path.join(out_dir, s["id"] + ".mp4"), s["duration"], float(s.get("pad", 0.0))) for s in scenes]
+    parts = []
+    for b in range(0, len(items), batch):
+        chunk = items[b:b + batch]
+        out = os.path.join(out_dir, f"_xf_{b // batch:03d}.mp4")
+        log(f"  dissolves: batch {b // batch + 1}/{(len(items) + batch - 1) // batch}")
+        join(chunk, out, 14)
+        parts.append((out, sum(x[1] for x in chunk), chunk[-1][2]))
+    join(parts, out_path, 18)
+    for p, _, _ in parts:
+        os.remove(p)
 
 
 def stills(scenes, cfg, still_dir, per_scene=1):

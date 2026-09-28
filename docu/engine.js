@@ -152,6 +152,25 @@ THEMES.broadcast = {
     sub: "#B9C7E0", dot: "#FFFFFF", dotText: "#DCE6F5", name: "rgba(200,215,240,.85)", shadow: "rgba(0,0,0,.8)",
   },
 };
+/* documentary: calm, classic long-form documentary - serif titles, thin rules, muted warm
+   palette, no stamps or slams; pictures carry the story */
+THEMES.documentary = {
+  fonts: {
+    Anton: "PlayfairDisplay.ttf", Stamp: "Oswald.ttf", DMSerif: "PlayfairDisplay.ttf", Elite: "Lora.ttf",
+    Garamond: "EB-Garamond.ttf", GaramondI: "Lora-Italic.ttf", Barlow: "Inter-SemiBold.ttf", BarlowB: "Inter-Bold.ttf",
+    Oswald: "Inter-SemiBold.ttf", OswaldB: "Inter-Bold.ttf", Caveat: "Lora-Italic.ttf",
+  },
+  pal: {
+    mustard: "#D8B26E", red: "#B5523B", gold: "#D8B26E", cyan: "#7FA7B5", green: "#8DAA7B",
+    ink: "#1C1A17", cream: "#F3EEE4",
+  },
+  grounds: { paper: "paper_tan.jpg", map: "paper_map.jpg", cork: "studio_dark.jpg", parchment: "parchment.jpg" },
+  map: {
+    bg0: "#23272B", bg1: "#0E1012", sea: "#171B1E", rim: "rgba(216,178,110,.25)", grat: "rgba(255,255,255,.05)",
+    land: "#353A3E", border: "rgba(243,238,228,.35)", admin: "243,238,228", hi: "216,178,110", hiA: 0.45, text: "#F3EEE4",
+    sub: "#CFC8BA", dot: "#F3EEE4", dotText: "#E6E0D4", name: "rgba(243,238,228,.7)", shadow: "rgba(0,0,0,.8)",
+  },
+};
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);
