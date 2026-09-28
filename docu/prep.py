@@ -65,6 +65,14 @@ def grade(im, kind):
         a = a * np.array([1.06, 1.0, 0.86], np.float32) + np.array([0.02, 0.01, 0.0], np.float32)
         a = 0.06 + 0.9 * a
         return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
+    if kind == "broadcast":
+        # the newsroom grade: crisp, clean contrast, neutral-cool shadows, near-natural colour
+        im = ImageEnhance.Color(im).enhance(0.94)
+        im = ImageEnhance.Contrast(im).enhance(1.1)
+        a = np.asarray(im, dtype=np.float32) / 255.0
+        lum = a.mean(-1, keepdims=True)
+        a = a * (lum * np.array([1.01, 1.0, 0.98], np.float32) + (1 - lum) * np.array([0.95, 1.0, 1.06], np.float32))
+        return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
     if kind == "doc":
         # the documentary grade: slightly muted, warm highlights, cool shadows
         im = ImageEnhance.Color(im).enhance(0.82)
@@ -292,6 +300,41 @@ def make_surfaces(out_dir, kit_dir):
         grid = ((xx % 80) == 0) | ((yy % 80) == 0)
         img[grid] += np.array([0.02, 0.05, 0.06])
         Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.5)).save(lb, quality=92)
+
+    sl = os.path.join(out_dir, "studio_light.jpg")
+    if not os.path.exists(sl):
+        # a newsroom graphics wall: cool light grey, a fine dot grid, a soft key light
+        yy, xx = np.mgrid[0:H, 0:W]
+        n = 0.7 * _noise(H, W, 200, 91) + 0.3 * _noise(H, W, 6, 92)
+        r = np.sqrt(((xx - W * 0.55) / (W * 0.8)) ** 2 + ((yy - H * 0.35) / (H * 0.9)) ** 2)
+        key = np.clip(1 - r, 0, 1) ** 1.2
+        img = np.array([214, 221, 230], np.float32) / 255 * (0.9 + 0.05 * n)[..., None] + key[..., None] * 0.08
+        dots = ((xx % 32) < 2) & ((yy % 32) < 2)
+        img[dots] *= 0.9
+        Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.5)).save(sl, quality=92)
+    sd = os.path.join(out_dir, "studio_dark.jpg")
+    if not os.path.exists(sd):
+        # the studio at night: deep navy, a perspective floor grid, light streaks, a red rim
+        yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+        n = 0.6 * _noise(H, W, 220, 95) + 0.4 * _noise(H, W, 4, 96)
+        base = np.array([8, 14, 30], np.float32) / 255
+        r = np.sqrt(((xx - W / 2) / (W * 0.7)) ** 2 + ((yy - H * 0.42) / (H * 0.8)) ** 2)
+        glow = np.clip(1 - r, 0, 1) ** 1.5
+        img = base * (0.85 + 0.3 * n)[..., None] + glow[..., None] * np.array([0.05, 0.11, 0.24], np.float32)
+        # floor grid below the horizon, converging to a vanishing point
+        hz = H * 0.62
+        fl = yy > hz
+        d = np.maximum(yy - hz, 1)
+        u = (xx - W / 2) / d
+        gx = np.abs((u * 3.0) % 1.0 - 0.5) < 0.03 * (1 + 60 / d)
+        gz = np.abs(((300.0 / d) % 1.0) - 0.5) < 0.04
+        line = fl & (gx | gz)
+        img[line] += (np.array([0.06, 0.16, 0.34]) * np.clip((yy[line] - hz) / (H - hz), 0, 1)[:, None])
+        # diagonal light streaks
+        for k, (x0, w, a) in enumerate(((0.18, 90, 0.05), (0.33, 40, 0.035), (0.71, 70, 0.045), (0.86, 30, 0.03))):
+            dist = np.abs((xx - W * x0) - (yy - H * 0.3) * 0.55)
+            img += (np.exp(-(dist / w) ** 2) * a * (yy < hz))[..., None] * np.array([0.6, 0.8, 1.0])
+        Image.fromarray(np.clip(img * 255, 0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.7)).save(sd, quality=92)
 
     pm = os.path.join(out_dir, "paper_map.jpg")
     if not os.path.exists(pm):

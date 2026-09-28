@@ -160,6 +160,38 @@ def specs():
         dict(k="tag", text="EXHIBIT B", sub="The soil", x=1300, y=420, at=0.4, rot=5),
         dict(k="tag", text="EXHIBIT C", sub="The cores", x=620, y=760, at=0.7, rot=3),
         dict(k="tag", text="EXHIBIT D", sub="The drill bit", x=1340, y=780, at=1.0, rot=-3)]), themes=["expedition"])
+    # ---- broadcast / news desk
+    TK = dict(type="ticker", label="BREAKING", clock="SEPT 2026", items=["A ticker crawl that keeps moving across cuts",
+                                                                          "Second item of the crawl", "Third item"])
+    BG = dict(type="bug", place="A place · A country")
+    add("breaking", dict(type="breaking", img=P, headline="THE HEADLINE OF THE STORY GOES ON THIS WHITE BAR",
+                         sub="Where · when · the sub line", overlays=[TK, BG]), themes=["broadcast"])
+    add("segment", dict(type="segment", n="01", kicker="PART 01", title="WHAT WE CAN VERIFY", sub="The segment's sub line", img=P),
+        themes=["broadcast"])
+    add("borehole", dict(type="borehole", title="FOUR TO FIVE METRES DOWN", kicker="A BOREHOLE", beats=dict(draw=0.1, drill=0.6, hit=3.2),
+                         cavities=[dict(depth=3.3, x=1010, w=110, h=30, water=True, at=0.8, fill=1.0)],
+                         labels=[dict(text="Soil & sediment", depth=1.2, at=0.8), dict(text="Organic-rich interval", depth=2.35, at=1.4),
+                                 dict(text="A cavity filling with water", depth=3.3, at=2.0, dy=50),
+                                 dict(text="A layer harder than limestone?", depth=5.0, at=3.4, bg="#E10600", color="#fff")],
+                         stamp=dict(text="BIT SHATTERED", at=3.6, size=48, x=1585, y=780)), themes=["broadcast"])
+    add("factcheck", dict(type="factcheck", claim="“A claim, quoted exactly as it was made.”", source="— who said it, where, when",
+                          rating="UNVERIFIED", ratingAt=2.2, note="What we actually know about it."), themes=["broadcast"])
+    add("echo", dict(type="echo", headlines=[dict(text=f"A headline repeating the claim, version {i + 1}") for i in range(8)],
+                     sources=[dict(title="1 PRESS RELEASE", sub="who wrote it"), dict(title="1 INTERVIEW", sub="who gave it")],
+                     collapseAt=2.4, gap=0.12), dur=6.0, themes=["broadcast"])
+    add("columns", dict(type="columns", left=dict(title="OBSERVED", sub="instrument record"), right=dict(title="CLAIMED"),
+                        items=[dict(side=0, text="What was measured", tag="by whom", at=0.2), dict(side=0, text="What was recorded", tag="by whom", at=0.4),
+                               dict(side=1, text="What it is said to mean", at=0.6), dict(side=1, text="A bigger claim on top", at=0.8)],
+                        gapAt=1.4, gapText="THE COLUMNS NEVER TOUCH"), themes=["broadcast"])
+    add("videowall", dict(type="videowall", imgs=[P, SCAN, PORT], focus=4, pushAt=3.5), themes=["broadcast"])
+    add("newslist", dict(type="newslist", title="A NUMBERED LIST", items=[
+        dict(text="A row with a green status", at=0.2, status="CONFIRMED", statusColor="#18C07A"),
+        dict(text="A row with a yellow status", at=0.5, status="PER THE TEAM", statusColor="#FFC21A"),
+        dict(text="A row with a red status", at=0.8, status="NOT YET", statusColor="#E10600"),
+        dict(text="A row with a plain status", at=1.1, status="UNANSWERED")], y0=280), themes=["broadcast"])
+    add("newslower", dict(type="photo", img=P, move="in", overlays=[
+        dict(type="newslower", kicker="ON THE GROUND", text="A BROADCAST LOWER THIRD", sub="the sub strip", at=0.3), TK, BG]),
+        themes=["broadcast"])
     return S
 
 
@@ -202,7 +234,7 @@ def main():
     ap.add_argument("--object", required=True, help="an object photo or PNG to cut out")
     ap.add_argument("--work", default=os.path.join(HERE, "_gallery_work"))
     ap.add_argument("--out", default=os.path.join(HERE, "previews"))
-    ap.add_argument("--themes", default="paper,forensic,expedition")
+    ap.add_argument("--themes", default="paper,forensic,expedition,broadcast")
     ap.add_argument("--only", default="", help="comma-separated spec names")
     a = ap.parse_args()
     assets = os.path.join(a.work, "assets")

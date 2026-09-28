@@ -226,3 +226,113 @@ def map_route(a, b, at, d=1.6, dash=False, label=None, **kw):
     r = dict(**{"from": list(a)}, to=list(b), at=at, d=d, dash=dash, **kw)
     if label: r["label"] = label
     return r
+
+
+# ---------------------------------------------------------------- style 4: breaking-news broadcast
+
+def ticker(items, label="BREAKING", clock=None, speed=150, **kw):
+    """The crawl along the bottom (an overlay). It keeps moving across cuts."""
+    d = dict(type="ticker", label=label, items=list(items), speed=speed, **kw)
+    if clock: d["clock"] = clock
+    return d
+
+
+def bug(place="", text="LIVE", **kw):
+    """The LIVE bug top-right (an overlay). Keep it generic - never a real channel's name or logo."""
+    return dict(type="bug", text=text, place=place, **kw)
+
+
+def live(scene, tick, live_bug=None, intro=None):
+    """Put a ticker (and a LIVE bug) on a scene - clips included (they get a moving alpha layer).
+    intro=seconds slides them in (use it on the first scene of a bulletin)."""
+    ov = list(scene.get("overlays", []))
+    t = dict(tick)
+    if intro is not None:
+        t["intro"] = intro + 0.4
+    ov.append(t)
+    if live_bug:
+        b = dict(live_bug)
+        if intro is not None:
+            b["intro"] = intro
+        ov.append(b)
+    out = dict(scene)
+    out["overlays"] = ov
+    return out
+
+
+def news_lower(scene, kicker, text, sub=None, at=0.4, color=None, size=None):
+    """A broadcast lower third (kicker tab, white bar, navy sub strip) on any scene."""
+    o = dict(type="newslower", kicker=kicker, text=text, at=at)
+    if sub: o["sub"] = sub
+    if color: o["color"] = color
+    if size: o["size"] = size
+    out = dict(scene)
+    out["overlays"] = list(scene.get("overlays", [])) + [o]
+    return out
+
+
+def breaking(headline, sub=None, bg=None, kicker="BREAKING NEWS", **kw):
+    """The red BREAKING NEWS slab, the headline bar and a sub strip over a picture."""
+    s = dict(type="breaking", kicker=kicker, headline=headline, **kw)
+    if sub: s["sub"] = sub
+    if bg: s["img"] = img(bg)
+    return s
+
+
+def segment(n, title, sub=None, bg=None, **kw):
+    """The segment bumper: PART n + title."""
+    s = dict(type="segment", n=n, kicker=f"PART {n}", title=title, **kw)
+    if sub: s["sub"] = sub
+    if bg: s["img"] = img(bg)
+    return s
+
+
+def borehole(title="", kicker="", layers=None, **kw):
+    """Drilling cross-section; beats=dict(draw, drill, hit). shatter=False for plain coring."""
+    s = dict(type="borehole", title=title, kicker=kicker, **kw)
+    if layers: s["layers"] = layers
+    return s
+
+
+def layer(a, b, kind):
+    """A borehole layer from a to b metres: soil, sediment, organic, clay, hard."""
+    return {"from": a, "to": b, "kind": kind}
+
+
+def factcheck(claim, source, rating, at, note=None, **kw):
+    """Claim card + rating meter. scale=[...] and colors=[...] for a custom scale."""
+    s = dict(type="factcheck", claim=claim, source=source, rating=rating, ratingAt=at, **kw)
+    if note: s["note"] = note
+    return s
+
+
+def newslist(title, items, **kw):
+    return dict(type="newslist", title=title, items=items, **kw)
+
+
+def nrow(text, at, status=None, color=None, **kw):
+    """A newslist row; status draws a pill (color = its background)."""
+    d = dict(text=text, at=at, **kw)
+    if status: d["status"] = status
+    if color: d["statusColor"] = color
+    return d
+
+
+def news_board(items, left="OBSERVED", right="CLAIMED", gap_at=None, gap_text=None, **kw):
+    """OBSERVED | CLAIMED board. items = [dict(side, text, tag, at)]."""
+    s = dict(type="columns", left=dict(title=left), right=dict(title=right), items=items, **kw)
+    if gap_at is not None:
+        s["gapAt"] = gap_at
+        s["gapText"] = gap_text or "THE COLUMNS NEVER TOUCH"
+    return s
+
+
+def videowall(names, focus=4, push=1.2, grade=None, **kw):
+    """3x3 monitors; the camera pushes into screen `focus` at `push`."""
+    return dict(type="videowall", imgs=[img(n, grade) for n in names], focus=focus, pushAt=push, **kw)
+
+
+def echo(headlines, sources, collapse_at, **kw):
+    """A wall of headlines that collapses into the source(s) they all came from."""
+    return dict(type="echo", headlines=[h if isinstance(h, dict) else dict(text=h) for h in headlines],
+                sources=[s if isinstance(s, dict) else dict(title=s) for s in sources], collapseAt=collapse_at, **kw)

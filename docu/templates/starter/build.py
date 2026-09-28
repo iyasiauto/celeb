@@ -54,8 +54,8 @@ edl.setup(
     out=os.environ.get("VIDEO_OUT", f"{ROOT}/out"),
     image_dirs=[f"{ROOT}/footage/images/approved", f"{ROOT}/footage/images/candidates"],
     # the look: pick a theme and a grade that suit the topic (see README "Choosing a style")
-    theme="paper",            # paper | forensic | expedition
-    grade="doc",              # doc | cool | warmsepia | bw | sepia | none
+    theme="paper",            # paper | forensic | expedition | broadcast (see starter_broadcast/)
+    grade="doc",              # doc | cool | warmsepia | broadcast | bw | sepia | none
     grain=3.0,                # film grain strength, 0 = off
     # quiet music: the bed sits ~21 dB under the voice in gaps and ~31 dB under it while speaking
     music_floor_db=-21.0, music_duck_db=-10.0, sfx_gain=0.55,

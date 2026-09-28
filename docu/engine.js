@@ -133,11 +133,31 @@ const THEMES = {
     },
   },
 };
+/* broadcast: a breaking-news desk - LIVE bug, ticker, lower-third bars, a navy studio,
+   signal red and alert yellow, heavy geometric sans type */
+THEMES.broadcast = {
+  fonts: {
+    Anton: "Montserrat-Black.ttf", Stamp: "Montserrat-Black.ttf", DMSerif: "Poppins-Bold.ttf", Elite: "Roboto-Condensed.ttf",
+    Garamond: "InterDisplay-Black.ttf", GaramondI: "Roboto-Condensed-Italic.ttf", Caveat: "PatrickHand.ttf",
+    Barlow: "Roboto-Condensed.ttf", Oswald: "Montserrat-ExtraBold.ttf", OswaldB: "Montserrat-ExtraBold.ttf",
+  },
+  pal: {
+    mustard: "#FFC21A", red: "#E10600", gold: "#FFC21A", cyan: "#1EA7FF", green: "#18C07A",
+    ink: "#0B1220", cream: "#F4F6FA", navy: "#0A1730",
+  },
+  grounds: { paper: "studio_light.jpg", map: "studio_dark.jpg", cork: "studio_dark.jpg", parchment: "studio_light.jpg" },
+  map: {
+    bg0: "#10214A", bg1: "#040A1A", sea: "#081430", rim: "rgba(30,167,255,.4)", grat: "rgba(120,170,255,.08)",
+    land: "#1A2C55", border: "rgba(150,195,255,.5)", admin: "140,185,255", hi: "225,6,0", hiA: 0.55, text: "#F4F6FA",
+    sub: "#B9C7E0", dot: "#FFFFFF", dotText: "#DCE6F5", name: "rgba(200,215,240,.85)", shadow: "rgba(0,0,0,.8)",
+  },
+};
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);
 if (!PAL.cyan) PAL.cyan = "#3FC7D6";
 if (!PAL.green) PAL.green = "#3DBE7A";
+if (!PAL.navy) PAL.navy = "#0A1730";
 function ground(kind, fallback) { return THEME.grounds[kind] || fallback; }
 
 function loadFonts() {

@@ -7,6 +7,7 @@ This is the reusable kit behind three faceless investigative documentaries:
 | *Noah's Ark Confirmed After 4,300 Years? What We Actually Know* | **Paper / Vox explainer** | `paper` · `doc` · 5 | Paper tabletop collages, three case folders (known / claimed / unknown), newspaper page, ledger arithmetic |
 | *Noah's Ark "100% Confirmed"? Here's What Researchers Actually Found* | **Forensic lab report** | `forensic` · `cool` · 2 | Observed / Claimed / Confirmed filter, ring gauge 100 % → 0 %, x-ray scans, one-source network |
 | *Myth or Reality? Hunting for the REAL Noah's Ark* | **Expedition & courtroom** | `expedition` · `warmsepia` · 2 | Field journal and antique map, evidence tags EXHIBIT A–D, scales of justice, split-flap scoreboard, REALITY / MYTH verdict |
+| *BREAKING: They Drilled Into Noah's Ark — Then the Drill Bit Shattered* | **Breaking-news broadcast** | `broadcast` · `broadcast` · 1.5 | LIVE bug and crawling ticker, BREAKING NEWS slab, borehole cross-section where the bit shatters, fact-check meters, headline wall → one source, OBSERVED / CLAIMED board, numbered segment bumpers |
 
 Everything here is plain files you can copy into any project:
 
@@ -19,6 +20,8 @@ docu/                       the engine (keep the folder together)
 ├── scenes_map.js           map (orthographic globe → province)
 ├── scenes_lab.js           filter, gauge, network, valley, cells, scan item
 ├── scenes_court.js         scales, scoreboard, verdict, tag item
+├── scenes_news.js          breaking, borehole, factcheck, echo, columns, videowall, newslist, segment
+│                           + overlays ticker, bug, newslower
 ├── timing.py               script phrases → voiceover word times
 ├── prep.py                 grades, blur/dim variants, rembg cut-outs, paper surfaces
 ├── render.py               headless Chromium frames / FFmpeg clips → one MP4 per scene
@@ -29,6 +32,7 @@ docu/                       the engine (keep the folder together)
     ├── snippets.py         ready-made builders for the three styles (tag, verdict, scales, gauge…)
     ├── gallery.py          renders a preview of every scene in every theme (and is a smoke test)
     ├── previews/           the preview images referenced below
+    ├── starter_broadcast/  the same, pre-built in the breaking-news style
     └── starter/            copy this to start a new video
         ├── build.py        skeleton EDL with the settings explained
         ├── transcribe.py   word timestamps for the voiceover
@@ -36,8 +40,9 @@ docu/                       the engine (keep the folder together)
         └── youtube_metadata_template.txt
 ```
 
-The three finished edits are full worked examples:
-`projects/noahs_ark/build.py`, `projects/noahs_ark_100/build.py`, `projects/noahs_ark_myth/build.py`.
+The four finished edits are full worked examples:
+`projects/noahs_ark/build.py`, `projects/noahs_ark_100/build.py`, `projects/noahs_ark_myth/build.py`,
+`projects/noahs_ark_breaking/build.py`.
 
 ---
 
@@ -170,6 +175,21 @@ read every return at a glance. Then pick a theme, a grade and a music palette th
 - Leather desk instead of cork, brass and oxblood, Bebas + Cinzel type.
 - Preview: [expedition sheet](previews/sheet_expedition.jpg)
 
+### Style D: Breaking-news broadcast (`theme="broadcast"`, `grade="broadcast"`, grain 1–2)
+*Best for:* a story that is news *right now*: "BREAKING", "just announced", viral claims, anything with a date on it.
+- The **cold open is a live bulletin**: a LIVE bug top-right and a crawling ticker (`live()` in the starter) on every
+  scene, clips included. The crawl is driven by global time, so it runs on without a jump across cuts.
+- A red **BREAKING NEWS** slab with a glitch, a white headline bar and a navy sub strip (`breaking`).
+- The story is cut into **numbered segments** with a bumper each (`segment`): 01 WHAT WE CAN VERIFY, 02 …
+- News-desk graphics: **borehole** cross-section (drill descends, depth readout, the bit shatters), **fact-check**
+  meter (CONFIRMED / UNVERIFIED / DISPUTED / FALSE, or your own scale), **echo** (a wall of headlines collapses
+  into its one source), **columns** (OBSERVED | CLAIMED, and the gap between them lights up), **videowall**,
+  **newslist** rows with status pills, broadcast lower thirds (`newslower`) on footage.
+- The ending returns to the live bulletin as a **developing story** (a second ticker, `label="DEVELOPING"`).
+- Navy studio, signal red, alert yellow; Montserrat Black / Poppins / Roboto Condensed type. Sounds: a news sting,
+  glitch, drilling, the shatter.
+- Preview: [broadcast sheet](previews/sheet_broadcast.jpg). Starter: `starter_broadcast/build.py`.
+
 ### More styles you can build from the same parts
 | Topic | Theme | Devices |
 |---|---|---|
@@ -178,8 +198,10 @@ read every return at a glance. Then pick a theme, a grade and a music palette th
 | Lost cities, treasure hunts | `expedition` | antique map routes, journal pages, scoreboard of expeditions |
 | Conspiracy vs. evidence | `expedition` | scales per claim, verdict sheet, headlines |
 | Biography | `paper` | depth pops of the person, chapter cards per life stage, timeline |
+| Tech / company scandal, election claims | `broadcast` | breaking slab, fact-check meters, echo of re-reports, observed / claimed board |
+| Disaster, rescue, "what we know so far" | `broadcast` | live bug + ticker, map, newslist with statuses, segment bumpers |
 
-### Pacing rules that worked on all three
+### Pacing rules that worked on all four
 - **About 20 % clips and 80 % designed stills.** `plan` prints the share.
 - **Scenes last 3–8 s.** Split anything over 10 s unless it animates in beats (maps, geo, verdict).
 - **Every scene moves**: camera drift, a word landing, a stamp. No static frames.
@@ -194,17 +216,17 @@ read every return at a glance. Then pick a theme, a grade and a music palette th
 A theme remaps font families, the palette, the paper surfaces and the map palette.
 Scenes only name families (`'Anton'`, `'DMSerif'`, `'Elite'`, …), so the same EDL restyles itself.
 
-| | `paper` (default) | `forensic` | `expedition` |
-|---|---|---|---|
-| Headline (`Anton`) | Anton | Oswald Bold | Bebas Neue |
-| Serif display (`DMSerif`) | DM Serif Display | Playfair Display | Cinzel |
-| Typewriter (`Elite`) | Special Elite | Courier Prime | Special Elite |
-| Stamps (`Stamp`) | Anton | Saira Stencil One | Anton |
-| Big numbers (`Garamond`) | EB Garamond | Inter Display Black | EB Garamond |
-| Accent / red / green | mustard `#D9A441` · `#D62E1F` · `#3DBE7A` | amber `#F2B134` · `#E5484D` · `#3DBE7A` | brass `#C8963E` · oxblood `#9E2B25` · `#5E8A3E` |
-| `paper` ground | tan paper | graph paper | ruled journal page |
-| `cork` ground | cork board | light box | leather desk |
-| `map` ground / map style | paper map / dark teal globe | graph paper / dark teal | parchment / antique parchment globe |
+| | `paper` (default) | `forensic` | `expedition` | `broadcast` |
+|---|---|---|---|---|
+| Headline (`Anton`) | Anton | Oswald Bold | Bebas Neue | Montserrat Black |
+| Serif display (`DMSerif`) | DM Serif Display | Playfair Display | Cinzel | Poppins Bold |
+| Typewriter (`Elite`) | Special Elite | Courier Prime | Special Elite | Roboto Condensed |
+| Stamps (`Stamp`) | Anton | Saira Stencil One | Anton | Montserrat Black |
+| Big numbers (`Garamond`) | EB Garamond | Inter Display Black | EB Garamond | Inter Display Black |
+| Accent / red / green | mustard `#D9A441` · `#D62E1F` · `#3DBE7A` | amber `#F2B134` · `#E5484D` · `#3DBE7A` | brass `#C8963E` · oxblood `#9E2B25` · `#5E8A3E` | alert yellow `#FFC21A` · signal red `#E10600` · `#18C07A` |
+| `paper` ground | tan paper | graph paper | ruled journal page | light graphics wall (dot grid) |
+| `cork` ground | cork board | light box | leather desk | navy studio with floor grid |
+| `map` ground / map style | paper map / dark teal globe | graph paper / dark teal | parchment / antique parchment globe | studio / navy news globe, red highlight |
 
 **Adding a theme**: add an entry to `THEMES` in `engine.js`:
 
@@ -234,6 +256,7 @@ Set per project (`grade=`), overridable per shot (`photo(..., grade="bw")`, `cli
 | `sepia` | full sepia (pictures only) | old documents |
 | `warm` | warm, near-natural (clips only) | golden-hour footage |
 | `xray` | inverted cyan (pictures only) | scans, radar, "under the surface" |
+| `broadcast` | crisp, clean contrast, neutral-cool shadows | news, the broadcast style |
 | `none` | untouched | paintings, graphics, screenshots, anything with brand colours |
 
 ---
@@ -428,6 +451,52 @@ Options: `left`/`right` `{title, sub, color}`, `items` `[{side, text, at, mark (
 ![tags](previews/expedition/tags.jpg)
 `{k: "tag", text, sub, x, y, at, rot, w, size, subSize, color, from, string}`. It drops in and swings to rest on its string.
 
+### Broadcast / news desk (`scenes_news.js`)
+
+#### `breaking`: the BREAKING NEWS opener
+![breaking](previews/broadcast/breaking.jpg)
+Options: `img`, `kicker` ("BREAKING NEWS"), `headline`, `sub`, `at` (slab), `headAt`, `subAt`, `ksize`, `hsize`, `y`.
+Sound: glitch + news sting on the slab.
+
+#### `segment`: the segment bumper
+![segment](previews/broadcast/segment.jpg)
+Red and navy bars sweep across and clear, a number box and the title land. Options: `n`, `kicker`, `title`, `sub`, `img`, `size`.
+
+#### `borehole`: drilling cross-section
+![borehole](previews/broadcast/borehole.jpg)
+| Option | Meaning |
+|---|---|
+| `layers` | `[{from, to, kind}]` in metres, `kind` = `soil`, `sediment`, `organic`, `clay`, `hard` |
+| `cavities` | `[{depth, x, w, h, at, water, fill}]` (a cavity, optionally filling with water from `fill`) |
+| `beats` | `{draw, drill, hit}`: the drill descends from `drill` to `hit` |
+| `hitDepth`, `maxDepth` | where the bit stops / the depth of the panel (4.5 / 6 m) |
+| `shatter` | False = the drill just reaches `toDepth` (coring) instead of shattering |
+| `labels` | `[{text, depth, at, bg, color, dy, x, line}]` callouts on leader lines |
+| `title`, `kicker`, `statusText`, `hitText`, `unit`, `stamp`, `bot`, `top`, `rigX` | text and geometry (`bot=940` keeps it above a ticker) |
+
+#### `factcheck`: claim and rating meter
+![factcheck](previews/broadcast/factcheck.jpg)
+Options: `claim`, `source`, `rating`, `ratingAt`, `scale` (default CONFIRMED / UNVERIFIED / DISPUTED / FALSE),
+`colors`, `meterTitle`, `note`, `noteAt`, `kicker`, `size`. The needle scans, then settles on the rating.
+Custom scales work: `scale=["MAN-MADE", "UNCLEAR", "NATURAL"]`.
+
+#### `echo`: many headlines, one source
+![echo](previews/broadcast/echo.jpg)
+Options: `headlines` `[{text, tag, at}]`, `gap`, `cols`, `collapseAt`, `sources` `[{title, sub}]`, `sourceGap`, `unit`, `result`.
+
+#### `columns`: OBSERVED | CLAIMED
+![columns](previews/broadcast/columns.jpg)
+Options: `left`/`right` `{title, sub, color}`, `items` `[{side, text, tag, at, size}]`, `gap`, `headAt`,
+`gapAt` + `gapText` (the arrows from the claims reach across and stop short: "THE COLUMNS NEVER TOUCH").
+
+#### `videowall`
+![videowall](previews/broadcast/videowall.jpg)
+Options: `imgs` (up to 9, repeated), `focus` (0–8), `pushAt`, `pushFor`.
+
+#### `newslist`: numbered rows with status pills
+![newslist](previews/broadcast/newslist.jpg)
+Options: `title`, `items` `[{text, sub, n, at, status, statusColor, statusAt, size}]`, `y0`, `gap`, `rowH`, `size`, `img`.
+
 ### Clips
 
 ```python
@@ -435,6 +504,9 @@ clip(388, zoom=1.03)                                  # catalog shot 388, 3 % cr
 clip(24, then=(250, 396), chip="2024 · 88 samples")    # too short? join more shots
 clip(504, skip=18.0, grade="doc")                     # start 18 s into the shot
 ```
+Clips whose overlays include `ticker`, `bug` or `newslower` get them as a moving alpha layer (rendered
+frame by frame, then composited), so a crawl keeps moving over footage. Other overlays are one still PNG.
+
 Clips are cut by FFmpeg from `footage/source_video/`, slowed down to at most 0.5× when the words
 need more time, graded, cropped in by `zoom` and overlaid with the scene's overlays (rendered
 transparent by the browser). `plan` warns when a clip covers less than half its time.
@@ -477,6 +549,14 @@ overlays=[dict(type="chip", text="1959 · NATO mapping mission", at=0.4),
 ```
 The `photo`, `clip` and `depth` helpers take `chip=`, `chip_at=`, `lower=(name, role, at)` directly.
 
+Broadcast overlays (`scenes_news.js`):
+```python
+dict(type="ticker", label="BREAKING", clock="SEPT 2026", items=["first item", "second item"], speed=150, intro=0.4)
+dict(type="bug", text="LIVE", place="Durupınar · Turkey", intro=0.2)
+dict(type="newslower", kicker="ON THE GROUND", text="DURUPINAR FORMATION", sub="29 km from Mount Ararat", at=0.5)
+```
+Don't copy a real channel's name, logo or colours for the bug. Keep it generic ("LIVE", a place, a date).
+
 ---
 
 ## 9. Sound design and music
@@ -502,7 +582,12 @@ Every sound is synthesised (no library needed) and placed from the scene specs:
 | `scoreboard` | split-flap clatter per row, stamp |
 | `filter` / `network` | paper per card / pop per node |
 | `tv` / `card` / `newspaper` | TV static / paper + whoosh |
-| overlay `flash` / `chip` / `lower` | impact / faint whoosh |
+| `breaking` / `segment` | glitch + news sting / whoosh + sting |
+| `borehole` | drilling (percussion + rumble) until the hit, the shatter, pops for callouts |
+| `factcheck` | ticking scan, stamp on the rating |
+| `echo` | pop per headline, long whoosh + impact on the collapse |
+| `columns` / `newslist` / `videowall` | whoosh per row, zip on the gap / stamp per status / TV static + whoosh |
+| overlay `flash` / `chip` / `lower` / `newslower` | impact / faint whoosh |
 
 Cues that start before their scene (negative `at`) stay silent. To add a sound, write a synth
 function in `mix.py`, add it to `bank()`, and spot it in `spot()`.
@@ -539,6 +624,7 @@ what drives the file size**, because noise can't be compressed:
 |---|---|---|---|---|
 | Video 1 | 19:24 | 5 | 23.6 Mb/s | 3.4 GB (re-encoded to 9.7 Mb/s → 1.4 GB) |
 | Video 2 | 26:26 | 2 | 4.5 Mb/s | 0.9 GB |
+| Video 3 | 13:47 | 2 | 4.8 Mb/s | 0.5 GB |
 
 Keep `grain` at 2–3 for anything long. If a master is still too big, re-encode only the video:
 ```bash

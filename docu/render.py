@@ -108,6 +108,7 @@ GRADES = {
     "warmsepia": "eq=saturation=0.74:contrast=1.02,colorbalance=rs=0.04:gs=0.01:bs=-0.06:rm=0.03:bm=-0.04",
     "cool": "eq=saturation=0.8:contrast=1.07:gamma=0.98,colorbalance=rs=-0.02:bs=0.03:rh=-0.01:bh=0.02",
     "warm": "eq=saturation=0.92:contrast=1.04,colorbalance=rh=0.05:bh=-0.05",
+    "broadcast": "eq=saturation=0.94:contrast=1.1,colorbalance=rs=-0.03:bs=0.04:rh=0.01:bh=-0.01",
     "none": "",
 }
 
@@ -152,7 +153,13 @@ def render_clip_scene(scene, out_path, cfg):
     post.append(f"trim=duration={dur:.3f}")
     fc += ";[cat]" + ",".join(post) + "[v]"
     ovl = scene.get("overlay_png")
-    if ovl:
+    mov = scene.get("overlay_mov")
+    if mov:
+        n = len(parts)
+        inputs += ["-i", mov]
+        fc += f";[{n}:v]format=rgba[o];[v][o]overlay=0:0:format=auto:eof_action=repeat[v2]"
+        vout = "[v2]"
+    elif ovl:
         n = len(parts)
         inputs += ["-loop", "1", "-t", f"{dur:.3f}", "-i", ovl]
         at = float(scene.get("overlay_at", 0.0))
@@ -166,6 +173,32 @@ def render_clip_scene(scene, out_path, cfg):
     if r.returncode != 0:
         raise RuntimeError(f"clip {scene['id']} failed: {r.stderr[-800:]}")
     os.replace(out_path + ".part.mp4", out_path)
+
+
+ANIMATED_OVERLAYS = {"ticker", "bug", "newslower"}
+
+
+def render_overlay_video(scene, out_mov, cfg):
+    """Render a clip's overlays as a moving alpha layer (for crawls and bugs that must keep
+    moving over footage). The overlay page sees the clip's own t0, so a ticker runs on
+    continuously across cuts."""
+    page, cdp = _browser(cfg)
+    spec = {"type": "blank", "duration": scene["duration"], "t0": scene.get("t0", 0), "bgcolor": "transparent",
+            "overlays": scene["overlays"]}
+    page.evaluate("s => window.setupScene(s)", spec)
+    page.evaluate("document.documentElement.style.background='transparent';document.body.style.background='transparent';"
+                  "document.getElementById('stage').style.background='transparent'")
+    cdp.send("Emulation.setDefaultBackgroundColorOverride", {"color": {"r": 0, "g": 0, "b": 0, "a": 0}})
+    ff = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "image2pipe", "-framerate", str(FPS), "-c:v", "png", "-i", "-",
+                           "-c:v", "qtrle", "-pix_fmt", "argb", out_mov], stdin=subprocess.PIPE)
+    for f in range(_frames(scene)):
+        page.evaluate(f"window.renderFrame({f / FPS})")
+        r = cdp.send("Page.captureScreenshot", {"format": "png", "optimizeForSpeed": True})
+        ff.stdin.write(base64.b64decode(r["data"]))
+    ff.stdin.close()
+    cdp.send("Emulation.setDefaultBackgroundColorOverride", {})
+    if ff.wait() != 0:
+        raise RuntimeError(f"overlay encode failed for {scene['id']}")
 
 
 def render_overlay_png(scene_overlays, out_png, cfg):
@@ -192,7 +225,11 @@ def _work(args):
     t0 = time.time()
     try:
         if scene["type"] == "clip":
-            if scene.get("overlays"):
+            if any(o["type"] in ANIMATED_OVERLAYS for o in scene.get("overlays", [])):
+                mov = os.path.join(out_dir, f"{scene['id']}_ovl.mov")
+                render_overlay_video(scene, mov, cfg)
+                scene = dict(scene, overlay_mov=mov)
+            elif scene.get("overlays"):
                 png = os.path.join(out_dir, f"{scene['id']}_ovl.png")
                 render_overlay_png(scene["overlays"], png, cfg)
                 first = min(float(o.get("at", 0.5)) for o in scene["overlays"])

@@ -116,7 +116,9 @@ SCENES.words = async (s, root) => {
       vis(d, true);
       const w = d.offsetWidth, h = d.offsetHeight;
       const x = it.x != null ? it.x : W / 2, y = it.y != null ? it.y : H / 2;
-      setT(d, x - w / 2 + e[0], y - h / 2 + e[1], e[3], e[2]);
+      /* wide display faces: shrink a line to fit the frame instead of running off it */
+      const fit = Math.min(1, (it.maxW || 1740) / Math.max(1, w));
+      setT(d, x - w / 2 + e[0], y - h / 2 + e[1], e[3] * fit, e[2]);
       setO(d, e[4] * (it.out != null ? 1 - seg(t, it.out, 0.25) : 1) * (it.dimAt != null ? lerp(1, 0.28, seg(t, it.dimAt, 0.3)) : 1));
       if (it.strike) css(d.firstElementChild, "width", (eOut(seg(t, it.strike, 0.35)) * 104).toFixed(1) + "%");
     });

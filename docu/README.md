@@ -31,11 +31,12 @@ Workers can render any frame in any order, and a scene can be re-rendered alone.
 | `geo` | Animated geology cross-sections (syncline fold, slumped block with karst) |
 | `filter` / `gauge` / `network` / `valley` / `cells` | Lab-report scenes: observed / claimed / confirmed columns, a ring gauge, one source and its echoes, diagrams |
 | `scales` / `scoreboard` / `verdict` | Courtroom scenes: scales of justice, split-flap scoreboard, REALITY / MYTH verdict sheet (+ `tag` evidence tags) |
+| `breaking` / `segment` / `borehole` / `factcheck` / `echo` / `columns` / `videowall` / `newslist` | Broadcast scenes: BREAKING NEWS slab, segment bumpers, drilling cross-section, fact-check meter, headline wall → one source, observed / claimed board, monitor wall, status rows (+ `ticker`, `bug`, `newslower` overlays, animated on clips too) |
 | `clip` | A catalog shot, or several joined together, trimmed and graded by FFmpeg |
 
 ## Themes and templates
 
-Three looks ship with the engine (`paper`, `forensic`, `expedition`), set per project with
+Four looks ship with the engine (`paper`, `forensic`, `expedition`, `broadcast`), set per project with
 `edl.setup(theme=...)`. **`templates/README.md` is the full guide**: every style, every scene with its
 options and a preview image, a starter project, sound and delivery settings.
 

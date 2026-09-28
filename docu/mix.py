@@ -214,6 +214,51 @@ def flaps(d):
     return _norm(out, 0.45)
 
 
+def sting():
+    """a news sting: a bright stacked stab over a short rising swoosh"""
+    t = _t(1.8)
+    stab = sum(np.sin(2 * np.pi * f * t) * a for f, a in ((392, 1.0), (523.3, 0.8), (659.3, 0.7), (784, 0.5), (1046.5, 0.35)))
+    env = np.clip(t / 0.01, 0, 1) * np.exp(-t * 2.6)
+    sw = _bp(_rs.randn(len(t)), 800, 6000) * np.clip(1 - t / 0.3, 0, 1) ** 2 * 0.6
+    return _norm(_reverb(stab * env + sw, 1.4, 0.3), 0.7)
+
+
+def glitch():
+    """digital glitch: chopped square bursts and crushed noise"""
+    t = _t(0.4)
+    sq = np.sign(np.sin(2 * np.pi * (180 + 900 * (t * 7 % 1)) * t))
+    gate = (np.floor(t * 38) % 3 != 0).astype(np.float32)
+    x = (0.5 * sq + 0.5 * np.round(_rs.randn(len(t)) * 3) / 3) * gate * np.exp(-t * 4)
+    return _norm(_hp(x, 300), 0.35)
+
+
+def drill(d):
+    """percussion drilling: a low motor rumble and rapid hammer hits"""
+    t = _t(d)
+    rum = np.sin(2 * np.pi * 52 * t) * 0.5 + _lp(_rs.randn(len(t)), 180) * 1.2
+    hits = np.zeros(len(t))
+    k = _bp(_rs.randn(int(0.03 * SR)), 900, 4000) * np.exp(-np.arange(int(0.03 * SR)) / SR * 120)
+    for i in range(int(d * 11)):
+        a = int(i / 11 * SR)
+        hits[a:a + len(k)] += k[:len(hits) - a]
+    env = np.clip(t / 0.4, 0, 1) * np.clip((d - t) / 0.2, 0, 1)
+    return _norm((rum * 0.6 + hits * 0.5) * env, 0.5)
+
+
+def shatter():
+    """the bit breaking: a hard crack, ringing steel, falling fragments, a low thump"""
+    t = _t(1.6)
+    crack = _hp(_rs.randn(len(t)), 1800) * np.exp(-t * 40)
+    ring = sum(a * np.sin(2 * np.pi * f * t) * np.exp(-t * dd) for f, a, dd in ((2210, 0.5, 6), (3470, 0.35, 8), (5130, 0.25, 11), (1380, 0.3, 5)))
+    thump = np.sin(2 * np.pi * (70 * t - 18 * t * t)) * np.exp(-t * 7)
+    bits = np.zeros(len(t))
+    for i in range(14):
+        a = int((0.08 + _rs.rand() * 0.9) * SR)
+        n = int(0.02 * SR)
+        bits[a:a + n] += _hp(_rs.randn(n), 3000)[:len(bits) - a] * np.exp(-np.arange(n) / SR * 200) * (0.2 + 0.3 * _rs.rand())
+    return _norm(crack * 0.9 + ring * 0.5 + thump * 0.8 + bits * 0.5, 0.9)
+
+
 def boom_soft():
     t = _t(2.2)
     x = np.sin(2 * np.pi * (46 * t - 5 * t ** 2)) * np.exp(-t * 1.8)
@@ -227,7 +272,7 @@ def bank():
     if not BANK:
         BANK.update(whoosh=whoosh(0.7), whoosh_s=whoosh(0.45, 600, 7000), whoosh_l=whoosh(1.4, 200, 3500),
                     impact=impact(), riser=riser(), stamp=stamp_hit(), paper=paper(), pop=pop(),
-                    ping=ping(), zip=zip_(), pen=pen(), tv=tv_on(), boom=boom_soft(), clank=clank())
+                    ping=ping(), zip=zip_(), pen=pen(), tv=tv_on(), boom=boom_soft(), clank=clank(), sting=sting(), glitch=glitch(), shatter=shatter())
     return BANK
 
 
@@ -251,7 +296,7 @@ def spot(scenes):
         cur[:] = [t0]
         graphic = ty not in ("clip", "photo")
         # cuts into graphic scenes carry a whoosh; clip-to-clip and photo cuts stay clean
-        if graphic and ty not in ("chapter", "title") and prev is not None:
+        if graphic and ty not in ("chapter", "title", "segment") and prev is not None:
             add(t0 - 0.28, "whoosh_s" if ty in ("words", "stat", "quote") else "whoosh", -9)
         if ty == "chapter":
             add(t0 - 1.75, "riser", -13)
@@ -360,7 +405,53 @@ def spot(scenes):
                 add(t0 + float(it.get("at", 0)) + 0.25, "pen", -12)
             if s.get("stamp"):
                 add(t0 + float(s["stamp"]["at"]), "stamp", -5)
+        if ty == "segment":
+            add(t0 - 0.2, "whoosh", -11)
+            add(t0 + 0.55, "sting", -12)
+        if ty == "breaking":
+            a0 = float(s.get("at", 0.25))
+            add(t0 + a0 - 0.05, "glitch", -12)
+            add(t0 + a0, "sting", -9)
+            add(t0 + float(s.get("headAt", a0 + 0.5)), "whoosh_s", -15)
+        if ty == "borehole":
+            B = dict(draw=0.1, drill=1.0, hit=4.0); B.update(s.get("beats", {}))
+            if s.get("shatter", True) is not False:
+                add(t0 + float(B["drill"]), "drill", -15, d=max(0.3, float(B["hit"]) - float(B["drill"])))
+                add(t0 + float(B["hit"]), "shatter", -7)
+            else:
+                add(t0 + float(B["drill"]), "drill", -17, d=max(0.5, float(s["duration"]) - float(B["drill"]) - 0.5))
+            for lb in s.get("labels", []):
+                add(t0 + float(lb.get("at", 0)), "pop", -16)
+            if s.get("stamp"):
+                add(t0 + float(s["stamp"]["at"]), "stamp", -8)
+        if ty == "factcheck":
+            ra = float(s.get("ratingAt", 1.6))
+            add(t0 + 0.8, "roll", -16, d=max(0.3, ra - 0.8))
+            add(t0 + ra, "stamp", -7)
+        if ty == "echo":
+            hs = s.get("headlines", [])
+            for i, h in enumerate(hs):
+                at = h.get("at") if isinstance(h, dict) and h.get("at") is not None else 0.2 + i * float(s.get("gap", 0.18))
+                add(t0 + float(at), "pop", -17)
+            c = float(s.get("collapseAt", 3.0))
+            add(t0 + c, "whoosh_l", -12)
+            add(t0 + c + 0.6, "impact", -10)
+        if ty == "columns":
+            for it in s.get("items", []):
+                add(t0 + float(it.get("at", 0)), "whoosh_s", -18)
+            if s.get("gapAt") is not None:
+                add(t0 + float(s["gapAt"]), "zip", -12)
+        if ty == "videowall":
+            add(t0 + 0.05, "tv", -15)
+            add(t0 + float(s.get("pushAt", 1.2)), "whoosh_l", -13)
+        if ty == "newslist":
+            for it in s.get("items", []):
+                add(t0 + float(it.get("at", 0)), "whoosh_s", -17)
+                if it.get("status"):
+                    add(t0 + float(it.get("statusAt", float(it.get("at", 0)) + 0.5)), "stamp", -12)
         for o in s.get("overlays", []):
+            if o["type"] == "newslower":
+                add(t0 + float(o.get("at", 0.4)), "whoosh_s", -16)
             if o["type"] == "flash":
                 add(t0 + float(o.get("at", 0)), "impact", -6)
             if o["type"] in ("chip", "lower"):
@@ -434,6 +525,8 @@ def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None, music_floor_d
             x = counter_roll(kw.get("d", 1.2))
         elif name == "flaps":
             x = flaps(kw.get("d", 0.9))
+        elif name == "drill":
+            x = drill(kw.get("d", 2.0))
         else:
             x = B[name]
         x = x * (10 ** (db / 20))
