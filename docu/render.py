@@ -39,20 +39,25 @@ _B = {}
 
 
 def _browser(cfg):
+    key = json.dumps(cfg, sort_keys=True)
     if "page" in _B:
-        return _B["page"], _B["cdp"]
-    from playwright.sync_api import sync_playwright
-    pw = sync_playwright().start()
-    b = pw.chromium.launch(executable_path=CHROME, args=[
-        "--allow-file-access-from-files", "--disable-web-security", "--force-device-scale-factor=1",
-        "--disable-gpu", "--hide-scrollbars", "--font-render-hinting=none"])
+        if _B["cfg"] == key:
+            return _B["page"], _B["cdp"]
+        _B["page"].close()          # a new theme / kit: the page reads CFG only when it loads
+        b, pw = _B["browser"], _B["pw"]
+    else:
+        from playwright.sync_api import sync_playwright
+        pw = sync_playwright().start()
+        b = pw.chromium.launch(executable_path=CHROME, args=[
+            "--allow-file-access-from-files", "--disable-web-security", "--force-device-scale-factor=1",
+            "--disable-gpu", "--hide-scrollbars", "--font-render-hinting=none"])
     page = b.new_page(viewport={"width": W, "height": H})
     page.add_init_script(f"window.CFG = {json.dumps(cfg)};")
     page.on("console", lambda m: m.type in ("error", "warning") and print("  [page]", m.text, flush=True))
     page.goto("file://" + os.path.join(HERE, "engine.html"))
     page.wait_for_function("window.FONTS_READY === true", timeout=60000)
     cdp = page.context.new_cdp_session(page)
-    _B.update(pw=pw, browser=b, page=page, cdp=cdp)
+    _B.update(pw=pw, browser=b, page=page, cdp=cdp, cfg=key)
     return page, cdp
 
 

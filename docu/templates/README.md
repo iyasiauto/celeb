@@ -460,6 +460,8 @@ transparent by the browser). `plan` warns when a clip covers less than half its 
 | `tag` | see above | drops and swings |
 | `scan` | see above | sweeps |
 
+Text items (`title`, `text`) default to ink colour. On the dark grounds (`cork` in the forensic and expedition themes, `dark`) give them `color="#F4EFE4"` and a `shadow`.
+
 Every item takes `at` (when it arrives), `rot`, `out` (when it leaves), and `from` to change the
 entrance: `left`, `right`, `up`, `down`, `drop`, `pop`, `slam`, `fade`.
 

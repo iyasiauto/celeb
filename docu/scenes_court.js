@@ -174,7 +174,9 @@ SCENES.scoreboard = async (s, root) => {
   const cols = s.cols || Math.max(...rows.map(r => (r.text || "").length), 8);
   const nw = s.nw || 2;
   const CW = s.cell || 52, CH = Math.round(CW * 1.5), G = 6;
-  const bw = (nw + cols) * (CW + G) + 60 + 80, bh = rows.length * (CH + 40) + 190;
+  /* rows that carry a stamp get a column of their own on the right, clear of the letters */
+  const SW = rows.some(r => r.stamp) ? (s.stampCol || 250) : 0;
+  const bw = (nw + cols) * (CW + G) + 60 + 80 + SW, bh = rows.length * (CH + 40) + 190;
   const bx = (W - bw) / 2, by = (H - bh) / 2 + 20;
   const board = el("div", "abs", root, {
     left: bx + "px", top: by + "px", width: bw + "px", height: bh + "px", background: "linear-gradient(180deg,#1f1b16,#15120f)",
@@ -203,7 +205,7 @@ SCENES.scoreboard = async (s, root) => {
     for (let j = 0; j < cols; j++) cells.push(Object.assign(mk(40 + (nw + j) * (CW + G) + 40, y), { fin: txt[j], col: "#F1E6CF" }));
     const rr = rng(97 + i * 13);
     cells.forEach((cc, j) => { cc.start = (r.at || 0) + j * 0.03; cc.settle = cc.start + 0.3 + rr() * 0.35; cc.seed = Math.floor(rr() * 1000); });
-    const st = r.stamp ? ITEMS.stamp(root, Object.assign({ x: bx + bw - 190, y: by + y + CH / 2, rot: -7, size: 52 }, r.stamp)) : null;
+    const st = r.stamp ? ITEMS.stamp(root, Object.assign({ x: bx + bw - SW / 2 - 16, y: by + y + CH / 2, rot: -7, size: 52 }, r.stamp)) : null;
     return { r, cells, st };
   });
   const D = s.duration;

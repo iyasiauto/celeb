@@ -65,7 +65,8 @@ def specs():
         dict(k="pin", x=520, y=180, at=0.5), dict(k="pin", x=1420, y=150, at=0.6),
         dict(k="string", pts=[[520, 180], [960, 330], [1420, 150]], at=0.9),
         dict(k="stat", value="88", label="samples", x=960, y=820, at=1.2, rot=-2),
-        dict(k="title", text="THE BOARD", x=960, y=90, at=0.1, size=90, underline=True)]))
+        dict(k="title", text="THE BOARD", x=960, y=90, at=0.1, size=90, underline=True, color="#F4EFE4",
+             shadow="0 6px 24px rgba(0,0,0,.7)")]))
     add("newspaper", dict(type="newspaper", masthead="THE MORNING LEDGER", date="SEPTEMBER 23, 1960", edition="LATE EDITION",
                           price="10 CENTS", headline="A SHIP ON\nA MOUNTAIN?", deck="Aerial survey finds a boat-shaped mound",
                           body=["Lorem ipsum dolor sit amet, consectetur adipiscing elit. " * 40], img=P, caption="The formation from the air"),
