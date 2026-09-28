@@ -1,0 +1,238 @@
+/* engine.js - the core of the documentary scene renderer.
+
+   Every scene is a function of time alone: setupScene(spec) builds the DOM once and
+   returns when every picture and font is decoded; renderFrame(t) then draws frame t
+   in any order. No timers, no CSS transitions, no Math.random - render.py screenshots
+   each frame, so anything not computed from t would flicker between workers.
+
+   CFG (set by render.py before load): { kit, assets } as file:// URLs.
+*/
+"use strict";
+
+const W = 1920, H = 1080;
+const PAL = {
+  tan: "#C9BB9C", paper: "#E8DFC9", paper2: "#F3EEE2", ink: "#1A1A1A", gray: "#8C8C8C",
+  red: "#D62E1F", mustard: "#D9A441", cream: "#F2EBDD", gold: "#C99A3B",
+  teal: "#123B47", deep: "#071B22", night: "#0B0B0C",
+};
+
+/* ---- math & easing ------------------------------------------------------ */
+const cl = (x, a, b) => Math.max(a, Math.min(b, x));
+const seg = (t, s, d) => cl((t - s) / Math.max(1e-4, d), 0, 1);
+const lerp = (a, b, p) => a + (b - a) * p;
+const eOut = p => 1 - Math.pow(1 - p, 3);
+const eOut5 = p => 1 - Math.pow(1 - p, 5);
+const eIn = p => p * p * p;
+const eInOut = p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
+const eSine = p => -(Math.cos(Math.PI * p) - 1) / 2;
+const eBack = (p, c = 1.6) => 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2);
+/* a damped spring 0 -> 1: f swings per second, z damping 0..1 */
+function spring(t, f = 2.2, z = 0.45) {
+  if (t <= 0) return 0;
+  const w = 2 * Math.PI * f, wd = w * Math.sqrt(1 - z * z);
+  return 1 - Math.exp(-z * w * t) * (Math.cos(wd * t) + (z * w / wd) * Math.sin(wd * t));
+}
+/* documentary camera: mostly linear drift with softened ends */
+const drift = p => 0.55 * p + 0.45 * eSine(p);
+function rng(seed) {
+  let s = (seed >>> 0) || 7;
+  return () => { s = (s * 1664525 + 1013904223) % 4294967296; return s / 4294967296; };
+}
+
+/* ---- DOM helpers ---------------------------------------------------------- */
+const STAGE = document.getElementById("stage");
+let WAITS = [];
+
+function el(tag, cls, parent, style, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (style) Object.assign(e.style, style);
+  if (html != null) e.innerHTML = html;
+  (parent || STAGE).appendChild(e);
+  return e;
+}
+function asset(src) {
+  if (!src) return src;
+  if (/^(file|data|https?):/.test(src)) return src;
+  if (src.startsWith("/")) return "file://" + src;
+  if (src.startsWith("kit:")) return CFG.kit + "/" + src.slice(4);
+  return CFG.assets + "/" + src;
+}
+function pic(src, parent, style, cls) {
+  const i = el("img", cls || "layer", parent, style);
+  WAITS.push(new Promise(res => { i.onload = () => { i.decode().then(res, res); }; i.onerror = () => { console.warn("missing", src); res(); }; }));
+  i.src = asset(src);
+  return i;
+}
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+function setT(e, x, y, s = 1, r = 0) {
+  const v = `translate(${x.toFixed(2)}px,${y.toFixed(2)}px) rotate(${r.toFixed(3)}deg) scale(${s.toFixed(5)})`;
+  if (e._t !== v) { e.style.transform = v; e._t = v; }
+}
+function setO(e, o) {
+  const v = o <= 0.001 ? "0" : o >= 0.999 ? "1" : o.toFixed(3);
+  if (e._o !== v) { e.style.opacity = v; e._o = v; }
+}
+function vis(e, on) {
+  const v = on ? "visible" : "hidden";
+  if (e.style.visibility !== v) e.style.visibility = v;
+}
+function css(e, k, v) {
+  if (e["_" + k] !== v) { e.style[k] = v; e["_" + k] = v; }
+}
+
+/* ---- fonts: every face in the kit, by the family names used below ----------- */
+const FONTS = {
+  "Anton": "Anton-Regular.ttf", "Bebas": "BebasNeue.ttf", "Oswald": "Oswald.ttf",
+  "OswaldB": "Oswald-Bold.ttf", "Barlow": "BarlowCondensed-SemiBold.ttf",
+  "BarlowB": "BarlowCondensed-Bold.ttf", "Garamond": "EB-Garamond.ttf",
+  "GaramondI": "EB-Garamond-Italic.ttf", "DMSerif": "DMSerifDisplay.ttf",
+  "Playfair": "PlayfairDisplay.ttf", "Lora": "Lora.ttf", "LoraI": "Lora-Italic.ttf",
+  "Elite": "SpecialElite.ttf", "Courier": "CourierPrime.ttf", "CourierB": "CourierPrime-Bold.ttf",
+  "Cinzel": "Cinzel.ttf", "Inter": "Inter-SemiBold.ttf", "InterB": "Inter-Bold.ttf",
+  "InterK": "Inter-Black.ttf", "Caveat": "Caveat.ttf", "Archivo": "ArchivoBlack.ttf",
+  "Stencil": "SairaStencilOne.ttf", "Mono": "SpaceMono-Bold.ttf", "Montserrat": "Montserrat-ExtraBold.ttf",
+};
+function loadFonts() {
+  const st = document.createElement("style");
+  st.textContent = Object.entries(FONTS)
+    .map(([n, f]) => `@font-face{font-family:'${n}';src:url('${CFG.kit}/fonts/${f}');font-display:block}`)
+    .join("\n");
+  document.head.appendChild(st);
+  return Promise.all(Object.keys(FONTS).map(n => document.fonts.load(`40px '${n}'`).catch(() => {})));
+}
+
+/* ---- shared finishing layers ---------------------------------------------- */
+function vignette(parent, strength = 0.55, inner = 45) {
+  return el("div", "full", parent, {
+    background: `radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) ${inner}%, rgba(0,0,0,${strength}) 100%)`,
+    pointerEvents: "none",
+  });
+}
+/* flash of white used on hard hits */
+function flashLayer(parent) {
+  const f = el("div", "full", parent, { background: "#fff", opacity: 0 });
+  return (t, at, d = 0.18) => setO(f, t >= at ? Math.max(0, 1 - (t - at) / d) * 0.55 : 0);
+}
+
+/* ---- typography components -------------------------------------------------- */
+
+/* A mustard label chip that wipes in (Lotus "CHECKERED FLAG" style). */
+function chip(parent, text, x, y, opts = {}) {
+  const size = opts.size || 30;
+  const box = el("div", "abs", parent, {
+    left: x + "px", top: y + "px", background: opts.bg || PAL.mustard, color: opts.color || PAL.ink,
+    font: `${size}px 'OswaldB'`, letterSpacing: ".08em", padding: `${size * 0.22}px ${size * 0.5}px ${size * 0.18}px`,
+    textTransform: "uppercase", whiteSpace: "nowrap", boxShadow: "0 8px 24px rgba(0,0,0,.35)",
+  }, esc(text));
+  const at = opts.at || 0.5;
+  return t => {
+    const p = eOut(seg(t, at, 0.45));
+    css(box, "clipPath", `inset(0 ${((1 - p) * 100).toFixed(1)}% 0 0)`);
+    vis(box, p > 0);
+    if (opts.out != null) setO(box, 1 - seg(t, opts.out, 0.3));
+  };
+}
+
+/* Name + role lower third with a gold rule (Lotus "JACK BRABHAM" style). */
+function lowerThird(parent, name, role, opts = {}) {
+  const x = opts.x || 120, y = opts.y || 850, at = opts.at || 0.6;
+  const wrap = el("div", "abs", parent, { left: x + "px", top: y + "px" });
+  const rule = el("div", "abs", wrap, { left: "0", top: "0", height: "4px", width: "0", background: opts.color || PAL.mustard });
+  const nm = el("div", "abs", wrap, {
+    left: "0", top: "18px", font: `${opts.size || 64}px 'DMSerif'`, color: "#fff", whiteSpace: "nowrap",
+    textShadow: "0 4px 24px rgba(0,0,0,.7)",
+  }, esc(name));
+  const rl = el("div", "abs", wrap, {
+    left: "2px", top: `${(opts.size || 64) + 34}px`, font: "26px 'Barlow'", letterSpacing: ".22em", color: "#E9E2D2",
+    textTransform: "uppercase", whiteSpace: "nowrap", textShadow: "0 2px 12px rgba(0,0,0,.8)",
+  }, esc(role || ""));
+  return t => {
+    const a = eOut(seg(t, at, 0.5));
+    css(rule, "width", (a * (opts.rule || 90)).toFixed(1) + "px");
+    const b = eOut(seg(t, at + 0.15, 0.6));
+    setO(nm, b); setT(nm, 0, (1 - b) * 24);
+    const c = eOut(seg(t, at + 0.35, 0.6));
+    setO(rl, c); setT(rl, 0, (1 - c) * 16);
+    if (opts.out != null) setO(wrap, 1 - seg(t, opts.out, 0.35));
+  };
+}
+
+/* Typewriter text that types on character by character. */
+function typeOn(node, text, t, at, cps = 28, cursor = true) {
+  const n = Math.floor(cl((t - at) * cps, 0, text.length));
+  const s = esc(text.slice(0, n)) + (cursor && n < text.length && t >= at ? "<span style='opacity:.8'>|</span>" : "");
+  if (node._s !== s) { node.innerHTML = s; node._s = s; }
+  return n >= text.length;
+}
+
+/* Count a number up from a to b, formatted like the target string. */
+function countText(target, p) {
+  const m = String(target).match(/^([^\d]*)([\d,]*\.?\d*)(.*)$/);
+  if (!m || !m[2]) return String(target);
+  const raw = m[2].replace(/,/g, "");
+  const dec = raw.includes(".") ? raw.split(".")[1].length : 0;
+  const v = parseFloat(raw) * p;
+  let s = v.toFixed(dec);
+  if (m[2].includes(",")) s = Number(s).toLocaleString("en-US", { minimumFractionDigits: dec, maximumFractionDigits: dec });
+  return m[1] + s + m[3];
+}
+
+/* ---- the scene registry ------------------------------------------------------ */
+const SCENES = {};
+let UPDATE = () => {};
+let READY = false;
+
+window.setupScene = async function (spec) {
+  READY = false;
+  STAGE.innerHTML = "";
+  WAITS = [];
+  window.SCENE = spec;
+  STAGE.style.background = spec.bgcolor || PAL.night;
+  const make = SCENES[spec.type];
+  if (!make) throw new Error("unknown scene type " + spec.type);
+  const up = await make(spec, STAGE);
+  const extras = (spec.overlays || []).map(o => OVERLAYS[o.type](o, STAGE));
+  await Promise.all(WAITS);
+  await document.fonts.ready;
+  UPDATE = t => { up(t); extras.forEach(f => f(t)); };
+  UPDATE(0);
+  READY = true;
+  return true;
+};
+window.renderFrame = function (t) { UPDATE(t); return true; };
+
+SCENES.blank = async () => () => {};
+
+/* overlays any scene can carry: chips, lower thirds, captions */
+const OVERLAYS = {
+  chip: (o, root) => chip(root, o.text, o.x != null ? o.x : 110, o.y != null ? o.y : 900, o),
+  lower: (o, root) => lowerThird(root, o.name, o.role, o),
+  caption: (o, root) => {
+    const d = el("div", "abs", root, {
+      left: "0", width: W + "px", top: (o.y || 940) + "px", textAlign: "center",
+      font: `${o.size || 30}px 'GaramondI'`, color: "#EDE6D8", textShadow: "0 2px 14px rgba(0,0,0,.9)",
+    }, esc(o.text));
+    return t => { const a = seg(t, o.at || 0.4, 0.6) * (1 - seg(t, o.out || 1e9, 0.4)); setO(d, a); };
+  },
+  source: (o, root) => {
+    const d = el("div", "abs", root, {
+      right: "70px", bottom: "46px", font: "18px 'Barlow'", letterSpacing: ".2em", color: "rgba(235,228,214,.7)",
+      textTransform: "uppercase", textShadow: "0 1px 8px rgba(0,0,0,.9)",
+    }, esc(o.text));
+    return t => setO(d, seg(t, o.at || 0.8, 0.6));
+  },
+  flash: (o, root) => { const f = flashLayer(root); return t => f(t, o.at || 0, o.d || 0.2); },
+  fadein: (o, root) => {
+    const f = el("div", "full", root, { background: o.color || "#000" });
+    return t => setO(f, 1 - seg(t, 0, o.d || 0.5));
+  },
+  fadeout: (o, root) => {
+    const f = el("div", "full", root, { background: o.color || "#000", opacity: 0 });
+    return t => setO(f, seg(t, SCENE.duration - (o.d || 0.6), o.d || 0.6));
+  },
+};
+
+loadFonts().then(() => { window.FONTS_READY = true; });
