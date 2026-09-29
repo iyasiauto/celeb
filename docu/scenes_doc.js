@@ -161,3 +161,54 @@ SCENES.ledgerlist = async (s, root) => {
     if (tot) setO(tot, eOut(seg(t, s.total.at != null ? s.total.at : 0.8 + rows.length * 0.5 + 0.4, 1.0)));
   };
 };
+
+/* sizechart - household size on the x axis, a column per size for a threshold that rises
+   with every person, and one fixed dashed line for an income. Columns that climb past the
+   income line turn gold: "the same income qualifies once the family is big enough".
+   Heights are relative (illustrative) unless the spec gives real values. */
+SCENES.sizechart = async (s, root) => {
+  const L = s.img ? darkPhoto(root, s, s.dim != null ? s.dim : 0.82) : (paperGround(root, "cork"), null);
+  vignette(root, 0.5);
+  const sizes = s.sizes || [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const base = s.base || 1, step = s.step || 0.34;          /* threshold(size) = base + step * (size - 2) */
+  const vals = sizes.map((n, i) => s.values ? s.values[i] : base + step * (n - sizes[0]));
+  const vmax = Math.max(...vals, s.income || 0) * 1.08;
+  const X0 = 300, X1 = 1640, Y0 = 880, HT = 560;
+  const cw = (X1 - X0) / sizes.length;
+  const title = el("div", "abs", root, { left: X0 + "px", top: "120px", font: "52px 'DMSerif'", color: "#F3EEE4" }, esc(s.title || ""));
+  const note = s.note ? el("div", "abs", root, { left: X0 + "px", top: "196px", font: "28px 'GaramondI'", color: "#CFC8BA" }, esc(s.note)) : null;
+  el("div", "abs", root, { left: X0 + "px", top: Y0 + "px", width: X1 - X0 + "px", height: "2px", background: "rgba(243,238,228,.4)" });
+  const cols = sizes.map((n, i) => {
+    const x = X0 + i * cw + cw * 0.18;
+    const bar = el("div", "abs", root, { left: x + "px", top: Y0 + "px", width: cw * 0.64 + "px", height: "0", background: "rgba(243,238,228,.35)" });
+    const lab = el("div", "abs", root, { left: x - 10 + "px", top: Y0 + 14 + "px", width: cw * 0.64 + 20 + "px", textAlign: "center",
+      font: "28px 'Barlow'", color: "#E6E0D4" }, String(n));
+    return { bar, lab, v: vals[i], i };
+  });
+  const xl = el("div", "abs", root, { left: X0 + "px", top: Y0 + 56 + "px", width: X1 - X0 + "px", textAlign: "center", font: "24px 'Barlow'",
+    letterSpacing: ".16em", color: "#CFC8BA", textTransform: "uppercase" }, esc(s.xlabel || "people in the household"));
+  const yInc = s.income != null ? Y0 - (s.income / vmax) * HT : null;
+  const inc = yInc != null ? el("div", "abs", root, { left: X0 + "px", top: yInc + "px", width: "0", height: "0", borderTop: `4px dashed ${PAL.red}` }) : null;
+  const incLab = yInc != null ? el("div", "abs", root, { left: X1 - 460 + "px", top: yInc - 52 + "px", width: "460px", textAlign: "right",
+    font: "32px 'DMSerif'", color: PAL.red }, esc(s.incomeLabel || "same income")) : null;
+  const legend = el("div", "abs", root, { left: X0 + "px", top: "260px", font: "26px 'Barlow'", color: "#E6E0D4" },
+    `<span style="display:inline-block;width:22px;height:22px;background:rgba(243,238,228,.35);vertical-align:-3px;margin-right:10px"></span>${esc(s.barLabel || "eligibility limit")}`);
+  const src = s.source ? el("div", "abs", root, { left: X0 + "px", top: "1000px", font: "20px 'Barlow'", letterSpacing: ".14em",
+    color: "rgba(243,238,228,.55)", textTransform: "uppercase" }, esc(s.source)) : null;
+  const D = s.duration, A = s.at != null ? s.at : 0.8, per = s.per || 0.35, IA = s.incomeAt != null ? s.incomeAt : A + sizes.length * per + 0.3;
+  return t => {
+    if (L) L.draw(drift(cl(t / D, 0, 1)));
+    setO(title, eOut(seg(t, 0.2, 0.9))); if (note) setO(note, eOut(seg(t, 0.5, 0.9))); setO(legend, eOut(seg(t, 0.6, 0.9)));
+    setO(xl, eOut(seg(t, 0.6, 0.9)));
+    cols.forEach(c => {
+      const g = eOut(seg(t, A + c.i * per, 0.9));
+      const h = (c.v / vmax) * HT * g;
+      css(c.bar, "height", h.toFixed(1) + "px"); css(c.bar, "top", (Y0 - h).toFixed(1) + "px");
+      const over = yInc != null && t >= IA + 0.4 && (Y0 - (c.v / vmax) * HT) < yInc;
+      css(c.bar, "background", over ? PAL.gold : "rgba(243,238,228,.35)");
+      css(c.lab, "color", over ? PAL.gold : "#E6E0D4");
+    });
+    if (inc) { css(inc, "width", (eInOut(seg(t, IA, 1.2)) * (X1 - X0)).toFixed(0) + "px"); setO(incLab, eOut(seg(t, IA + 0.6, 0.8))); }
+    if (src) setO(src, eOut(seg(t, 1.2, 1.0)));
+  };
+};
