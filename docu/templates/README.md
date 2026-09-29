@@ -7,6 +7,7 @@ This is the reusable kit behind three faceless investigative documentaries:
 | *Noah's Ark Confirmed After 4,300 Years? What We Actually Know* | **Paper / Vox explainer** | `paper` · `doc` · 5 | Paper tabletop collages, three case folders (known / claimed / unknown), newspaper page, ledger arithmetic |
 | *Noah's Ark "100% Confirmed"? Here's What Researchers Actually Found* | **Forensic lab report** | `forensic` · `cool` · 2 | Observed / Claimed / Confirmed filter, ring gauge 100 % → 0 %, x-ray scans, one-source network |
 | *Myth or Reality? Hunting for the REAL Noah's Ark* | **Expedition & courtroom** | `expedition` · `warmsepia` · 2 | Field journal and antique map, evidence tags EXHIBIT A–D, scales of justice, split-flap scoreboard, REALITY / MYTH verdict |
+| *How Do Hasidic Jews Afford 10 Kids Without Jobs* | **Calm documentary** | `documentary` · `doc` · 1.5 + dissolves | Slow photographs, soft dissolves, serif chapter headings, location captions, a household ledger that grows one layer per chapter, gentle bar charts, a household-size chart, maps |
 | *BREAKING: They Drilled Into Noah's Ark — Then the Drill Bit Shattered* | **Breaking-news broadcast** | `broadcast` · `broadcast` · 1.5 | LIVE bug and crawling ticker, BREAKING NEWS slab, borehole cross-section where the bit shatters, fact-check meters, headline wall → one source, OBSERVED / CLAIMED board, numbered segment bumpers |
 
 Everything here is plain files you can copy into any project:
@@ -20,6 +21,7 @@ docu/                       the engine (keep the folder together)
 ├── scenes_map.js           map (orthographic globe → province)
 ├── scenes_lab.js           filter, gauge, network, valley, cells, scan item
 ├── scenes_court.js         scales, scoreboard, verdict, tag item
+├── scenes_doc.js           doctitle, textcard, bars, ledgerlist, sizechart + overlays place, doclower
 ├── scenes_news.js          breaking, borehole, factcheck, echo, columns, videowall, newslist, segment
 │                           + overlays ticker, bug, newslower
 ├── timing.py               script phrases → voiceover word times
@@ -33,6 +35,7 @@ docu/                       the engine (keep the folder together)
     ├── gallery.py          renders a preview of every scene in every theme (and is a smoke test)
     ├── previews/           the preview images referenced below
     ├── starter_broadcast/  the same, pre-built in the breaking-news style
+    ├── starter_documentary/ the same, pre-built in the calm documentary style
     └── starter/            copy this to start a new video
         ├── build.py        skeleton EDL with the settings explained
         ├── transcribe.py   word timestamps for the voiceover
@@ -189,6 +192,23 @@ read every return at a glance. Then pick a theme, a grade and a music palette th
 - Navy studio, signal red, alert yellow; Montserrat Black / Poppins / Roboto Condensed type. Sounds: a news sting,
   glitch, drilling, the shatter.
 - Preview: [broadcast sheet](previews/sheet_broadcast.jpg). Starter: `starter_broadcast/build.py`.
+
+### Style E: Calm documentary (`theme="documentary"`, `grade="doc"`, grain 1–2, `xfade=0.6`, `sfx_style="calm"`)
+*Best for:* explainers about communities, economics, culture; anything where the audience should
+understand, not be dazzled. "Not fast-paced, not complicated."
+- **Soft dissolves** between every shot: `edl.setup(xfade=0.6)`. Each scene renders 0.6 s past its slot
+  and fades into the next, so every cut still lands on its word. Per scene `xfade=0` gives a hard cut.
+- **Calm sound**: `sfx_style="calm"` keeps only paper, pen, soft ticks and pings, with no whooshes, stamps
+  or impacts. Music stays quiet (`music_floor_db=-21`).
+- Long shots (5–10 s), slow Ken Burns moves, footage at about 30 %.
+- Serif **chapter headings** (`doctitle`), a **location caption** with a thin gold rule (`place`),
+  name lower thirds (`doclower`), one- to three-line **text cards** over darkened photos.
+- One **recurring device** the audience learns once: here, the **household ledger** (`ledgerlist`) that gains one
+  layer per chapter and is shown complete at the end.
+- Gentle graphics only: `bars` (horizontal, count up), `sizechart` (a threshold that rises with household size vs.
+  one fixed income), maps with a single route or pin, a few depth pops and spotlights, and paper boards where
+  everything fades in (`from="fade"`).
+- Preview: [documentary sheet](previews/sheet_documentary.jpg). Starter: `starter_documentary/build.py`.
 
 ### More styles you can build from the same parts
 | Topic | Theme | Devices |
@@ -496,6 +516,34 @@ Options: `imgs` (up to 9, repeated), `focus` (0–8), `pushAt`, `pushFor`.
 #### `newslist`: numbered rows with status pills
 ![newslist](previews/broadcast/newslist.jpg)
 Options: `title`, `items` `[{text, sub, n, at, status, statusColor, statusAt, size}]`, `y0`, `gap`, `rowH`, `size`, `img`.
+
+### Calm documentary (`scenes_doc.js`)
+
+#### `doctitle`: chapter heading
+![doctitle](previews/documentary/doctitle.jpg)
+Options: `kicker` ("Chapter 3"), `title`, `sub`, `img`, `dim`, `size`, `move`, `zoom`.
+
+#### `textcard`: a line or two over a darkened photo
+![textcard](previews/documentary/textcard.jpg)
+Options: `lines` `[{text, at, color, size, font}]`, `img`, `dim`, `align`, `gap`, `dy`.
+
+#### `bars`: a calm horizontal bar chart
+![bars](previews/documentary/bars.jpg)
+Options: `title`, `note`, `bars` `[{label, value, text, at, color}]`, `max`, `maxW`, `y0`, `gap`, `source`, `img`, `dim`.
+
+#### `ledgerlist`: a household ledger
+![ledgerlist](previews/documentary/ledgerlist.jpg)
+Options: `title`, `items` `[{label, value, at, color}]` (negative `at` = already written), `total` `{label, value, at}`,
+`x`, `w`, `y0`, `gap`, `size`, `img`, `dim`. Show it again with one more item each chapter.
+
+#### `sizechart`: a threshold that rises with household size
+![sizechart](previews/documentary/sizechart.jpg)
+Options: `title`, `note`, `sizes` (default 2–12), `values` or `base` + `step`, `income` + `incomeLabel` + `incomeAt`
+(a fixed dashed line; columns above it turn gold), `barLabel`, `xlabel`, `at`, `per`, `source`. Mark it
+"illustrative" unless you give real values.
+
+Overlays: `dict(type="place", text="Williamsburg, Brooklyn", sub="…", at=0.6)` and
+`dict(type="doclower", name="Name", role="Role", at=0.6)`.
 
 ### Clips
 

@@ -336,3 +336,68 @@ def echo(headlines, sources, collapse_at, **kw):
     """A wall of headlines that collapses into the source(s) they all came from."""
     return dict(type="echo", headlines=[h if isinstance(h, dict) else dict(text=h) for h in headlines],
                 sources=[s if isinstance(s, dict) else dict(title=s) for s in sources], collapseAt=collapse_at, **kw)
+
+
+# ---------------------------------------------------------------- style 5: calm documentary
+
+def place_cap(scene, text, sub=None, at=0.6):
+    """Location / date caption bottom-left with a thin gold rule (an overlay)."""
+    o = dict(type="place", text=text, at=at)
+    if sub: o["sub"] = sub
+    out = dict(scene)
+    out["overlays"] = list(scene.get("overlays", [])) + [o]
+    return out
+
+
+def doc_lower(scene, name, role, at=0.6):
+    """Calm name / role lower third (an overlay)."""
+    out = dict(scene)
+    out["overlays"] = list(scene.get("overlays", [])) + [dict(type="doclower", name=name, role=role, at=at)]
+    return out
+
+
+def doctitle(n, title, bg=None, sub=None, **kw):
+    """Chapter heading: 'Chapter n', a serif title, a thin rule, over a dimmed photo."""
+    s = dict(type="doctitle", kicker=f"Chapter {n}", title=title, **kw)
+    if bg: s["img"] = img(bg)
+    if sub: s["sub"] = sub
+    return s
+
+
+def textcard(*lines, bg=None, **kw):
+    """Lines of text over a darkened photo: each a string or (text, at, color, size)."""
+    ls = []
+    for ln in lines:
+        if isinstance(ln, str):
+            ls.append(dict(text=ln))
+        else:
+            d = dict(text=ln[0])
+            for k, v in zip(("at", "color", "size"), ln[1:]):
+                if v is not None: d[k] = v
+            ls.append(d)
+    s = dict(type="textcard", lines=ls, **kw)
+    if bg: s["img"] = img(bg)
+    return s
+
+
+def doc_bars(title, rows, bg=None, **kw):
+    """rows = [(label, value, text, at)] or dicts; calm horizontal bars that count up."""
+    s = dict(type="bars", title=title, bars=[r if isinstance(r, dict) else dict(label=r[0], value=r[1], text=r[2], at=r[3]) for r in rows], **kw)
+    if bg: s["img"] = img(bg)
+    return s
+
+
+def ledger_list(title, items, total=None, bg=None, **kw):
+    """items = [(label, value, at)] or dicts. Negative at = already written (for a growing ledger)."""
+    s = dict(type="ledgerlist", title=title,
+             items=[i if isinstance(i, dict) else dict(label=i[0], value=i[1], at=i[2]) for i in items], **kw)
+    if total: s["total"] = total
+    if bg: s["img"] = img(bg)
+    return s
+
+
+def sizechart(title, income, bg=None, **kw):
+    """Threshold columns that rise with household size vs. one fixed income line (illustrative by default)."""
+    s = dict(type="sizechart", title=title, income=income, **kw)
+    if bg: s["img"] = img(bg)
+    return s

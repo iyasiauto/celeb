@@ -192,6 +192,26 @@ def specs():
     add("newslower", dict(type="photo", img=P, move="in", overlays=[
         dict(type="newslower", kicker="ON THE GROUND", text="A BROADCAST LOWER THIRD", sub="the sub strip", at=0.3), TK, BG]),
         themes=["broadcast"])
+    # ---- calm documentary
+    add("doctitle", dict(type="doctitle", img=P, kicker="Chapter 1", title="The Numbers", sub="What makes people ask"),
+        themes=["documentary"])
+    add("textcard", dict(type="textcard", img=P, lines=[dict(text="A calm line of text", at=0.2),
+                                                         dict(text="and its answer, in gold.", at=0.8, color="#D8B26E")]),
+        themes=["documentary"])
+    add("bars", dict(type="bars", img=P, title="A calm comparison", note="a note under the title",
+                     bars=[dict(label="First", value=50, text="≈ $50,000", at=0.3), dict(label="Second", value=98, text="≈ $98,000", at=0.8)],
+                     max=100, source="Source: where the numbers come from"), themes=["documentary"])
+    add("ledgerlist", dict(type="ledgerlist", img=P, title="The household ledger", items=[
+        dict(label="1  Earned income", value="modest", at=-3), dict(label="2  Benefits scaled to household size", value="per person", at=-3),
+        dict(label="3  Schooling", value="a fraction of market cost", at=0.4, color="#D8B26E")],
+        total=dict(label="A system that doesn't need a high income", value="", at=1.2)), themes=["documentary"])
+    add("sizechart", dict(type="sizechart", img=SCAN, title="The same income, a bigger family",
+                          note="eligibility limits rise with every person (illustrative)", income=3.3, incomeLabel="one fixed income",
+                          at=0.2, per=0.15, incomeAt=1.9), themes=["documentary"])
+    add("place", dict(type="photo", img=P, move="in", overlays=[dict(type="place", text="A place, A state", sub="a line about it", at=0.3)]),
+        themes=["documentary"])
+    add("doclower", dict(type="photo", img=PORT, move="in", overlays=[dict(type="doclower", name="A Name", role="who they are", at=0.3)]),
+        themes=["documentary"])
     return S
 
 
@@ -234,7 +254,7 @@ def main():
     ap.add_argument("--object", required=True, help="an object photo or PNG to cut out")
     ap.add_argument("--work", default=os.path.join(HERE, "_gallery_work"))
     ap.add_argument("--out", default=os.path.join(HERE, "previews"))
-    ap.add_argument("--themes", default="paper,forensic,expedition,broadcast")
+    ap.add_argument("--themes", default="paper,forensic,expedition,broadcast,documentary")
     ap.add_argument("--only", default="", help="comma-separated spec names")
     a = ap.parse_args()
     assets = os.path.join(a.work, "assets")
