@@ -108,7 +108,7 @@ const ITEMS = {
     return t => {
       if (it.type === false) { if (!txt._d) { txt.innerHTML = esc(it.text); txt._d = 1; } }
       else typeOn(txt, it.text, t, (it.at || 0) + 0.25, it.cps || 30, false);
-      if (!s._w) { txt.innerHTML = esc(it.text); s.style.width = s.offsetWidth - 60 + "px"; s._w = 1; txt.innerHTML = ""; }
+      if (!s._w) { txt.innerHTML = esc(it.text); s.style.width = s.offsetWidth - 60 + "px"; s._w = 1; if (it.type !== false) txt.innerHTML = ""; }
       pl(t);
     };
   },

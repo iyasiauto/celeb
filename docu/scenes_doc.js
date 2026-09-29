@@ -140,12 +140,12 @@ SCENES.bars = async (s, root) => {
 SCENES.ledgerlist = async (s, root) => {
   const L = s.img ? darkPhoto(root, s, s.dim != null ? s.dim : 0.8) : (paperGround(root, "cork"), null);
   vignette(root, 0.5);
-  const X = 420, WD = 1080;
+  const X = s.x || 360, WD = s.w || 1200;
   const title = el("div", "abs", root, { left: X + "px", top: "140px", width: WD + "px", font: "50px 'DMSerif'", color: "#F3EEE4" }, esc(s.title || ""));
   const rows = (s.items || []).map((it, i) => {
     const y = (s.y0 || 270) + i * (s.gap || 86);
     const r = el("div", "abs", root, { left: X + "px", top: y + "px", width: WD + "px", display: "flex", justifyContent: "space-between",
-      font: "36px 'Elite'", color: "#E6E0D4", borderBottom: "1px solid rgba(243,238,228,.18)", paddingBottom: "12px" });
+      font: `${s.size || 40}px 'Elite'`, color: "#E6E0D4", borderBottom: "1px solid rgba(243,238,228,.18)", paddingBottom: "12px" });
     el("span", "", r, {}, esc(it.label));
     el("span", "", r, { font: "38px 'DMSerif'", color: it.color || "#F3EEE4" }, esc(it.value || ""));
     return { r, it };

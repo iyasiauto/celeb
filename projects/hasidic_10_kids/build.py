@@ -159,6 +159,7 @@ at("Now add the other numbers", ledger(0, title="Kiryas Joel, by the numbers", i
         dict(label="Per capita income", value="$14,440", at="@Per capita income"),
         dict(label="Poverty rate", value="≈ 38 %", at="@Poverty rate", color=RUST)],
     source=None))
+at("Poverty rate: nearly 38 percent", clip(35, zoom=1.03))
 at("And these aren't households of two people", clip(485, grade="none", zoom=1.03))
 at("families of eight, nine, ten children are completely normal", spot("children_02_18", center=[0.5, 0.55], radius=[0.36, 0.34],
                                                                        label="Eight, nine, ten children", hit=0.8, zoom=1.08))
@@ -174,7 +175,7 @@ at("Because when you actually pull the data", board([
     strip("census records", 520, 900, at="@census records", size=36, type=False),
     strip("university studies", 1100, 800, at="@university studies", size=36, type=False),
     strip("federal court filings", 1520, 950, at="@federal court filings", size=36, type=False)]))
-at("Not a community surviving without work", clip(205, zoom=1.03))
+at("Not a community surviving without work", clip(205, zoom=1.03, then=(237,)))
 at("A system with its own rules", card(("Its own rules.", "@its own rules"), ("Its own banking.", "@its own banking"),
                                        ("Its own math.", "@its own math", GOLD), bg="street_01_3"))
 at("And once you see how it works", clip(42, zoom=1.03))
@@ -209,11 +210,13 @@ at("It is, by multiple measures", bars("New Square: poverty rate", [
         ("Study reported by The Center Square", 63.3, "63.3 %", "@found a poverty rate", dict(color=RUST))],
     bg="street_02_26", note="median household income: $23,578 (same study)", max=100,
     source="Sources: U.S. Census data via Wikipedia; The Center Square"))
+at("with median household income of $23,578", clip(151, zoom=1.03))
 at("In Williamsburg, Brooklyn", place(clip(201, zoom=1.03), "Williamsburg, Brooklyn", "one of the largest Hasidic communities in the world"))
 at("WNYC reporting found", big("55 %", "HASIDIC HOUSEHOLDS BELOW THE POVERTY LINE", "nearly triple the rate of New York City as a whole",
                                bg="street_00_46", source="Source: WNYC reporting", countFor=1.4))
-at("And a 2023 UJA-Federation study", big("1 in 3", "JEWISH HOUSEHOLDS IN THE REGION RECEIVE SOME ASSISTANCE",
-                                          "subsidized health insurance is the most common", bg="money_01_30", count=False,
+at("nearly triple the rate of New York City", clip(217, zoom=1.03))
+at("And a 2023 UJA-Federation study", big("1 in 3", "JEWISH HOUSEHOLDS RECEIVING ASSISTANCE",
+                                          "subsidized health insurance is the most common", bg="money_00_14", count=False,
                                           source="Source: UJA-Federation of New York, 2023"))
 at("And in Lakewood, New Jersey", dict(type="map", detail="geo_hi.json", adminCountries=["USA"], stops=[
         dict(at=0, lon=-74.05, lat=41.15, scale=30000), dict(at=0.3, lon=-74.2, lat=40.4, scale=16000, d=2.2)],
@@ -239,7 +242,8 @@ at("only 51 percent of ultra-Orthodox men", bars("Israel: ultra-Orthodox workfor
     bg="p_02_7", note="women's rate exceeds the national female average", max=100,
     source="Source: Israel Democracy Institute, 2021"))
 at("But that's Israel. What about the United States", clip(203, zoom=1.03))
-at("Here's where it gets interesting", board([
+at("Here's where it gets interesting", clip(203, zoom=1.03, skip=2.0))
+at("A 2025 analysis of American Community Survey data", board([
     pc("doc_00_2", 620, 520, 700, rot=-2, at=0.1, grade="none"),
     title_("2025 analysis", 1330, 340, at=0.4, size=78),
     strip("American Community Survey data", 1330, 480, at="@American Community Survey", size=34, type=False),
@@ -253,7 +257,7 @@ at("They run small businesses", clip(142, zoom=1.03, then=(501,)))
 at("contracting crews, jewelry stores", clip(436, zoom=1.03, then=(438,)))
 at("They work long hours for modest incomes", clip(499, zoom=1.03))
 at("Many combine that with part-time study", clip(206, zoom=1.03))
-at("The image of the man who never earns a dollar", depth("street_00_43", subject=[0.5, 0.5], hit=0.6, move="in"))
+at("The image of the man who never earns a dollar", depth("street_00_55", subject=[0.45, 0.5], hit=0.6, move="in"))
 at("So if the men usually work", clip(432, zoom=1.03))
 at("Two reasons", ledger(1, new_at="@One: large single-income", title="The household ledger"))
 at("the system is designed so that it doesn't need much money", clip(228, zoom=1.03))
@@ -269,21 +273,22 @@ at("Government benefit programs don't ask", card(("Not: what is your family wort
                                                  ("But: income relative to household size.", "@They look at your household income", GOLD),
                                                  bg="money_00_17"))
 at("And in America, the eligibility line moves", dict(type="sizechart", title="The same income, a bigger family",
-    note="eligibility limits rise with every person in the household (illustrative)", income=4.1, incomeLabel="one fixed income",
+    note="eligibility limits rise with every person in the household (illustrative)", income=3.3, incomeLabel="one fixed income",
     barLabel="eligibility limit, by household size", at=0.6, per=0.3, incomeAt="@with every child you add", img=img("money_02_13"),
     source="Illustrative: limits for programs like Medicaid and SNAP are set per household size"))
 at("That means a family of twelve", dict(type="sizechart", title="A family of twelve vs. a family of three",
-    note="same income, around $70,000 (illustrative)", income=4.1, incomeLabel="≈ $70,000", barLabel="eligibility limit",
+    note="same income, around $70,000 (illustrative)", income=3.3, incomeLabel="≈ $70,000", barLabel="eligibility limit",
     sizes=[3, 12], at=-5, per=0.0, incomeAt=0.5, img=img("money_02_13"),
     source="Illustrative comparison from the script's example"))
-at("As one analysis of New Jersey's Orthodox communities", clip(62, zoom=1.03))
+at("As one analysis of New Jersey's Orthodox communities", clip(62, zoom=1.03, then=(156,)))
 at("because eligibility for programs like Medicaid and SNAP", board([
-    pc("money_01_30", 620, 480, 620, rot=-2, at=0.1, grade="none"),
+    pc("money_00_14", 620, 480, 620, rot=-2, at=0.1, grade="none"),
     pc("money_00_18", 1300, 560, 620, rot=2, at="@and SNAP", grade="none"),
     strip("income-tested per household", 960, 930, at="@income-tested per household", size=40, type=False)]))
 at("Now, notice what that means economically", clip(475, grade="none", zoom=1.03))
-at("For a ten-child family, public programs aren't a lifestyle", card(
-    ("Not a lifestyle.", 0.2), ("The health insurance. The food cushion. The housing support.", "@they're the health insurance", GOLD, 52),
+at("For a ten-child family", clip(228, zoom=1.03, skip=1.0))
+at("they're the health insurance", card(
+    ("Not a lifestyle.", 0.1), ("The health insurance. The food cushion. The housing support.", 0.8, GOLD, 52),
     bg="children_02_54"))
 at("The community isn't gaming this", card(("It's arithmetic.", "@It's arithmetic", GOLD, 96), bg="money_01_42"))
 at("Add a child", clip(378, zoom=1.03))
@@ -295,7 +300,8 @@ at("Ask any middle-class American parent", heading(4, "The Cost Side", "children
 at("Here, that entire category is structurally different", clip(185, zoom=1.03, then=(186,)))
 at("Hasidic children attend yeshivas", place(clip(258, zoom=1.03), "A yeshiva classroom", "private religious schools run by the community"))
 at("And those schools price nothing like", clip(44, zoom=1.03))
-at("Surveys on Jewish education forums", big("≈ $4,000", "TYPICAL HASIDIC YESHIVA TUITION", "per child, per year — often less",
+at("Surveys on Jewish education forums", clip(512, zoom=1.03))
+at("typical Hasidic yeshiva tuition", big("≈ $4,000", "TYPICAL HASIDIC YESHIVA TUITION", "per child, per year — often less",
                                              bg="children_01_26", count=False, source="Source: surveys on Jewish education forums"))
 at("How is that possible", card(("How is that possible?", 0.2), bg="children_00_39"))
 at("Because teachers are community members", clip(266, zoom=1.03, then=(262,)))
@@ -320,6 +326,7 @@ at("it refers to a free-loan society", board([
 at("at zero interest", big("0 %", "INTEREST", "", bg="p_00_4", count=False, size=300))
 at("This isn't informal", clip(248, zoom=1.03))
 at("gemach networks are a vast, organized financial layer", ph("p_00_12", move="in", zoom=1.1))
+at("all built on a religious principle", clip(441, zoom=1.03))
 at("lending to someone in need is a commandment", card(("Lending to someone in need: a commandment.", 0.3),
                                                       ("Charging interest: forbidden.", "@charging interest is forbidden", GOLD),
                                                       bg="men_study_00_13"))
@@ -328,7 +335,7 @@ at("The economic effect is hard to overstate", bars("Who pays more for credit?",
         ("Inside: the gemach", 6, "the poor pay less", "@the poor pay less", dict(color=SAGE))],
     bg="money_02_6", note="illustrative", max=100))
 at("A bride's family needs $8,000", clip(24, zoom=1.03))
-at("A father loses his job", ph("p_02_6", move="in", zoom=1.08))
+at("A father loses his job", clip(45, zoom=1.03))
 at("Layer on top: tzedakah", clip(226, zoom=1.03))
 at("from wealthier community members", ph("men_study_01_1", move="in", zoom=1.08))
 at("Plus organizations like the Hebrew Free Loan Society", ph("arch_00_6", move="in", zoom=1.08, grade="none"))
@@ -338,16 +345,16 @@ at("But there are two more", clip(371, zoom=1.03))
 # =================================================================== chapter 6: housing
 at("Poverty statistics measure income per household", heading(6, "The Housing", "exterior_building_00_44",
                                                                 sub="nobody sleeps in a statistic"))
-at("They sleep in an apartment", ph("exterior_building_01_12", move="up", zoom=1.08))
+at("They sleep in an apartment", clip(243, zoom=1.03))
 at("it lowers the cost per person", card(("Lower the cost per person —", 0.3), ("by raising the number of people per room.", "@by raising", GOLD),
                                          bg="exterior_building_00_2"))
-at("In Williamsburg, Hasidic families routinely house", clip(211, zoom=1.03))
+at("In Williamsburg, Hasidic families routinely house", clip(211, zoom=1.03, then=(209,)))
 at("In Kiryas Joel, urban planners have documented", spot("maps_00_9", center=[0.55, 0.55], radius=[0.2, 0.18],
                                                           label="High-density multifamily housing", hit=0.8, zoom=1.12))
 at("the community builds upward and close", clip(152, zoom=1.03))
 at("The 2018 comprehensive plan", board([
-    pc("maps_00_2", 640, 520, 820, rot=-1.5, at=0.1, grade="none"),
-    title_("2018 comprehensive plan", 1360, 330, at=0.5, size=60),
+    pc("maps_00_2", 580, 520, 740, rot=-1.5, at=0.1, grade="none"),
+    title_("2018 comprehensive plan", 1400, 330, at=0.5, size=56),
     strip("“the Satmar community needs", 1360, 480, at="@the Satmar community needs", size=36, type=False),
     strip("high-density multifamily housing”", 1360, 570, at="@high-density", size=36, type=False)]))
 at("families moved out of crowded Williamsburg", dict(type="map", detail="geo_hi.json", adminCountries=["USA"], stops=[
@@ -356,7 +363,7 @@ at("families moved out of crowded Williamsburg", dict(type="map", detail="geo_hi
     routes=[dict(**{"from": list(WILLIAMSBURG)}, to=list(KJ), at=0.6, d=2.2, dash=True)],
     pins=[dict(lon=WILLIAMSBURG[0], lat=WILLIAMSBURG[1], label="Williamsburg", sub="crowded", at=0.2, side="right"),
           dict(lon=KJ[0], lat=KJ[1], label="Kiryas Joel", sub="cheaper suburban land", at=2.0, side="left")]))
-at("single-family homes that quickly filled with wings", ph("maps_00_20", move="right", zoom=1.08))
+at("single-family homes that quickly filled with wings", clip(151, zoom=1.03))
 at("Is this comfortable by suburban American standards", card(("Comfortable by suburban standards?", 0.2), ("Often no.", "@Often no", GOLD, 90),
                                                               bg="street_03_6"))
 at("Federal data has repeatedly flagged overcrowding", clip(215, zoom=1.03))
@@ -370,8 +377,8 @@ at("shared across a household structure with multiple earners", ledger(6, new_at
 at("Now — we have to talk about the part", heading(7, "The Part That's Ugly", "institutions_00_44",
                                                      sub="not everything is charity and math"))
 at("In 2019, in federal court in Brooklyn", board([
-    pc("institutions_00_44", 620, 520, 760, rot=-1.5, at=0.1, grade="none"),
-    title_("2019 · federal court, Brooklyn", 1340, 300, at=0.5, size=56),
+    pc("institutions_00_44", 560, 520, 680, rot=-1.5, at=0.1, grade="none"),
+    title_("2019 · federal court, Brooklyn", 1360, 300, at=0.5, size=50),
     strip("Central United Talmudical Academy", 1340, 450, at="@the Central United", size=34, type=False),
     strip("admitted a benefit fraud conspiracy", 1340, 550, at="@admitted", size=34, type=False)]))
 at("Its administrators had underreported income", ph("money_00_43", move="in", zoom=1.1, grade="none"))
@@ -383,6 +390,7 @@ at("And in New York, prosecutors have brought cases", big("$20 million", "IN MOR
                                                           bg="money_00_40", count=False))
 at("Here's what matters about these cases", card(("Real. Documented.", 0.3), ("Pretending otherwise would be dishonest.", "@would be dishonest", GOLD),
                                                  bg="institutions_00_44"))
+at("They are real, they are documented", clip(232, zoom=1.03))
 at("They fed a political backlash", ph("street_01_19", move="in", zoom=1.08))
 at("But zoom out, and the honest picture is this", card(("Specific people. Specific institutions.", "@these are prosecutions of specific"),
                                                         ("A minority of benefit recipients.", "@a minority", GOLD), bg="street_00_51"))
@@ -398,7 +406,8 @@ at("In the surrounding culture, a child is a cost", big("$200,000+", "TO RAISE O
 at("In Hasidic theology, a child is the opposite", clip(508, grade="none", zoom=1.03))
 at("The commandment to be fruitful", ph("named_02_37", move="in", zoom=1.1, grade="none",
                                         overlays=[dict(type="caption", text="“Be fruitful and multiply” — Genesis 1:28", at=0.8)]))
-at("And the data reflects it", who(ph("men_study_00_15", move="in", zoom=1.08), "Lydia Stone",
+at("And the data reflects it", clip(511, grade="none", zoom=1.03))
+at("Research by demographer Lydia Stone", who(ph("men_study_00_15", move="in", zoom=1.08), "Lydia Stone",
                                    "demographer · Demographic Research, 2023", at="@Lydia Stone"))
 at("driven by near-universal marriage", clip(24, zoom=1.03, skip=3.0))
 at("One widely cited analysis found", bars("Expected children per woman", [
@@ -413,15 +422,16 @@ at("And once you see that", ledger(7, new_at=0.5))
 # =================================================================== the answer
 at("So — how do Hasidic Jews afford ten kids", dict(type="doctitle", kicker="The answer", title="How Do They Afford Ten Kids?",
                                                     img=img("street_00_3"), move="in", zoom=1.08))
-at("They don't", card(("They don't — not “without jobs.”", 0.2),
-                      ("Most men work: small businesses, modest wages.", "@The men do some work", GOLD, 52), bg="street_01_52"))
+at("They don't", clip(43, zoom=1.03))
+at("The men do some work", card(("They don't — not “without jobs.”", 0.2),
+                      ("Most men work: small businesses, modest wages.", 0.8, GOLD, 52), bg="street_01_52"))
 at("What they don't have is high income", clip(205, zoom=1.03, skip=1.0))
 at("Layer by layer", ledger(7, new_at=-3, title="Layer by layer",
-                            total=dict(label="A system that doesn't need a high income", value="", at="@a system that doesn't")))
+                            total=dict(label="A system that doesn't need a high income", value="", at=4.0)))
 at("Benefits scaled to household size", clip(185, zoom=1.03))
 at("Yeshiva education at a fraction", clip(258, zoom=1.03, skip=1.0))
 at("Interest-free credit through thousands of gemachs", ph("p_00_18", move="in", zoom=1.08))
-at("Dense, cheap, shared housing", ph("exterior_building_00_43", move="in", zoom=1.08))
+at("Dense, cheap, shared housing", clip(263, zoom=1.03))
 at("And underneath all of it", clip(474, grade="none", zoom=1.03))
 at("Is the model perfect", card(("Is the model perfect?", 0.2), ("No.", "@No.", GOLD, 110), bg="street_00_46"))
 at("Poverty rates near 40, 50, even 60 percent are real", bars("Poverty rates, from this video", [
