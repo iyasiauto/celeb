@@ -185,7 +185,7 @@ sys.argv = ["build.py", "plan"]; edl.main(music=[...])      # then "prep", "rend
 | srt2words / plan | seconds |
 | prep (105 pictures + cut-outs) | ~2 min |
 | stills (112 frames) | ~40 s |
-| render | RENDER_TIME |
+| render (166 scenes) | ~25 min |
 | mix | ~1 min |
 | final (dissolves + mux) | FINAL_TIME |
 | deliver (upload) | 1–3 min |
