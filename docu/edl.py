@@ -13,23 +13,26 @@ the edit uses. `grade=None` means the project's default grade.
 import os
 import sys
 import json
+import glob
 import hashlib
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _HERE)
 
 import prep                      # noqa: E402
+import variety                   # noqa: E402
 from timing import Timing        # noqa: E402
 
 JOBS = []                        # prep jobs collected while the EDL is declared
 E = []                           # (cue, scene) in order
 CAT = []                         # the footage catalog
 P = {}                           # project settings
+V = None                         # this video's variety picks (variety.Picks) when setup(vary=...)
 
 
 def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade="doc", grain=5.0,
           tail=4.8, image_dirs=None, music_floor_db=-12.5, music_duck_db=-9.0, sfx_gain=0.7, xfade=0.0,
-          sfx_style="full"):
+          sfx_style="full", vary=None):
     """Paths and look for one project. Call before declaring any shot."""
     global KIT, FOOT, WORK, ASSETS, SEGS, VO, SCRIPT, WORDS, OUT, IMG_DIRS, CUTS, VOX_TAIL
     KIT, FOOT, WORK, OUT = kit, footage, work, out
@@ -41,7 +44,20 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade=
     VOX_TAIL = tail
     CAT[:] = json.load(open(f"{data}/catalog_all.json"))
     P.update(name=name, theme=theme, grade=grade, grain=grain, music_floor_db=music_floor_db,
-             music_duck_db=music_duck_db, sfx_gain=sfx_gain, xfade=xfade, sfx_style=sfx_style)
+             music_duck_db=music_duck_db, sfx_gain=sfx_gain, xfade=xfade, sfx_style=sfx_style, data=data)
+    if vary is not None:
+        # shuffle the look per video; remember what earlier videos used (see variety.py)
+        global V
+        proj = os.path.dirname(os.path.abspath(data))
+        hist = variety.history(os.path.dirname(proj), exclude=proj)
+        tracks = sorted(os.path.basename(t) for t in glob.glob(os.path.join(kit, "music", "*.mp3")))
+        seed = variety.seed_for(name) if vary == "auto" else int(vary)
+        v = variety.pick(seed, hist, tracks)
+        used = set()
+        for h in hist:
+            used |= set(h.get("images", [])) | set(h.get("clips", []))
+        V = variety.Picks(v, used)
+        P.update(grade=v["grade"], grain=v["grain"], xfade=v["xfade"], vary=v)
 
 
 def at(cue, scene):
@@ -294,6 +310,9 @@ def main(music=()):
     """music: [dict(at=cue or None, track=..., db=0, lead=0)] - one bed per act."""
     import subprocess
     cmd = sys.argv[1] if len(sys.argv) > 1 else "plan"
+    if cmd == "path":                  # where `final` writes the video (for pipeline scripts)
+        print(os.path.join(OUT, P["name"] + ".mp4"))
+        return
     T = Timing.load(SCRIPT, WORDS)
     vo_dur = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", VO],
                                   capture_output=True, text=True).stdout)
@@ -301,11 +320,26 @@ def main(music=()):
     os.makedirs(OUT, exist_ok=True)
     json.dump(scenes, open(f"{WORK}/scenes.json", "w"), indent=1, ensure_ascii=False)
     cfg = {"kit": "file://" + KIT, "assets": "file://" + ASSETS, "theme": P["theme"], "grain": P["grain"]}
+    if P.get("vary"):
+        cfg["vary"] = variety.engine_overrides(P["vary"])
     clips = sum(s["duration"] for s in scenes if s["type"] == "clip")
     total = sum(s["duration"] for s in scenes)
     print(f"{len(scenes)} scenes, {total:.1f}s, clips {clips:.1f}s ({100 * clips / total:.0f}%), alignment {T.matched:.0%}")
+    # remember what this video used, so the next ones can avoid it
+    imgs = sorted({os.path.splitext(os.path.basename(j[1]))[0] for j in JOBS if j[0] == "img"})
+    clips = sorted({s["src"].split("/")[-1] for s in scenes if s["type"] == "clip"} |
+                   {m["src"].split("/")[-1] for s in scenes if s["type"] == "clip" for m in s.get("more", [])})
+    if P.get("vary"):
+        json.dump(dict(name=P["name"], vary={k: v for k, v in P["vary"].items()}, images=imgs, clips=clips),
+                  open(os.path.join(P["data"], "assets_used.json"), "w"), indent=0)
     if cmd in ("plan",):
         from collections import Counter
+        if V is not None:
+            again = [a for a in imgs + clips if a in V.used_before]
+            vv = P["vary"]
+            print(f"variety: accent={vv['accent']} fonts={vv['fonts']} kicker={vv['kicker']} grade={vv['grade']} "
+                  f"grain={vv['grain']} xfade={vv['xfade']} moves={vv['moves']} place={vv['place']}")
+            print(f"  reused from earlier videos: {len(again)} of {len(imgs) + len(clips)}" + (f"  e.g. {again[:8]}" if again else ""))
         print(Counter(s["type"] for s in scenes))
         for s in scenes:
             if s["type"] == "clip":

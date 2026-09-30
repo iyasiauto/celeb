@@ -174,6 +174,10 @@ THEMES.documentary = {
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);
+/* per-video variety (docu/variety.py): accent colours and a font pairing on top of the theme */
+const VARY = (window.CFG && CFG.vary) || {};
+Object.assign(FONTS, VARY.fonts || {});
+Object.assign(PAL, VARY.pal || {});
 if (!PAL.cyan) PAL.cyan = "#3FC7D6";
 if (!PAL.green) PAL.green = "#3DBE7A";
 if (!PAL.navy) PAL.navy = "#0A1730";

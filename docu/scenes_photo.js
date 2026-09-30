@@ -160,13 +160,16 @@ SCENES.spotlight = async (s, root) => {
     if (lab) {
       const ex = c.tx + (cx + rx * 1.04 * (s.side === "left" ? -0.72 : 0.72)) * iw * c.k;
       const ey = c.ty + (cy - ry * 0.72) * ih * c.k;
-      const lx = s.side === "left" ? ex - 260 : ex + 160, ly = ey - 120;
+      const lw = lab.offsetWidth;
+      /* keep the label inside the frame; the leader line follows it */
+      const bx = cl(s.side === "left" ? ex - 260 - lw : ex + 160, 40, W - lw - 40), ly = cl(ey - 120, 40, H - 120);
+      const lx = s.side === "left" ? bx + lw : bx;
       const q = eOut(seg(t, hit + 0.9, 0.5));
       const dx = lx - ex, dy = ly + 26 - ey, len = Math.hypot(dx, dy);
       setT(lineEl, ex, ey, 1, Math.atan2(dy, dx) * 180 / Math.PI);
       css(lineEl, "width", (len * q).toFixed(1) + "px");
       const q2 = eOut(seg(t, hit + 1.2, 0.45));
-      setT(lab, s.side === "left" ? lx - lab.offsetWidth : lx, ly);
+      setT(lab, bx, ly);
       css(lab, "clipPath", `inset(0 ${((1 - q2) * 100).toFixed(1)}% 0 0)`);
     }
   };

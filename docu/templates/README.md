@@ -8,6 +8,7 @@ This is the reusable kit behind three faceless investigative documentaries:
 | *Noah's Ark "100% Confirmed"? Here's What Researchers Actually Found* | **Forensic lab report** | `forensic` · `cool` · 2 | Observed / Claimed / Confirmed filter, ring gauge 100 % → 0 %, x-ray scans, one-source network |
 | *Myth or Reality? Hunting for the REAL Noah's Ark* | **Expedition & courtroom** | `expedition` · `warmsepia` · 2 | Field journal and antique map, evidence tags EXHIBIT A–D, scales of justice, split-flap scoreboard, REALITY / MYTH verdict |
 | *How Do Hasidic Jews Afford 10 Kids Without Jobs* | **Calm documentary** | `documentary` · `doc` · 1.5 + dissolves | Slow photographs, soft dissolves, serif chapter headings, location captions, a household ledger that grows one layer per chapter, gentle bar charts, a household-size chart, maps |
+| *What Happens If the Government Cuts Hasidic Jews Community Benefits?* | **Calm documentary, shuffled** | `documentary` · picked by `variety.py` (teal · doc · 1.5 · 0.62 s dissolves) | The brown-envelope prop on a paper table, "what the street runs itself" list, US dots map, "Part Three" headings; no picture or clip repeated from the previous video |
 | *BREAKING: They Drilled Into Noah's Ark — Then the Drill Bit Shattered* | **Breaking-news broadcast** | `broadcast` · `broadcast` · 1.5 | LIVE bug and crawling ticker, BREAKING NEWS slab, borehole cross-section where the bit shatters, fact-check meters, headline wall → one source, OBSERVED / CLAIMED board, numbered segment bumpers |
 
 Everything here is plain files you can copy into any project:
@@ -29,6 +30,10 @@ docu/                       the engine (keep the folder together)
 ├── render.py               headless Chromium frames / FFmpeg clips → one MP4 per scene
 ├── mix.py                  synthesised SFX, music beds, ducking, loudness
 ├── edl.py                  the shot helpers and the build commands
+├── variety.py              per-video look shuffle + asset rotation (see INTEGRATION.md §7)
+├── INTEGRATION.md          how to plug this into a pipeline: inputs, outputs, stages, tools, variety
+├── tools/                  fetch_drive, catalog_clips, catalog_images, srt2words, transcribe, props,
+│                           new_project, deliver, run_video.sh
 └── templates/              ← this folder
     ├── README.md           this guide
     ├── snippets.py         ready-made builders for the three styles (tag, verdict, scales, gauge…)
@@ -209,6 +214,14 @@ understand, not be dazzled. "Not fast-paced, not complicated."
   one fixed income), maps with a single route or pin, a few depth pops and spotlights, and paper boards where
   everything fades in (`from="fade"`).
 - Preview: [documentary sheet](previews/sheet_documentary.jpg). Starter: `starter_documentary/build.py`.
+
+### Keep every video different: `vary="auto"`
+Add `vary="auto"` to `edl.setup()` and each video gets its own accent colour, font pairing, heading style
+("Chapter 3" / "Part III" / "03" / "— 3 —" / "Part Three"), grade and grain, dissolve length, camera-move
+cycle, caption corner and music order, never repeating the previous video's accent, fonts or headings.
+`plan` also reports how many pictures and clips were already used by earlier videos (aim for 0).
+Details, and what to vary by hand (the recurring device, the opening, the chart types), are in
+`../INTEGRATION.md` §7. `python docu/variety.py projects "Next Title"` previews the next look.
 
 ### More styles you can build from the same parts
 | Topic | Theme | Devices |

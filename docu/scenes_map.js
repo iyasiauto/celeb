@@ -38,7 +38,7 @@ const MAPC = Object.assign({
   bg0: "#0E3440", bg1: "#04141A", sea: "#0B2A34", rim: "rgba(120,200,215,.35)", grat: "rgba(120,190,205,.08)",
   land: "#18505E", border: "rgba(160,220,232,.45)", admin: "150,210,222", hi: "47,150,168", text: "#F4EFE4",
   sub: "#CFE3E6", dot: "#EAF2F3", dotText: "#DDEBED", name: "rgba(214,232,236,.8)", shadow: "rgba(0,0,0,.7)", paper: null,
-}, (THEME && THEME.map) || {});
+}, (THEME && THEME.map) || {}, (typeof VARY !== "undefined" && VARY.map) || {});
 
 SCENES.map = async (s, root) => {
   await mapLibs();

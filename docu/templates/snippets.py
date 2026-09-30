@@ -356,9 +356,17 @@ def doc_lower(scene, name, role, at=0.6):
     return out
 
 
+def _V():
+    import edl
+    return edl.V                    # this video's variety picks, when setup(vary=...) was used
+
+
 def doctitle(n, title, bg=None, sub=None, **kw):
-    """Chapter heading: 'Chapter n', a serif title, a thin rule, over a dimmed photo."""
-    s = dict(type="doctitle", kicker=f"Chapter {n}", title=title, **kw)
+    """Chapter heading: kicker ('Chapter n', or this video's shuffled style: 'Part III', '03', ...),
+    a serif title, a thin rule, over a dimmed photo. A string n is used as the kicker as it is."""
+    V = _V()
+    kicker = n if isinstance(n, str) else (V.kicker(n) if V else f"Chapter {n}")
+    s = dict(type="doctitle", kicker=kicker, title=title, **kw)
     if bg: s["img"] = img(bg)
     if sub: s["sub"] = sub
     return s
@@ -376,8 +384,30 @@ def textcard(*lines, bg=None, **kw):
                 if v is not None: d[k] = v
             ls.append(d)
     s = dict(type="textcard", lines=ls, **kw)
+    if "dim" not in kw and _V():
+        s["dim"] = _V()["dim"]
     if bg: s["img"] = img(bg)
     return s
+
+
+def ph(name, move=None, zoom=1.08, **kw):
+    """A photograph with a slow move; without `move` it takes the next move of this video's cycle."""
+    from edl import photo
+    V = _V()
+    return photo(name, move=move or (V.move() if V else "in"), zoom=zoom, **kw)
+
+
+def accent():
+    """This video's accent colour (gold when variety is off)."""
+    V = _V()
+    return V.accent if V else "#D8B26E"
+
+
+def prop(name, x, y, h, at=0.1, rot=0.0, **kw):
+    """A drawn 'real object' (tools/props.py: prop_envelope.png, prop_notice.png, prop_receipt.png,
+    prop_list.png) or any kit cut-out, placed on a collage board without a keyline."""
+    from edl import cutout
+    return dict(k="cut", img=cutout(name, red=False, keyline=0), x=x, y=y, h=h, at=at, rot=rot, **kw)
 
 
 def doc_bars(title, rows, bg=None, **kw):

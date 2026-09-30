@@ -53,9 +53,13 @@ edl.setup(
     music_floor_db=-21.0, music_duck_db=-10.0, sfx_gain=0.55,
     xfade=0.6,              # soft dissolves between every shot
     sfx_style="calm",       # paper, pen and ticks only
+    vary="auto",            # a fresh look per video: accent, fonts, heading style, grade, grain, dissolve,
+                            # camera moves, caption corner, music order - and asset rotation (docu/variety.py).
+                            # With vary on, grade/grain/xfade above are replaced by this video's picks.
 )
+V = edl.V                   # V.kicker(3) -> "Part III", V.move(), V.accent, V["music"], V.fresh(keys)
 
-GOLD = "#D8B26E"
+GOLD = accent()             # this video's accent colour (gold, teal, copper ... per video)
 TOWN = (-74.17, 41.34)      # (lon, lat)
 
 # the recurring device: a ledger that grows one line per chapter
@@ -82,7 +86,7 @@ at("a place on the map", dict(type="map", detail="geo_hi.json", adminCountries=[
     pins=[dict(lon=TOWN[0], lat=TOWN[1], label="The town", sub="its county", at=1.4, side="left")]))
 at("a comparison", doc_bars("A calm comparison", [("First", 50, "≈ $50,000", "@first"), ("Second", 98, "≈ $98,000", "@second")],
                             bg="a_picture", max=100, source="Source: name it"))
-at("a person", doc_lower(photo("portrait", move="in"), "A Name", "who they are"))
+at("a person", doc_lower(ph("portrait"), "A Name", "who they are"))
 at("the first layer", ledger(1))
 
 # =================================================================== chapter 2
@@ -94,8 +98,10 @@ at("the second layer", ledger(2))
 # =================================================================== ending
 at("the last line", textcard(("A last, quiet line.", 0.3), bg="a_picture", overlays=[dict(type="fadeout", d=2.0)]))
 
-MUSIC = [dict(at=None, track="01_quiet_bed.mp3", db=-1),
-         dict(at="chapter one begins", track="02_quiet_bed.mp3", db=0, lead=-1.0)]
+# one calm bed per act, in this video's shuffled order (a track the last videos didn't open with comes first)
+CALM = V["music"]            # or filter: [t for t in V["music"] if t in MY_CALM_TRACKS]
+ACTS = [None, "chapter one begins", "chapter two begins"]
+MUSIC = [dict(at=a, track=CALM[i % len(CALM)], db=0 if i else -1, lead=-1.0 if i else 0) for i, a in enumerate(ACTS)]
 
 if __name__ == "__main__":
     edl.main(MUSIC)

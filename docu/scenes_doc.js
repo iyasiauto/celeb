@@ -14,7 +14,8 @@
 "use strict";
 
 OVERLAYS.place = (o, root) => {
-  const x = o.x != null ? o.x : 96, y = o.y != null ? o.y : 930;
+  const vp = (typeof VARY !== "undefined" && VARY.place) || {};
+  const x = o.x != null ? o.x : (vp.x != null ? vp.x : 96), y = o.y != null ? o.y : (vp.y != null ? vp.y : 930);
   const wrap = el("div", "abs", root, { left: x + "px", top: y + "px" });
   const rule = el("div", "abs", wrap, { left: 0, top: 0, width: "0", height: "2px", background: PAL.gold });
   const t = el("div", "abs", wrap, { left: 0, top: "14px", font: `${o.size || 30}px 'Barlow'`, letterSpacing: ".18em", color: "#F3EEE4",

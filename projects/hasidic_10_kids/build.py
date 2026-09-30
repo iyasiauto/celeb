@@ -25,16 +25,16 @@ sys.path.insert(0, os.path.join(HERE, "..", "..", "docu"))
 import edl                       # noqa: E402
 from edl import *                # noqa: E402,F401,F403  (the shot helpers)
 
-SP = os.environ.get("NOAH_ROOT", "/tmp/claude-0/-home-user-celeb/945fe076-994f-5d04-8c9c-fa77e8ef4232/scratchpad")
+SP = os.environ.get("VIDEO_ROOT", "/tmp/claude-0/-home-user-celeb/945fe076-994f-5d04-8c9c-fa77e8ef4232/scratchpad")
 H5 = f"{SP}/hasidic"
 edl.setup(
     name="How_Do_Hasidic_Jews_Afford_10_Kids",
-    kit=os.environ.get("NOAH_KIT", f"{SP}/kit"),
-    footage=os.environ.get("HASIDIC_FOOTAGE", f"{H5}/footage"),
-    work=os.environ.get("NOAH_WORK", f"{SP}/work5"),
+    kit=os.environ.get("VIDEO_KIT", f"{SP}/kit"),
+    footage=os.environ.get("VIDEO_FOOTAGE", f"{H5}/footage"),
+    work=os.environ.get("VIDEO_WORK", f"{SP}/work5"),
     data=os.path.join(HERE, "data"),
-    out=os.environ.get("NOAH_OUT", f"{SP}/out"),
-    image_dirs=[f"{H5}/picks", f"{H5}/src/images"],
+    out=os.environ.get("VIDEO_OUT", f"{SP}/out"),
+    image_dirs=[os.environ.get("VIDEO_PICKS", f"{H5}/picks"), os.environ.get("VIDEO_IMAGES", f"{H5}/src/images")],
     theme="documentary", grade="doc", grain=1.5,
     music_floor_db=-21.0, music_duck_db=-10.0, sfx_gain=0.55,
     xfade=0.6, sfx_style="calm",
