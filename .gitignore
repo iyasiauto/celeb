@@ -31,3 +31,6 @@ video*/
 
 # docu gallery scratch
 docu/templates/_gallery_work/
+
+# local media root for the docu projects (kit, footage, work, out)
+/media

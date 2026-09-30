@@ -22,6 +22,7 @@ No AI images, no stock footage. Every picture and clip comes from your own folde
 ```
 docu/                         the engine: copy this folder into your pipeline as it is
 ├── INTEGRATION.md            this guide
+├── VISUAL_SYNC_GUIDE.md      how the right clip/picture lands on the right word (any niche)
 ├── README.md                 engine overview
 ├── requirements.txt          Python packages
 ├── edl.py                    shot helpers (photo, clip, depth, spot, collage, …) + build commands
@@ -41,7 +42,8 @@ docu/                         the engine: copy this folder into your pipeline as
 │   ├── props.py              drawn "real object" props: envelope, notice, receipt, shopping list
 │   ├── new_project.py        scaffold a new video from the template
 │   ├── deliver.py            checks, shrink under 1 GB, gofile upload with md5 check
-│   └── run_video.sh          all stages in one command
+│   ├── run_video.sh          all stages in one command
+│   └── bootstrap.sh          fresh machine → deps, asset kit, footage, staged picks
 └── templates/
     ├── README.md             every style, scene, option, SFX and delivery rule, with previews
     ├── snippets.py           ready-made builders (doctitle, textcard, doc_bars, ledger_list, ph, prop, …)

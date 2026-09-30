@@ -19,8 +19,20 @@ import subprocess
 from multiprocessing import Pool
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CHROME = os.environ.get(
-    "DOCU_CHROME", "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell")
+def _find_chrome():
+    """$DOCU_CHROME, else any Playwright headless shell / chromium on this machine."""
+    if os.environ.get("DOCU_CHROME"):
+        return os.environ["DOCU_CHROME"]
+    import glob
+    for root in (os.environ.get("PLAYWRIGHT_BROWSERS_PATH", ""), "/opt/pw-browsers", os.path.expanduser("~/.cache/ms-playwright")):
+        for pat in ("chromium_headless_shell-*/chrome-linux*/headless_shell", "chromium-*/chrome-linux*/chrome"):
+            hits = sorted(glob.glob(os.path.join(root, pat))) if root else []
+            if hits:
+                return hits[-1]
+    return "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell"
+
+
+CHROME = _find_chrome()
 FPS = 30
 W, H = 1920, 1080
 

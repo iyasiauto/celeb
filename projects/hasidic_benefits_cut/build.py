@@ -27,7 +27,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "..", "docu"))
 import edl                       # noqa: E402
 from edl import *                # noqa: E402,F401,F403  (the shot helpers)
 
-SP = os.environ.get("VIDEO_ROOT", "/tmp/claude-0/-home-user-celeb/945fe076-994f-5d04-8c9c-fa77e8ef4232/scratchpad")
+SP = os.environ.get("VIDEO_ROOT", os.path.join(HERE, "..", "..", "media"))
 H5 = f"{SP}/hasidic"
 edl.setup(
     name="What_Happens_If_the_Government_Cuts_Hasidic_Benefits",

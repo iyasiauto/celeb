@@ -23,6 +23,10 @@ Step 3  pick: stage the chosen pictures as <picks_dir>/<sheet>_<pos>.jpg (symlin
 
     python catalog_images.py pick <cat_dir> <images_dir> <picks_dir> <project>/data/image_picks.json
 
+On a fresh machine with the same footage, re-create picks/ straight from a project's image_picks.json:
+
+    python catalog_images.py stage <project>/data/image_picks.json <images_dir> <picks_dir>
+
 List picks by tag, marking the ones earlier videos already used:
 
     python catalog_images.py list <project>/data/image_picks.json [--unused <projects_root>]
@@ -128,6 +132,23 @@ def pick(cat, src, picks, dst):
     print(len(out), "pictures staged in", picks, "->", dst)
 
 
+def stage(picks_json, src, picks):
+    """Re-create picks/<key>.jpg links from an existing image_picks.json (a fresh machine, same footage)."""
+    os.makedirs(picks, exist_ok=True)
+    n = miss = 0
+    for r in json.load(open(picks_json)):
+        p = os.path.join(src, r["file"])
+        if not os.path.exists(p):
+            miss += 1
+            continue
+        ext = os.path.splitext(r["file"])[1].lower()
+        link = os.path.join(picks, r["key"] + (ext if ext in (".jpg", ".png", ".jpeg") else ".jpg"))
+        if not os.path.lexists(link):
+            os.symlink(os.path.abspath(p), link)
+        n += 1
+    print(n, "picks staged in", picks, f"({miss} missing from {src})" if miss else "")
+
+
 def list_picks(picks_json, unused_root=None):
     used = set()
     if unused_root:
@@ -149,9 +170,12 @@ if __name__ == "__main__":
     a.add_argument("--topic-regex", default=r"^([a-z_]+?)_[0-9a-f]{16}\.")
     b = sub.add_parser("pick"); b.add_argument("cat"); b.add_argument("src"); b.add_argument("picks"); b.add_argument("dst")
     c = sub.add_parser("list"); c.add_argument("picks_json"); c.add_argument("--unused")
+    d = sub.add_parser("stage"); d.add_argument("picks_json"); d.add_argument("src"); d.add_argument("picks")
     x = ap.parse_args()
     if x.cmd == "scan":
         scan(x.src, x.cat, x.topic_regex)
+    elif x.cmd == "stage":
+        stage(x.picks_json, x.src, x.picks)
     elif x.cmd == "pick":
         pick(x.cat, x.src, x.picks, x.dst)
     else:

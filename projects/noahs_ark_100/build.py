@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "..", "docu"))
 import edl                       # noqa: E402
 from edl import *                # noqa: E402,F401,F403  (the shot helpers)
 
-SP = os.environ.get("NOAH_ROOT", "/tmp/claude-0/-home-user-celeb/945fe076-994f-5d04-8c9c-fa77e8ef4232/scratchpad")
+SP = os.environ.get("VIDEO_ROOT", os.environ.get("NOAH_ROOT", os.path.join(HERE, "..", "..", "media")))
 edl.setup(
     name="Noahs_Ark_100_Percent_Confirmed",
     kit=os.environ.get("NOAH_KIT", f"{SP}/kit"),
