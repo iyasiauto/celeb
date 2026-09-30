@@ -6,7 +6,7 @@ pipeline behind:
 
 | Video | Length | Look (picked by `variety.py`) |
 |---|---|---|
-| *How Do Hasidic Jews Afford 10 Kids Without Jobs* | 16:10 | gold accent · Playfair + Inter · "Chapter 3" · grade doc |
+| *How Do Hasidic Jews Afford 10 Kids Without Jobs* | 17:24 | gold accent · Playfair + Inter · "Chapter 3" · grade doc |
 | *What Happens If the Government Cuts Hasidic Jews Community Benefits?* | 16:41 | teal accent · DM Serif + Barlow · "Part Three" · grade doc · 0.62 s dissolves |
 
 Both use the same template, the **calm documentary** (§5). Each video still looks different, because
