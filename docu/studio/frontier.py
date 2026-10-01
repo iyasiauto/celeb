@@ -2,8 +2,10 @@
 frontier.py - use the Frontier app's channel styles from Docu Studio.
 
 Frontier (a separate faceless-video studio, folder "Frontier" in the Drive) has its own engine, its own
-channel styles (styles/*.json, one sample video each in samples/) and its own API keys (.env: Algrow,
-Gemini, WaveSpeed, ...). Docu Studio does not copy that engine. It:
+channel styles (styles/*.json, one sample video each in samples/) and its own settings and keys (.env).
+Point Settings -> Frontier folder at your own Frontier folder on this PC: every style in it shows up, its .env
+keys (FameSpeak, OpenRouter, OpenLux ...) are read by tools/keys.py, and its assets/ can be the asset kit.
+Docu Studio does not copy that engine. It:
 
   * lists Frontier's styles (re-read from disk every time, so a style file you add appears at once),
     with each style's preview picture and sample video;
@@ -31,7 +33,10 @@ PORT = int(os.environ.get("FRONTIER_PORT") or 7871)
 
 def find_dir(w):
     """the Frontier folder: $FRONTIER_DIR, media/frontier, or a 'Frontier' folder next to the workspace"""
-    cands = [os.environ.get("FRONTIER_DIR"), os.path.join(w, "media", "frontier"), os.path.join(w, "Frontier"),
+    mine = os.environ.get("FRONTIER_DIR")
+    if mine and (os.path.isfile(os.path.join(mine, "make_video.py")) or os.path.isdir(os.path.join(mine, "styles"))):
+        return os.path.abspath(mine)                  # the folder you chose in Settings always wins
+    cands = [mine, os.path.join(w, "media", "frontier"), os.path.join(w, "Frontier"),
              os.path.join(os.path.dirname(w), "Frontier")]
     for c in cands:
         if c and os.path.isfile(os.path.join(c, "make_video.py")) and os.path.isdir(os.path.join(c, "styles")):

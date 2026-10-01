@@ -17,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path[:0] = [HERE, os.path.join(os.path.dirname(HERE), "tools")]
 
-import claude_shotlist as cs      # noqa: E402
+import time                       # noqa: E402
 
 IMG_PROMPT = """This is a contact sheet of pictures for a faceless documentary channel. Niche: {niche}.
 Each thumbnail is labelled with its position number and pixel size (e.g. "12 1920x1080").
@@ -40,36 +40,26 @@ Output only the lines, no other text."""
 
 
 def _ask_sheet(session_args, prompt, path):
-    key, model = session_args
-    client = cs._client(key)
-    content = [{"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": cs.jpeg_b64(path, 1800)}},
-               {"type": "text", "text": prompt}]
+    import ai
+    provider, model = session_args
     for attempt in range(3):
         try:
-            with client.beta.messages.stream(
-                model=model, max_tokens=16000, messages=[{"role": "user", "content": content}],
-                thinking={"type": "adaptive"}, output_config={"effort": "medium"},
-                betas=["server-side-fallback-2026-07-01"], fallbacks="default",
-            ) as stream:
-                msg = stream.get_final_message()
-            if msg.stop_reason == "refusal":
-                return []
-            text = "".join(b.text for b in msg.content if b.type == "text")
+            chat = ai.Chat("vision", provider=provider, model=model, log=lambda m: None)
+            text = chat.send(prompt, images=[path], max_tokens=8000)
             return [l.strip() for l in text.split("\n") if "|" in l]
-        except Exception as e:                       # noqa: BLE001 - retry any transient failure, then give up
+        except Exception:                        # noqa: BLE001 - retry any transient failure, then give up
             if attempt == 2:
                 raise
-            import time
             time.sleep(10 * (attempt + 1))
 
 
-def describe_images(cat_dir, niche_name, key, model=cs.MODEL, log=print, progress=None, workers=4):
+def describe_images(cat_dir, niche_name, provider=None, model=None, log=print, progress=None, workers=3):
     sheets = sorted(f for f in os.listdir(os.path.join(cat_dir, "sheets_img")) if f.endswith(".jpg"))
     out, done = [], [0]
 
     def one(f):
         sheet = os.path.splitext(f)[0]
-        lines = _ask_sheet((key, model), IMG_PROMPT.format(niche=niche_name, sheet=sheet), os.path.join(cat_dir, "sheets_img", f))
+        lines = _ask_sheet((provider, model), IMG_PROMPT.format(niche=niche_name, sheet=sheet), os.path.join(cat_dir, "sheets_img", f))
         good = [l for l in lines if re.match(rf"^{re.escape(sheet)}:\d+\|", l)]
         done[0] += 1
         if progress:
@@ -84,12 +74,12 @@ def describe_images(cat_dir, niche_name, key, model=cs.MODEL, log=print, progres
     return len(out)
 
 
-def describe_clips(cat_dir, niche_name, key, model=cs.MODEL, log=print, progress=None, workers=4):
+def describe_clips(cat_dir, niche_name, provider=None, model=None, log=print, progress=None, workers=3):
     sheets = sorted(f for f in os.listdir(os.path.join(cat_dir, "sheets_clips")) if f.endswith(".jpg"))
     out, done = [], [0]
 
     def one(f):
-        lines = _ask_sheet((key, model), CLIP_PROMPT.format(niche=niche_name), os.path.join(cat_dir, "sheets_clips", f))
+        lines = _ask_sheet((provider, model), CLIP_PROMPT.format(niche=niche_name), os.path.join(cat_dir, "sheets_clips", f))
         good = [l for l in lines if re.match(r"^\d+\|\d\|", l)]
         done[0] += 1
         if progress:

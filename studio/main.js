@@ -13,7 +13,8 @@ const USER = () => app.getPath("userData");
 const SETTINGS = () => path.join(USER(), "settings.json");
 const SECRETS = () => path.join(USER(), "secrets.json");
 const RUNS = () => path.join(USER(), "runs.json");
-const KEY_NAMES = ["FAMESPEAK_API_KEY", "ANTHROPIC_API_KEY", "GOFILE_TOKEN"];
+const KEY_NAMES = ["FAMESPEAK_API_KEY", "OPENROUTER_API_KEY", "OPENLUX_API_KEY", "ANTIGRAVITY_API_KEY", "CUSTOM_AI_API_KEY",
+  "ANTHROPIC_API_KEY", "GOFILE_TOKEN"];
 
 let win;
 const tasks = new Map(); // taskId -> child process
@@ -57,7 +58,12 @@ function settings() {
     workspace: ws,
     python: s.python || (fs.existsSync(venvPy) ? venvPy : isWin ? "python" : "python3"),
     workers: s.workers || Math.max(2, Math.min(8, os.cpus().length - 2)),
-    model: s.model || "claude-opus-5-5",
+    aiEditor: s.aiEditor || "auto",      // auto | claude_code | openrouter | openlux | antigravity | custom | claude_api | none
+    aiVision: s.aiVision || "auto",
+    aiEditorModel: s.aiEditorModel || "",
+    aiVisionModel: s.aiVisionModel || "",
+    antigravityUrl: s.antigravityUrl || "",
+    customUrl: s.customUrl || "",
     effort: s.effort || "high",
     upload: s.upload !== false,
     limitGb: s.limitGb || 1.0,
@@ -104,6 +110,12 @@ function backendEnv() {
     PYTHONUNBUFFERED: "1",
     PYTHONIOENCODING: "utf-8",
     WORKERS: String(s.workers),
+    STUDIO_EDITOR: s.aiEditor,
+    STUDIO_VISION: s.aiVision,
+    ...(s.aiEditorModel ? { STUDIO_EDITOR_MODEL: s.aiEditorModel } : {}),
+    ...(s.aiVisionModel ? { STUDIO_VISION_MODEL: s.aiVisionModel } : {}),
+    ...(s.antigravityUrl ? { ANTIGRAVITY_BASE_URL: s.antigravityUrl } : {}),
+    ...(s.customUrl ? { CUSTOM_AI_BASE_URL: s.customUrl } : {}),
     ...(s.frontierDir ? { FRONTIER_DIR: s.frontierDir } : {}),
     ...(s.frontierPython ? { FRONTIER_PYTHON: s.frontierPython } : {}),
   };

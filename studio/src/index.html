@@ -65,6 +65,7 @@
           <div class="seg" id="voice-mode">
             <button data-v="famespeak" class="on">Generate with FameSpeak</button>
             <button data-v="file">Use my recording</button>
+            <button data-v="frontier" id="vm-frontier" hidden>Frontier's own voice</button>
           </div>
           <div id="voice-famespeak" class="voice-panel">
             <div class="form-row">
@@ -73,6 +74,9 @@
               <button class="btn ghost" id="btn-check-voice">Check voice</button>
             </div>
             <div class="sub" id="voice-info">The script is read by this voice; the MP3 and the SRT subtitles are downloaded and saved with the video.</div>
+          </div>
+          <div id="voice-frontier" class="voice-panel" hidden>
+            <div class="sub">Frontier makes the voiceover itself, with the FameSpeak voice and key in its own .env, and writes the subtitles.</div>
           </div>
           <div id="voice-file" class="voice-panel" hidden>
             <div class="form-row">
@@ -95,10 +99,10 @@
           </div>
           <div class="options">
             <div class="opt">
-              <div><b>Shot list</b><div class="sub">who picks the visuals for every sentence</div></div>
-              <div class="seg compact" id="shotlist-mode"><button data-v="claude" class="on">Claude AI editor</button><button data-v="auto">Offline rules</button></div>
+              <div><b>Shot list</b><div class="sub" id="shotlist-sub">who picks the visuals for every sentence</div></div>
+              <div class="seg compact" id="shotlist-mode"><button data-v="ai" class="on">AI editor</button><button data-v="auto">Offline rules</button></div>
             </div>
-            <label class="opt toggle"><div><b>AI visual QA</b><div class="sub">Claude checks the stills and fixes the shot list before rendering</div></div><input type="checkbox" id="f-qa" checked /><i></i></label>
+            <label class="opt toggle"><div><b>AI visual QA</b><div class="sub" id="qa-sub">your vision AI checks the stills; the AI editor fixes what it finds before rendering</div></div><input type="checkbox" id="f-qa" checked /><i></i></label>
             <label class="opt toggle"><div><b>Upload to gofile</b><div class="sub">download link with an md5 check; size kept under the limit</div></div><input type="checkbox" id="f-upload" checked /><i></i></label>
           </div>
         </div>
@@ -128,13 +132,20 @@
 
     <!-- ======================================================== NICHES -->
     <section class="page" id="page-niches">
-      <header class="page-head"><div><h1>Niches & assets</h1><p>Each niche is a footage folder with its catalog. Download it once per computer; add new niches from a Drive link.</p></div></header>
+      <header class="page-head"><div><h1>Niches & assets</h1><p>Each niche is a footage folder with its catalog. Point a niche at a folder on this PC (or download it once from a Drive link).</p></div></header>
       <div class="card kit-card" id="kit-card"></div>
       <div class="grid niche-admin" id="niche-admin"></div>
       <div class="card add-niche">
         <div class="step-title">Add a niche</div>
         <div class="form-row">
           <label class="field grow"><span>Name</span><input id="n-name" placeholder="Ancient Egypt mysteries" /></label>
+          <div class="field"><span>Footage source</span><div class="seg compact" id="n-source"><button data-v="folder" class="on">Folder on this PC</button><button data-v="drive">Drive link</button></div></div>
+        </div>
+        <div class="form-row" id="n-folder-row">
+          <div class="field grow"><span>Footage folder (videos and pictures; sub-folders like clips/ and images/ are found)</span><div class="file-pick" id="pick-niche-folder"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="fp-label">Choose the folder…</span></div></div>
+          <div class="field grow"><span>Your tags file (optional .json, e.g. ASSET_TAGS_JSON)</span><div class="file-pick" id="pick-niche-tags"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="fp-label">Choose tags.json…</span></div></div>
+        </div>
+        <div class="form-row" id="n-drive-row" hidden>
           <label class="field grow"><span>Google Drive folder link (Anyone with the link)</span><input id="n-drive" placeholder="https://drive.google.com/drive/folders/…" /></label>
         </div>
         <div class="form-row">
@@ -159,15 +170,29 @@
           <label class="field"><span>Workspace folder</span><div class="inline"><input id="s-ws" readonly /><button class="btn ghost" id="btn-ws">Change</button></div></label>
           <label class="field"><span>Python</span><div class="inline"><input id="s-py" /><button class="btn ghost" id="btn-py">Browse</button></div></label>
           <div class="form-row">
-            <label class="field"><span>Claude model</span><select id="s-model"><option value="claude-opus-5-5">Claude Opus 5.5 (best)</option><option value="claude-sonnet-5-5">Claude Sonnet 5.5 (faster, cheaper)</option><option value="claude-fable-5-1">Claude Fable 5.1 (most capable)</option></select></label>
-            <label class="field"><span>AI effort</span><select id="s-effort"><option>medium</option><option>high</option><option>xhigh</option></select></label>
             <label class="field small"><span>Render workers</span><input id="s-workers" type="number" min="1" max="16" /></label>
             <label class="field small"><span>Size limit (GB)</span><input id="s-limit" type="number" step="0.1" min="0.2" /></label>
           </div>
           <div class="row-end"><button class="btn ghost" id="btn-setup">Install / repair engine</button><button class="btn primary" id="btn-save-settings">Save</button></div>
         </div>
         <div class="card span2">
-          <div class="step-title">Frontier <span class="hint">its channel styles run on Frontier's own engine and keys (its .env)</span></div>
+          <div class="step-title">AI <span class="hint">optional · without it the offline rules make the shot list · keys can also come from your Frontier .env</span></div>
+          <div class="form-row">
+            <label class="field grow"><span>AI editor (shot list, fixes, metadata)</span><select id="s-editor"></select></label>
+            <label class="field grow"><span>Editor model</span><input id="s-editor-model" placeholder="default" /></label>
+            <label class="field grow"><span>AI vision (visual QA, cataloging)</span><select id="s-vision"></select></label>
+            <label class="field grow"><span>Vision model</span><input id="s-vision-model" placeholder="default" /></label>
+          </div>
+          <div class="form-row">
+            <label class="field grow"><span>Antigravity router URL (your Antigravity / Gemini account via cli-proxy-api)</span><input id="s-agy-url" placeholder="http://127.0.0.1:8317/v1" /></label>
+            <label class="field grow"><span>Custom OpenAI-compatible URL (optional)</span><input id="s-custom-url" placeholder="http://127.0.0.1:1234/v1" /></label>
+            <label class="field small"><span>Effort</span><select id="s-effort"><option>medium</option><option>high</option><option>xhigh</option></select></label>
+          </div>
+          <div class="sub" id="ai-status"></div>
+          <div class="row-end"><button class="btn primary" id="btn-save-ai">Save AI settings</button></div>
+        </div>
+        <div class="card span2">
+          <div class="step-title">Frontier <span class="hint">all its styles show on Create; they run on Frontier's own engine and its .env · its keys and assets are used here too</span></div>
           <div class="form-row">
             <label class="field grow"><span>Frontier folder</span><div class="inline"><input id="s-frontier" placeholder="the folder with make_video.py, styles/ and samples/" /><button class="btn ghost" id="btn-frontier">Browse</button></div></label>
             <label class="field grow"><span>Python for Frontier (optional)</span><input id="s-fpy" placeholder="same as above" /></label>

@@ -25,10 +25,20 @@ const STAGES = Object.keys(STAGE_NAMES);
 
 const state = {
   info: null, settings: null, secrets: {},
-  niche: null, style: null, voice: "famespeak", shotlist: "claude",
+  niche: null, style: null, voice: "famespeak", shotlist: "ai",
+  nicheSource: "folder", nicheFolder: null, nicheTags: null,
   script: null, scriptText: "", mp3: null, srt: null,
   runs: [], current: null, tasks: {},
 };
+
+// a key counts when the app holds it or the engine finds it elsewhere (api_keys/keys.env, your Frontier .env)
+const hasKey = (k) => !!(state.secrets[k] || (state.info && state.info.keys && state.info.keys[k]));
+const AI = () => (state.info && state.info.ai) || {};
+const AI_PROVIDERS = [
+  ["auto", "Auto (first one set up)"], ["claude_code", "Claude Code CLI (your plan, no API key)"], ["openrouter", "OpenRouter"],
+  ["openlux", "OpenLux (sees pictures)"], ["antigravity", "Antigravity (local router)"], ["custom", "Custom endpoint"],
+  ["claude_api", "Claude API"], ["none", "Off"],
+];
 
 function toast(msg, bad = false) {
   const t = $("#toast");
@@ -68,6 +78,7 @@ async function boot() {
   $("#f-qa").checked = state.settings.aiQa;
   $("#f-upload").checked = state.settings.upload;
   await loadInfo();
+  if (!$("#f-voice").value && state.info.voice_id) $("#f-voice").value = state.info.voice_id;
   renderCreate();
   renderSideStatus();
   renderRuns();
@@ -75,11 +86,12 @@ async function boot() {
 }
 
 function renderSideStatus() {
-  const k = state.secrets;
   const pill = (ok, label, warn) => h("div", { class: "pill" }, h("span", { class: "dot " + (ok ? "ok" : warn ? "warn" : "bad") }), label);
+  const ai = AI();
   $("#side-status").replaceChildren(
-    pill(!!k.FAMESPEAK_API_KEY, "FameSpeak voice", true),
-    pill(!!k.ANTHROPIC_API_KEY, "Claude AI editor", true),
+    pill(hasKey("FAMESPEAK_API_KEY"), "FameSpeak voice", true),
+    pill(!!ai.editor, ai.editor ? "AI editor: " + ai.editor_label : "AI editor: offline rules", true),
+    pill(!!ai.vision, ai.vision ? "AI vision: " + ai.vision_label : "AI vision: off", true),
     pill(!!(state.doctorOk), state.doctorOk === undefined ? "Engine: checking…" : state.doctorOk ? "Engine ready" : "Engine needs setup"),
   );
 }
@@ -115,9 +127,14 @@ function renderCreate() {
   const st = info.styles.find((s) => s.id === state.style);
   const isF = st && st.engine === "frontier";
   $$(".step")[0].classList.toggle("dim", !!isF);
+  $("#vm-frontier").hidden = !(isF && info.frontier && info.frontier.env);
+  if (!isF && state.voice === "frontier") $("#voice-mode button[data-v=famespeak]").click();
+  const ai = AI();
+  $("#shotlist-sub").textContent = ai.editor ? `AI editor: ${ai.editor_label} (Settings → AI)` : "no AI editor set up: the offline rules pick the visuals (Settings → AI)";
+  $("#qa-sub").textContent = ai.vision ? `${ai.vision_label} checks the stills; the AI editor fixes what it finds` : "needs an AI vision provider, e.g. OpenLux (Settings → AI)";
   let note = $("#frontier-note");
   if (isF && !note) {
-    note = h("div", { id: "frontier-note", class: "note" }, "Frontier styles find their own footage and pictures and render with Frontier's engine and its .env keys. Your script and your voice (FameSpeak or your recording) are used as they are; the niche is not needed.");
+    note = h("div", { id: "frontier-note", class: "note" }, "Frontier styles find their own footage and pictures and render with Frontier's engine and its .env keys. Your script and your voice (FameSpeak, your recording, or Frontier's own voice from its .env) are used as they are; the niche is not needed.");
     $("#niche-choices").before(note);
   } else if (!isF && note) note.remove();
   summary();
@@ -135,7 +152,7 @@ function seg(id, key, after) {
     summary();
   }));
 }
-seg("voice-mode", "voice", () => { $("#voice-famespeak").hidden = state.voice !== "famespeak"; $("#voice-file").hidden = state.voice !== "file"; });
+seg("voice-mode", "voice", () => { $("#voice-famespeak").hidden = state.voice !== "famespeak"; $("#voice-file").hidden = state.voice !== "file"; $("#voice-frontier").hidden = state.voice !== "frontier"; });
 seg("shotlist-mode", "shotlist");
 
 async function pickInto(el, key, filters, after) {
@@ -164,7 +181,7 @@ $("#pick-srt").addEventListener("click", () => pickInto($("#pick-srt"), "srt", [
 $("#btn-check-voice").addEventListener("click", async () => {
   const id = $("#f-voice").value.trim();
   if (!id) return toast("Enter the ElevenLabs voice ID first.");
-  if (!state.secrets.FAMESPEAK_API_KEY) return toast("Add your FameSpeak API key in Settings first.", true);
+  if (!hasKey("FAMESPEAK_API_KEY")) return toast("Add your FameSpeak API key in Settings first (or set the Frontier folder: its .env key is used).", true);
   $("#voice-info").textContent = "Checking the voice…";
   const r = await S.query(["voice", "--voice-id", id]);
   if (!r.ok) { $("#voice-info").textContent = r.error; return; }
@@ -180,11 +197,11 @@ function summary() {
   const style = state.info && state.info.styles.find((s) => s.id === state.style);
   const tag = (k, v) => h("span", { class: "tag" }, k + " ", h("b", {}, v));
   $("#launch-summary").replaceChildren(
-    tag("Niche", niche ? niche.name.split("(")[0].trim() : "—"),
+    tag("Niche", style && style.engine === "frontier" ? "Frontier finds its own" : niche ? niche.name.split("(")[0].trim() : "—"),
     tag("Style", style ? style.name : "—"),
-    tag("Voice", state.voice === "famespeak" ? ($("#f-voice").value ? "FameSpeak" : "FameSpeak (voice ID?)") : state.mp3 ? "my recording" : "recording?"),
+    tag("Voice", state.voice === "famespeak" ? ($("#f-voice").value ? "FameSpeak" : "FameSpeak (voice ID?)") : state.voice === "frontier" ? "Frontier's voice" : state.mp3 ? "my recording" : "recording?"),
     tag("Clips", $("#f-clips").value + " %"),
-    tag("Shot list", state.shotlist === "claude" ? "Claude" : "offline"),
+    tag("Shot list", state.shotlist === "auto" ? "offline" : AI().editor ? AI().editor_label : "offline (no AI set up)"),
   );
 }
 
@@ -206,17 +223,19 @@ async function startProduction() {
   if (state.voice === "famespeak") {
     const id = $("#f-voice").value.trim();
     if (!id) return toast("Enter the ElevenLabs voice ID.", true);
-    if (!state.secrets.FAMESPEAK_API_KEY) return toast("Add your FameSpeak API key in Settings.", true);
+    if (!hasKey("FAMESPEAK_API_KEY")) return toast("Add your FameSpeak API key in Settings (or set the Frontier folder: its .env key is used).", true);
     voice = { mode: "famespeak", voice_id: id, language: $("#f-lang").value.trim() || null };
+  } else if (state.voice === "frontier") {
+    voice = { mode: "frontier" };
   } else {
     if (!state.mp3) return toast("Choose the voiceover file.", true);
     voice = { mode: "file", mp3: state.mp3, srt: state.srt };
   }
-  if (state.shotlist === "claude" && !state.secrets.ANTHROPIC_API_KEY) toast("No Claude key: the offline shot list will be used. Add the key in Settings for the AI editor.");
+  if (!isF && state.shotlist === "ai" && !AI().editor) toast("No AI editor set up: the offline shot list will be used (Settings → AI).");
   const s = state.settings;
   const job = {
     title, niche: isF ? null : state.niche, style: state.style, clip_share: Number($("#f-clips").value), script: state.script, voice,
-    shotlist: state.shotlist, ai_qa: $("#f-qa").checked, model: s.model, effort: s.effort, workers: s.workers,
+    shotlist: state.shotlist, ai_qa: $("#f-qa").checked, effort: s.effort, workers: s.workers,
     deliver: { upload: $("#f-upload").checked, limit_gb: s.limitGb },
   };
   const jobPath = await S.writeJob(job);
@@ -315,7 +334,7 @@ function renderRuns() {
   const act = run.active && run.progress[run.active];
   const head = h("div", { class: "run-head" },
     h("div", { style: "flex:1;min-width:0" }, h("h2", {}, run.title),
-      h("div", { class: "sub" }, `${(state.info.styles.find((s) => s.id === run.job.style) || {}).name || run.job.style} · ${run.job.clip_share} % clips · ${run.job.voice.mode === "famespeak" ? "FameSpeak voice" : "own recording"} · ${run.job.shotlist === "claude" ? "Claude shot list" : "offline shot list"}`),
+      h("div", { class: "sub" }, `${(state.info.styles.find((s) => s.id === run.job.style) || {}).name || run.job.style} · ${run.job.clip_share} % clips · ${{ famespeak: "FameSpeak voice", frontier: "Frontier's voice" }[run.job.voice.mode] || "own recording"} · ${run.job.shotlist === "auto" ? "offline shot list" : "AI shot list"}`),
       h("div", { class: "bigbar" }, h("i", { style: `width:${pct}%` })),
       h("div", { class: "sub" }, run.status === "running" ? `${pct} % · ${STAGE_NAMES[run.active] || ""}${act && act.msg ? " · " + act.msg : ""}` : run.status === "done" ? "Finished" : "Stopped")),
     h("div", { style: "display:flex;gap:8px" },
@@ -327,7 +346,7 @@ function renderRuns() {
   }));
   const arts = run.artifacts.filter((a) => a.kind !== "sheet");
   const sheets = run.artifacts.filter((a) => a.kind === "sheet");
-  const artIcon = { video: "▶", audio: "♪", srt: "CC", link: "↗", metadata: "≡", project: "▣" };
+  const artIcon = { video: "▶", audio: "♪", srt: "CC", link: "↗", metadata: "≡", project: "▣", qa: "✓" };
   const artifacts = arts.length ? h("div", { class: "artifacts" }, ...arts.map((a) => h("div", { class: "artifact", onclick: () => openArtifact(a) }, h("span", {}, artIcon[a.kind] || "•"), a.label || a.kind))) : null;
   const log = h("div", { class: "log" });
   log.append(...run.log.slice(-400).map((l) => h("div", { class: /^ERROR|Traceback|Error:/.test(l) ? "err" : "" }, l)));
@@ -407,11 +426,15 @@ function taskLine(id) {
 function renderNiches() {
   const info = state.info;
   const kitOk = state.doctor && state.doctor.filter((c) => c.name.startsWith("Asset kit")).every((c) => c.ok);
+  const fa = info.frontier && info.frontier.assets;
   $("#kit-card").replaceChildren(
     h("div", {}, h("div", { class: "step-title", style: "margin:0 0 4px" }, "Asset kit"),
-      h("div", { class: "sub" }, "Music beds, fonts, maps, cut-outs and the drawn props. Needed once per computer."), taskLine("task_kit")),
+      h("div", { class: "sub" }, fa ? `Music beds, fonts, maps, cut-outs and textures. Your Frontier folder already has them (${fa}): use them, nothing is downloaded or duplicated.`
+        : "Music beds, fonts, maps, cut-outs and the drawn props. Take them from a folder on this PC (e.g. Frontier's assets) or download once."), taskLine("task_kit")),
     h("div", { class: "inline" }, h("span", { class: "tag " + (kitOk ? "ok" : "warn") }, kitOk ? "installed" : "not installed"),
-      h("button", { class: "btn" + (kitOk ? " ghost" : " primary"), onclick: () => taskRun("task_kit", "Asset kit", ["kit"]) }, kitOk ? "Re-download" : "Download kit")));
+      fa ? h("button", { class: "btn" + (kitOk ? " ghost" : " primary"), onclick: () => taskRun("task_kit", "Asset kit", ["kit", "--folder", "frontier"]) }, "Use Frontier's assets") : null,
+      h("button", { class: "btn ghost", onclick: async () => { const r = await S.pick({ properties: ["openDirectory"] }); if (r) taskRun("task_kit", "Asset kit", ["kit", "--folder", r[0]]); } }, "Choose kit folder…"),
+      h("button", { class: "btn" + (kitOk || fa ? " ghost" : " primary"), onclick: () => taskRun("task_kit", "Asset kit", ["kit"]) }, kitOk ? "Re-download" : "Download kit")));
   $("#niche-admin").replaceChildren(...info.niches.map((n) => {
     const st = n.status || {};
     return h("div", { class: "card niche-card" },
@@ -425,12 +448,18 @@ function renderNiches() {
         h("span", { class: "tag" }, "default: " + n.default_style)),
       taskLine("task_fetch_" + n.id), taskLine("task_cat_" + n.id),
       h("div", { class: "lib-actions" },
-        h("button", { class: "btn tiny" + (st.downloaded ? " ghost" : ""), onclick: () => taskRun("task_fetch_" + n.id, "Download " + n.name, ["niche-fetch", "--niche", n.id]) }, st.downloaded ? "Re-sync footage" : "Download footage"),
+        n.drive && !n.local ? h("button", { class: "btn tiny" + (st.downloaded ? " ghost" : ""), onclick: () => taskRun("task_fetch_" + n.id, "Download " + n.name, ["niche-fetch", "--niche", n.id]) }, st.downloaded ? "Re-sync footage" : "Download footage")
+          : h("button", { class: "btn tiny ghost", onclick: () => taskRun("task_fetch_" + n.id, "Link " + n.name, ["niche-fetch", "--niche", n.id]) }, "Re-link folders"),
+        h("button", { class: "btn tiny" + (st.downloaded ? " ghost" : ""), title: "use footage already on this PC (no download)", onclick: async () => {
+          const r = await S.pick({ properties: ["openDirectory"], title: "The folder with this niche's clips and pictures" });
+          if (r) taskRun("task_fetch_" + n.id, "Link " + n.name, ["niche-link", "--niche", n.id, "--folder", r[0]]);
+        } }, "Use a folder on this PC"),
         h("button", { class: "btn tiny ghost", disabled: !st.downloaded, onclick: () => {
-          if (!state.secrets.ANTHROPIC_API_KEY) toast("Without a Claude key the catalog has no descriptions. Add it in Settings for accurate picture choice.");
+          if (!AI().vision) toast("No AI vision provider: clips and pictures are described from your tags file and file names. Set OpenLux (or another) in Settings → AI for accurate picture choice.");
           taskRun("task_cat_" + n.id, "Catalog " + n.name, ["niche-catalog", "--niche", n.id]);
-        } }, "Catalog with AI"),
-        h("button", { class: "btn tiny ghost", onclick: () => S.external("https://drive.google.com/drive/folders/" + n.drive) }, "Drive ↗")));
+        } }, AI().vision ? "Catalog with AI" : "Catalog"),
+        n.local && n.folder ? h("button", { class: "btn tiny ghost", onclick: () => S.open(n.folder) }, "Folder ↗") : null,
+        n.drive ? h("button", { class: "btn tiny ghost", onclick: () => S.external("https://drive.google.com/drive/folders/" + n.drive) }, "Drive ↗") : null));
   }));
   const extra = ["task_frontier", "task_frontier_app", "task_setup"].concat(state.runs.filter((r) => r.id.startsWith("task_kit_")).map((r) => r.id))
     .filter((id) => state.runs.find((r) => r.id === id));
@@ -442,14 +471,33 @@ function renderNiches() {
   $("#n-style").replaceChildren(...info.styles.map((s) => h("option", { value: s.id }, s.name)));
 }
 
+seg("n-source", "nicheSource", () => { $("#n-folder-row").hidden = state.nicheSource !== "folder"; $("#n-drive-row").hidden = state.nicheSource !== "drive"; });
+$("#pick-niche-folder").addEventListener("click", async () => {
+  const r = await S.pick({ properties: ["openDirectory"] });
+  if (!r) return;
+  state.nicheFolder = r[0];
+  $("#pick-niche-folder").classList.add("has");
+  $(".fp-label", $("#pick-niche-folder")).textContent = r[0];
+  if (!$("#n-name").value) $("#n-name").value = r[0].split(/[\\/]/).filter(Boolean).pop();
+});
+$("#pick-niche-tags").addEventListener("click", () => pickInto($("#pick-niche-tags"), "nicheTags", [{ name: "Tags", extensions: ["json"] }]));
+
 $("#btn-add-niche").addEventListener("click", async () => {
   const name = $("#n-name").value.trim(), drive = $("#n-drive").value.trim();
-  if (!name || !drive) return toast("Name and Drive link are needed.", true);
-  const id = (drive.match(/folders\/([A-Za-z0-9_-]+)/) || [null, drive])[1];
-  const r = await S.query(["niche-add", "--name", name, "--drive", id, "--style", $("#n-style").value, "--clip-share", $("#n-clips").value, "--map-hint", $("#n-map").value]);
+  const local = state.nicheSource === "folder";
+  if (!name) return toast("Give the niche a name.", true);
+  if (local && !state.nicheFolder) return toast("Choose the footage folder.", true);
+  if (!local && !drive) return toast("Paste the Drive folder link.", true);
+  const src = local ? ["--folder", state.nicheFolder].concat(state.nicheTags ? ["--tags", state.nicheTags] : [])
+    : ["--drive", (drive.match(/folders\/([A-Za-z0-9_-]+)/) || [null, drive])[1]];
+  const r = await S.query(["niche-add", "--name", name, ...src, "--style", $("#n-style").value, "--clip-share", $("#n-clips").value, "--map-hint", $("#n-map").value]);
   if (!r.ok) return toast(r.error, true);
-  toast("Niche added. Download its footage, then Catalog with AI.");
+  toast(local ? "Niche added from your folder. Now Catalog it so the editor knows what each clip and picture shows." : "Niche added. Download its footage, then Catalog it.");
   $("#n-name").value = $("#n-drive").value = $("#n-map").value = "";
+  state.nicheFolder = state.nicheTags = null;
+  for (const id of ["#pick-niche-folder", "#pick-niche-tags"]) { $(id).classList.remove("has"); }
+  $(".fp-label", $("#pick-niche-folder")).textContent = "Choose the folder…";
+  $(".fp-label", $("#pick-niche-tags")).textContent = "Choose tags.json…";
   await loadInfo();
   renderNiches();
   renderCreate();
@@ -458,30 +506,47 @@ $("#btn-add-niche").addEventListener("click", async () => {
 // ------------------------------------------------------------------ settings
 const KEY_INFO = {
   FAMESPEAK_API_KEY: ["FameSpeak API key", "Voiceovers in ElevenLabs voices + SRT subtitles", "https://famespeak.online/api-keys"],
-  ANTHROPIC_API_KEY: ["Claude API key", "AI shot list, visual QA, AI cataloging, YouTube metadata", "https://console.anthropic.com/settings/keys"],
+  OPENROUTER_API_KEY: ["OpenRouter API key", "AI editor through OpenRouter (e.g. deepseek/deepseek-chat)", "https://openrouter.ai/settings/keys"],
+  OPENLUX_API_KEY: ["OpenLux API key", "AI vision: visual QA and cataloging (e.g. gemini-2.5-flash-lite)", "https://openlux.ai"],
+  ANTIGRAVITY_API_KEY: ["Antigravity router key (if your router asks for one)", "Your Antigravity / Gemini account through the local model router", null],
+  CUSTOM_AI_API_KEY: ["Custom endpoint key (optional)", "Any OpenAI-compatible server (LM Studio, Ollama, a proxy…)", null],
+  ANTHROPIC_API_KEY: ["Claude API key (optional)", "Only if you choose Claude API; Claude Code CLI uses your plan instead", "https://console.anthropic.com/settings/keys"],
   GOFILE_TOKEN: ["gofile token (optional)", "Upload into your gofile account so links last longer", "https://gofile.io/myprofile"],
 };
+const SRC_LABEL = { "Frontier .env": "found in your Frontier .env", "api_keys/keys.env": "found in api_keys/keys.env", environment: "set" };
 async function renderSettings() {
   const s = (state.settings = await S.settings());
   state.secrets = await S.secrets();
   $("#keys").replaceChildren(...Object.entries(KEY_INFO).map(([k, [label, why, url]]) => {
-    const inp = h("input", { type: "password", placeholder: state.secrets[k] ? "saved " + state.secrets[k] : "paste the key" });
+    const src = state.info && state.info.key_source && state.info.key_source[k];
+    const inp = h("input", { type: "password", placeholder: state.secrets[k] ? "saved " + state.secrets[k] : src && src !== "environment" ? SRC_LABEL[src] + " ✓ (paste to override)" : "paste the key" });
     return h("div", { class: "key-row" },
-      h("label", { class: "field" }, h("span", {}, label, " ", h("a", { onclick: () => S.external(url) }, "get it ↗")), inp, h("div", { class: "sub" }, why)),
+      h("label", { class: "field" }, h("span", {}, label, " ", url ? h("a", { onclick: () => S.external(url) }, "get it ↗") : null,
+        src && !state.secrets[k] ? h("span", { class: "tag ok", style: "margin-left:6px" }, SRC_LABEL[src] || src) : null), inp, h("div", { class: "sub" }, why)),
       h("div", { class: "inline" },
         h("button", { class: "btn", onclick: async () => { const r = await S.setSecret(k, inp.value); inp.value = ""; state.secrets = await S.secrets(); renderSettings(); renderSideStatus(); toast(r.encrypted ? "Saved (encrypted)" : "Saved (this system has no keychain: stored only in the app's private folder)"); } }, "Save"),
         state.secrets[k] ? h("button", { class: "btn ghost", onclick: async () => { await S.setSecret(k, ""); state.secrets = await S.secrets(); renderSettings(); renderSideStatus(); } }, "Remove") : null));
   }));
   $("#s-ws").value = s.workspace;
   $("#s-py").value = s.python;
-  $("#s-model").value = s.model;
+  for (const [id, val] of [["#s-editor", s.aiEditor], ["#s-vision", s.aiVision]]) {
+    $(id).replaceChildren(...AI_PROVIDERS.filter(([v]) => id === "#s-editor" || v !== "openrouter").map(([v, l]) => h("option", { value: v }, l)));
+    $(id).value = val || "auto";
+  }
+  $("#s-editor-model").value = s.aiEditorModel || "";
+  $("#s-vision-model").value = s.aiVisionModel || "";
+  $("#s-agy-url").value = s.antigravityUrl || "";
+  $("#s-custom-url").value = s.customUrl || "";
   $("#s-effort").value = s.effort;
+  const ai = AI();
+  const ready = AI_PROVIDERS.filter(([v]) => ai[v]).map(([, l]) => l.split(" (")[0]);
+  $("#ai-status").textContent = `Set up on this PC: ${ready.length ? ready.join(", ") : "none"} · editor → ${ai.editor ? ai.editor_label : "offline rules"} · vision → ${ai.vision ? ai.vision_label : "off"}`;
   $("#s-workers").value = s.workers;
   $("#s-limit").value = s.limitGb;
   $("#s-frontier").value = s.frontierDir || "";
   $("#s-fpy").value = s.frontierPython || "";
   const f = (state.info && state.info.frontier) || {};
-  $("#frontier-status").innerHTML = f.dir ? `Using <b>${f.dir}</b> · engine ${f.engine ? "✓" : "missing"} · .env ${f.env ? "✓ (its keys)" : "missing — add Frontier's keys to its .env"} · ${state.info.styles.filter((x) => x.engine === "frontier").length} styles`
+  $("#frontier-status").innerHTML = f.dir ? `Using <b>${f.dir}</b> · engine ${f.engine ? "✓" : "missing"} · .env ${f.env ? "✓ (its keys are used here too)" : "missing — add Frontier's keys to its .env"} · assets ${f.assets ? "✓" : "—"} · ${state.info.styles.filter((x) => x.engine === "frontier").length} styles`
     : "No Frontier folder yet. Browse to your Frontier folder, or download it from the Drive (code, styles, samples; never its .env).";
   if (state.doctor) paintDoctor();
 }
@@ -495,7 +560,7 @@ $("#btn-py").addEventListener("click", async () => {
 });
 $("#btn-save-settings").addEventListener("click", async () => {
   state.settings = await S.saveSettings({
-    workspace: $("#s-ws").value, python: $("#s-py").value, model: $("#s-model").value, effort: $("#s-effort").value,
+    workspace: $("#s-ws").value, python: $("#s-py").value,
     workers: Number($("#s-workers").value) || 4, limitGb: Number($("#s-limit").value) || 1.0,
     upload: $("#f-upload").checked, aiQa: $("#f-qa").checked,
     frontierDir: $("#s-frontier").value.trim(), frontierPython: $("#s-fpy").value.trim(),
@@ -504,6 +569,19 @@ $("#btn-save-settings").addEventListener("click", async () => {
   await loadInfo();
   renderCreate();
   doctor(false);
+});
+$("#btn-save-ai").addEventListener("click", async () => {
+  state.settings = await S.saveSettings({
+    aiEditor: $("#s-editor").value, aiVision: $("#s-vision").value, aiEditorModel: $("#s-editor-model").value.trim(),
+    aiVisionModel: $("#s-vision-model").value.trim(), antigravityUrl: $("#s-agy-url").value.trim(), customUrl: $("#s-custom-url").value.trim(),
+    effort: $("#s-effort").value,
+  });
+  await loadInfo();
+  renderSettings();
+  renderSideStatus();
+  renderCreate();
+  const ai = AI();
+  toast(`AI editor: ${ai.editor ? ai.editor_label : "offline rules"} · AI vision: ${ai.vision ? ai.vision_label : "off"}`);
 });
 $("#btn-setup").addEventListener("click", () => {
   taskRun("task_setup", "Install / repair engine", ["setup"]);
@@ -528,13 +606,13 @@ $("#btn-frontier-kits").addEventListener("click", () => {
 async function doctor(show) {
   const r = await S.query(["doctor"]);
   if (!r.ok) { state.doctorOk = false; state.doctor = [{ name: "Python backend", ok: false, detail: r.error, fix: "Settings → Python path, then Install / repair" }]; }
-  else { state.doctor = r.data.checks; state.doctorOk = r.data.checks.filter((c) => !/API key/.test(c.name)).every((c) => c.ok); }
+  else { state.doctor = r.data.checks; state.doctorOk = r.data.checks.filter((c) => !c.optional).every((c) => c.ok); }
   renderSideStatus();
   paintDoctor();
   if (show) toast(state.doctorOk ? "Engine ready" : "Some parts are missing — see System check", !state.doctorOk);
 }
 function paintDoctor() {
-  $("#doctor").replaceChildren(...(state.doctor || []).map((c) => h("div", { class: "check" }, h("span", { class: "dot " + (c.ok ? "ok" : /API key/.test(c.name) ? "warn" : "bad") }), c.name,
+  $("#doctor").replaceChildren(...(state.doctor || []).map((c) => h("div", { class: "check" }, h("span", { class: "dot " + (c.ok ? "ok" : c.optional ? "warn" : "bad") }), c.name,
     h("span", { class: "d", title: c.ok ? c.detail : c.fix }, c.ok ? c.detail : c.fix))));
 }
 

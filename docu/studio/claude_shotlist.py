@@ -1,5 +1,6 @@
 """
-claude_shotlist.py - Claude writes the shot list the way the hand-made videos were edited.
+claude_shotlist.py - the AI editor writes the shot list the way the hand-made videos were edited
+(any provider from ai.py: Claude Code, OpenRouter, OpenLux, Antigravity, Claude API ...).
 
 Claude gets: the editing method (docu/VISUAL_SYNC_GUIDE.md), the style's rules and a finished example
 shot list in that style, the scene reference (docu/templates/README.md), the helper API (shots.py),
@@ -20,7 +21,6 @@ import json
 import os
 import re
 
-import anthropic
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DOCU = os.path.dirname(HERE)
@@ -102,8 +102,8 @@ def _read(p, limit=None):
         return ""
 
 
-def system_blocks(st):
-    """st: the style's info (project.style_info)"""
+def system_text(st):
+    """the editor's standing instructions for one style (st: project.style_info)"""
     example = _read(st.get("example_path") or "")
     rules = _read(st["rules_path"]) if st.get("rules_path") else ""
     guide = _read(os.path.join(DOCU, "VISUAL_SYNC_GUIDE.md"))
@@ -117,7 +117,7 @@ def system_blocks(st):
               "\n\n=== A FINISHED SHOT LIST IN THIS STYLE ===\n"
               "It defines its own small helpers at the top; yours (listed above) do the same jobs. Study its pacing, "
               "variety of scene types, device and how cues and @phrases are chosen.\n\n" + example)
-    return [{"type": "text", "text": static, "cache_control": {"type": "ephemeral"}}]
+    return static
 
 
 def job_message(job, niche, script, para_times, duration, clips, images, props, variety):
@@ -145,81 +145,34 @@ def job_message(job, niche, script, para_times, duration, clips, images, props, 
     return "\n".join(lines)
 
 
-def _client(key):
-    return anthropic.Anthropic(api_key=key) if key else anthropic.Anthropic()
-
-
-def ask(client, system, messages, model=MODEL, effort="high", on_text=None):
-    with client.beta.messages.stream(
-        model=model, max_tokens=64000, system=system, messages=messages,
-        thinking={"type": "adaptive"}, output_config={"effort": effort},
-        betas=["server-side-fallback-2026-07-01"], fallbacks="default",
-    ) as stream:
-        n = 0
-        for ev in stream:
-            if ev.type == "content_block_delta" and getattr(ev.delta, "type", "") == "text_delta":
-                n += len(ev.delta.text)
-                if on_text:
-                    on_text(n)
-        msg = stream.get_final_message()
-    if msg.stop_reason == "refusal":
-        raise RuntimeError("Claude declined this request (refusal). Try again or use the offline shot list.")
-    text = "".join(b.text for b in msg.content if b.type == "text")
-    if msg.stop_reason == "max_tokens":
-        raise RuntimeError("the shot list was cut off (max_tokens)")
-    return msg, text
-
-
-def extract_code(text):
-    m = re.findall(r"```(?:python)?\s*\n(.*?)```", text, re.S)
-    if not m:
-        raise RuntimeError("Claude's answer had no ```python block")
-    code = max(m, key=len).strip()
-    code = "\n".join(l for l in code.split("\n")
-                     if not re.match(r"\s*(import |from |edl\.setup|edl\.main|shots\.init)", l))
-    if "ACTS" not in code:
-        code += "\n\nACTS = [None]\n"
-    compile(code, "shotlist", "exec")
-    return code
-
-
 class Session:
-    """one shot-list conversation (append-only, so fixes keep the context and the cache)"""
+    """one shot-list conversation with the editor provider (ai.py); fixes keep the context"""
 
-    def __init__(self, key, style_info, model=MODEL, effort="high", log=print):
-        self.client = _client(key)
-        self.system = system_blocks(style_info)
-        self.model, self.effort, self.log = model, effort, log
-        self.messages = []
+    def __init__(self, style_info, log=print, provider=None, model=None, effort="high"):
+        import ai
+        self.chat = ai.Chat("editor", system=system_text(style_info), log=log, provider=provider, model=model, effort=effort)
+        self.log = log
+
+    @property
+    def label(self):
+        return self.chat.label
 
     def first(self, user_text, on_text=None):
-        self.messages.append({"role": "user", "content": user_text})
-        return self._turn(on_text)
+        return self._code(self.chat.send(user_text, on_text=on_text), on_text)
 
-    def fix(self, problems, on_text=None, images=None):
-        content = []
-        for b64 in images or []:
-            content.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": b64}})
-        content.append({"type": "text", "text": problems})
-        self.messages.append({"role": "user", "content": content})
-        return self._turn(on_text)
+    def fix(self, problems, on_text=None):
+        return self._code(self.chat.send(problems, on_text=on_text), on_text)
 
-    def _turn(self, on_text):
-        for attempt in range(2):
+    def _code(self, text, on_text):
+        import ai
+        for _ in range(2):
             try:
-                msg, text = ask(self.client, self.system, self.messages, self.model, self.effort, on_text)
-                self.messages.append({"role": "assistant", "content": msg.content})
-                u = msg.usage
-                self.log(f"Claude: {u.input_tokens} in (+{getattr(u, 'cache_read_input_tokens', 0) or 0} cached), "
-                         f"{u.output_tokens} out")
-                return extract_code(text)
+                return ai.extract_code(text)
             except SyntaxError as e:
-                self.messages.append({"role": "assistant", "content": msg.content})
-                self.messages.append({"role": "user", "content": f"That code does not compile: {e}. Reply with the full corrected shot list."})
-            except anthropic.RateLimitError:
-                import time
-                time.sleep(30)
-        raise RuntimeError("Claude could not produce a valid shot list")
+                self.log(f"the shot list does not compile ({e}); asking for a corrected one")
+                text = self.chat.send(f"That code does not compile: {e}. Reply with the full corrected shot list in one ```python block.",
+                                      on_text=on_text)
+        return ai.extract_code(text)
 
 
 def jpeg_b64(path, width=1600):

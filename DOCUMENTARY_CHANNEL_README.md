@@ -14,9 +14,12 @@ session** without redoing the setup.
 
 Everything below is also available as an app: [`studio/`](studio/README.md). Pick a niche, a template style
 (built-in, your own folders in `styles/`, or any Frontier style with its sample), give it a script and a voice
-(FameSpeak voice ID → MP3 + SRT, or your recording), press **Start production**. The Claude AI editor writes the shot
-list by the [visual sync method](docu/VISUAL_SYNC_GUIDE.md), checks the stills, renders, delivers under 1 GB and
-writes the YouTube metadata. Windows: unzip `DocuStudio-Windows-x64.zip` and run `Docu Studio.exe`.
+(FameSpeak voice ID → MP3 + SRT, your recording, or Frontier's own voice), press **Start production**. The AI editor
+of your choice (Claude Code CLI, OpenRouter, OpenLux, your Antigravity account through the local router, any
+OpenAI-compatible endpoint, the Claude API, or none: offline rules) writes the shot list by the
+[visual sync method](docu/VISUAL_SYNC_GUIDE.md); a vision model such as OpenLux checks the stills; then it renders,
+delivers under 1 GB and writes the YouTube metadata. Point Settings → Frontier folder at your own Frontier: all its
+styles show, its `.env` keys and `assets/` are used, and niches can come from folders on your PC. Windows: unzip `DocuStudio-Windows-x64.zip` and run `Docu Studio.exe`.
 From source: `cd studio && npm install && npm start`.
 
 ## 1. Launch in a new session (copy-paste)
