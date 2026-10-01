@@ -32,7 +32,7 @@ V = None                         # this video's variety picks (variety.Picks) wh
 
 def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade="doc", grain=5.0,
           tail=4.8, image_dirs=None, music_floor_db=-12.5, music_duck_db=-9.0, sfx_gain=0.7, xfade=0.0,
-          sfx_style="full", vary=None):
+          sfx_style="full", vary=None, vary_look=None):
     """Paths and look for one project. Call before declaring any shot."""
     global KIT, FOOT, WORK, ASSETS, SEGS, VO, SCRIPT, WORDS, OUT, IMG_DIRS, CUTS, VOX_TAIL
     KIT, FOOT, WORK, OUT = kit, footage, work, out
@@ -57,7 +57,12 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade=
         for h in hist:
             used |= set(h.get("images", [])) | set(h.get("clips", []))
         V = variety.Picks(v, used)
-        P.update(grade=v["grade"], grain=v["grain"], xfade=v["xfade"], vary=v)
+        # the look shuffle (accent, fonts, grade, dissolve) suits the calm documentary; other themes keep their
+        # own designed look and only use the asset rotation, unless vary_look=True
+        look = (theme == "documentary") if vary_look is None else vary_look
+        P.update(vary=v, vary_look=look)
+        if look:
+            P.update(grade=v["grade"], grain=v["grain"], xfade=v["xfade"] if xfade or theme == "documentary" else 0.0)
 
 
 def at(cue, scene):
@@ -309,6 +314,9 @@ def do_prep():
 def main(music=()):
     """music: [dict(at=cue or None, track=..., db=0, lead=0)] - one bed per act."""
     import subprocess
+    import multiprocessing
+    if multiprocessing.parent_process() is not None:
+        return                         # a render worker re-importing build.py (Windows / macOS spawn): do nothing
     cmd = sys.argv[1] if len(sys.argv) > 1 else "plan"
     if cmd == "path":                  # where `final` writes the video (for pipeline scripts)
         print(os.path.join(OUT, P["name"] + ".mp4"))
@@ -319,8 +327,9 @@ def main(music=()):
     scenes = resolve(T, vo_dur)
     os.makedirs(OUT, exist_ok=True)
     json.dump(scenes, open(f"{WORK}/scenes.json", "w"), indent=1, ensure_ascii=False)
-    cfg = {"kit": "file://" + KIT, "assets": "file://" + ASSETS, "theme": P["theme"], "grain": P["grain"]}
-    if P.get("vary"):
+    import render as _r
+    cfg = {"kit": _r.file_uri(KIT), "assets": _r.file_uri(ASSETS), "theme": P["theme"], "grain": P["grain"]}
+    if P.get("vary") and P.get("vary_look", True):
         cfg["vary"] = variety.engine_overrides(P["vary"])
     clips = sum(s["duration"] for s in scenes if s["type"] == "clip")
     total = sum(s["duration"] for s in scenes)

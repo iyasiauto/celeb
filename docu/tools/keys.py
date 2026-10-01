@@ -11,7 +11,7 @@ import os
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 FILE = os.environ.get("API_KEYS_FILE", os.path.join(REPO, "api_keys", "keys.env"))
-KNOWN = ["TWOSPEAKER_API_KEY", "GOFILE_TOKEN"]
+KNOWN = ["FAMESPEAK_API_KEY", "ANTHROPIC_API_KEY", "GOFILE_TOKEN", "TWOSPEAKER_API_KEY"]
 
 
 def _file_values():

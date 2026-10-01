@@ -15,6 +15,7 @@ import sys
 import json
 import time
 import base64
+import pathlib
 import subprocess
 from multiprocessing import Pool
 
@@ -24,15 +25,25 @@ def _find_chrome():
     if os.environ.get("DOCU_CHROME"):
         return os.environ["DOCU_CHROME"]
     import glob
-    for root in (os.environ.get("PLAYWRIGHT_BROWSERS_PATH", ""), "/opt/pw-browsers", os.path.expanduser("~/.cache/ms-playwright")):
-        for pat in ("chromium_headless_shell-*/chrome-linux*/headless_shell", "chromium-*/chrome-linux*/chrome"):
+    roots = (os.environ.get("PLAYWRIGHT_BROWSERS_PATH", ""), "/opt/pw-browsers", os.path.expanduser("~/.cache/ms-playwright"),
+             os.path.join(os.environ.get("LOCALAPPDATA", ""), "ms-playwright"), os.path.expanduser("~/Library/Caches/ms-playwright"))
+    pats = ("chromium_headless_shell-*/chrome-linux*/headless_shell", "chromium-*/chrome-linux*/chrome",
+            "chromium_headless_shell-*/chrome-headless-shell-win64/chrome-headless-shell.exe", "chromium-*/chrome-win*/chrome.exe",
+            "chromium_headless_shell-*/chrome-headless-shell-mac*/chrome-headless-shell")
+    for root in roots:
+        for pat in pats:
             hits = sorted(glob.glob(os.path.join(root, pat))) if root else []
             if hits:
                 return hits[-1]
-    return "/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell"
+    return None                     # let Playwright use its own default browser
 
 
 CHROME = _find_chrome()
+
+
+def file_uri(path):
+    """file:// URL that works on Windows (file:///C:/...) as well as Linux and macOS."""
+    return pathlib.Path(os.path.abspath(path)).as_uri()
 FPS = 30
 W, H = 1920, 1080
 
@@ -60,13 +71,13 @@ def _browser(cfg):
     else:
         from playwright.sync_api import sync_playwright
         pw = sync_playwright().start()
-        b = pw.chromium.launch(executable_path=CHROME, args=[
+        b = pw.chromium.launch(executable_path=CHROME if CHROME and os.path.exists(CHROME) else None, args=[
             "--allow-file-access-from-files", "--disable-web-security", "--force-device-scale-factor=1",
             "--disable-gpu", "--hide-scrollbars", "--font-render-hinting=none"])
     page = b.new_page(viewport={"width": W, "height": H})
     page.add_init_script(f"window.CFG = {json.dumps(cfg)};")
     page.on("console", lambda m: m.type in ("error", "warning") and print("  [page]", m.text, flush=True))
-    page.goto("file://" + os.path.join(HERE, "engine.html"))
+    page.goto(file_uri(os.path.join(HERE, "engine.html")))
     page.wait_for_function("window.FONTS_READY === true", timeout=60000)
     cdp = page.context.new_cdp_session(page)
     _B.update(pw=pw, browser=b, page=page, cdp=cdp, cfg=key)
@@ -278,7 +289,7 @@ def concat(scenes, out_dir, out_path):
     lst = os.path.join(out_dir, "concat.txt")
     with open(lst, "w") as f:
         for s in scenes:
-            f.write(f"file '{os.path.join(out_dir, s['id'] + '.mp4')}'\n")
+            f.write(f"file '{os.path.join(out_dir, s['id'] + '.mp4').replace(os.sep, '/')}'\n")
     r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst,
                         "-c", "copy", out_path], capture_output=True, text=True)
     if r.returncode != 0:

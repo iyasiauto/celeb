@@ -55,6 +55,7 @@ function asset(src) {
   if (!src) return src;
   if (/^(file|data|https?):/.test(src)) return src;
   if (src.startsWith("/")) return "file://" + src;
+  if (/^[A-Za-z]:[\\/]/.test(src)) return "file:///" + src.replace(/\\/g, "/");
   if (src.startsWith("kit:")) return CFG.kit + "/" + src.slice(4);
   return CFG.assets + "/" + src;
 }

@@ -1,0 +1,16 @@
+{
+  "id": "hasidic",
+  "name": "Hasidic communities (New York)",
+  "description": "Kiryas Joel, Williamsburg, Borough Park: streets, families, yeshivas, Hatzalah, Shomrim, benefits, kosher shops, archival New York. 525 clips, 2,845 pictures (587 catalogued).",
+  "drive": "1iubj0u5xQdc_wO-I986zobwx5eLnUasm",
+  "download_to": "hasidic/src",
+  "footage": "hasidic/footage",
+  "source_video": "hasidic/src/clips",
+  "images": "hasidic/src/images",
+  "picks": "hasidic/picks",
+  "image_dirs": ["hasidic/picks", "hasidic/src/images"],
+  "catalog_from": "projects/hasidic_benefits_cut/data",
+  "clip_share": 30,
+  "default_style": "documentary",
+  "map_hint": "US states: New York USA-3559, New Jersey USA-3558, Pennsylvania USA-3560, Connecticut USA-3537. Kiryas Joel (-74.168, 41.340), Williamsburg (-73.957, 40.708), Borough Park (-73.990, 40.634), New Square (-74.029, 41.139), Monsey (-74.068, 41.111), Lakewood NJ (-74.217, 40.096), NYC (-74.006, 40.713)."
+}

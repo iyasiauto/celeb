@@ -45,6 +45,18 @@ IMG_EXT = (".jpg", ".jpeg", ".png", ".webp")
 COLS, ROWS, TW, TH = 8, 7, 240, 150
 
 
+def _link(src, dst):
+    """symlink, else hard link, else copy (Windows without developer mode can't symlink)"""
+    src = os.path.abspath(src)
+    for f in (os.symlink, os.link):
+        try:
+            return f(src, dst)
+        except OSError:
+            pass
+    import shutil
+    shutil.copy2(src, dst)
+
+
 def _font(size):
     for p in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"):
         if os.path.exists(p):
@@ -125,7 +137,7 @@ def pick(cat, src, picks, dst):
         ext = os.path.splitext(r["file"])[1].lower()
         link = os.path.join(picks, key + (ext if ext in (".jpg", ".png", ".jpeg") else ".jpg"))
         if not os.path.exists(link):
-            os.symlink(os.path.abspath(os.path.join(src, r["file"])), link)
+            _link(os.path.join(src, r["file"]), link)
         out.append(dict(key=key, file=r["file"], w=r["w"], h=r["h"], tags=[t for t in tags.split(",") if t], desc=desc))
     os.makedirs(os.path.dirname(os.path.abspath(dst)), exist_ok=True)
     json.dump(out, open(dst, "w"), indent=0)
@@ -144,7 +156,7 @@ def stage(picks_json, src, picks):
         ext = os.path.splitext(r["file"])[1].lower()
         link = os.path.join(picks, r["key"] + (ext if ext in (".jpg", ".png", ".jpeg") else ".jpg"))
         if not os.path.lexists(link):
-            os.symlink(os.path.abspath(p), link)
+            _link(p, link)
         n += 1
     print(n, "picks staged in", picks, f"({miss} missing from {src})" if miss else "")
 

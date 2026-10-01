@@ -10,6 +10,15 @@ session** without redoing the setup.
 
 ---
 
+## 0. The desktop app: Docu Studio
+
+Everything below is also available as an app: [`studio/`](studio/README.md). Pick a niche, a template style
+(built-in, your own folders in `styles/`, or any Frontier style with its sample), give it a script and a voice
+(FameSpeak voice ID → MP3 + SRT, or your recording), press **Start production**. The Claude AI editor writes the shot
+list by the [visual sync method](docu/VISUAL_SYNC_GUIDE.md), checks the stills, renders, delivers under 1 GB and
+writes the YouTube metadata. Windows: unzip `DocuStudio-Windows-x64.zip` and run `Docu Studio.exe`.
+From source: `cd studio && npm install && npm start`.
+
 ## 1. Launch in a new session (copy-paste)
 
 1. Open a Claude Code session on the GitHub repo **`iyasiauto/celeb`**, branch
@@ -175,4 +184,5 @@ pick or build a new style (`docu/templates/README.md` §3 lists which style suit
 | gofile uploads need permission for `curl` to gofile | allow it once in Claude Code settings if asked |
 | Music licences | the tracks come from your kit; confirm their licences before publishing |
 | Drive folders must be shared "Anyone with the link" | otherwise `fetch_drive.py` can't list them |
+| Frontier styles | rendered by Frontier's own engine with its `.env` keys (Algrow, Gemini, …); the app only drives it |
 | API keys | names and setup in `api_keys/README.md`; values go in the cloud environment's variables (or a git-ignored `api_keys/keys.env`), never in chat or git |
