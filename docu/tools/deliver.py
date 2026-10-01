@@ -9,7 +9,8 @@ deliver.py - check the final MP4, shrink it under a size limit if needed, and up
    (~7-8 Mb/s for 16 minutes under 1 GB).
 3. Uploads with curl to gofile (tries upload.gofile.io, then the listed store servers), checks the
    md5 gofile reports against the local file, and prints the download page.
-   The link is also written next to the video as <name>.link.txt.
+   The link is also written next to the video as <name>.link.txt. With GOFILE_TOKEN set (api_keys/),
+   uploads go into your gofile account instead of anonymous links.
 """
 
 import argparse
@@ -18,6 +19,10 @@ import json
 import os
 import re
 import subprocess
+
+from keys import get as _key
+
+TOKEN = _key("GOFILE_TOKEN")          # optional, see api_keys/README.md
 
 STORES = ["https://upload.gofile.io/uploadfile", "https://store-eu-par-4.gofile.io/uploadFile",
           "https://store-eu-par-3.gofile.io/uploadFile", "https://store-na-phx-1.gofile.io/uploadFile",
@@ -66,7 +71,8 @@ def upload(p):
     local = md5(p)
     for url in STORES:
         for _ in range(2):
-            r = subprocess.run(["curl", "-sS", "--retry", "2", "-F", f"file=@{p}", url], capture_output=True, text=True)
+            auth = ["-H", f"Authorization: Bearer {TOKEN}"] if TOKEN else []      # your gofile account, if set
+            r = subprocess.run(["curl", "-sS", "--retry", "2", *auth, "-F", f"file=@{p}", url], capture_output=True, text=True)
             try:
                 d = json.loads(r.stdout)["data"]
             except Exception:

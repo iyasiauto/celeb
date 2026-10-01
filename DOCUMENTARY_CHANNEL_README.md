@@ -175,3 +175,4 @@ pick or build a new style (`docu/templates/README.md` §3 lists which style suit
 | gofile uploads need permission for `curl` to gofile | allow it once in Claude Code settings if asked |
 | Music licences | the tracks come from your kit; confirm their licences before publishing |
 | Drive folders must be shared "Anyone with the link" | otherwise `fetch_drive.py` can't list them |
+| API keys | names and setup in `api_keys/README.md`; values go in the cloud environment's variables (or a git-ignored `api_keys/keys.env`), never in chat or git |
