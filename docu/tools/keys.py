@@ -20,6 +20,7 @@ import os
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 FILE = os.environ.get("API_KEYS_FILE", os.path.join(REPO, "api_keys", "keys.env"))
 KNOWN = ["FAMESPEAK_API_KEY", "FAMESPEAK_VOICE_ID", "OPENROUTER_API_KEY", "OPENLUX_API_KEY", "ANTIGRAVITY_API_KEY",
+         "PEXELS_API_KEY", "PIXABAY_API_KEY", "SERPER_API_KEY",
          "CUSTOM_AI_API_KEY", "ANTHROPIC_API_KEY", "GOFILE_TOKEN", "TWOSPEAKER_API_KEY"]
 ALIASES = {"OPENROUTER_API_KEY": ["OPENROUTER_KEY"]}
 

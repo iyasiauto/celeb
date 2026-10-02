@@ -22,6 +22,14 @@ delivers under 1 GB and writes the YouTube metadata. Point Settings → Frontier
 styles show, its `.env` keys and `assets/` are used, and niches can come from folders on your PC. Windows: unzip `DocuStudio-Windows-x64.zip` and run `Docu Studio.exe`.
 From source: `cd studio && npm install && npm start`.
 
+## 0b. The portable kit: all templates, one command
+
+`python docu/tools/build_kit.py <dir>` packs **DocuTemplates_Kit.zip**: the engine, all six templates
+(documentary, almanac, paper, forensic, expedition, broadcast) with starters and previews, the finished example
+projects, the asset kit, and **`make_video.py`**: pick a template, point it at a footage folder / Drive link /
+online search (Pexels, Pixabay, Wikimedia, optional Google), and the video gets made. Docs: `kit_docs/START_HERE.md`,
+`TEMPLATES.md`, `DATA_SOURCES.md`. Online footage on its own: `docu/tools/fetch_online.py`.
+
 ## 1. Launch in a new session (copy-paste)
 
 1. Open a Claude Code session on the GitHub repo **`iyasiauto/celeb`**, branch
