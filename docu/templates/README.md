@@ -215,6 +215,25 @@ understand, not be dazzled. "Not fast-paced, not complicated."
   everything fades in (`from="fade"`).
 - Preview: [documentary sheet](previews/sheet_documentary.jpg). Starter: `starter_documentary/build.py`.
 
+### Style F: Heritage almanac (`theme="almanac"`, `grade="almanac"`, grain 4, `xfade=0.5`, `sfx_style="calm"`)
+*Best for:* rural life, traditions, migrations, land and family stories; slow and warm, clearly different
+from the dark calm documentary. First used for *Why Thousands of Amish Are Leaving Their 300-Year Homeland*
+(`projects/amish_leaving/build.py`, the full worked example).
+- **Opens on moving footage**, never a still; the title (`almhead` with no numeral) rises over a clip.
+- **Footage carries about half** the video; photographs drift slowly; 0.5 s dissolves; shots 4–10 s.
+- **Chapter headings over moving footage** (`almhead` overlay): a stitched round badge with the chapter
+  numeral, a small kicker, a big Zilla Slab title rising out of a mask, a stitched rule, an italic sub.
+  It renders as a moving alpha layer, so the clip keeps playing under it.
+- **Seed-packet place tags** (`almtag`), **quilt-frame key points** (`almcard`), **one big number** (`almstat`).
+- **Charts on cream paper, only for the key numbers**: `almgrowth`, `almsplit`, `almdots`, `almshare`,
+  `almbars`, `almdistrict` (see §6).
+- **The cream survey map**: the `map` scene restyled by the theme - cream land, blue-grey water, red target
+  markers with name tags in an ink keyline (`MAPC.pin = "survey"`), inked routes with arrowheads
+  (`routes=[{..., arrow=True}]`), states tinted with `highlight=[{id, fill}]`, slab names (`names=[{font: "Slab"}]`).
+- Palette barn red `#9E3A2B`, field green `#5E7A44`, wheat `#D4A85A`, denim `#4E6E8A`, ink `#23211C`, cream.
+- Type: Zilla Slab, Libre Baskerville, Crimson Pro (OFL, in `docu/fonts/`, copied into the kit on first run).
+- Preview: [almanac sheet](previews/sheet_almanac.jpg). Starter: `starter_almanac/build.py`.
+
 ### Keep every video different: `vary="auto"`
 Add `vary="auto"` to `edl.setup()` and each video gets its own accent colour, font pairing, heading style
 ("Chapter 3" / "Part III" / "03" / "— 3 —" / "Part Three"), grade and grain, dissolve length, camera-move
@@ -557,6 +576,51 @@ Options: `title`, `note`, `sizes` (default 2–12), `values` or `base` + `step`,
 
 Overlays: `dict(type="place", text="Williamsburg, Brooklyn", sub="…", at=0.6)` and
 `dict(type="doclower", name="Name", role="Role", at=0.6)`.
+
+### Heritage almanac (`scenes_almanac.js`)
+
+#### `almhead` overlay: chapter heading over footage
+![almhead](previews/almanac/almhead.jpg)
+`dict(type="almhead", n=3, kicker="Chapter three", title="The Mathematical Trap", sub="…", at=0.5, size=104)`;
+`n=None` hides the badge (use it for the title). Options also `out`, `x`, `bottom`, `w`, `rule`.
+
+#### `almtag` overlay: a place tag
+![almtag](previews/almanac/almtag.jpg)
+`dict(type="almtag", text="Lancaster County, Pennsylvania", sub="Route 340", at=0.6)`; options `x`, `y`, `size`, `out`.
+
+#### `almcard`: a key point in a quilt frame
+![almcard](previews/almanac/almcard.jpg)
+Options: `kicker`, `lines` `[{text, at, color, size, font}]` (font `Slab`, `BaskI`, …), `img`, `dim`, `w`, `frame` (false = no frame).
+
+#### `almstat`: one big number
+![almstat](previews/almanac/almstat.jpg)
+Options: `value` ("$25,000", "23,000", "7–9" with `count=False`), `kicker`, `note`, `img`, `dim`, `at`, `countFor`, `size`, `source`.
+
+#### `almgrowth`: a line across the years
+![almgrowth](previews/almanac/almgrowth.jpg)
+Options: `title`, `note`, `source`, `points` `[{x, y, label, sub, at, color, dx, dy, size}]` - give every point an
+`at` ("@words") and the line reaches each point as it is spoken; `ticks`, `grid` `[{y, label}]`, `xmin`, `xmax`,
+`ymax`, `projectFrom` (index from which the line turns into a dashed red projection).
+
+#### `almsplit`: a field fenced into equal strips
+![almsplit](previews/almanac/almsplit.jpg)
+Options: `title`, `note`, `label` (the whole), `n`, `each`, `who` ("son {n}"), `splitAt`, `verdict`, `verdictAt`, `fw`, `fh`, `fy`.
+
+#### `almdots`: generations as rows of dots
+![almdots](previews/almanac/almdots.jpg)
+Options: `title`, `note`, `rows` `[{label, value, n, at, color}]`, `perLine` (40), `unit`, `fill` (seconds to fill a row).
+
+#### `almshare`: one bar split into shares
+![almshare](previews/almanac/almshare.jpg)
+Options: `title`, `source`, `y`, `parts` `[{frac, big, label, sub, color, at}]`.
+
+#### `almbars`: columns on paper
+![almbars](previews/almanac/almbars.jpg)
+Options: `title`, `note`, `bars` `[{label, value, text, at, color, gapBefore}]`, `max`, `x0`, `ht`, `valSize`, `groups`.
+
+#### `almdistrict`: a ring of houses around a centre
+![almdistrict](previews/almanac/almdistrict.jpg)
+Options: `title`, `note`, `houses`, `centre`, `centreSub`, `roles` `[{text, at}]`, `housesAt`, `step`, `count`, `countAt`, `r`, `cy`.
 
 ### Clips
 

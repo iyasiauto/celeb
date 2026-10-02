@@ -36,6 +36,13 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade=
     """Paths and look for one project. Call before declaring any shot."""
     global KIT, FOOT, WORK, ASSETS, SEGS, VO, SCRIPT, WORDS, OUT, IMG_DIRS, CUTS, VOX_TAIL
     KIT, FOOT, WORK, OUT = kit, footage, work, out
+    # fonts shipped with the templates (docu/fonts, all OFL) join the kit's fonts once
+    fdir = os.path.join(_HERE, "fonts")
+    if os.path.isdir(fdir) and os.path.isdir(os.path.join(kit, "fonts")):
+        import shutil
+        for f in os.listdir(fdir):
+            if not os.path.exists(os.path.join(kit, "fonts", f)):
+                shutil.copy(os.path.join(fdir, f), os.path.join(kit, "fonts", f))
     ASSETS, SEGS = f"{work}/assets", f"{work}/segments"
     VO = vo or f"{work}/vo.mp3"
     SCRIPT, WORDS = f"{data}/script.txt", f"{data}/words.json"
@@ -43,6 +50,8 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade=
     CUTS = f"{kit}/cutouts"
     VOX_TAIL = tail
     CAT[:] = json.load(open(f"{data}/catalog_all.json"))
+    if theme == "almanac" and grade == "doc":
+        grade = "almanac"                 # the almanac template's own warm print grade
     P.update(name=name, theme=theme, grade=grade, grain=grain, music_floor_db=music_floor_db,
              music_duck_db=music_duck_db, sfx_gain=sfx_gain, xfade=xfade, sfx_style=sfx_style, data=data)
     if vary is not None:

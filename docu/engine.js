@@ -172,6 +172,29 @@ THEMES.documentary = {
     sub: "#CFC8BA", dot: "#F3EEE4", dotText: "#E6E0D4", name: "rgba(243,238,228,.7)", shadow: "rgba(0,0,0,.8)",
   },
 };
+/* almanac: a farmer's almanac / heritage field guide - slab-serif headings with a stitched
+   chapter badge laid over moving footage, seed-packet place tags, quilt-frame cards, charts
+   drawn on cream paper and a cream survey map. Barn red, field green, wheat, denim. */
+THEMES.almanac = {
+  fonts: {
+    Anton: "ZillaSlab-Bold.ttf", Stamp: "ZillaSlab-Bold.ttf", DMSerif: "ZillaSlab-SemiBold.ttf", Elite: "LibreBaskerville.ttf",
+    Garamond: "LibreBaskerville.ttf", GaramondI: "LibreBaskerville-Italic.ttf", Barlow: "Roboto-Condensed.ttf",
+    BarlowB: "BarlowCondensed-Bold.ttf", Oswald: "Roboto-Condensed.ttf", OswaldB: "BarlowCondensed-Bold.ttf",
+    Caveat: "CrimsonPro-Italic.ttf", Slab: "ZillaSlab-Bold.ttf", SlabM: "ZillaSlab-Medium.ttf",
+    Bask: "LibreBaskerville.ttf", BaskI: "LibreBaskerville-Italic.ttf", Crimson: "CrimsonPro.ttf", CrimsonI: "CrimsonPro-Italic.ttf",
+  },
+  pal: {
+    mustard: "#D4A85A", red: "#9E3A2B", gold: "#D4A85A", cyan: "#4E6E8A", green: "#5E7A44",
+    ink: "#23211C", cream: "#F2EBDA", wheat: "#D4A85A", barn: "#9E3A2B", field: "#5E7A44", denim: "#4E6E8A", paperA: "#EFE6D2",
+  },
+  grounds: { paper: "paper_tan.jpg", map: "paper_tan.jpg", cork: "studio_dark.jpg", parchment: "parchment.jpg" },
+  map: {
+    bg0: "#EEE6D3", bg1: "#D9CDB2", sea: "#B9C6C4", rim: "rgba(35,33,28,.35)", grat: "rgba(35,33,28,.07)",
+    land: "#E4DCC4", border: "rgba(35,33,28,.55)", admin: "35,33,28", hi: "158,58,43", hiA: 0.30, text: "#23211C",
+    sub: "#4A443A", dot: "#9E3A2B", dotText: "#23211C", name: "rgba(35,33,28,.62)", shadow: "rgba(242,235,218,.95)",
+    pin: "survey", route: "#23211C", hiLine: "rgba(158,58,43,A)",
+  },
+};
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);

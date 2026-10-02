@@ -71,7 +71,7 @@ SCENES.map = async (s, root) => {
   let paperImg = null;
   if (MAPC.paper) { paperImg = new Image(); WAITS.push(new Promise(r => { paperImg.onload = r; paperImg.onerror = r; })); paperImg.src = asset(MAPC.paper); }
   const over = el("div", "full", root);
-  vignette(root, 0.55);
+  vignette(root, MAPC.pin === "survey" ? 0.2 : 0.55);
 
   const proj = d3.geoOrthographic().translate([W / 2, H / 2]).clipAngle(90).precision(1.2);
   const path = d3.geoPath(proj, c);
@@ -98,6 +98,23 @@ SCENES.map = async (s, root) => {
   /* labels and pins live in the DOM so type stays crisp */
   const pins = (s.pins || []).map(p => {
     const g = el("div", "abs", over, { left: 0, top: 0 });
+    if (MAPC.pin === "survey") {
+      /* survey marker: a red target dot with a ring, the name on a cream tag with an ink keyline */
+      const col = p.color || PAL.red;
+      const ring1 = el("div", "abs", g, { left: "-16px", top: "-16px", width: "32px", height: "32px", borderRadius: "50%", border: `2px solid ${col}` });
+      const ring2 = el("div", "abs", g, { left: "-16px", top: "-16px", width: "32px", height: "32px", borderRadius: "50%", border: `2px solid ${col}`, opacity: 0 });
+      const head = el("div", "abs", g, { left: "-8px", top: "-8px", width: "16px", height: "16px", borderRadius: "50%", background: col,
+        boxShadow: "0 0 0 3px rgba(242,235,218,.9)" });
+      const side = p.side || "left";
+      const lab = el("div", "abs", g, { top: "-30px", whiteSpace: "nowrap", background: "#F4EEDF", border: "2px solid #23211C",
+        padding: "8px 18px 9px", boxShadow: "0 6px 18px rgba(35,33,28,.18)", textAlign: "left" });
+      if (side === "left") lab.style.right = (p.gap || 120) + "px"; else lab.style.left = (p.gap || 120) + "px";
+      el("div", "", lab, { font: `${p.size || 40}px 'DMSerif'`, color: "#23211C", lineHeight: "1.05" }, esc(p.label || ""));
+      if (p.sub) el("div", "", lab, { font: "21px 'Barlow'", color: "#4A443A", letterSpacing: ".14em", marginTop: "4px", textTransform: "uppercase" }, esc(p.sub));
+      const lead = el("div", "abs", g, { top: "-1px", height: "0", borderTop: "2px dashed #23211C" });
+      if (side === "left") lead.style.right = "18px"; else lead.style.left = "18px";
+      return { p, g, ring1, ring2, head, lab, lead, survey: true };
+    }
     const ring1 = el("div", "abs", g, { left: "-10px", top: "-10px", width: "20px", height: "20px", borderRadius: "50%", border: `3px solid ${PAL.red}` });
     const ring2 = el("div", "abs", g, { left: "-10px", top: "-10px", width: "20px", height: "20px", borderRadius: "50%", border: `3px solid ${PAL.red}` });
     const head = el("div", "abs", g, {
@@ -121,10 +138,12 @@ SCENES.map = async (s, root) => {
     return { d, g };
   });
   const names = (s.names || []).map(n => {
-    const e = el("div", "abs", over, { left: 0, top: 0, font: `${n.size || 34}px 'Barlow'`, letterSpacing: ".45em", color: n.color || MAPC.name, whiteSpace: "nowrap", textShadow: "0 2px 12px rgba(0,0,0,.7)" }, esc(n.text.toUpperCase()));
+    const e = el("div", "abs", over, { left: 0, top: 0, font: `${n.size || 34}px '${n.font || "Barlow"}'`, letterSpacing: n.font ? ".04em" : ".45em", color: n.color || MAPC.name, whiteSpace: "nowrap", textShadow: `0 2px 12px ${MAPC.pin === "survey" ? "rgba(242,235,218,.9)" : "rgba(0,0,0,.7)"}` }, esc(n.font ? n.text : n.text.toUpperCase()));
     return { n, e };
   });
-  const title = s.title ? el("div", "abs", over, { left: "110px", top: "90px", font: "30px 'BarlowB'", letterSpacing: ".35em", color: PAL.mustard }, esc(s.title)) : null;
+  const title = s.title ? el("div", "abs", over, MAPC.pin === "survey"
+    ? { left: "110px", top: "84px", font: "26px 'BarlowB'", letterSpacing: ".32em", color: "#F4EEDF", background: "#23211C", padding: "10px 20px 8px", textTransform: "uppercase" }
+    : { left: "110px", top: "90px", font: "30px 'BarlowB'", letterSpacing: ".35em", color: PAL.mustard }, esc(s.title)) : null;
 
   return t => {
     const cam = camera(t);
@@ -160,7 +179,7 @@ SCENES.map = async (s, root) => {
       if (a <= 0) return;
       c.beginPath(); path(f);
       c.fillStyle = h.fill || `rgba(${MAPC.hi},${((MAPC.hiA || 0.75) * a).toFixed(3)})`; c.globalAlpha = h.fill ? a : 1; c.fill(); c.globalAlpha = 1;
-      c.lineWidth = 3; c.strokeStyle = `rgba(217,164,65,${a.toFixed(3)})`; c.stroke();
+      c.lineWidth = 3; c.strokeStyle = MAPC.hiLine ? MAPC.hiLine.replace("A", a.toFixed(3)) : `rgba(217,164,65,${a.toFixed(3)})`; c.stroke();
     });
     /* radius circles (e.g. "29 km") */
     (s.circles || []).forEach(k => {
@@ -177,13 +196,24 @@ SCENES.map = async (s, root) => {
       const pts = []; for (let i = 0; i <= 60 * a; i++) pts.push(interp(i / 60));
       if (pts.length < 2) return;
       c.beginPath(); path({ type: "LineString", coordinates: pts });
-      c.lineWidth = r.width || 5; c.strokeStyle = r.color || PAL.mustard; c.setLineDash(r.dash ? [14, 10] : []); c.stroke(); c.setLineDash([]);
+      c.lineWidth = r.width || 5; c.strokeStyle = r.color || MAPC.route || PAL.mustard; c.setLineDash(r.dash ? [14, 10] : []); c.stroke(); c.setLineDash([]);
+      if (r.arrow) {
+        /* an arrowhead at the moving tip, along the line */
+        const tip = proj(pts[pts.length - 1]), back = proj(pts[Math.max(0, pts.length - 4)]);
+        if (tip && back) {
+          const ang = Math.atan2(tip[1] - back[1], tip[0] - back[0]), L = (r.width || 5) * 4.2;
+          c.beginPath(); c.moveTo(tip[0], tip[1]);
+          c.lineTo(tip[0] - L * Math.cos(ang - 0.42), tip[1] - L * Math.sin(ang - 0.42));
+          c.lineTo(tip[0] - L * Math.cos(ang + 0.42), tip[1] - L * Math.sin(ang + 0.42));
+          c.closePath(); c.fillStyle = r.color || MAPC.route || PAL.mustard; c.fill();
+        }
+      }
       if (r.label && a >= 1) {
         const m = proj(interp(0.5));
         if (m) {
           const q = eOut(seg(t, (r.at || 0) + (r.d || 1.2), 0.4));
-          c.globalAlpha = q; c.font = "44px 'Anton'"; c.fillStyle = MAPC.text; c.textAlign = "center";
-          c.shadowColor = "rgba(0,0,0,.8)"; c.shadowBlur = 14;
+          c.globalAlpha = q; c.font = `${r.size || 44}px 'Anton'`; c.fillStyle = MAPC.text; c.textAlign = "center";
+          c.shadowColor = MAPC.pin === "survey" ? "rgba(242,235,218,.95)" : "rgba(0,0,0,.8)"; c.shadowBlur = 14;
           c.fillText(r.label, m[0] + (r.lx || 0), m[1] + (r.ly || -24)); c.shadowBlur = 0; c.globalAlpha = 1;
         }
       }
@@ -197,8 +227,8 @@ SCENES.map = async (s, root) => {
       setT(o.g, xy[0], xy[1]);
       const drop = seg(t, at, 0.5);
       const b = drop < 1 ? (1 - (1 - drop) * (1 - drop)) : 1;
-      o.head.style.transform = `translate(0px, ${((1 - b) * -120).toFixed(1)}px) rotate(-45deg)`;
-      setO(o.head, cl(drop * 4, 0, 1));
+      if (o.survey) { o.head.style.transform = `scale(${(0.3 + 0.7 * b).toFixed(3)})`; setO(o.head, cl(drop * 3, 0, 1)); }
+      else { o.head.style.transform = `translate(0px, ${((1 - b) * -120).toFixed(1)}px) rotate(-45deg)`; setO(o.head, cl(drop * 4, 0, 1)); }
       [o.ring1, o.ring2].forEach((r, i) => {
         const u = ((t - at - 0.45 - i * 0.6) % 1.8 + 1.8) % 1.8 / 1.8;
         const on = t > at + 0.45 + i * 0.6;
@@ -206,7 +236,7 @@ SCENES.map = async (s, root) => {
         r.style.transform = `scale(${(1 + u * 5).toFixed(3)})`;
       });
       const lq = eOut(seg(t, at + 0.5, 0.5));
-      css(o.lead, "width", ((o.p.gap || 170) - 30) * lq + "px");
+      css(o.lead, "width", ((o.p.gap || (o.survey ? 120 : 170)) - (o.survey ? 18 : 30)) * lq + "px");
       const tq = eOut(seg(t, at + 0.8, 0.5));
       setO(o.lab, tq);
       o.lab.style.transform = `translate(${((1 - tq) * (o.p.side === "right" ? -16 : 16)).toFixed(1)}px,0)`;

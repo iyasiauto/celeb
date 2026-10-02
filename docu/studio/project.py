@@ -32,6 +32,9 @@ STYLES = {
     "broadcast": dict(name="Breaking-news broadcast", letter="D", example="projects/noahs_ark_breaking",
                       blurb="LIVE bug and ticker, BREAKING slab, fact-check meters, headline wall, segment bumpers.",
                       sfx="full", xfade=0.0, preview="templates/previews/broadcast/breaking.jpg", sheet="templates/previews/sheet_broadcast.jpg", readme="Style D"),
+    "almanac": dict(name="Heritage almanac", letter="F", example="projects/amish_leaving",
+                    blurb="Slab-serif headings rising over moving footage, seed-packet place tags, quilt-frame key points, charts on cream paper, a cream survey map. Slow and calm.",
+                    sfx="calm", xfade=0.5, preview="templates/previews/almanac/almhead.jpg", sheet="templates/previews/sheet_almanac.jpg", readme="Style F"),
 }
 
 
@@ -71,7 +74,8 @@ def all_styles(w):
     out = {}
     samples = dict(documentary="What_Happens_If_the_Government_Cuts_Hasidic_Benefits.mp4",
                    paper="Noahs_Ark_Confirmed_After_4300_Years_1080p.mp4", forensic="Noahs_Ark_100_Percent_Confirmed.mp4",
-                   expedition="Noahs_Ark_Myth_or_Reality.mp4", broadcast="Noahs_Ark_Breaking_Drill_Bit_Shattered.mp4")
+                   expedition="Noahs_Ark_Myth_or_Reality.mp4", broadcast="Noahs_Ark_Breaking_Drill_Bit_Shattered.mp4",
+                   almanac="Why_Thousands_of_Amish_Are_Leaving_Their_300_Year_Homeland.mp4")
     for k, v in STYLES.items():
         smp = os.path.join(media(w), "out", samples[k])
         out[k] = dict(v, theme=k, engine="docu", preview_path=os.path.join(DOCU, v["preview"]),

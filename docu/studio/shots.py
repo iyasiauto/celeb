@@ -64,7 +64,7 @@ def _overlay(scene, o):
 
 
 def place(scene, text, sub=None, at=0.6):
-    o = dict(type="place", text=text, at=at)
+    o = dict(type="almtag" if THEME == "almanac" else "place", text=text, at=at)
     if sub:
         o["sub"] = sub
     return _overlay(scene, o)
@@ -85,6 +85,14 @@ def fadeout(scene, d=2.2):
 def heading(n, title, bg, sub=None, **kw):
     V = _V()
     kicker = V.kicker(n) if V else f"Chapter {n}"
+    if THEME == "almanac":
+        # the heading rises over moving footage (bg = a catalog clip index) or a slow photograph (bg = a picture)
+        base = cl(bg) if isinstance(bg, int) else ph(bg, move="in")
+        o = dict(type="almhead", n=n, kicker=f"Chapter {n}", title=title, at=0.5)
+        if sub:
+            o["sub"] = sub
+        o.update(kw)
+        return _overlay(base, o)
     if THEME == "documentary":
         s = dict(type="doctitle", kicker=kicker, title=title, img=img(bg), move="in", zoom=1.08)
         if sub:
@@ -116,6 +124,14 @@ def card(*lines, bg=None, dim=None, **kw):
                 d["size"] = ln[3]
             ls.append(d)
     V = _V()
+    if THEME == "almanac":
+        for d in ls:
+            d.setdefault("size", 70)
+        s = dict(type="almcard", lines=ls, dim=dim if dim is not None else 0.62)
+        if bg:
+            s["img"] = img(bg)
+        s.update(kw)
+        return s
     s = dict(type="textcard", lines=ls, dim=dim if dim is not None else (V["dim"] if V else 0.62))
     if bg:
         s["img"] = img(bg)
@@ -124,10 +140,26 @@ def card(*lines, bg=None, dim=None, **kw):
 
 
 def big(value, kicker, note="", bg=None, source=None, **kw):
+    if THEME == "almanac":
+        s = dict(type="almstat", value=value, kicker=kicker, note=note, **kw)
+        if bg:
+            s["img"] = img(bg)
+        if source:
+            s["source"] = source
+        return s
     return stat(value, kicker, note, bg=bg, source=source, **kw)
 
 
 def bars(title, rows, bg=None, note=None, source=None, **kw):
+    if THEME == "almanac":          # columns on cream paper (no photo behind)
+        s = dict(type="almbars", title=title, bars=[dict(label=r[0], value=r[1], text=r[2], at=r[3], **(r[4] if len(r) > 4 else {}))
+                                                     for r in rows])
+        if note:
+            s["note"] = note
+        if source:
+            s["source"] = source
+        s.update(kw)
+        return s
     s = dict(type="bars", title=title,
              bars=[dict(label=r[0], value=r[1], text=r[2], at=r[3], **(r[4] if len(r) > 4 else {})) for r in rows])
     if bg:
@@ -190,7 +222,7 @@ def music_for(acts, calm=None):
     V = _V()
     order = list(V["music"]) if V else list(CALM)
     if calm is None:
-        calm = THEME == "documentary"
+        calm = THEME in ("documentary", "almanac")
     beds = [t for t in order if t in CALM] if calm else order
     beds = beds or order or CALM
     return [dict(at=a, track=beds[i % len(beds)], db=0 if i else -1, lead=-1.0 if i else 0) for i, a in enumerate(acts)]

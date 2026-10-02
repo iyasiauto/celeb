@@ -322,6 +322,14 @@ def spot(scenes, style="full"):
             add(t0 + 0.35, "whoosh_s", -14)
             if s.get("count", True) is not False:
                 add(t0 + 0.35, "roll", -12, d=float(s.get("countFor", 1.6)))
+        # almanac template (scenes_almanac.js): soft paper and pen only
+        if ty == "almstat":
+            add(t0 + float(s.get("at", 0.5)) + 0.2, "roll", -13, d=float(s.get("countFor", 1.4)))
+        if ty in ("almcard", "almdistrict", "almshare", "almbars", "almdots"):
+            add(t0 + 0.15, "paper", -11)
+        if ty in ("almgrowth", "almsplit"):
+            add(t0 + 0.15, "paper", -11)
+            add(t0 + float(s.get("at", s.get("splitAt", 1.0)) if not isinstance(s.get("at"), str) else 1.0), "pen", -12)
         if ty in ("collage", "headlines"):
             for it in s.get("items", []):
                 at = t0 + float(it.get("at", 0))
