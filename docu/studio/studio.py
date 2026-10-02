@@ -351,8 +351,14 @@ def _local_dirs(folder, clips=None, images=None):
     if not os.path.isdir(folder):
         raise RuntimeError(f"Not a folder: {folder}")
     gv, gi = _guess_dirs(folder)
-    vdir = os.path.abspath(clips) if clips else gv
-    idir = os.path.abspath(images) if images else gi
+
+    def sub(name):
+        """"clips" means <folder>/clips; an absolute or ../ path is taken as given"""
+        p = os.path.join(folder, name) if not os.path.isabs(name) and os.path.isdir(os.path.join(folder, name)) else name
+        return os.path.abspath(p)
+
+    vdir = sub(clips) if clips else gv
+    idir = sub(images) if images else gi
     if not vdir and not idir:
         raise RuntimeError(f"No videos or pictures found in {folder}")
     return folder, vdir, idir

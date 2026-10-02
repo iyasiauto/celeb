@@ -50,8 +50,8 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme="paper", grade=
     CUTS = f"{kit}/cutouts"
     VOX_TAIL = tail
     CAT[:] = json.load(open(f"{data}/catalog_all.json"))
-    if theme == "almanac" and grade == "doc":
-        grade = "almanac"                 # the almanac template's own warm print grade
+    if theme in ("almanac", "almanac2") and grade == "doc":
+        grade = theme                     # each almanac edition's own print grade
     P.update(name=name, theme=theme, grade=grade, grain=grain, music_floor_db=music_floor_db,
              music_duck_db=music_duck_db, sfx_gain=sfx_gain, xfade=xfade, sfx_style=sfx_style, data=data)
     if vary is not None:

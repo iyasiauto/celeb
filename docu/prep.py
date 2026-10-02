@@ -81,6 +81,15 @@ def grade(im, kind):
         a = a * np.array([1.03, 1.01, 0.95], np.float32)
         a = 0.035 + 0.94 * a
         return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
+    if kind == "almanac2":
+        # the gazetteer grade: muted, cool ink, lifted blacks like a lithographic plate print
+        im = ImageEnhance.Color(im).enhance(0.82)
+        im = ImageEnhance.Contrast(im).enhance(1.05)
+        a = np.asarray(im, dtype=np.float32) / 255.0
+        lum = a.mean(-1, keepdims=True)
+        a = a * (lum * np.array([1.02, 1.0, 0.97], np.float32) + (1 - lum) * np.array([0.96, 0.99, 1.05], np.float32))
+        a = 0.03 + 0.94 * a
+        return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
     if kind == "doc":
         # the documentary grade: slightly muted, warm highlights, cool shadows
         im = ImageEnhance.Color(im).enhance(0.82)

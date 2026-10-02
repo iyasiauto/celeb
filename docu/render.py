@@ -138,6 +138,7 @@ GRADES = {
     "warm": "eq=saturation=0.92:contrast=1.04,colorbalance=rh=0.05:bh=-0.05",
     "broadcast": "eq=saturation=0.94:contrast=1.1,colorbalance=rs=-0.03:bs=0.04:rh=0.01:bh=-0.01",
     "almanac": "eq=saturation=0.86:contrast=1.03,colorbalance=rs=0.03:gs=0.01:bs=-0.03:rh=0.03:bh=-0.04,curves=all='0/0.035 1/0.975'",
+    "almanac2": "eq=saturation=0.82:contrast=1.05,colorbalance=rs=-0.02:gs=0.01:bs=0.03:rh=0.02:bh=-0.02,curves=all='0/0.03 1/0.97'",
     "none": "",
 }
 
@@ -204,7 +205,7 @@ def render_clip_scene(scene, out_path, cfg):
     os.replace(out_path + ".part.mp4", out_path)
 
 
-ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead"}
+ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead"}
 
 
 def render_overlay_video(scene, out_mov, cfg):

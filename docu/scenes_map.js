@@ -71,7 +71,9 @@ SCENES.map = async (s, root) => {
   let paperImg = null;
   if (MAPC.paper) { paperImg = new Image(); WAITS.push(new Promise(r => { paperImg.onload = r; paperImg.onerror = r; })); paperImg.src = asset(MAPC.paper); }
   const over = el("div", "full", root);
-  vignette(root, MAPC.pin === "survey" ? 0.2 : 0.55);
+  /* paper maps (survey / plat) keep an open, lightly shaded edge; the dark explainer map is vignetted */
+  const LIGHT = MAPC.pin === "survey" || MAPC.pin === "plat";
+  vignette(root, LIGHT ? 0.2 : 0.55);
 
   const proj = d3.geoOrthographic().translate([W / 2, H / 2]).clipAngle(90).precision(1.2);
   const path = d3.geoPath(proj, c);
@@ -115,6 +117,27 @@ SCENES.map = async (s, root) => {
       if (side === "left") lead.style.right = "18px"; else lead.style.left = "18px";
       return { p, g, ring1, ring2, head, lab, lead, survey: true };
     }
+    if (MAPC.pin === "plat") {
+      /* plat marker: a filled survey square with expanding section rings, the name stamped on a
+         slate band with notched corners and the note written in pencil */
+      const col = p.color || PAL.red;
+      const sq = sz => el("div", "abs", g, { left: -sz / 2 + "px", top: -sz / 2 + "px", width: sz + "px", height: sz + "px",
+        border: `2px solid ${col}`, boxSizing: "border-box" });
+      const ring1 = sq(34), ring2 = sq(34);
+      setO(ring2, 0);
+      const head = el("div", "abs", g, { left: "-9px", top: "-9px", width: "18px", height: "18px", background: col,
+        boxShadow: `0 0 0 3px ${MAPC.shadow || "rgba(232,226,208,.95)"}` });
+      const side = p.side || "left";
+      const lab = el("div", "abs", g, { top: "-32px", whiteSpace: "nowrap", background: MAPC.text, padding: "9px 20px 10px",
+        boxShadow: "0 7px 20px rgba(30,40,50,.26)", textAlign: "left",
+        clipPath: "polygon(0 7px, 7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%)" });
+      if (side === "left") lab.style.right = (p.gap || 118) + "px"; else lab.style.left = (p.gap || 118) + "px";
+      el("div", "", lab, { font: `${p.size || 33}px 'Engr'`, color: PAL.cream, lineHeight: "1.08", letterSpacing: ".06em" }, esc(p.label || ""));
+      if (p.sub) el("div", "", lab, { font: "25px 'Pencil'", color: MAPC.shadow ? "rgba(232,226,208,.8)" : "#CFC8BA", marginTop: "2px" }, esc(p.sub));
+      const lead = el("div", "abs", g, { top: "-1px", height: "0", borderTop: `2px solid ${MAPC.text}` });
+      if (side === "left") lead.style.right = "18px"; else lead.style.left = "18px";
+      return { p, g, ring1, ring2, head, lab, lead, survey: true };
+    }
     const ring1 = el("div", "abs", g, { left: "-10px", top: "-10px", width: "20px", height: "20px", borderRadius: "50%", border: `3px solid ${PAL.red}` });
     const ring2 = el("div", "abs", g, { left: "-10px", top: "-10px", width: "20px", height: "20px", borderRadius: "50%", border: `3px solid ${PAL.red}` });
     const head = el("div", "abs", g, {
@@ -131,17 +154,27 @@ SCENES.map = async (s, root) => {
     if (side === "left") lead.style.right = "22px"; else lead.style.left = "22px";
     return { p, g, ring1, ring2, head, lab, lead };
   });
+  /* dots: a settlement on the map. `r` sizes it (so one dot can stand for 40 people and another
+     for 44,765), `color` tints it, and the label is optional - a field of bare dots is the point. */
   const dots = (s.dots || []).map(d => {
     const g = el("div", "abs", over, { left: 0, top: 0 });
-    el("div", "abs", g, { left: "-7px", top: "-7px", width: "14px", height: "14px", borderRadius: "50%", background: MAPC.dot, boxShadow: "0 0 0 4px rgba(234,242,243,.18)" });
-    el("div", "abs", g, { left: "16px", top: "-16px", font: "26px 'Barlow'", color: MAPC.dotText, letterSpacing: ".06em", whiteSpace: "nowrap", textShadow: "0 2px 8px rgba(0,0,0,.9)" }, esc(d.label));
-    return { d, g };
+    const r = d.r || 7;
+    const body = el("div", "abs", g, { left: -r + "px", top: -r + "px", width: 2 * r + "px", height: 2 * r + "px", borderRadius: "50%",
+      background: d.color || MAPC.dot, boxShadow: LIGHT ? `0 0 0 ${Math.max(2, r * 0.3).toFixed(0)}px ${MAPC.shadow || "rgba(232,226,208,.9)"}`
+        : "0 0 0 4px rgba(234,242,243,.18)", opacity: d.fill != null ? d.fill : 1 });
+    if (d.label) el("div", "abs", g, { left: r + 9 + "px", top: "-16px", font: `26px '${LIGHT ? "Barlow" : "Barlow"}'`, color: MAPC.dotText,
+      letterSpacing: ".06em", whiteSpace: "nowrap", textShadow: `0 2px 8px ${LIGHT ? (MAPC.shadow || "rgba(232,226,208,.9)") : "rgba(0,0,0,.9)"}` }, esc(d.label));
+    return { d, g, body };
   });
   const names = (s.names || []).map(n => {
-    const e = el("div", "abs", over, { left: 0, top: 0, font: `${n.size || 34}px '${n.font || "Barlow"}'`, letterSpacing: n.font ? ".04em" : ".45em", color: n.color || MAPC.name, whiteSpace: "nowrap", textShadow: `0 2px 12px ${MAPC.pin === "survey" ? "rgba(242,235,218,.9)" : "rgba(0,0,0,.7)"}` }, esc(n.font ? n.text : n.text.toUpperCase()));
+    const e = el("div", "abs", over, { left: 0, top: 0, font: `${n.size || 34}px '${n.font || "Barlow"}'`, letterSpacing: n.font ? ".04em" : ".45em", color: n.color || MAPC.name, whiteSpace: "nowrap", textShadow: `0 2px 12px ${LIGHT ? (MAPC.shadow || "rgba(242,235,218,.9)") : "rgba(0,0,0,.7)"}` }, esc(n.font ? n.text : n.text.toUpperCase()));
     return { n, e };
   });
-  const title = s.title ? el("div", "abs", over, MAPC.pin === "survey"
+  const title = s.title ? el("div", "abs", over, MAPC.pin === "plat"
+    ? { left: "110px", top: "84px", font: "28px 'Engr'", letterSpacing: ".22em", color: PAL.cream, background: MAPC.text,
+        padding: "11px 24px 10px", textTransform: "uppercase",
+        clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }
+    : MAPC.pin === "survey"
     ? { left: "110px", top: "84px", font: "26px 'BarlowB'", letterSpacing: ".32em", color: "#F4EEDF", background: "#23211C", padding: "10px 20px 8px", textTransform: "uppercase" }
     : { left: "110px", top: "90px", font: "30px 'BarlowB'", letterSpacing: ".35em", color: PAL.mustard }, esc(s.title)) : null;
 
@@ -169,6 +202,15 @@ SCENES.map = async (s, root) => {
       const av = adminUse.filter(f => inView(f, cam));
       c.lineWidth = 1; c.strokeStyle = `rgba(${MAPC.admin},${cl((cam.scale - 2200) / 3000, 0, 0.22).toFixed(3)})`;
       c.stroke(new Path2D(d3.geoPath(proj)({ type: "FeatureCollection", features: av }) || ""));
+    }
+    /* township grid: fine section lines ruled across the land, like a county plat book */
+    if (MAPC.grid === "township" && cam.scale > 1800) {
+      const step = cam.scale > 9000 ? 0.25 : cam.scale > 4200 ? 0.5 : 1;
+      const a = cl((cam.scale - 1800) / 2600, 0, 1) * 0.5;
+      c.save(); c.clip(land);
+      c.beginPath(); path(d3.geoGraticule().step([step, step])());
+      c.lineWidth = 1; c.strokeStyle = `rgba(${MAPC.admin},${a.toFixed(3)})`; c.stroke();
+      c.restore();
     }
     c.lineWidth = 1.4; c.strokeStyle = MAPC.border; c.stroke(land);
     /* highlighted countries / provinces */
@@ -213,7 +255,7 @@ SCENES.map = async (s, root) => {
         if (m) {
           const q = eOut(seg(t, (r.at || 0) + (r.d || 1.2), 0.4));
           c.globalAlpha = q; c.font = `${r.size || 44}px 'Anton'`; c.fillStyle = MAPC.text; c.textAlign = "center";
-          c.shadowColor = MAPC.pin === "survey" ? "rgba(242,235,218,.95)" : "rgba(0,0,0,.8)"; c.shadowBlur = 14;
+          c.shadowColor = LIGHT ? (MAPC.shadow || "rgba(242,235,218,.95)") : "rgba(0,0,0,.8)"; c.shadowBlur = 14;
           c.fillText(r.label, m[0] + (r.lx || 0), m[1] + (r.ly || -24)); c.shadowBlur = 0; c.globalAlpha = 1;
         }
       }
@@ -246,7 +288,9 @@ SCENES.map = async (s, root) => {
       const xy = proj([o.d.lon, o.d.lat]);
       if (!xy) { vis(o.g, false); return; }
       vis(o.g, true); setT(o.g, xy[0], xy[1]);
-      setO(o.g, eOut(seg(t, o.d.at || 0, 0.5)) * (o.d.out != null ? 1 - seg(t, o.d.out, 0.4) : 1));
+      const a = eOut(seg(t, o.d.at || 0, 0.5));
+      setO(o.g, a * (o.d.out != null ? 1 - seg(t, o.d.out, 0.4) : 1));
+      o.body.style.transform = `scale(${(0.35 + 0.65 * a).toFixed(3)})`;
     });
     names.forEach(o => {
       const xy = proj([o.n.lon, o.n.lat]);

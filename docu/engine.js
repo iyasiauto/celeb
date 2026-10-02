@@ -195,6 +195,36 @@ THEMES.almanac = {
     pin: "survey", route: "#23211C", hiLine: "rgba(158,58,43,A)",
   },
 };
+/* almanac2 ("heritage gazetteer"): the almanac's second edition - a county atlas / land-survey
+   gazetteer instead of a seed catalogue. Engraved caps headings on a letterpress plate, high-contrast
+   didone numerals, Garamond body, a surveyor's pencil for the notes, and a township-grid plat map with
+   square section markers. Cool slate ink and oatmeal paper; ochre, oxblood, verdigris, slate. */
+THEMES.almanac2 = {
+  fonts: {
+    Anton: "PlayfairDisplay.ttf", Stamp: "Cinzel.ttf", DMSerif: "PlayfairDisplay.ttf", Elite: "EB-Garamond.ttf",
+    Garamond: "EB-Garamond.ttf", GaramondI: "EB-Garamond-Italic.ttf", Barlow: "Oswald.ttf", BarlowB: "Oswald-Bold.ttf",
+    Oswald: "Oswald.ttf", OswaldB: "Oswald-Bold.ttf", Caveat: "PatrickHand.ttf",
+    /* the almanac aliases, re-pointed: slab -> didone, Baskerville -> Garamond */
+    Slab: "PlayfairDisplay.ttf", SlabM: "DMSerifDisplay.ttf", Bask: "EB-Garamond.ttf", BaskI: "EB-Garamond-Italic.ttf",
+    Crimson: "EB-Garamond.ttf", CrimsonI: "EB-Garamond-Italic.ttf",
+    /* its own: engraved caps, a pencil hand and a ledger mono */
+    Engr: "Cinzel.ttf", Pencil: "PatrickHand.ttf", Ledger: "CourierPrime.ttf", LedgerB: "CourierPrime-Bold.ttf",
+  },
+  pal: {
+    mustard: "#BE8A2C", red: "#7A2F2A", gold: "#BE8A2C", cyan: "#2C4760", green: "#38655C",
+    ink: "#1E2832", cream: "#E8E2D0", wheat: "#BE8A2C", barn: "#7A2F2A", field: "#38655C", denim: "#2C4760",
+    ochre: "#BE8A2C", oxblood: "#7A2F2A", verdigris: "#38655C", slate: "#2C4760",
+    paperA: "#E3DCC8", tagc: "#EFE9D9", subc: "#4C5663",
+    paperWash: "234,228,211", paperEdge: "rgba(40,50,62,.20)",
+  },
+  grounds: { paper: "paper_tan.jpg", map: "paper_tan.jpg", cork: "studio_dark.jpg", parchment: "parchment.jpg" },
+  map: {
+    bg0: "#E6DFCB", bg1: "#CFC6AC", sea: "#A9BBBE", rim: "rgba(30,40,50,.35)", grat: "rgba(30,40,50,.06)",
+    land: "#E0D8C2", border: "rgba(30,40,50,.5)", admin: "30,40,50", hi: "44,71,96", hiA: 0.22, text: "#1E2832",
+    sub: "#4C5663", dot: "#7A2F2A", dotText: "#1E2832", name: "rgba(30,40,50,.6)", shadow: "rgba(232,226,208,.95)",
+    pin: "plat", route: "#2C4760", hiLine: "rgba(122,47,42,A)", grid: "township",
+  },
+};
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);

@@ -212,6 +212,58 @@ def specs():
         themes=["documentary"])
     add("doclower", dict(type="photo", img=PORT, move="in", overlays=[dict(type="doclower", name="A Name", role="who they are", at=0.3)]),
         themes=["documentary"])
+    # ---- heritage gazetteer (the almanac's second edition)
+    A2 = ["almanac2"]
+    add("gzhead", dict(type="photo", img=P, move="in", zoom=1.08, overlays=[
+        dict(type="gzhead", n=4, kicker="Chapter four", title="What a settlement is", plate="plate",
+             sub="one or more church districts, geographically connected", at=0.3)]), 9.0, A2)
+    add("gztag", dict(type="photo", img=P, move="left", overlays=[
+        dict(type="gztag", text="Cashton, Wisconsin", sub="founded in the 1960s", at=0.3)]), 7.0, A2)
+    add("gzcard", dict(type="gzcard", img=P, kicker="the building block", lines=[
+        dict(text="Pennsylvania built giants.", at=0.4),
+        dict(text="Wisconsin built dots.", at=1.6, color="#7A2F2A")]), 8.0, A2)
+    add("gzstat", dict(type="gzstat", img=P, value="44,765", kicker="Lancaster County settlement · 2025",
+                       unit="people", note="larger than the whole Amish population of Wisconsin",
+                       source="Young Center for Anabaptist and Pietist Studies", at=0.4, countFor=1.6), 8.0, A2)
+    add("gzversus", dict(type="gzversus", title="Two states, two shapes of growth", note="2025 estimates",
+                         left=dict(name="Pennsylvania", sub="the heartland"), right=dict(name="Wisconsin", sub="the frontier"),
+                         rows=[dict(label="Amish residents", left="95,410", right="27,535", at=1.2, win="l", mark="3× more"),
+                               dict(label="Settlements", left=63, right=68, at=2.8, win="r", mark="five more"),
+                               dict(label="Church districts", left=636, right=209, at=4.4, win="l")],
+                         verdict="more people there, more communities here", verdictAt=6.0), 9.5, A2)
+    add("gzgiants", dict(type="gzgiants", title="One dot is not one community",
+                         giant=dict(value="44,765", label="Lancaster County", sub="one settlement, 267 districts", at=0.8),
+                         field=dict(n=68, label="Wisconsin", sub="68 settlements, 27,535 people", at=2.6, fill=2.0)), 9.0, A2)
+    add("gzdivide", dict(type="gzdivide", title="How a district divides", frameLabel="one settlement",
+                         note="20 to 40 households each", steps=[
+                             dict(n=1, label="One church district", at=0.9),
+                             dict(n=2, label="One becomes two", at=2.3),
+                             dict(n=3, label="Two become three", at=3.6),
+                             dict(n=10, label="Three become ten - still one settlement", at=5.0)]), 9.0, A2)
+    add("gzindex", dict(type="gzindex", title="Settlements by state, 2025", note="the frontier is wider than it looks",
+                        rows=[dict(label="Ohio", value=74, at=0.8), dict(label="Wisconsin", value=68, at=1.7, hi=True),
+                              dict(label="Missouri", value=64, at=2.6), dict(label="Pennsylvania", value=63, at=3.5),
+                              dict(label="New York", value=60, at=4.4)],
+                        foot="five states, five different maps", footAt=5.6), 9.0, A2)
+    add("gzdelta", dict(type="gzdelta", title="A decade apart", frm="2015", to="2025", items=[
+        dict(label="Pennsylvania", **{"from": 465, "to": 636}, delta="+171 districts", at=0.9, note="nine new settlements"),
+        dict(label="Wisconsin", **{"from": 138, "to": 209}, delta="+71 districts", at=3.4, note="eighteen new settlements",
+             color="#38655C")], foot="one grew inward, the other outward", footY=840, footAt=6.2), 9.5, A2)
+    add("gzmap", dict(type="map", detail="geo_hi.json", adminCountries=["USA"], title="Plat of the Amish map",
+                      stops=[dict(at=0, lon=-85.5, lat=42.0, scale=4200)],
+                      highlight=[dict(id="USA-3560", at=0.4), dict(id="USA-3553", at=1.0)],
+                      pins=[dict(lon=-76.3, lat=40.04, label="Lancaster Co.", sub="44,765 people", at=1.6, side="right"),
+                            dict(lon=-90.78, lat=43.74, label="Cashton", sub="the state's largest", at=2.4, side="left")],
+                      dots=[dict(lon=-90.0 + (i % 8) * 0.55, lat=43.0 + (i // 8) * 0.42, r=6, at=3.0 + i * 0.04) for i in range(24)]),
+        8.0, A2)
+    add("almbars", dict(type="almbars", title="People per settlement", note="statewide average, 2025",
+                        bars=[dict(label="Pennsylvania", value=1514, text="1,514", at=0.6),
+                              dict(label="Wisconsin", value=405, text="405", at=1.6, color="#38655C")]), 8.0, A2)
+    add("almgrowth", dict(type="almgrowth", title="The Amish population of North America", note="estimates",
+                          points=[dict(x=2000, y=177910, label="177,910", at=1.0),
+                                  dict(x=2010, y=249500, label="249,500", at=2.2),
+                                  dict(x=2025, y=410955, label="410,955", at=3.6)],
+                          grid=[dict(y=200000, label="200,000"), dict(y=400000, label="400,000")]), 8.0, A2)
     return S
 
 

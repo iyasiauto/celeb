@@ -330,6 +330,24 @@ def spot(scenes, style="full"):
         if ty in ("almgrowth", "almsplit"):
             add(t0 + 0.15, "paper", -11)
             add(t0 + float(s.get("at", s.get("splitAt", 1.0)) if not isinstance(s.get("at"), str) else 1.0), "pen", -12)
+        # heritage gazetteer (scenes_almanac2.js): paper, pencil and a counting roll, nothing louder
+        if ty == "gzstat":
+            add(t0 + float(s.get("at", 0.5)) + 0.2, "roll", -13, d=float(s.get("countFor", 1.4)))
+        if ty in ("gzcard", "gzindex", "gzgiants", "gzversus", "gzdelta", "gzdivide"):
+            add(t0 + 0.15, "paper", -11)
+        if ty == "gzindex":
+            for r in s.get("rows", [])[:8]:
+                add(t0 + float(r.get("at", 0) or 0) + 0.15, "pen", -14)
+        if ty == "gzversus":
+            for r in s.get("rows", [])[:6]:
+                at = r.get("at")
+                if isinstance(at, (int, float)):
+                    add(t0 + float(at) + 0.15, "roll", -15, d=float(s.get("countFor", 1.1)))
+        if ty in ("gzdivide", "gzdelta"):
+            for k in (s.get("steps") or s.get("items") or [])[:6]:
+                at = k.get("at")
+                if isinstance(at, (int, float)):
+                    add(t0 + float(at), "pen", -13)
         if ty in ("collage", "headlines"):
             for it in s.get("items", []):
                 at = t0 + float(it.get("at", 0))

@@ -23,8 +23,10 @@
 */
 "use strict";
 
+/* every colour comes from the theme palette, so a later edition of this template (theme
+   "almanac2") renders the same charts in its own ink and paper */
 const ALM = {
-  ink: "#23211C", cream: "#F2EBDA", tag: "#F4EEDF", sub: "#4A443A",
+  ink: PAL.ink || "#23211C", cream: PAL.cream || "#F2EBDA", tag: PAL.tagc || "#F4EEDF", sub: PAL.subc || "#4A443A",
   wheat: PAL.wheat || "#D4A85A", barn: PAL.barn || "#9E3A2B", field: PAL.field || "#5E7A44", denim: PAL.denim || "#4E6E8A",
 };
 const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
@@ -32,8 +34,8 @@ const ROMAN = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", 
 /* cream paper ground with a soft warm edge */
 function almPaper(root, tone) {
   paperGround(root, "paper");
-  el("div", "full", root, { background: `rgba(246,240,226,${tone != null ? tone : 0.55})` });
-  el("div", "full", root, { background: "radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 55%, rgba(70,50,25,.22) 100%)" });
+  el("div", "full", root, { background: `rgba(${PAL.paperWash || "246,240,226"},${tone != null ? tone : 0.55})` });
+  el("div", "full", root, { background: `radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 55%, ${PAL.paperEdge || "rgba(70,50,25,.22)"} 100%)` });
 }
 /* a photo under a warm dark wash */
 function almPhoto(root, s, dim) {
