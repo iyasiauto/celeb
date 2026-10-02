@@ -34,3 +34,6 @@ docu/templates/_gallery_work/
 
 # local media root for the docu projects (kit, footage, work, out)
 /media
+
+# agent inputs (scripts, voiceovers)
+inputs/

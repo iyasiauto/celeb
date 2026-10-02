@@ -690,8 +690,10 @@ def cmd_make(a):
     env = {"VIDEO_ROOT": M, "DOCU_DIR": DOCU, "WORKERS": str(job.get("workers", 4))}
     _ensure_ffmpeg()
 
+    stop = STAGES.index(a.until) if getattr(a, "until", None) else len(STAGES)
+
     def want(s):
-        return STAGES.index(s) >= start
+        return start <= STAGES.index(s) <= stop
 
     # project
     E.stage("project")
@@ -1029,6 +1031,7 @@ def main():
     c.add_argument("--topic-regex", default=r"^([a-z_]+?)_[0-9a-f]{16}\.")
     v = sub.add_parser("voice"); v.add_argument("--voice-id")
     m = sub.add_parser("make"); m.add_argument("--job", required=True); m.add_argument("--from", dest="start", choices=STAGES)
+    m.add_argument("--until", choices=STAGES, help="stop after this stage (e.g. shotlist: edit build.py by hand, then --from plan)")
     sub.add_parser("frontier-fetch"); sub.add_parser("frontier-open")
     fk = sub.add_parser("frontier-kit"); fk.add_argument("--kit", default="all")
     a = ap.parse_args()

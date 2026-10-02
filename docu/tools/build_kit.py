@@ -38,11 +38,14 @@ def main():
     with zipfile.ZipFile(zp, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
         root = NAME
         z.write(os.path.join(REPO, "make_video.py"), f"{root}/make_video.py")
-        for f in sorted(os.listdir(os.path.join(REPO, "kit_docs"))):
-            info = zipfile.ZipInfo(f"{root}/{f}")
-            info.external_attr = (0o755 if f.endswith(".sh") else 0o644) << 16
-            info.compress_type = zipfile.ZIP_DEFLATED
-            z.writestr(info, open(os.path.join(REPO, "kit_docs", f), "rb").read())
+        kd = os.path.join(REPO, "kit_docs")           # docs, agent files (AGENTS.md, CLAUDE.md, .claude/, .agent/), scripts
+        for d, dirs, files in os.walk(kd):
+            for f in sorted(files):
+                rel = os.path.relpath(os.path.join(d, f), kd).replace(os.sep, "/")
+                info = zipfile.ZipInfo(f"{root}/{rel}")
+                info.external_attr = (0o755 if f.endswith(".sh") else 0o644) << 16
+                info.compress_type = zipfile.ZIP_DEFLATED
+                z.writestr(info, open(os.path.join(d, f), "rb").read())
         # the engine; only the shared niches (not test ones)
         add_tree(z, os.path.join(REPO, "docu"), f"{root}/docu",
                  keep=lambda p: not (os.sep + "niches" + os.sep in p and os.path.basename(p) not in ("hasidic.json", "noah.json")))

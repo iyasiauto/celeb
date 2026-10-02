@@ -100,12 +100,50 @@ Baqi options:
 - Hath se shot list likhna ho to: [docu/templates/README.md](docu/templates/README.md) aur
   har template ka `docu/templates/starter_*/build.py`.
 
-## 4. Desktop app (optional)
+## 4. Kisi AI agent se chalana (Claude, Antigravity, Codex…)
+
+Kit mein agent ke liye hidayaat pehle se maujood hain:
+
+- `AGENTS.md`: poora tareeqa
+- `CLAUDE.md`: Claude Code isse khud parhta hai
+- `GEMINI.md`: Antigravity ke liye
+- `.claude/skills/make-video`: Claude Code mein `/make-video` command
+- `.agent/workflows/make-video.md`: Antigravity mein `/make-video` workflow
+
+Agent khud aap se 5 sawal poochega: title, script, voiceover, template aur footage. Phir woh setup check karta
+hai, footage laata hai, aur **khud editor ban kar shot list likhta hai**, bilkul waise jaise ye channel ki videos
+bani thin. Stills check karta hai, render karta hai, aur aakhir mein video ka path aur gofile link deta hai.
+
+**Antigravity, Claude Code (Desktop/CLI) ya Cursor, aap ke PC par:**
+1. Zip unzip karein aur woh folder agent mein **Open Folder** se kholein.
+2. Chat mein likhein: **"video banao"** ya `/make-video`.
+3. Agent ke sawalon ke jawab dein. Files attach karein, ya PC ke path likh dein. PC ka footage folder bhi chal
+   jaata hai.
+
+**Claude Code on the web (cloud session), kisi bhi account par:**
+1. Kit ko apne GitHub repo mein daalein. Ya wohi repo/branch use karein jis mein ye kit hai
+   (`iyasiauto/celeb`, branch `claude/relaxed-goldberg-8akz98`). Dusre account par us account ko repo ka access
+   dena hoga.
+2. Naya session usi repo par kholein aur likhein: **"video banao"**.
+3. Cloud session aap ke PC ka folder nahi dekh sakta. Footage ke liye **Google Drive link** dein, ya **online**
+   chunein. Script aur MP3/SRT chat mein attach kar dein.
+
+**Copy-paste prompt** (kisi bhi agent mein, agar woh khud shuru na kare):
+
+```
+Is folder mein video banane ki kit hai. AGENTS.md parho aur us ke mutabiq chalo: mujh se ek hi message mein
+title, script, voiceover (MP3+SRT ya FameSpeak voice ID), template (1-6) aur footage (PC folder / Drive link /
+niche / online) poocho, phir khud editor ban kar shot list likho aur video bana kar mujhe link do.
+```
+
+Keys: agent ko keys chat mein de sakte hain. Woh sirf `api_keys/keys.env` mein likhega, jo git mein nahi jaata.
+
+## 5. Desktop app (optional)
 
 Yehi kaam ek app mein bhi hota hai: **Docu Studio** (Windows zip alag diya gaya hai; source `studio/` folder mein).
 Wahan template picker, niche manager, AI settings aur live progress milte hain.
 
-## 5. Masle aur hal
+## 6. Masle aur hal
 
 | Masla | Hal |
 |---|---|

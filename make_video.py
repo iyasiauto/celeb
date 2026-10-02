@@ -182,6 +182,8 @@ def main():
     ap.add_argument("--limit-gb", type=float, default=1.0)
     ap.add_argument("--resume", choices=["footage", "catalog", "voice", "timing", "shotlist", "plan", "prep", "stills", "render",
                                          "mix", "final", "deliver", "metadata"])
+    ap.add_argument("--until", choices=["catalog", "shotlist", "plan", "stills", "render", "final"],
+                    help="stop after this stage (agents: --until shotlist, write projects/<title>/build.py, then --resume plan)")
     ap.add_argument("--yes", action="store_true", help="no questions (use the flags and defaults)")
     a = ap.parse_args()
     interactive = not a.yes
@@ -297,7 +299,16 @@ def main():
     args = ["make", "--job", jf]
     if a.resume and a.resume not in ("footage", "catalog"):
         args += ["--from", a.resume]
+    if a.until == "catalog":
+        print("\nStopped after the catalog (--until catalog).")
+        return
+    if a.until:
+        args += ["--until", a.until]
     studio(*args)
+    if a.until:
+        print(f"\nStopped after '{a.until}'. Shot list: projects/{slug}/build.py · stills: media/work/{slug}/qa/ · "
+              f"continue with: python make_video.py --title \"{title}\" --yes --resume <next stage>")
+        return
     print("\nDone. The video, subtitles and YouTube metadata are in media/out/ and projects/" + slug + "/")
     print("Edit projects/" + slug + "/build.py to change any shot, then: python make_video.py --title \"" + title +
           "\" --yes --resume shotlist   (or cd into the project and run python build.py stills / render / final)")
