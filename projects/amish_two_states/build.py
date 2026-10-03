@@ -329,7 +329,7 @@ at("Cashton has grown into the state's largest", amap(
     pins=[pin("Cashton", CASHTON, "@Cashton has grown", sub="the state's largest", side="left"),
           pin("Kingston", KINGSTON, "@Kingston is another", sub="another major center", side="right"),
           pin("Augusta", AUGUSTA, "@Augusta, Hillsboro", sub="decades old", side="left")],
-    dots=[dot(HILLSBORO, "@Hillsboro", r=8), dot(WILTON, "@Wilton", r=8), dot(ATHENS, "@and several others", r=8)]
+    dots=[dot(HILLSBORO, "@Hillsboro", r=8), dot(WILTON, "@Wilton-Tomah", r=8), dot(ATHENS, "@and several others", r=8)]
          + scatter((-90.1, 44.3), 40, "@have existed for decades", spread=1.6, r=6, step=0.06)))
 at("But most of Wisconsin's map is not one enormous", C("wisconsin_farmland__pe7225075"))
 at("It is a network of smaller ones", P("wisconsin_farmland__pe33864432", move="in"))
@@ -459,7 +459,7 @@ at("One family goes first", dict(
     roles=[dict(text="a school", at="@A school may appear"), dict(text="businesses", at="@Businesses follow")]))
 at("A tiny cluster becomes a functioning settlement", C("rural_crossroads_village__pe27132781"))
 at("If you're enjoying stories about how communities", P("pe29137946", move="left"))
-at("subscribe, because this pattern goes much further", C("px4606785"))
+at("this pattern goes much further", C("px4606785"))
 
 # =================================================================== VII · a decade apart
 at("Now compare what happened from", head(C("px34668476"), 7, "A decade apart",
@@ -477,9 +477,9 @@ at("Wisconsin followed a different path", delta(
     [dict(label="Settlements", **{"from": 50, "to": 68}, delta="+18", at="@It went from 50",
           note="twice Pennsylvania's gain", color=VERD),
      dict(label="Church districts", **{"from": 138, "to": 209}, delta="+71 districts",
-          at="@Its church districts also grew", note="new ground, not deeper ground", color=VERD)],
+          at="@Its church districts also", note="new ground, not deeper ground", color=VERD)],
     frm="2015", to="2025", foot="the geographic spread is the striking part",
-    footAt="@but the geographic spread", footY=820))
+    footAt="@the geographic spread is the striking", footY=820))
 at("Wisconsin kept adding separate communities", C("px2818521"))
 at("over that decade, Pennsylvania", vs(
     "One new settlement for every…", ("Pennsylvania", "grew inward", OXBLOOD), ("Wisconsin", "grew outward", VERD),
@@ -619,7 +619,7 @@ at("Cashton was once a handful of families", P("pe11929455", move="in"))
 at("Every giant Amish community began with someone", P("pe14058112", move="right", zoom=1.1))
 at("There is not enough room for our future here", C("px5542449"))
 at("A farm is purchased", P("real_estate_auction_sign__pe8482511", move="in"))
-at("Another family follows", C("px9507657", skip=4))
+at("Another family follows", P("pe14280799", move="in"))
 at("A congregation forms", P("pe12983687", move="left"))
 at("Children are born", P("pe8603672", move="in"))
 at("The district divides", C("px19655183", skip=5))
