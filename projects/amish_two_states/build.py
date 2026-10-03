@@ -556,7 +556,7 @@ at("That is why the Amish map expands differently", C("px34066758", skip=4))
 at("Growth does not have to produce a giant city", P("pe12345627", move="in"))
 at("In 2025 alone", stat(
     "9", "newly established settlements, 2025", "and not one existing settlement dissolved that year",
-    "pe2042161", unit="new dots on the map", at="@researchers recorded nine", countFor=1.2, color=VERD))
+    "pe2042161", unit="new dots on the map", at="@researchers recorded nine", countFor=1.2))
 at("And more than half of all Amish settlements", dict(
     type="almshare", title="How big is a typical settlement?", note="all Amish settlements in North America, 2025",
     parts=[dict(frac=0.52, big="more than half", label="one church district", color=VERD,
@@ -626,7 +626,7 @@ at("The district divides", C("px19655183", skip=5))
 at("And if enough people remain long enough", C("sunrise_barn_mist__pe29065906"))
 at("That is the real meaning behind Wisconsin's", stat(
     "68", "Wisconsin · settlements", "the Amish map is not only growing — it is spreading into more versions of itself",
-    "sunrise_barn_mist__pe28887344", unit="separate communities", at="@That is the real meaning", countFor=1.4, color=VERD))
+    "sunrise_barn_mist__pe28887344", unit="separate communities", at="@That is the real meaning", countFor=1.4))
 at("And that leaves an even more interesting question", C("px29011156", skip=4))
 at("If a handful of Amish families find cheap land", fadeout(card(
     ("What has to happen", "@what exactly has to happen", None, 58),
