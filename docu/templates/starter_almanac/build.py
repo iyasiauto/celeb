@@ -1,24 +1,28 @@
 """
 <VIDEO TITLE> - heritage almanac style.
 
-The skeleton of the sixth house style (see docu/templates/README.md, "Style F"), first used for
-"Why Thousands of Amish Are Leaving Their 300-Year Homeland" (projects/amish_leaving/build.py is the full worked example):
+The skeleton of the sixth house style (see docu/templates/README.md, "Style F"), updated edition.
+Full worked example: projects/amish_two_states/build.py ("Pennsylvania Has 95,000 Amish - So Why Does
+Wisconsin Have MORE Settlements?"). The first edition (slab serif, barn red, quilt frames) is still there:
+set theme="almanac_v1" and use the alm* scenes instead of the gz* ones.
 
   pace        slow: footage carries about half the video, photographs drift, soft 0.5 s dissolves;
               the video OPENS ON MOVING FOOTAGE (never a still), the title rises over a clip
-  headings    almhead - a stitched badge with the chapter numeral, a small kicker and a big slab-serif
-              title that rises out of a mask over moving footage; a stitched rule; one per act
-  captions    almtag - a cream seed-packet tag with an ink keyline and a punched hole
-  key points  almcard (quilt frame, lines appear on their words), almstat (one big number)
-  charts      on cream paper, only for the key numbers: almgrowth (a line across years, points on
-              their words), almsplit (a field fenced into equal strips), almdots (generations as dots),
-              almshare (one bar split into shares), almbars (columns), almdistrict (a ring of houses)
-  maps        the cream survey map: red target markers, name tags with an ink keyline, inked routes
-              with arrowheads, states tinted field-green
-  palette     barn red #9E3A2B, field green #5E7A44, wheat #D4A85A, denim #4E6E8A, ink #23211C, cream
-  type        Zilla Slab (headings), Libre Baskerville (italic notes), Roboto Condensed (labels) - OFL,
-              shipped in docu/fonts and copied into the kit on first run
-  grade       "almanac" - a little muted, warm, lifted blacks like an old print
+  headings    gzhead - a notched "PLATE IV" stamp, a kicker, and an engraved-caps title whose
+              letter-spacing closes in over the moving clip; hairlines open out; one per act
+  captions    gztag - the place engraved on a slate cartouche with a pencil note slipped under it
+  key points  gzcard (ledger slip: punched holes, double keyline, ochre band), gzstat (one stamped figure)
+  figures     only for the numbers that carry the argument: gzversus (two things compared row by row),
+              gzgiants (one circle sized by its value beside a field of dots), gzdivide (one cell
+              dividing into many), gzindex (index rows with dotted leaders), gzdelta (2015 -> 2025 with
+              the difference stamped), plus the almanac's paper charts in the same palette: almgrowth,
+              almsplit, almdots, almshare, almbars, almdistrict
+  maps        the plat map: township grid, square section markers, slate cartouche labels, inked routes
+              with arrowheads, and dots that carry a size (one dot = 40 people, another = 44,765)
+  palette     slate ink #1E2832, ochre #BE8A2C, oxblood #7A2F2A, verdigris #38655C, oatmeal paper #E8E2D0
+  type        Cinzel (engraved headings), Playfair (didone figures), EB Garamond (body),
+              Patrick Hand (the surveyor's pencil), Oswald (labels) - all OFL, shipped in the kit
+  grade       "almanac2" - muted, cool ink, lifted blacks like a lithographic plate print (set for you)
   sound       soft only (paper, pen, a count roll) - no whooshes; music far under the voice
 
 Copy this folder to projects/<your_video>/, fill data/ (see data/README.txt), and run:
@@ -59,11 +63,12 @@ edl.setup(
     data=os.path.join(HERE, "data"),
     out=os.environ.get("VIDEO_OUT", f"{SP}/out"),
     image_dirs=[os.environ.get("VIDEO_IMAGES", f"{SP}/my_niche/images")],
-    theme="almanac", grade="almanac", grain=4.0, xfade=0.5,
+    theme="almanac", grain=3.5, xfade=0.55,          # theme="almanac_v1" for the first edition
     music_floor_db=-21.0, music_duck_db=-10.0, sfx_gain=0.55, sfx_style="calm", vary="auto",
 )
 
-BARN, FIELD, WHEAT, DENIM = "#9E3A2B", "#5E7A44", "#D4A85A", "#4E6E8A"
+OCHRE, OXBLOOD, VERD, SLATE = "#BE8A2C", "#7A2F2A", "#38655C", "#2C4760"
+BARN, FIELD, WHEAT, DENIM = OXBLOOD, VERD, OCHRE, SLATE      # the first edition's names still work
 
 # ---------------------------------------------------------------- building blocks (copy freely)
 _IDX = {c["video"].rsplit(".", 1)[0]: c["i"] for c in edl.CAT}
@@ -94,19 +99,19 @@ def _ov(scene, o):
 
 def head(scene, n, title, kicker=None, sub=None, at=0.5, **kw):
     """chapter heading over moving footage; n=None hides the badge (use for the title)"""
-    o = dict(type="almhead", n=n, title=title, kicker=kicker or f"Chapter {n}", at=at, **kw)
+    o = dict(type="gzhead", n=n, title=title, kicker=kicker or f"Chapter {n}", at=at, **kw)
     if sub: o["sub"] = sub
     return _ov(scene, o)
 
 
 def tag(scene, text, sub=None, at=0.6):
-    o = dict(type="almtag", text=text, at=at)
+    o = dict(type="gztag", text=text, at=at)
     if sub: o["sub"] = sub
     return _ov(scene, o)
 
 
 def card(*lines, bg, kicker=None, dim=0.62, **kw):
-    """key point in a quilt frame; each line: text or (text, at, color, size, font)"""
+    """key point on a ledger slip; each line: text or (text, at, color, size, font)"""
     ls = []
     for ln in lines:
         ln = (ln,) if isinstance(ln, str) else ln
@@ -114,7 +119,7 @@ def card(*lines, bg, kicker=None, dim=0.62, **kw):
         for k, v in zip(("at", "color", "size", "font"), ln[1:]):
             if v is not None: d[k] = v
         ls.append(d)
-    s = dict(type="almcard", lines=ls, img=img(bg), dim=dim)
+    s = dict(type="gzcard", lines=ls, img=img(bg), dim=dim)
     if kicker: s["kicker"] = kicker
     s.update(kw)
     return s
@@ -122,7 +127,7 @@ def card(*lines, bg, kicker=None, dim=0.62, **kw):
 
 def stat(value, kicker, note, bg, **kw):
     """one big number counting up (count=False for text like '7-9')"""
-    return dict(type="almstat", value=value, kicker=kicker, note=note, img=img(bg), **kw)
+    return dict(type="gzstat", value=value, kicker=kicker, note=note, img=img(bg), **kw)
 
 
 def pin(label, lon, lat, at, sub=None, side="right", **kw):
@@ -148,6 +153,30 @@ at("A sentence with one key number", stat("$25,000", "What the number measures",
                                           at="@the number itself"))
 at("A sentence that is the turn of the story", card(("First half of the point", 0.3), ("the payoff line.", "@payoff words", WHEAT, 90),
                                                     bg="a_photo", kicker="The real reason"))
+at("Two things that need comparing", dict(
+    type="gzversus", title="A against B", note="what the figures are",
+    left=dict(name="The first", sub="what it is", color=OXBLOOD), right=dict(name="The second", sub="what it is", color=VERD),
+    rows=[dict(label="People", left="95,410", right="27,535", at="@the first pair of numbers", win="l", mark="three times as many"),
+          dict(label="Places", left=63, right=68, at="@the second pair", win="r", mark="five more")],
+    verdict="what the table proves", verdictAt="@the sentence that sums it up"))
+at("One giant beside many small ones", dict(
+    type="gzgiants", title="One is not like the others",
+    giant=dict(value="44,765", label="The giant", sub="a single one", unit="people", at=0.6, r=206),
+    field=dict(n=68, label="All the rest", sub="68 of them", at="@the moment the many appear", fill=2.4)))
+at("Something that keeps dividing", dict(
+    type="gzdivide", title="How one becomes ten", frameLabel="one settlement", note="what each cell is",
+    steps=[dict(n=1, label="One", at=0.9), dict(n=2, label="One becomes two", at="@two"),
+           dict(n=3, label="Two become three", at="@three"), dict(n=10, label="Three become ten", at="@ten")]))
+at("A list with figures", dict(
+    type="gzindex", title="The list", note="what it ranks",
+    rows=[dict(label="First", value=74, at=0.8, hi=True), dict(label="Second", value=68, at="@the second name"),
+          dict(label="Third", value=64, at="@the third name", sub="a note under the name")],
+    foot="the line that lands the point", footAt="@the closing words"))
+at("What a decade did", dict(
+    type="gzdelta", title="2015 to 2025", **{"from": "2015", "to": "2025"},
+    items=[dict(label="Settlements", **{"from": 54, "to": 63}, delta="+9", at=0.9, note="a net gain of nine", color=OXBLOOD),
+           dict(label="Districts", **{"from": 465, "to": 636}, delta="+171", at="@the second measure", note="much bigger inside", color=VERD)],
+    foot="what the two columns mean together", footAt="@the conclusion"))
 at("Numbers that grow over time", dict(
     type="almgrowth", title="What grew", note="how fast", source="Source",
     points=[dict(x=1920, y=5000, label="5,000", sub="then", at=0.8),

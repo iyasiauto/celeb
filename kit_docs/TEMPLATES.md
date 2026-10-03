@@ -33,29 +33,38 @@ template ke apne "signature" scenes hain. Wizard aur Docu Studio un ko khud chun
 - **Starter:** `docu/templates/starter_documentary/build.py`
 
 ## 2 · Heritage almanac — `almanac`
-![sheet](docu/templates/previews/sheet_almanac.jpg)
+![sheet](docu/templates/previews/sheet_almanac2.jpg)
 
-- **Best for:** rural life, traditions, migrations, land and family stories. Warm and slow, footage zyada.
-- **Look:**
+- **Best for:** rural life, traditions, migrations, land and family stories, aur numbers wali
+  comparison videos (do states, do daur, chhote aur bare ka farq). Slow, calm, footage zyada.
+- **Look** (ye updated edition hai — purana warm/slab wala version `almanac_v1` ke naam se mojood hai):
   - Video **opens on moving footage** (kabhi still nahi).
-  - Slab-serif chapter headings **rise over the moving clip**, with a stitched badge (I, II, III…).
-  - Seed-packet place tags, quilt-frame key-point cards.
-  - Charts drawn on cream paper.
-  - Cream survey map: red target markers, ink-keyline name tags, inked routes with arrowheads.
-  - Colours: barn red, field green, wheat, denim.
+  - Chapter heading **engraved caps** (Cinzel) mein, ek letterpress plate aur "PLATE IV" stamp ke saath,
+    chalti footage par — letter-spacing band hoti hai, hairlines beech se khulti hain.
+  - **Didone figures** (Playfair) bare numbers ke liye, **EB Garamond** body, aur **surveyor ki pencil**
+    (Patrick Hand) notes ke liye.
+  - Key points **ledger slip** par: punched holes, double keyline, ochre band.
+  - **Plat map:** township grid, square section markers, slate cartouche labels, aur dots jinka size
+    badla ja sakta hai (ek dot 40 logon ka, dusra 44,765 ka).
+  - Colours: slate ink, ochre, oxblood, verdigris — oatmeal paper par.
 - **Signature scenes:**
-  - `almhead` (heading overlay on a clip)
-  - `almtag`
-  - `almcard`
-  - `almstat`
-  - `almgrowth` (line across years; each point appears on its words)
-  - `almsplit` (a farm fenced into equal strips)
-  - `almdots` (generations as dots)
-  - `almshare` (one bar, shares)
-  - `almbars`
-  - `almdistrict` (ring of houses around a centre)
-- **Settings:** `theme="almanac", grade="almanac", grain 4, xfade 0.5, sfx_style="calm"`, about 45–50 % clips.
-- **Example:** *Why Thousands of Amish Are Leaving Their 300-Year Homeland*: `projects/amish_leaving/`
+  - `gzhead` (heading overlay on a clip) · `gztag` (place cartouche)
+  - `gzcard` (ledger-slip key point) · `gzstat` (one stamped figure)
+  - `gzversus` — do cheezein row by row compare (population / settlements / districts), har value
+    apne lafz par count hoti hai, aagay wali side tinted
+  - `gzgiants` — ek bara circle (value ke hisab se) aur barabar mein chhote dots ka field
+  - `gzdivide` — ek cell boundary ke andar do, teen, dus mein divide hota hua
+  - `gzindex` — gazetteer index rows: naam · dotted leader · figure
+  - `gzdelta` — 2015 → 2025, arrow ke saath, farq stamp kiya hua
+  - aur almanac ke paper charts isi naye palette mein: `almgrowth`, `almsplit`, `almdots`,
+    `almshare`, `almbars`, `almdistrict`
+- **Settings:** `theme="almanac", grain 3.5, xfade 0.55, sfx_style="calm"` (grade khud `almanac2` ban
+  jata hai), about 35–50 % clips.
+- **Examples:**
+  - *Pennsylvania Has 95,000 Amish — So Why Does Wisconsin Have MORE Settlements?*: `projects/amish_two_states/`
+    (updated edition — 194 shots, saari nayi scenes)
+  - *Why Thousands of Amish Are Leaving Their 300-Year Homeland*: `projects/amish_leaving/`
+    (pehla edition, `theme="almanac_v1"` se waisa hi render hoga)
 - **Starter:** `docu/templates/starter_almanac/build.py`
 
 ## 3 · Paper / Vox explainer — `paper`

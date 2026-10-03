@@ -1,6 +1,8 @@
 # AGENTS.md: how an AI agent makes a video with this kit
 
-You are an AI coding agent (Claude Code, Antigravity, Codex, Cursor, …) opened in this folder. The user wants a
+You are an AI coding agent (Claude Code, Antigravity, Codex, Cursor, …) opened in this folder.
+Read **HANDOVER.md** first - it says what this channel has already made, what each template looks
+like now, and where the finished shot lists are to copy the house style from. The user wants a
 faceless documentary video made with one of the six templates. Follow this file step by step. Talk to the user
 in the language they write in (often Roman Urdu / English). Keep messages short.
 
@@ -26,7 +28,7 @@ Ask these together, with a short example for each. Don't ask them one by one.
    a **FameSpeak voice ID**, which needs `FAMESPEAK_API_KEY`.
 4. **Template**, 1–6:
    1. Calm documentary
-   2. Heritage almanac
+   2. Heritage almanac (engraved caps, didone figures, ledger slips, plat map)
    3. Paper / Vox explainer
    4. Forensic lab report
    5. Expedition & courtroom
@@ -100,6 +102,13 @@ it. Without any of them, it uses offline rules, which match words to file and fo
    `WARN`) and renders one still per scene. Look at the contact sheets in `media/work/<slug>/qa/` and fix wrong
    pictures, cut-off text and overlaps.
 5. `python make_video.py --title "<title>" --yes --resume render` (add `--upload` for a gofile link).
+
+## 3b. Keep the footage for next time
+
+One subject, one pool: `python docu/tools/pool.py merge <pool> <new_dir>` moves freshly fetched files in,
+`build <pool> --name "<Name>"` (re)writes library.json / tags.json / CREDITS.md, `sheets` draws contact
+sheets and `catalog` writes a project's clip catalog. Register it once with `studio.py niche-add` and
+later videos only need `--niche <id>`. See HANDOVER.md §6.
 
 ## 4. Report back
 

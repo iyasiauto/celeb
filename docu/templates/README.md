@@ -215,24 +215,30 @@ understand, not be dazzled. "Not fast-paced, not complicated."
   everything fades in (`from="fade"`).
 - Preview: [documentary sheet](previews/sheet_documentary.jpg). Starter: `starter_documentary/build.py`.
 
-### Style F: Heritage almanac (`theme="almanac"`, `grade="almanac"`, grain 4, `xfade=0.5`, `sfx_style="calm"`)
-*Best for:* rural life, traditions, migrations, land and family stories; slow and warm, clearly different
-from the dark calm documentary. First used for *Why Thousands of Amish Are Leaving Their 300-Year Homeland*
-(`projects/amish_leaving/build.py`, the full worked example).
-- **Opens on moving footage**, never a still; the title (`almhead` with no numeral) rises over a clip.
-- **Footage carries about half** the video; photographs drift slowly; 0.5 s dissolves; shots 4–10 s.
-- **Chapter headings over moving footage** (`almhead` overlay): a stitched round badge with the chapter
-  numeral, a small kicker, a big Zilla Slab title rising out of a mask, a stitched rule, an italic sub.
-  It renders as a moving alpha layer, so the clip keeps playing under it.
-- **Seed-packet place tags** (`almtag`), **quilt-frame key points** (`almcard`), **one big number** (`almstat`).
-- **Charts on cream paper, only for the key numbers**: `almgrowth`, `almsplit`, `almdots`, `almshare`,
-  `almbars`, `almdistrict` (see §6).
-- **The cream survey map**: the `map` scene restyled by the theme - cream land, blue-grey water, red target
-  markers with name tags in an ink keyline (`MAPC.pin = "survey"`), inked routes with arrowheads
-  (`routes=[{..., arrow=True}]`), states tinted with `highlight=[{id, fill}]`, slab names (`names=[{font: "Slab"}]`).
-- Palette barn red `#9E3A2B`, field green `#5E7A44`, wheat `#D4A85A`, denim `#4E6E8A`, ink `#23211C`, cream.
-- Type: Zilla Slab, Libre Baskerville, Crimson Pro (OFL, in `docu/fonts/`, copied into the kit on first run).
-- Preview: [almanac sheet](previews/sheet_almanac.jpg). Starter: `starter_almanac/build.py`.
+### Style F: Heritage almanac, updated edition (`theme="almanac"`, grain 3.5, `xfade=0.55`, `sfx_style="calm"`)
+*Best for:* rural life, traditions, migrations, land and family stories, and arguments built on numbers
+(two states, two decades, one giant against many small ones); slow and calm, clearly different from the
+dark documentary. Worked example: *Pennsylvania Has 95,000 Amish - So Why Does Wisconsin Have MORE
+Settlements?* (`projects/amish_two_states/build.py`). The first edition - slab serif, barn red, stitched
+badges, quilt frames - is still available as `theme="almanac_v1"` with the `alm*` scenes
+(`projects/amish_leaving/build.py`).
+- **Opens on moving footage**, never a still; the title (`gzhead` with `n=None`) stamps over a clip.
+- **Footage carries a third to a half** of the video; photographs drift; 0.55 s dissolves; shots 4-10 s.
+- **Chapter headings over moving footage** (`gzhead` overlay): a notched plate stamp ("PLATE IV"), a
+  kicker, an engraved-caps (Cinzel) title whose letter-spacing closes in, hairlines opening out from the
+  left, and a pencil note. It renders as a moving alpha layer, so the clip keeps playing under it.
+- **Slate cartouche place tags** (`gztag`), **ledger-slip key points** (`gzcard`), **one stamped figure** (`gzstat`).
+- **Figures, only where the numbers carry the argument**: `gzversus`, `gzgiants`, `gzdivide`, `gzindex`,
+  `gzdelta`, plus the almanac's paper charts in the same palette - `almgrowth`, `almsplit`, `almdots`,
+  `almshare`, `almbars`, `almdistrict` (see §6).
+- **The plat map**: the `map` scene restyled by the theme - linen land, a township grid ruled across it,
+  square section markers with slate cartouche labels (`MAPC.pin = "plat"`), inked routes with arrowheads,
+  states tinted with `highlight=[{id, fill}]`, and `dots=[{lon, lat, r, color, at, wait}]` where `r` sizes
+  the dot, so one dot can stand for forty people and another for forty-five thousand.
+- Palette slate ink `#1E2832`, ochre `#BE8A2C`, oxblood `#7A2F2A`, verdigris `#38655C`, oatmeal `#E8E2D0`.
+- Type: Cinzel, Playfair Display, EB Garamond, Patrick Hand, Oswald (OFL, in the kit's fonts).
+- Grade `almanac2` (set for you when the grade is left at its default): muted, cool ink, lifted blacks.
+- Preview: [almanac sheet](previews/sheet_almanac2.jpg). Starter: `starter_almanac/build.py`.
 
 ### Keep every video different: `vary="auto"`
 Add `vary="auto"` to `edl.setup()` and each video gets its own accent colour, font pairing, heading style
@@ -577,7 +583,49 @@ Options: `title`, `note`, `sizes` (default 2–12), `values` or `base` + `step`,
 Overlays: `dict(type="place", text="Williamsburg, Brooklyn", sub="…", at=0.6)` and
 `dict(type="doclower", name="Name", role="Role", at=0.6)`.
 
-### Heritage almanac (`scenes_almanac.js`)
+### Heritage almanac, updated edition (`scenes_almanac2.js`)
+
+#### `gzhead` overlay: chapter heading over footage
+![gzhead](previews/almanac2/gzhead.jpg)
+`dict(type="gzhead", n=4, kicker="Chapter four", title="What a settlement is", sub="a pencil note", at=0.4, plate="plate", size=86)`;
+`n=None` hides the plate stamp (use it for the title). Options also `out`, `x`, `bottom`, `w`, `rule`.
+
+#### `gztag` overlay: a place cartouche
+![gztag](previews/almanac2/gztag.jpg)
+`dict(type="gztag", text="Cashton, Wisconsin", sub="founded in the 1960s", at=0.3)`; options `x`, `y`, `size`, `out`.
+
+#### `gzcard`: a key point on a ledger slip
+![gzcard](previews/almanac2/gzcard.jpg)
+Options: `kicker`, `lines` `[{text, at, color, size, font}]` (font `Engr`, `Garamond`, `Pencil`, …), `img`, `dim`, `w`.
+
+#### `gzstat`: one stamped figure
+![gzstat](previews/almanac2/gzstat.jpg)
+Options: `value`, `unit`, `kicker`, `note`, `img`, `dim`, `at`, `countFor`, `count=False`, `size`, `color`, `source`.
+
+#### `gzversus`: two things compared row by row
+![gzversus](previews/almanac2/gzversus.jpg)
+`left`/`right` `{name, sub, color}`; `rows=[{label, left, right, at, win: "l"|"r", mark, size, count}]`;
+options `note`, `verdict`, `verdictAt`, `countFor`, `rowH`, `y0`, `lx`, `rx`, `source`.
+
+#### `gzgiants`: one circle against a field of dots
+![gzgiants](previews/almanac2/gzgiants.jpg)
+`giant={value, label, sub, unit, at, r, color, size}`, `field={n, label, sub, at, r, color, fill, seed, count}`;
+the counter runs as the dots appear.
+
+#### `gzdivide`: one cell dividing into many
+![gzdivide](previews/almanac2/gzdivide.jpg)
+`steps=[{n, label, at, d, count}]` - the cells re-flow into each new layout in the second before its word.
+Options `frameLabel`, `note`, `fx`, `fy`, `fw`, `fh`.
+
+#### `gzindex`: index rows with dotted leaders
+![gzindex](previews/almanac2/gzindex.jpg)
+`rows=[{label, value, at, sub, hi, count, size, vsize}]`; options `note`, `foot`, `footAt`, `y0`, `rowH`, `x0`, `x1`, `countFor`.
+
+#### `gzdelta`: a decade of change
+![gzdelta](previews/almanac2/gzdelta.jpg)
+`items=[{label, from, to, delta, at, note, color, size}]`, `from`/`to` year captions, `foot`, `footAt`, `footY`, `lx`, `rx`, `y`.
+
+### Heritage almanac, first edition (`scenes_almanac.js`)
 
 #### `almhead` overlay: chapter heading over footage
 ![almhead](previews/almanac/almhead.jpg)
