@@ -64,7 +64,7 @@ def _overlay(scene, o):
 
 
 def place(scene, text, sub=None, at=0.6):
-    kind = {"almanac": "almtag", "almanac2": "gztag"}.get(THEME, "place")
+    kind = {"almanac": "gztag", "almanac2": "gztag", "almanac_v1": "almtag"}.get(THEME, "place")
     o = dict(type=kind, text=text, at=at)
     if sub:
         o["sub"] = sub
@@ -86,10 +86,10 @@ def fadeout(scene, d=2.2):
 def heading(n, title, bg, sub=None, **kw):
     V = _V()
     kicker = V.kicker(n) if V else f"Chapter {n}"
-    if THEME in ("almanac", "almanac2"):
+    if THEME in ("almanac", "almanac2", "almanac_v1"):
         # the heading sits over moving footage (bg = a catalog clip index) or a slow photograph (bg = a picture)
         base = cl(bg) if isinstance(bg, int) else ph(bg, move="in")
-        o = dict(type="almhead" if THEME == "almanac" else "gzhead", n=n, kicker=f"Chapter {n}", title=title, at=0.5)
+        o = dict(type="almhead" if THEME == "almanac_v1" else "gzhead", n=n, kicker=f"Chapter {n}", title=title, at=0.5)
         if sub:
             o["sub"] = sub
         o.update(kw)
@@ -125,10 +125,10 @@ def card(*lines, bg=None, dim=None, **kw):
                 d["size"] = ln[3]
             ls.append(d)
     V = _V()
-    if THEME in ("almanac", "almanac2"):
+    if THEME in ("almanac", "almanac2", "almanac_v1"):
         for d in ls:
-            d.setdefault("size", 70 if THEME == "almanac" else 60)
-        s = dict(type="almcard" if THEME == "almanac" else "gzcard", lines=ls, dim=dim if dim is not None else 0.62)
+            d.setdefault("size", 70 if THEME == "almanac_v1" else 60)
+        s = dict(type="almcard" if THEME == "almanac_v1" else "gzcard", lines=ls, dim=dim if dim is not None else 0.62)
         if bg:
             s["img"] = img(bg)
         s.update(kw)
@@ -141,8 +141,8 @@ def card(*lines, bg=None, dim=None, **kw):
 
 
 def big(value, kicker, note="", bg=None, source=None, **kw):
-    if THEME in ("almanac", "almanac2"):
-        s = dict(type="almstat" if THEME == "almanac" else "gzstat", value=value, kicker=kicker, note=note, **kw)
+    if THEME in ("almanac", "almanac2", "almanac_v1"):
+        s = dict(type="almstat" if THEME == "almanac_v1" else "gzstat", value=value, kicker=kicker, note=note, **kw)
         if bg:
             s["img"] = img(bg)
         if source:
@@ -152,7 +152,7 @@ def big(value, kicker, note="", bg=None, source=None, **kw):
 
 
 def bars(title, rows, bg=None, note=None, source=None, **kw):
-    if THEME in ("almanac", "almanac2"):   # columns on paper (no photo behind)
+    if THEME in ("almanac", "almanac2", "almanac_v1"):   # columns on paper (no photo behind)
         s = dict(type="almbars", title=title, bars=[dict(label=r[0], value=r[1], text=r[2], at=r[3], **(r[4] if len(r) > 4 else {}))
                                                      for r in rows])
         if note:
@@ -185,7 +185,7 @@ def versus(title, left, right, rows, note=None, verdict=None, source=None, **kw)
         if len(x) > 2 and x[2]:
             d["color"] = x[2]
         return d
-    if THEME == "almanac2":
+    if THEME in ("almanac", "almanac2"):
         s = dict(type="gzversus", title=title, left=side(left), right=side(right),
                  rows=[dict(label=r[0], left=r[1], right=r[2], at=r[3], **({"win": r[4]} if len(r) > 4 and r[4] else {}))
                        for r in rows])
@@ -206,7 +206,7 @@ def giants(title, giant, field, note=None, source=None, **kw):
 
     giant = dict(value, label, sub, unit, r, at); field = dict(n, label, sub, at, r, fill)
     Falls back to one big number in the other templates."""
-    if THEME == "almanac2":
+    if THEME in ("almanac", "almanac2"):
         s = dict(type="gzgiants", title=title, giant=dict(giant), field=dict(field))
         for k, v in (("note", note), ("source", source)):
             if v:
@@ -227,7 +227,7 @@ def divide(title, steps, frame_label=None, note=None, source=None, **kw):
             if len(x) > 2 and x[2] is not None:
                 d["at"] = x[2]
             st.append(d)
-    if THEME == "almanac2":
+    if THEME in ("almanac", "almanac2"):
         s = dict(type="gzdivide", title=title, steps=st)
         for k, v in (("frameLabel", frame_label), ("note", note), ("source", source)):
             if v:
@@ -248,7 +248,7 @@ def indexpage(title, rows, note=None, foot=None, source=None, **kw):
         if len(r) > 4 and r[4]:
             d["hi"] = True
         rs.append(d)
-    if THEME == "almanac2":
+    if THEME in ("almanac", "almanac2"):
         s = dict(type="gzindex", title=title, rows=rs)
         for k, v in (("note", note), ("foot", foot), ("source", source)):
             if v:
@@ -260,7 +260,7 @@ def indexpage(title, rows, note=None, foot=None, source=None, **kw):
 
 def delta(title, items, frm="2015", to="2025", note=None, foot=None, source=None, **kw):
     """a decade of change: item = dict(label, from, to, delta, at[, note][, color])"""
-    if THEME == "almanac2":
+    if THEME in ("almanac", "almanac2"):
         s = dict(type="gzdelta", title=title, items=[dict(x) for x in items], **{"from": frm, "to": to})
         for k, v in (("note", note), ("foot", foot), ("source", source)):
             if v:
@@ -322,7 +322,7 @@ def music_for(acts, calm=None):
     V = _V()
     order = list(V["music"]) if V else list(CALM)
     if calm is None:
-        calm = THEME in ("documentary", "almanac", "almanac2")
+        calm = THEME in ("documentary", "almanac", "almanac2", "almanac_v1")
     beds = [t for t in order if t in CALM] if calm else order
     beds = beds or order or CALM
     return [dict(at=a, track=beds[i % len(beds)], db=0 if i else -1, lead=-1.0 if i else 0) for i, a in enumerate(acts)]

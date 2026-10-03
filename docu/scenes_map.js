@@ -288,7 +288,7 @@ SCENES.map = async (s, root) => {
       const xy = proj([o.d.lon, o.d.lat]);
       if (!xy) { vis(o.g, false); return; }
       vis(o.g, true); setT(o.g, xy[0], xy[1]);
-      const a = eOut(seg(t, o.d.at || 0, 0.5));
+      const a = eOut(seg(t, (o.d.at || 0) + (o.d.wait || 0), 0.5));   /* wait: a cascade off one cue */
       setO(o.g, a * (o.d.out != null ? 1 - seg(t, o.d.out, 0.4) : 1));
       o.body.style.transform = `scale(${(0.35 + 0.65 * a).toFixed(3)})`;
     });

@@ -175,7 +175,7 @@ THEMES.documentary = {
 /* almanac: a farmer's almanac / heritage field guide - slab-serif headings with a stitched
    chapter badge laid over moving footage, seed-packet place tags, quilt-frame cards, charts
    drawn on cream paper and a cream survey map. Barn red, field green, wheat, denim. */
-THEMES.almanac = {
+THEMES.almanac_v1 = {
   fonts: {
     Anton: "ZillaSlab-Bold.ttf", Stamp: "ZillaSlab-Bold.ttf", DMSerif: "ZillaSlab-SemiBold.ttf", Elite: "LibreBaskerville.ttf",
     Garamond: "LibreBaskerville.ttf", GaramondI: "LibreBaskerville-Italic.ttf", Barlow: "Roboto-Condensed.ttf",
@@ -199,7 +199,7 @@ THEMES.almanac = {
    gazetteer instead of a seed catalogue. Engraved caps headings on a letterpress plate, high-contrast
    didone numerals, Garamond body, a surveyor's pencil for the notes, and a township-grid plat map with
    square section markers. Cool slate ink and oatmeal paper; ochre, oxblood, verdigris, slate. */
-THEMES.almanac2 = {
+THEMES.almanac = {          /* updated edition; the first edition is kept as THEMES.almanac_v1 */
   fonts: {
     Anton: "PlayfairDisplay.ttf", Stamp: "Cinzel.ttf", DMSerif: "PlayfairDisplay.ttf", Elite: "EB-Garamond.ttf",
     Garamond: "EB-Garamond.ttf", GaramondI: "EB-Garamond-Italic.ttf", Barlow: "Oswald.ttf", BarlowB: "Oswald-Bold.ttf",
@@ -225,6 +225,7 @@ THEMES.almanac2 = {
     pin: "plat", route: "#2C4760", hiLine: "rgba(122,47,42,A)", grid: "township",
   },
 };
+THEMES.almanac2 = THEMES.almanac;   /* the id the updated template was drafted under */
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);

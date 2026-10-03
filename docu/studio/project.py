@@ -32,15 +32,13 @@ STYLES = {
     "broadcast": dict(name="Breaking-news broadcast", letter="D", example="projects/noahs_ark_breaking",
                       blurb="LIVE bug and ticker, BREAKING slab, fact-check meters, headline wall, segment bumpers.",
                       sfx="full", xfade=0.0, preview="templates/previews/broadcast/breaking.jpg", sheet="templates/previews/sheet_broadcast.jpg", readme="Style D"),
-    "almanac": dict(name="Heritage almanac", letter="F", example="projects/amish_leaving",
-                    blurb="Slab-serif headings rising over moving footage, seed-packet place tags, quilt-frame key points, charts on cream paper, a cream survey map. Slow and calm.",
-                    sfx="calm", xfade=0.5, preview="templates/previews/almanac/almhead.jpg", sheet="templates/previews/sheet_almanac.jpg", readme="Style F"),
-    "almanac2": dict(name="Heritage gazetteer", letter="G", example="projects/amish_two_states",
-                     blurb="The almanac's second edition: engraved caps on a letterpress plate, didone figures, ledger slips, "
-                           "a pencil for the notes, state-against-state comparisons, giants-against-dots, dividing districts, "
-                           "index pages, and a plat map with a township grid. Slate ink on oatmeal paper.",
-                     sfx="calm", xfade=0.55, preview="templates/previews/almanac2/gzhead.jpg",
-                     sheet="templates/previews/sheet_almanac2.jpg", readme="Style G"),
+    "almanac": dict(name="Heritage almanac", letter="F", example="projects/amish_two_states",
+                    blurb="Updated edition: engraved caps on a letterpress plate over moving footage, didone figures, "
+                          "ledger-slip key points, a surveyor's pencil for the notes, state-against-state comparisons, "
+                          "giants-against-dots, dividing districts, index pages, and a plat map with a township grid. "
+                          "Slate ink on oatmeal paper. Slow and calm.",
+                    sfx="calm", xfade=0.55, preview="templates/previews/almanac2/gzhead.jpg",
+                    sheet="templates/previews/sheet_almanac2.jpg", readme="Style F"),
 }
 
 
@@ -81,8 +79,7 @@ def all_styles(w):
     samples = dict(documentary="What_Happens_If_the_Government_Cuts_Hasidic_Benefits.mp4",
                    paper="Noahs_Ark_Confirmed_After_4300_Years_1080p.mp4", forensic="Noahs_Ark_100_Percent_Confirmed.mp4",
                    expedition="Noahs_Ark_Myth_or_Reality.mp4", broadcast="Noahs_Ark_Breaking_Drill_Bit_Shattered.mp4",
-                   almanac="Why_Thousands_of_Amish_Are_Leaving_Their_300_Year_Homeland.mp4",
-                   almanac2="Pennsylvania_Has_95000_Amish_So_Why_Does_Wisconsin_Have_MORE_Settlements.mp4")
+                   almanac="Pennsylvania_Has_95000_Amish_So_Why_Does_Wisconsin_Have_MORE_Settlements.mp4")
     for k, v in STYLES.items():
         smp = os.path.join(media(w), "out", samples[k])
         out[k] = dict(v, theme=k, engine="docu", preview_path=os.path.join(DOCU, v["preview"]),
