@@ -1,0 +1,21 @@
+{
+  "id": "amish",
+  "name": "Amish",
+  "description": "Amish data library: 151 clips and 222 pictures (Pennsylvania, Lancaster, Wisconsin, farms, buggies, schools, dairy), free stock and Wikimedia; grows with every Amish video",
+  "footage": "amish/footage",
+  "picks": "amish/picks",
+  "catalog_from": "catalogs/amish",
+  "clip_share": 45,
+  "default_style": "almanac2",
+  "map_hint": "USA, Pennsylvania and Wisconsin",
+  "local": true,
+  "folder": "/home/user/celeb/media/amish/src",
+  "download_to": "/home/user/celeb/media/amish/src",
+  "source_video": "/home/user/celeb/media/amish/src/clips",
+  "images": "/home/user/celeb/media/amish/src/images",
+  "image_dirs": [
+    "amish/picks",
+    "/home/user/celeb/media/amish/src/images"
+  ],
+  "tags_json": "/home/user/celeb/media/amish/src/tags.json"
+}

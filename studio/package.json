@@ -1,0 +1,100 @@
+{
+  "name": "docu-studio",
+  "productName": "Docu Studio",
+  "version": "1.0.0",
+  "description": "Faceless documentary production studio: niche pipeline, template style, FameSpeak voiceover, AI shot list, render, deliver.",
+  "main": "main.js",
+  "author": "Docu Studio",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis portable",
+    "dist:mac": "electron-builder --mac dmg",
+    "dist:linux": "electron-builder --linux AppImage",
+    "dist:win-folder": "electron-builder --win dir --x64"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "online.docustudio.app",
+    "productName": "Docu Studio",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "build/icon.png"
+    ],
+    "extraResources": [
+      {
+        "from": "../docu",
+        "to": "pipeline/docu",
+        "filter": [
+          "**/*",
+          "!**/__pycache__/**",
+          "!templates/_gallery_work/**"
+        ]
+      },
+      {
+        "from": "../projects",
+        "to": "pipeline/projects",
+        "filter": [
+          "**/build.py",
+          "**/data/**",
+          "**/youtube_metadata.txt",
+          "!zz_*/**"
+        ]
+      },
+      {
+        "from": "../api_keys",
+        "to": "pipeline/api_keys",
+        "filter": [
+          "README.md",
+          "keys.example.env",
+          ".gitignore"
+        ]
+      },
+      {
+        "from": "../DOCUMENTARY_CHANNEL_README.md",
+        "to": "pipeline/DOCUMENTARY_CHANNEL_README.md"
+      },
+      {
+        "from": "../styles",
+        "to": "pipeline/styles"
+      },
+      {
+        "from": "../docu/INTEGRATION.md",
+        "to": "pipeline/INTEGRATION.md"
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "DocuStudio-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "DocuStudio-Portable-${version}.${ext}"
+    },
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.video"
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "AudioVideo"
+    }
+  }
+}
