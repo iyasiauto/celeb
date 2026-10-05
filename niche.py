@@ -13,6 +13,7 @@ one default template, one pool.
     python niche.py list
     python niche.py qc space                     # vision QC of the whole pool (talking heads, logos, watermarks...)
     python niche.py add space <folder>           # merge more footage into the pool (then qc again)
+    python niche.py add space "<old kit>\\media" --only moon,apollo   # pull an old kit's footage, only those videos
 
 Any subject works: the niche's --topic is what QC judges relevance against; the template decides the look.
 
@@ -171,22 +172,55 @@ def _flatten(src, pool):
     return n
 
 
+# folders an old kit's media/ holds that are not footage: contact-sheet frames, staged copies, renders, the asset kit
+SKIP_DIRS = {"cat", "picks", "frames", "stills", "segments", "seg", "work", "out", "kit", "qa", "assets", "_qc",
+             "final_qc_frames", "runs", "frontier", "sheets_clips", "sheets_img"}
+
+
 def cmd_add(a):
+    """copy every video and picture under a folder (even a whole old media/ folder) into the pool, once each"""
     d = ws_dir(a.name)
     pool = os.path.join(d, "pool")
-    n = 0
-    for dd, dirs, files in os.walk(os.path.abspath(a.folder)):
+    seen = set()
+    for sub in ("clips", "images"):
+        sd = os.path.join(pool, sub)
+        os.makedirs(sd, exist_ok=True)
+        for f in os.listdir(sd):
+            try:
+                seen.add((f.lower(), os.path.getsize(os.path.join(sd, f))))
+                seen.add(("size", sub, os.path.getsize(os.path.join(sd, f))))
+            except OSError:
+                pass
+    only = [x.lower() for x in (a.only or "").split(",") if x.strip()]
+    n = dup = 0
+    root = os.path.abspath(a.folder)
+    for dd, dirs, files in os.walk(root):
+        dirs[:] = [x for x in dirs if x.lower() not in SKIP_DIRS and not x.startswith(".")]
+        rel = os.path.relpath(dd, root).lower()
+        if only and rel != "." and not any(o.strip() in rel for o in only):
+            continue
         for f in files:
             ext = os.path.splitext(f)[1].lower()
             sub = "clips" if ext in VIDEO_EXT else "images" if ext in IMAGE_EXT else None
-            if not sub:
+            if not sub or f.startswith(("qc_", "_", ".")):
+                continue
+            src = os.path.join(dd, f)
+            try:
+                size = os.path.getsize(src)
+            except OSError:
+                continue
+            if ("size", sub, size) in seen:             # the same file under another name (footage/ and src/ copies)
+                dup += 1
                 continue
             dst = os.path.join(pool, sub, f)
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
-            if not os.path.exists(dst):
-                shutil.copy2(os.path.join(dd, f), dst)
-                n += 1
-    print(f"{n} files added to {pool} - now run: python niche.py qc {slug(a.name)}")
+            if os.path.exists(dst):
+                dst = os.path.join(pool, sub, f"{os.path.splitext(f)[0]}_{size % 100000}{ext}")
+            shutil.copy2(src, dst)
+            seen.add(("size", sub, size))
+            n += 1
+            if n % 50 == 0:
+                print(f"  {n} files...")
+    print(f"{n} files added to {pool} ({dup} duplicates skipped) - now run: python niche.py qc {slug(a.name)}")
 
 
 def cmd_qc(a):
@@ -225,7 +259,8 @@ def main():
     n.add_argument("--clip-share", type=int, default=None)
     sub.add_parser("list")
     q = sub.add_parser("qc"); q.add_argument("name"); q.add_argument("--workers", type=int, default=8); q.add_argument("--strict", action="store_true")
-    ad = sub.add_parser("add"); ad.add_argument("name"); ad.add_argument("folder")
+    ad = sub.add_parser("add"); ad.add_argument("name"); ad.add_argument("folder", help="a footage folder, or a whole old media/ folder")
+    ad.add_argument("--only", help="comma list: only video folders whose name contains one of these (e.g. hasidic,permission)")
     a = ap.parse_args()
     {"new": cmd_new, "list": cmd_list, "qc": cmd_qc, "add": cmd_add}[a.cmd](a)
 
