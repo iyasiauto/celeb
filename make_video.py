@@ -221,7 +221,12 @@ def run_qc(base, topic):
             return
         sys.exit("No vision AI for QC. Put OPENLUX_API_KEY in api_keys/keys.env (Gemini 2.5 Flash Lite checks every clip for "
                  "talking heads, influencers, watermarks and logos). QC is mandatory.")
-    subprocess.run([PY, os.path.join(TOOLS, "qc_pool.py"), base, "--topic", topic, "--workers", "8"], env=env(), check=True)
+    mode = (NICHE or {}).get("qc_mode") or os.environ.get("DOCU_QC_MODE")
+    pj = os.path.join(WS, (NICHE or {}).get("pool", "pool"), "people.json") if NICHE else None
+    if mode == "people" and pj and os.path.exists(pj) and not os.path.exists(os.path.join(base, "people.json")):
+        shutil.copy(pj, os.path.join(base, "people.json"))      # who each "<person>__" file should show
+    subprocess.run([PY, os.path.join(TOOLS, "qc_pool.py"), base, "--topic", topic, "--workers", "8"] +
+                   (["--mode", mode] if mode else []), env=env(), check=True)
 
 
 # ------------------------------------------------------------------ main

@@ -21,6 +21,8 @@ Never bypass them (`DOCU_SKIP_QC=1`, `DOCU_AUDIT=warn`) unless the user explicit
   another workspace's footage or projects.
 - **In the kit root**: if the user works on more than one niche, create a workspace per niche first:
   `python niche.py new <name> --template <id> --pool "<folder>" --topic "<what it is about>"` - then work inside it.
+- The workspace may hold `NICHE_GUIDE.md` (the template's own how-to for that kind of niche, e.g. celebrity /
+  nostalgia) - read it before anything else. Celebrity niches run QC in **people mode** (niche.json `qc_mode`).
 - Check the machine once: `python -c "import numpy, PIL, playwright" && echo ok` (else `setup.bat` / `./setup.sh`).
 - QC needs `OPENLUX_API_KEY` in `api_keys/keys.env` (or FRONTIER_DIR set to the Frontier folder with its `.env`).
 

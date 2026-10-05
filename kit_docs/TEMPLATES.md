@@ -1,6 +1,6 @@
 # The templates
 
-Kit ke saath 6 templates aate hain (neeche). Ye sab **registry** mein hain: `templates/<id>/template.json` har
+Kit ke saath 7 templates aate hain (neeche; 7th: **Final Reel** — `templates/finalreel/README.md`). Ye sab **registry** mein hain: `templates/<id>/template.json` har
 template ki playbook hai (devices aur kitne chahiye, audit limits, rules, previews, examples) aur
 `styles/<id>/` un ke variations. Naya template / style = naya folder (`python docu/registry.py new-template` /
 `new-style`, guide: `templates/README.md`, `styles/README.md`). Agent har video se pehle
@@ -163,3 +163,14 @@ Bilkul naya look chahiye (naye scenes) to `docu/scenes_almanac.js` ek mukammal m
 - **No repeats:** pichli videos mein use hui pictures aur clips `assets_used.json` se pehchaan kar avoid hoti hain.
 - **Sound:** synthesised SFX, music beds per act, music voice ke neeche ducked, −14 LUFS.
 - **Delivery:** 1 GB se kam (zaroorat par 2-pass re-encode), gofile link with md5 check, YouTube metadata with chapters.
+
+
+## 7 · Final Reel — `finalreel`
+![sheet](templates/finalreel/previews/sheet.jpg)
+
+- **Best for:** childhood nostalgia, child stars, celebrities, "gone too soon", memorial lists.
+- **Look:** a film-archive memorial — charcoal and ivory, muted gold, one crimson for the ending; Playfair names,
+  condensed caps, typewriter dates; portraits in ivory film frames; borrowed clips play inside the frame.
+- **Signature scenes:** `castcard`, `ageclock`, `memoriam`, `rollcall`, `lifeline`; overlays `reelframe`, `nameplate`.
+- **Settings:** `template="finalreel"` (grade `reel`, grain 3, xfade 0.6, calm sound), ~25–30 % clips, QC people mode.
+- **Example:** *35 Child Actors Who Died Too Soon*: `projects/child_stars_died_too_soon/` · niche guide: `NICHE_NOSTALGIA.md`.

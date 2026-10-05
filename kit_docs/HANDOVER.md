@@ -119,6 +119,16 @@ python make_video.py --yes --title "<title>" --script inputs\script.txt --audio 
 
 ---
 
+## 6b. Celebrity / nostalgia niches — Final Reel template
+
+`templates/finalreel`: film-archive memorial (charcoal, ivory, gold, ek crimson). Devices: `castcard`, `ageclock`,
+`memoriam`, `rollcall`, `lifeline`, frame ke andar clip (`reelframe` + render `inset`), `nameplate`.
+Is niche ka poora tareeqa: **`NICHE_NOSTALGIA.md`** (workspace banate waqt `NICHE_GUIDE.md` ban kar khud copy hota hai).
+Naye tools: `niche.py people` (logon ki tasweeren), `docu/tools/comp_clips.py` (reference video ke frame ke andar se
+clips), QC `--mode people` (us shakhs ke portraits allowed; thumbnails / memes / ghalat shakhs / interviews / logos nahi).
+
+---
+
 ## 7. Ab tak kya ban chuka hai (channel ki history)
 
 | # | Video | Template | Project folder |
@@ -128,6 +138,7 @@ python make_video.py --yes --title "<title>" --script inputs\script.txt --audio 
 | 5–6 | Hasidic (10 kids / benefits cut) | documentary | `projects/hasidic_10_kids`, `projects/hasidic_benefits_cut` |
 | 7 | Why Thousands of Amish Are Leaving Their 300-Year Homeland (17 min) | heritage almanac, **pehla edition** | `projects/amish_leaving` |
 | 8 | Pennsylvania Has 95,000 Amish — So Why Does Wisconsin Have MORE Settlements? (20:35) | heritage almanac, **updated edition** | `projects/amish_two_states` |
+| 9 | 35 Child Actors Who Died Too Soon — How Many Do You Remember? (14:13) | **Final Reel** (naya: nostalgia / celebrity) | `projects/child_stars_died_too_soon` |
 
 Har project folder mein uski poori shot list (`build.py`), uska data (`data/`) aur YouTube metadata
 (`youtube_metadata.txt`) mojood hai. **Nayi video likhte waqt sab se milta-julta project kholein aur

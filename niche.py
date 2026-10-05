@@ -15,7 +15,12 @@ one default template, one pool.
     python niche.py add space <folder>           # merge more footage into the pool (then qc again)
     python niche.py add space "<old kit>\\media" --only moon,apollo   # pull an old kit's footage, only those videos
 
+    python niche.py new child-stars --template finalreel --topic "child stars who died young, childhood nostalgia"
+    python niche.py people child-stars names.txt      # pictures of each named person ("Name | known for" per line)
+
 Any subject works: the niche's --topic is what QC judges relevance against; the template decides the look.
+Celebrity / nostalgia templates (finalreel) set qc_mode "people": the named person's own portraits are allowed,
+thumbnails / memes / somebody else / interviews / logos / chyrons are not.
 
     workspaces/<niche>/
         niche.json      name, template, style, topic, pool - the defaults every video of this niche uses
@@ -92,7 +97,7 @@ This folder is ONE niche of the video kit. Everything you do here belongs to **{
    watermarks or logos; corner logos are cropped away by the pipeline.
 6. Make a video: `make.bat` / `./make.sh` with the usual make_video.py flags (title, script, audio, srt).
    The edit audit must pass before render; final QC runs after the render.
-"""
+{guide_line}"""
 
 
 def cmd_new(a):
@@ -129,11 +134,19 @@ def cmd_new(a):
         subprocess.run([PY, os.path.join(KIT, "docu", "tools", "fetch_drive.py"), _drive_id(a.drive), dl, "12"], check=True)
         n = _flatten(dl, pool)
         pool_note = f"{n} files from Drive"
+    mode = a.qc_mode or ("people" if tpl.get("qc_mode") == "people" else "faceless")
     cfg = dict(id=nid, name=name, template=tpl["id"], style=tpl.get("style"), topic=a.topic or name,
-               pool="pool", drive=a.drive, clip_share=a.clip_share, created=time.strftime("%Y-%m-%d"))
+               pool="pool", drive=a.drive, clip_share=a.clip_share, qc_mode=mode, created=time.strftime("%Y-%m-%d"))
     json.dump(cfg, open(os.path.join(d, "niche.json"), "w", encoding="utf-8"), indent=1)
+    guide_line = ""
+    g = tpl.get("guide")
+    if g and os.path.isfile(os.path.join(KIT, g)):
+        shutil.copy(os.path.join(KIT, g), os.path.join(d, "NICHE_GUIDE.md"))   # the template's own how-to for this kind of niche
+        guide_line = ("7. **Read `NICHE_GUIDE.md` in this folder first** - how this niche's footage is gathered (people pictures, "
+                      "reference clips, B-roll) and how its videos are edited.\n")
     md = AGENT_MD.format(name=name, id=nid, template=tpl["id"], style_line=f" (style **{tpl['style']}**)" if tpl.get("style") else "",
-                         topic=cfg["topic"], pool_note=pool_note, kit=KIT, template_or_style=tpl.get("style") or tpl["id"])
+                         topic=cfg["topic"], pool_note=pool_note, kit=KIT, template_or_style=tpl.get("style") or tpl["id"],
+                         guide_line=guide_line)
     for f in ("CLAUDE.md", "AGENTS.md", "GEMINI.md"):
         open(os.path.join(d, f), "w", encoding="utf-8").write(md)
     mk = f'"{PY}" "{os.path.join(KIT, "make_video.py")}" --workspace "{d}"'
@@ -237,8 +250,27 @@ def cmd_qc(a):
     d = ws_dir(a.name)
     cfg = json.load(open(os.path.join(d, "niche.json"), encoding="utf-8"))
     cmd = [PY, os.path.join(KIT, "docu", "tools", "qc_pool.py"), os.path.join(d, "pool"), "--topic", cfg.get("topic") or cfg["name"],
-           "--workers", str(a.workers)] + (["--strict"] if a.strict else [])
+           "--workers", str(a.workers), "--mode", cfg.get("qc_mode") or "faceless"] + (["--strict"] if a.strict else [])
     raise SystemExit(subprocess.call(cmd))
+
+
+def cmd_people(a):
+    """pictures of named people into the pool (celebrity / nostalgia niches): pool/people.json + fetch_people.py"""
+    d = ws_dir(a.name)
+    pool = os.path.join(d, "pool")
+    pj = os.path.join(pool, "people.json")
+    have = json.load(open(pj, encoding="utf-8")) if os.path.exists(pj) else []
+    names = {p["name"] for p in have}
+    for line in open(a.list, encoding="utf-8"):
+        parts = [x.strip() for x in line.split("|")]
+        if not parts[0] or parts[0].startswith("#") or parts[0] in names:
+            continue
+        have.append(dict(name=parts[0], queries=[parts[0]] + [f"{parts[0]} {q}" for q in parts[1:] if q] + [f"{parts[0]} actor"]))
+        names.add(parts[0])
+    os.makedirs(pool, exist_ok=True)
+    json.dump(have, open(pj, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    raise SystemExit(subprocess.call([PY, os.path.join(KIT, "docu", "tools", "fetch_people.py"), "--out", os.path.join(pool, "images"),
+                                      "--people", pj, "--per", str(a.per)]))
 
 
 def cmd_list(a):
@@ -267,12 +299,17 @@ def main():
     n.add_argument("--drive", help="a Google Drive folder link, downloaded once into the pool")
     n.add_argument("--topic", help="what the niche is about (QC judges relevance against it)")
     n.add_argument("--clip-share", type=int, default=None)
+    n.add_argument("--qc-mode", choices=["faceless", "people"], default=None,
+                   help="people: celebrity / nostalgia niches - the named person's portraits are allowed (default: the template's)")
     sub.add_parser("list")
     q = sub.add_parser("qc"); q.add_argument("name"); q.add_argument("--workers", type=int, default=8); q.add_argument("--strict", action="store_true")
+    pp = sub.add_parser("people", help="fetch pictures of named people into the pool (celebrity / nostalgia niches)")
+    pp.add_argument("name"); pp.add_argument("list", help="text file: one person per line, 'Name | known for | another search'")
+    pp.add_argument("--per", type=int, default=9)
     ad = sub.add_parser("add"); ad.add_argument("name"); ad.add_argument("folder", help="a footage folder, or a whole old media/ folder")
     ad.add_argument("--only", help="comma list: only video folders whose name contains one of these (e.g. hasidic,permission)")
     a = ap.parse_args()
-    {"new": cmd_new, "list": cmd_list, "qc": cmd_qc, "add": cmd_add}[a.cmd](a)
+    {"new": cmd_new, "list": cmd_list, "qc": cmd_qc, "add": cmd_add, "people": cmd_people}[a.cmd](a)
 
 
 if __name__ == "__main__":

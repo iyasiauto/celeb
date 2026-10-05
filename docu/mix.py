@@ -322,6 +322,19 @@ def spot(scenes, style="full"):
             add(t0 + 0.35, "whoosh_s", -14)
             if s.get("count", True) is not False:
                 add(t0 + 0.35, "roll", -12, d=float(s.get("countFor", 1.6)))
+        # finalreel (templates/finalreel): a film-archive memorial - paper, a soft pop, a counter, the pen
+        if ty == "castcard":
+            a = float(s.get("at", 0.25))
+            add(t0 + 0.1, "paper", -12)
+            if s.get("age") is not None:
+                add(t0 + float(s.get("ageAt", a + 1.9)), "pop", -14)
+        if ty == "ageclock":
+            add(t0 + float(s.get("at", 0.25)), "roll", -13, d=float(s.get("countFor", 1.3)))
+        if ty == "lifeline":
+            add(t0 + float(s.get("at", 0.3)) + 0.3, "pen", -12)
+        if ty == "rollcall":
+            for k in range(4):
+                add(t0 + float(s.get("at", 0.1)) + k * float(s.get("fillFor", 2.4)) / 4, "pop", -16)
         # almanac template (scenes_almanac.js): soft paper and pen only
         if ty == "almstat":
             add(t0 + float(s.get("at", 0.5)) + 0.2, "roll", -13, d=float(s.get("countFor", 1.4)))

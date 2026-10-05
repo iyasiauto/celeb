@@ -183,11 +183,18 @@ def crop_for(r):
     return list(CORNER_CROP[corner]) if corner in CORNER_CROP else None
 
 
+PEOPLE = {}        # slug -> name, from <pool>/people.json (people mode); empty = every "name__" prefix is a person
+
+
 def subject_of(name):
-    """people mode: the person a file is about, from its name ("river_phoenix__g1a2b.jpg" -> "River Phoenix")"""
+    """people mode: the person a file is about, from its name ("river_phoenix__g1a2b.jpg" -> "River Phoenix");
+    "" for B-roll (a prefix that is not in the pool's people.json)"""
     if "__" not in name:
         return ""
-    return name.split("__")[0].replace("_", " ").title()
+    pre = name.split("__")[0]
+    if PEOPLE:
+        return PEOPLE.get(pre, "")
+    return pre.replace("_", " ").title()
 
 
 def decide(r, strict, mode="faceless", kind="clip"):
@@ -301,6 +308,11 @@ def main():
     qc_path = os.path.join(pool, "qc.json")
     qc = json.load(open(qc_path, encoding="utf-8")) if os.path.exists(qc_path) else {}
     mode = a.mode or next((v.get("mode") for v in qc.values() if v.get("mode")), None) or "faceless"
+    pj = os.path.join(pool, "people.json")
+    if mode == "people" and os.path.exists(pj):
+        for x in json.load(open(pj, encoding="utf-8")):
+            n = x["name"] if isinstance(x, dict) else str(x)
+            PEOPLE[re.sub(r"[^a-z0-9]+", "_", n.lower()).strip("_")] = n
     todo = []
     for kind, d, ext in (("clip", vdir, VIDEO_EXT), ("image", idir, IMAGE_EXT)):
         if not d or (a.only == "clips" and kind == "image") or (a.only == "images" and kind == "clip"):

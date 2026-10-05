@@ -151,8 +151,8 @@ def run(scenes, pb, script_text="", sfx_events=None, finish_summary=None):
             if run_n > int(a.get("max_plain_run") or 1e9):
                 runs.append((run_n, s["id"]))
             run_n = 0
-        else:
-            run_n += 1
+        elif s["duration"] >= 2.5:
+            run_n += 1                    # montage cuts under 2.5 s (a fast cold open) are not a slideshow
     if total - t_last > float(a.get("max_gap_s") or 1e9):
         gaps.append((t_last, total))
     if gaps:
@@ -172,7 +172,11 @@ def run(scenes, pb, script_text="", sfx_events=None, finish_summary=None):
         (fails if clips < lo * 0.5 else warns).append(msg)
 
     # 5) chapters
-    heads = sum(1 for s in scenes if s["type"] in HEADING_TYPES or set(_overlays(s)) & HEADING_OVERLAYS)
+    # a template's own heading devices count too (family "heading" in its playbook, e.g. finalreel's castcard)
+    own = {d["type"] for d in pb.get("devices", []) if d.get("family") == "heading"}
+    own_t = {t for t in own if not t.startswith("ov:")}
+    own_o = {t[3:] for t in own if t.startswith("ov:")}
+    heads = sum(1 for s in scenes if s["type"] in HEADING_TYPES | own_t or set(_overlays(s)) & (HEADING_OVERLAYS | own_o))
     ce = float(a.get("chapter_every_s") or 0)
     if ce:
         need = max(1, int(total // ce))
@@ -196,7 +200,8 @@ def run(scenes, pb, script_text="", sfx_events=None, finish_summary=None):
     # 7) numbers -> number devices
     if script_text:
         num = [x for x in sentences(script_text) if re.search(r"\d", x) or re.search(NUM_WORDS, x, re.I)]
-        have = sum(counts.get(k, 0) for k in NUMBER_DEVICES) + sum(
+        own_num = {d["type"] for d in pb.get("devices", []) if d.get("family") in ("number", "timeline")}
+        have = sum(counts.get(k, 0) for k in set(NUMBER_DEVICES) | own_num) + sum(
             1 for s in scenes for o in s.get("overlays", []) if o.get("type") == "chip" and re.search(r"\d", str(o.get("text", ""))))
         need = math.ceil(len(num) / 6)
         if need and have < need:

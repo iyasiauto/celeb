@@ -46,6 +46,12 @@ TEMPLATE_PALETTE = {
         card_bgs=["background dark.png"], props=["paper earth.jpg"],
         cutouts=True, photofx=True, cinema_frame=True, tv_gate=True, music_beds=True, map_lib=True,
     ),
+    "finalreel": dict(
+        textures=["grain_film.png"], texture_opacity=(0.4, 0.55),
+        chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"],
+        card_bgs=None, props=None,
+        cutouts=False, photofx=True, cinema_frame=False, tv_gate=True, music_beds=True, map_lib=True,
+    ),
     "almanac": dict(
         textures=["grain_paper.png"], texture_opacity=(0.55, 0.75),
         chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"],

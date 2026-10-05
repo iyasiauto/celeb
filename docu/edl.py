@@ -436,7 +436,9 @@ def finish(scenes):
             s.setdefault("texture_png", mix["texture_png"])
             s.setdefault("texture_opacity", mix["texture_opacity"])
             n_tex += 1
-        heading = s["type"] in HEADING_TYPES or any(o.get("type") in HEADING_OVERLAYS for o in s.get("overlays", []))
+        own = {d["type"] for d in (PB or {}).get("devices", []) if d.get("family") == "heading"}
+        heading = s["type"] in HEADING_TYPES | own or any(o.get("type") in HEADING_OVERLAYS or "ov:" + str(o.get("type")) in own
+                                                          for o in s.get("overlays", []))
         if (heading or k == 0) and mix.get("chapter_dust") and not s.get("no_fx"):
             s.setdefault("fx", []).append(dict(src=mix["chapter_dust"], mode="screen", opacity=0.7))
             n_fx += 1

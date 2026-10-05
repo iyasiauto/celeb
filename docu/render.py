@@ -166,6 +166,8 @@ def render_browser_scene(scene, out_path, cfg, quality=90, only_times=None, stil
 GRADES = {
     "doc": "eq=saturation=0.84:contrast=1.05:gamma=0.98,colorbalance=rs=0.02:bs=-0.02:rh=0.03:bh=-0.03",
     "bw": "hue=s=0,eq=contrast=1.12",
+    # finalreel: a faded archive print - lifted blacks, warm mids, less colour
+    "reel": "eq=saturation=0.78:contrast=1.04:gamma=1.0,colorbalance=rs=0.04:gs=0.01:bs=-0.04:rh=0.03:bh=-0.04,curves=all='0/0.04 0.5/0.5 1/0.96'",
     "warmsepia": "eq=saturation=0.74:contrast=1.02,colorbalance=rs=0.04:gs=0.01:bs=-0.06:rm=0.03:bm=-0.04",
     "cool": "eq=saturation=0.8:contrast=1.07:gamma=0.98,colorbalance=rs=-0.02:bs=0.03:rh=-0.01:bh=0.02",
     "warm": "eq=saturation=0.92:contrast=1.04,colorbalance=rh=0.05:bh=-0.05",
@@ -194,6 +196,8 @@ def render_clip_scene(scene, out_path, cfg):
         if crop:
             x0, y0, x1, y1 = crop
             ch.append(f"crop=iw*{x1 - x0:.4f}:ih*{y1 - y0:.4f}:iw*{x0:.4f}:ih*{y0:.4f}")
+        if scene.get("flip") or p.get("flip"):
+            ch.append("hflip")                # a mirrored shot (the user's choice for borrowed clips)
         ch.append(f"scale={W}:{H}:force_original_aspect_ratio=increase:flags=lanczos,crop={W}:{H},setsar=1,format=yuv420p")
         chains.append(",".join(ch) + f"[p{k}]")
     fc = ";".join(chains) + ";" + "".join(f"[p{k}]" for k in range(len(parts))) + \
@@ -219,6 +223,12 @@ def render_clip_scene(scene, out_path, cfg):
         post.append(f"fade=t=in:st=0:d={scene['fadein']}")
     if scene.get("fadeout"):
         post.append(f"fade=t=out:st={dur - scene['fadeout']:.3f}:d={scene['fadeout']}")
+    ins = scene.get("inset")
+    if ins:
+        # the clip inside a frame: scaled into a window of the 1920x1080 picture; the scene's overlay
+        # (e.g. finalreel's "reelframe") draws the ground and the frame around it
+        ix, iy, iw_, ih_ = [int(v) for v in ins]
+        post.append(f"scale={iw_ // 2 * 2}:{ih_ // 2 * 2}:flags=lanczos,pad={W}:{H}:{ix}:{iy}:color=0x100F0E")
     post.append(f"trim=duration={dur:.3f}")
     fc += ";[cat]" + ",".join(post) + "[v]"
     ovl = scene.get("overlay_png")
