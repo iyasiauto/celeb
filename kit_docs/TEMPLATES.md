@@ -1,4 +1,11 @@
-# The 6 templates
+# The templates
+
+Kit ke saath 6 templates aate hain (neeche). Ye sab **registry** mein hain: `templates/<id>/template.json` har
+template ki playbook hai (devices aur kitne chahiye, audit limits, rules, previews, examples) aur
+`styles/<id>/` un ke variations. Naya template / style = naya folder (`python docu/registry.py new-template` /
+`new-style`, guide: `templates/README.md`, `styles/README.md`). Agent har video se pehle
+`python docu/registry.py show <id> --minutes <length>` parhta hai, aur edit audit wahi minimums enforce karta hai.
+**Har engine device har template mein chalta hai** (`templates/devices.json`) - playbook minimum hai, limit nahi.
 
 Har template ek **theme** (fonts, colours, map ka style), ek **grade** (photo aur clip ka colour), aur
 **scene types** ka set hai. Engine sab ka ek hi hai: `docu/`. Kisi template ka naam `--template <id>` ya

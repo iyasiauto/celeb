@@ -3,19 +3,23 @@ build_kit.py - pack everything needed to make videos with any of the templates i
 
     python docu/tools/build_kit.py <out_dir>          ->  <out_dir>/DocuTemplates_Kit.zip
 
-Contents: make_video.py + setup/run scripts + docs (kit_docs/), the engine (docu/), the template folder
-(styles/), the finished example projects (projects/*/build.py + data + metadata), the asset kit
+Contents: make_video.py + niche.py + setup/run scripts + docs (kit_docs/), the engine (docu/), the template
+registry (templates/ + styles/), the finished example projects (projects/*/build.py + data + metadata), the asset kit
 (media/kit: fonts, maps, music, cut-outs, cinema, frames, textures) and api_keys/ (names only, never keys).
 """
 
 import os
+import re
 import shutil
 import sys
 import zipfile
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 NAME = "DocuTemplates_Kit"
-KIT_PARTS = ["fonts", "maps", "music", "cutouts", "cinema", "kits/frames", "textures"]
+KIT_PARTS = ["fonts", "maps", "music", "cutouts", "cinema", "kits/frames", "textures", "photofx", "vox", "headlines"]
+# the moving overlays asset_mix screens over headings / the opening, and the green-screen TV gate for archive shots
+KIT_FILES = ["README.txt", "lightleak.mp4", "overlay_dust.mp4", "overlay_vhs.mp4", "VINTAGE OVERLAY green screen.mp4",
+             "vhs_lines.png"]
 SKIP_DIRS = {"__pycache__", "_gallery_work", "node_modules", "dist", ".git"}
 SKIP_FILES = {"keys.env", ".env"}
 
@@ -38,6 +42,8 @@ def main():
     with zipfile.ZipFile(zp, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
         root = NAME
         z.write(os.path.join(REPO, "make_video.py"), f"{root}/make_video.py")
+        z.write(os.path.join(REPO, "niche.py"), f"{root}/niche.py")
+        z.writestr(f"{root}/workspaces/README.txt", "One folder per niche: python niche.py new <name> --template <id> --pool <folder> --topic <topic>\n")
         kd = os.path.join(REPO, "kit_docs")           # docs, agent files (AGENTS.md, CLAUDE.md, .claude/, .agent/), scripts
         for d, dirs, files in os.walk(kd):
             for f in sorted(files):
@@ -50,6 +56,7 @@ def main():
         add_tree(z, os.path.join(REPO, "docu"), f"{root}/docu",
                  keep=lambda p: not (os.sep + "niches" + os.sep in p and os.path.basename(p) not in ("hasidic.json", "noah.json")))
         add_tree(z, os.path.join(REPO, "styles"), f"{root}/styles")
+        add_tree(z, os.path.join(REPO, "templates"), f"{root}/templates")
         for f in ("README.md", "keys.example.env", ".gitignore"):
             p = os.path.join(REPO, "api_keys", f)
             if os.path.exists(p):
@@ -67,7 +74,7 @@ def main():
             p = os.path.join(media, "kit", part)
             if os.path.isdir(p):
                 add_tree(z, p, f"{root}/media/kit/{part}")
-        for f in ("README.txt",):
+        for f in KIT_FILES:
             p = os.path.join(media, "kit", f)
             if os.path.exists(p):
                 z.write(p, f"{root}/media/kit/{f}")
@@ -78,6 +85,12 @@ def main():
         for n in z.namelist():
             if n.endswith(("keys.env", "/.env")):
                 bad.append(n)
+        pat = re.compile(rb"(sk-or-v1-[0-9a-f]{20,}|sk-ant-[A-Za-z0-9_-]{20,}|AIza[0-9A-Za-z_-]{30,}|"
+                         rb"(?:API_KEY|_TOKEN|SECRET)\s*=\s*['\"]?[A-Za-z0-9_\-]{16,})")
+        for n in z.namelist():
+            if n.endswith((".py", ".js", ".json", ".md", ".txt", ".env", ".bat", ".sh", ".html")):
+                if pat.search(z.read(n)) and not n.endswith("keys.example.env"):
+                    bad.append(n + " (looks like a key)")
     if bad:
         os.remove(zp)
         raise SystemExit(f"refused: {bad}")

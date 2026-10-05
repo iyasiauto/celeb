@@ -1,18 +1,21 @@
-# styles/ - your own templates
+# styles/ - variations of a template (like Frontier's channel styles)
 
-Docu Studio shows every folder in here as a template in **Create video → Template style** (press Refresh,
-or just switch back to the window). Folders starting with `_` are parked and not shown: copy `_example`
-to start, e.g. `styles/cold-case/`.
-
-A template folder holds:
+A style is a template with your own palette, fonts, pacing, device minimums and editing rules - the same engine
+devices, a different channel look. Every folder here with a `style.json` is a style; `python docu/registry.py list`
+shows them and `--style <id>` (or `niche.py new ... --style <id>`) uses them. Folders starting with `_` are parked.
 
 | File | What it is |
 |---|---|
-| `style.json` | name, letter, `theme` (the engine look it builds on: `documentary`, `paper`, `forensic`, `expedition`, `broadcast`), blurb, `sfx` (`calm` / `full`), `xfade` (dissolve seconds, 0 = hard cuts) |
-| `rules.md` | how this template is edited: opening, recurring device, pacing, what gets stamped. Claude follows it when it writes the shot list |
-| `build.py` | (optional) a finished shot list in this style, e.g. copied from a video you liked. Claude studies it for pacing and devices; without it the theme's example is used |
-| `preview.jpg` | (optional) the card picture |
-| `sample.mp4` | (optional) a sample video the card can play |
+| `style.json` | `name`, `template` (the template it builds on), `blurb`, and only what you change: `overrides` (`pal`, `fonts`, `grade`, `grain`, `xfade`, `sfx_style`), `devices` (raise or add minimums per 10 minutes, e.g. `{"collage": 10, "cutout": 10}`), `audit` (pacing limits) |
+| `rules.md` | how this style is edited - the agent and the AI editor read it before writing the shot list |
+| `build.py` (optional) | a finished shot list in this style to copy the pacing from |
+| `preview.jpg`, `sample.mp4` (optional) | the card picture / sample video in Docu Studio |
 
-Frontier's channel styles appear in the same list automatically from the Frontier folder (`styles/*.json`,
-`samples/*.mp4`), so a style file you add in Frontier shows up here too.
+```
+python docu/registry.py new-style <id> --template <template>
+python docu/registry.py show <id>
+```
+
+Each video pins one style in `projects/<slug>/project.json`, so styles never mix inside a video.
+Older Docu Studio styles (`style.json` with `theme` instead of `template`) still work. Frontier's channel styles
+appear in Docu Studio's list automatically from the Frontier folder.

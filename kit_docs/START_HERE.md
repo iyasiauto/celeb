@@ -3,7 +3,8 @@
 Is kit se aap kisi bhi computer par (Windows / Mac / Linux) faceless documentary video bana sakte hain.
 Karna sirf ye hai: **template chuno → footage ka folder ya Drive link do (ya online se mangwao) → video ban jati hai.**
 
-Kit mein ye 6 templates hain (detail: [TEMPLATES.md](TEMPLATES.md)):
+Kit **kisi bhi niche** ke liye hai. Ye 6 templates saath aate hain (detail: [TEMPLATES.md](TEMPLATES.md)), aur
+naye templates / styles sirf folder daal kar add hote hain (`templates/`, `styles/` — neeche "v2" dekhein):
 
 | # | Template | Kab use karein |
 |---|---|---|
@@ -15,6 +16,16 @@ Kit mein ye 6 templates hain (detail: [TEMPLATES.md](TEMPLATES.md)):
 | 6 | **Breaking-news broadcast** (`broadcast`) | news-style, tez, LIVE ticker aur headlines |
 
 ---
+
+## v2 · teen baatein jo pehle samajh lein
+
+1. **Har niche ka apna workspace** — `python niche.py new <naam> --template <id> --pool "<footage folder>" --topic "<niche kis baare mein hai>"`.
+   Phir `workspaces\<naam>\make.bat` se videos banayein (ya Claude ko us folder mein kholein). Niches aur templates
+   kabhi mix nahi hote; har video apna template `project.json` mein pin kar leti hai.
+2. **QC lazmi hai** — `api_keys\keys.env` mein `OPENLUX_API_KEY` (Gemini 2.5 Flash Lite) chahiye. Talking heads,
+   influencers, logo / watermark wali clips khud nikal jati hain; corner logo wali crop ho jati hain.
+   Render se pehle **edit audit** aur render ke baad **final QC** chalta hai.
+3. **Templates / styles** — `python docu/registry.py list` (sab), `show <id>` (playbook), `new-template`, `new-style`.
 
 ## 1. Ek dafa setup (10 minute)
 

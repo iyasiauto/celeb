@@ -59,7 +59,7 @@ python make_video.py --yes --title "<title>" --script <script.txt> --audio <vo.m
 ```
 
 This links the footage, **runs QC** (only new files are checked), catalogs it, times the voice and writes a draft
-`projects/<slug>/build.py`. Look at `media/<slug>/src/qc_report.md` and `qc_rejected.jpg`: those files are gone
+`projects/<slug>/build.py`. Look at `media/<slug>/src/_qc/qc_report.md` and `_qc/qc_rejected.jpg`: those files are gone
 from this video.
 
 ## 4. Write the shot list - you are the editor

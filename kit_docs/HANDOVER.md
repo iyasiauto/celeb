@@ -33,43 +33,93 @@ jayengi aur uske assets (fonts, music, cut-outs) bhi istemal ho jayenge.
 
 ---
 
-## 3. Ek nayi video banane ka tareeqa
+## 3. Kit v2 mein kya naya hai (zaroor parhein)
 
-### Sab se aasan (wizard)
+Ye kit **kisi bhi niche** ke liye hai (true crime, space, history, religion, travel, Amish, Hasidic…).
+Niche sirf ek naam + topic + footage pool hai; look template se aata hai. Pichli kit mein jo masle thay
+(agent templates ko sirf upar upar se use karta tha, devices/maps/textures/VHS/SFX nahi lagata tha,
+talking heads aur logo wali clips aa jati thin, niches mix ho jate thay) un ke liye ab **teen gate** hain
+jo agent bypass nahi kar sakta:
 
-```
-python make_video.py
-```
+| Gate | Kya rokta hai | Kab chalta hai |
+|---|---|---|
+| **QC** (OpenLux · Gemini 2.5 Flash Lite) | talking head, influencer / face-cam, posed face, eye contact, stock watermark, beech ka logo, kisi aur ke captions, topic se bahar footage. **Corner logo** wali clip crop ho kar zoom/effect ke saath hamari ban jati hai | footage aate hi (`qc.json`); har nayi file sirf ek dafa check hoti hai. Jo clip/picture QC mein nahi ya reject hai, engine use **chalne hi nahi deta** |
+| **Edit audit** | "slideshow" video: template ke devices kam, graphics kam, lambe plain hisse, jagah ka naam aaye aur map na ho, number bola jaye aur dikhaya na jaye, repeat shots, chapters na hon | `plan` par; koi **FAIL** ho to **render block** |
+| **Final QC** | jo phir bhi reh gaya: har shot ko us par boli ja rahi line aur niche ke topic ke against dekhta hai | `final` ke baad; flagged shots `final_qc.md` + `final_qc_flags.jpg` mein |
 
-Ye khud poochta hai: title → script → voiceover → template → footage. Phir video ban jati hai.
-
-### Ek line mein
-
-```
-python make_video.py --yes --title "<title>" --script inputs\script.txt ^
-  --audio inputs\vo.mp3 --srt inputs\vo.srt ^
-  --template almanac --folder "D:\Footage\MeraData" --upload
-```
-
-- `--template` : `documentary` · `almanac` · `paper` · `forensic` · `expedition` · `broadcast`
-- footage: `--folder <PC ka folder>` ya `--drive <link>` ya `--niche <naam>` ya `--online "search, search"`
-- `--upload` lagayein to aakhir mein gofile link mil jata hai.
-
-### Sab se achha — Claude khud editor bane
-
-Channel ki saari videos is tareeqe se bani hain. Agent ko kehna hai:
-
-1. `python make_video.py --title "..." --script ... --audio ... --template almanac --folder "..." --until shotlist`
-2. `docu/VISUAL_SYNC_GUIDE.md`, `TEMPLATES.md` ka us template wala section, aur `projects/<koi example>/build.py`
-   parho; `projects/<slug>/data/` (script, words.json, catalog, image picks) aur `media/<slug>/cat/` ki
-   contact sheets dekho.
-3. `projects/<slug>/build.py` ki shot list khud likho — har jumle par wahi shot jo us jumle ko dikhaye.
-4. `python make_video.py --title "..." --yes --resume plan --until stills` → har WARN theek karo, stills dekho.
-5. `python make_video.py --title "..." --yes --resume render --upload`
+Saath mein **finishing layers khud lagti hain** (template ke hisab se, `docu/asset_mix.py`): footage par grain /
+paper / scan-line texture, opening aur har chapter heading par dust / light-leak / VHS overlay, aur jis shot
+ko editor `archive=True` kare us par vintage TV frame.
 
 ---
 
-## 4. Ab tak kya ban chuka hai (channel ki history)
+## 4. Har niche ka alag workspace (niches kabhi mix nahi hote)
+
+```
+python niche.py new true-crime --template forensic --pool "D:\Footage\Crime" --topic "unsolved crimes in the US"
+python niche.py new space --template documentary --drive "<drive folder link>" --topic "space missions"
+python niche.py qc true-crime          # poore pool ka vision QC (pehli dafa; baad mein sirf nayi files)
+python niche.py list
+```
+
+Har workspace (`workspaces/<niche>/`) ka apna pool, apna `qc.json`, apne projects, apni renders, aur apni
+`CLAUDE.md` hoti hai. **Claude ko us workspace folder mein kholein** — wo sirf us niche ko dekhega. Video:
+
+```
+cd workspaces\true-crime
+make.bat --yes --title "<title>" --script <script.txt> --audio <vo.mp3> --srt <vo.srt> --until shotlist
+```
+
+Har video `projects/<slug>/project.json` mein apna template, style, niche aur topic **pin** kar leti hai; koi
+doosra template maange to wo ruk jati hai. Ek video = ek template = ek niche.
+
+---
+
+## 5. Naya template ya style add karna (folder daalo, ho gaya)
+
+```
+python docu/registry.py list                                   # sab templates + styles
+python docu/registry.py show almanac --minutes 20              # playbook: devices, kitne chahiye, previews, examples
+python docu/registry.py new-template cold-case --from forensic # kisi template ki copy se naya
+python docu/registry.py new-template my-look --from _example   # bilkul naya look: apni scene JS + fonts + rang
+python docu/registry.py new-style forensic-red --template forensic
+python docu/registry.py check
+```
+
+- `templates/<id>/template.json` — devices (har ek ka `min_per_10min`), audit limits, rules, previews,
+  examples; apna look `theme_def` (fonts / colours / grounds) mein, apni scenes `scene_files` (JS) mein.
+  **Engine mein koi edit nahi** — folder daalte hi list mein aa jata hai.
+- `styles/<id>/style.json` — kisi template ke upar palette / fonts / pacing / device minimums / `rules.md`
+  (Frontier ke styles jaisa).
+- `datadoc` template ke liye apne PC wali `scenes_datadoc.js` ko `docu/` mein rakh dein (fonts kit mein hain).
+
+---
+
+## 6. Ek nayi video banane ka tareeqa
+
+### Sab se achha — Claude khud editor bane (channel ki saari videos aise bani hain)
+
+1. Workspace mein: `make.bat --yes --title "..." --script ... --audio ... --srt ... --until shotlist`
+   (kit root se: `python make_video.py ... --template <id> --folder "<footage>" --topic "<topic>"`)
+2. `python docu/registry.py show <template> --minutes <length>` — preview sheet aur har device ka preview
+   dekho, ek worked example (`projects/<example>/build.py`) **poora** parho, `docu/VISUAL_SYNC_GUIDE.md` parho.
+3. `projects/<slug>/build.py` ki shot list likho: har jumle par wahi shot jo usay dikhaye; har jagah ka naam →
+   map (`python docu/tools/places.py find "<jagah>"`), har number → number device, quote → `quote`,
+   purani / "us zamane" wali shots par `archive=True`.
+4. `make.bat --title "..." --yes --resume plan --until stills` → **EDIT AUDIT** ke saare FAIL theek karo, stills dekho.
+5. `make.bat --title "..." --yes --resume render --upload` → final QC dekho, flagged shots badlo,
+   `python build.py render s012 && python build.py final`.
+
+### Ek line mein (AI editor khud likhe)
+
+```
+python make_video.py --yes --title "<title>" --script inputs\script.txt --audio inputs\vo.mp3 --srt inputs\vo.srt ^
+  --template almanac --folder "D:\Footage\MeraData" --topic "<niche ka topic>" --upload
+```
+
+---
+
+## 7. Ab tak kya ban chuka hai (channel ki history)
 
 | # | Video | Template | Project folder |
 |---|---|---|---|
@@ -85,7 +135,7 @@ usi andaz mein likhein** — yahi is channel ka style guide hai.
 
 ---
 
-## 5. Heritage almanac ka updated edition (video 8 mein bana)
+## 8. Heritage almanac ka updated edition (video 8 mein bana)
 
 Template purane se badla gaya hai, naya template nahi banaya gaya. Ab:
 
@@ -100,7 +150,7 @@ Template purane se badla gaya hai, naya template nahi banaya gaya. Ab:
 
 ---
 
-## 6. Data library (ek subject ka footage dobara dobara use karna)
+## 9. Data library (ek subject ka footage dobara dobara use karna)
 
 `docu/tools/pool.py` ek folder ko "pool" bana deta hai — ek hi subject ka saara footage ek jagah, har
 file ke page, licence aur tags ke saath. Phir har nayi video par wahi pool kaam aata hai.
@@ -112,26 +162,26 @@ python docu/tools/pool.py build  "D:\Footage\Amish"  --name "Amish" # library.js
 python docu/tools/pool.py sheets "D:\Footage\Amish"  sheets_out     # contact sheets (dekhne ke liye)
 ```
 
-Phir ek dafa niche register kar dein, uske baad sirf naam kaafi hai:
+Phir us pool ko ek niche workspace bana dein (section 4):
 
 ```
-python docu/studio/studio.py niche-add --name "Amish" --folder "D:\Footage\Amish" ^
-   --clips clips --images images --tags "D:\Footage\Amish\tags.json" --clip-share 45 --style almanac
-python make_video.py ... --niche amish
+python niche.py new amish --template almanac --pool "D:\\Footage\\Amish" --topic "Amish life and settlements"
+python niche.py qc amish
 ```
 
-**Cloud session mein jo Amish pool bana tha (151 clips + 222 pictures) wo us container mein tha, is zip
-mein nahi** — zip bara ho jata. Apne PC par ya to apna footage folder dein, ya `fetch_online.py` se
-dobara mangwa lein, ya mujhse us pool ka alag link maang lein.
+Amish pool (151 clips + 222 pictures, `qc.json` ke saath) alag zips mein diya gaya tha; unzip kar ke `--pool`
+mein us folder ka path dein — QC dobara nahi chalega, `qc.json` saath hai.
 
 ---
 
-## 7. Qawaid (inhe Claude bhi follow kare)
+## 10. Qawaid (inhe Claude bhi follow kare)
 
 - **Keys** sirf `api_keys/keys.env` mein. Kabhi print na karein, kabhi commit na karein.
-- Sirf user ki footage + free libraries (Pexels, Pixabay, Wikimedia). **Koi AI-generated picture nahi**,
-  koi talking head nahi, koi watermark nahi — aisi file ho to `media/<slug>/src/` se delete kar ke
-  `--resume catalog` chala dein.
+- Sirf user ki footage + free libraries (Pexels, Pixabay, Wikimedia). **Koi AI-generated picture nahi.**
+- **Strict:** koi official clip channel logo ke saath nahi, koi talking head nahi, kisi influencer ka chehra
+  (clip ya picture) nahi, koi watermark nahi. Corner watermark wali clip crop + effect ke saath hi chalti hai.
+  QC (OpenLux key `api_keys/keys.env` mein) ye khud karta hai; `DOCU_SKIP_QC=1` / `DOCU_AUDIT=warn` sirf
+  user ke kehne par.
 - Music hamesha awaaz ke neeche (default already set hai), final −14 LUFS.
 - Video 1 GB se kam ho (zaroorat par 2-pass re-encode khud ho jata hai), gofile link md5 ke saath.
 - Koi step fail ho to log parhein, theek karein, aur `--resume <stage>` se wahin se chalayein — shuru se nahi.
@@ -140,12 +190,13 @@ dobara mangwa lein, ya mujhse us pool ka alag link maang lein.
 
 ---
 
-## 8. Claude ko dene ke liye pehla message (copy-paste)
+## 11. Claude ko dene ke liye pehla message (copy-paste)
 
 ```
-Is folder mein video banane ki kit hai. Pehle HANDOVER.md aur AGENTS.md parho.
+Is folder mein video banane ki kit hai. Pehle kit_docs/HANDOVER.md aur kit_docs/AGENTS.md parho.
 Phir mujh se ek hi message mein poocho: title, script, voiceover (MP3+SRT ya FameSpeak voice ID),
-template (1-6), aur footage kahan hai (PC folder / Drive link / niche / online).
-Uske baad khud editor ban kar shot list likho (--until shotlist, phir --resume plan),
-stills check karo, render karo aur mujhe final file aur gofile link do.
+template / style (docu/registry.py list), aur footage kahan hai (workspace pool / PC folder / Drive / online).
+Shot list likhne se pehle `docu/registry.py show <template>` chalao, previews dekho, ek example poora parho.
+Khud editor ban kar shot list likho, EDIT AUDIT ke saare FAIL theek karo, stills check karo,
+render karo, final QC dekho aur mujhe final file, audit score aur gofile link do.
 ```
