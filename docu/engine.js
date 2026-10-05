@@ -226,6 +226,30 @@ THEMES.almanac = {          /* updated edition; the first edition is kept as THE
   },
 };
 THEMES.almanac2 = THEMES.almanac;   /* the id the updated template was drafted under */
+/* datadoc ("Data Documentary", Emerge X style 17): near-black navy graphics, Playfair Display for what is
+   said, Poppins for labels and sources, one red accent; the midnight map (scenes_datadoc.js) */
+THEMES.datadoc = {
+  fonts: {
+    Play: "PlayfairDisplay.ttf", PlayI: "PlayfairDisplay-Italic.ttf", PopS: "Poppins-SemiBold.ttf", PopM: "Poppins-Medium.ttf",
+    PopR: "Poppins-Regular.ttf",
+    Anton: "PlayfairDisplay.ttf", Stamp: "Poppins-SemiBold.ttf", DMSerif: "PlayfairDisplay.ttf", Elite: "PlayfairDisplay.ttf",
+    Garamond: "PlayfairDisplay.ttf", GaramondI: "PlayfairDisplay-Italic.ttf", Barlow: "Poppins-Medium.ttf", BarlowB: "Poppins-SemiBold.ttf",
+    Oswald: "Poppins-Medium.ttf", OswaldB: "Poppins-SemiBold.ttf", Caveat: "PlayfairDisplay-Italic.ttf",
+  },
+  pal: {
+    mustard: "#F2B84B", red: "#E0434C", gold: "#F2B84B", cyan: "#8FB3D9", green: "#2F9A62", ink: "#070E14", cream: "#F4F1EA",
+    navy: "#070E14",
+  },
+  grounds: { paper: "studio_dark.jpg", map: "studio_dark.jpg", cork: "studio_dark.jpg", parchment: "studio_dark.jpg" },
+  map: {
+    bg0: "#071017", bg1: "#040506", sea: "#040506", rim: "rgba(120,226,255,.35)", grat: "rgba(120,226,255,.06)",
+    land: "#0C5F78", border: "rgba(120,226,255,.75)", admin: "120,226,255", hi: "47,154,98", hiA: 0.7, text: "#FFFFFF",
+    sub: "#CFE3E6", dot: "#FF5A4E", dotText: "#F4F1EA", name: "rgba(244,241,234,.85)", shadow: "rgba(0,0,0,.85)",
+    route: "#FFC94D", hiLine: "rgba(170,240,200,A)",
+  },
+};
+/* a template folder can bring its own look (templates/<id>/template.json "theme_def") - no engine edit needed */
+if (window.CFG && CFG.themeDef && CFG.theme) THEMES[CFG.theme] = Object.assign({ fonts: {}, pal: {}, grounds: {} }, CFG.themeDef);
 const THEME = THEMES[(window.CFG && CFG.theme) || "paper"] || THEMES.paper;
 Object.assign(FONTS, THEME.fonts);
 Object.assign(PAL, THEME.pal);
@@ -233,6 +257,10 @@ Object.assign(PAL, THEME.pal);
 const VARY = (window.CFG && CFG.vary) || {};
 Object.assign(FONTS, VARY.fonts || {});
 Object.assign(PAL, VARY.pal || {});
+/* a style (styles/<id>/style.json "overrides") recolours / re-types its template last */
+const STYLE_OV = (window.CFG && CFG.vary_style) || {};
+Object.assign(FONTS, STYLE_OV.fonts || {});
+Object.assign(PAL, STYLE_OV.pal || {});
 if (!PAL.cyan) PAL.cyan = "#3FC7D6";
 if (!PAL.green) PAL.green = "#3DBE7A";
 if (!PAL.navy) PAL.navy = "#0A1730";
@@ -378,4 +406,15 @@ const OVERLAYS = {
   },
 };
 
-loadFonts().then(() => { window.FONTS_READY = true; });
+/* scene code that is not listed in engine.html - a template's own scenes_*.js, or one dropped into docu/ -
+   loads after the built-in files, before the first scene is set up */
+function loadExtraScenes() {
+  const list = (window.CFG && CFG.scenes) || [];
+  return list.reduce((p, src) => p.then(() => new Promise(res => {
+    const sc = document.createElement("script");
+    sc.src = src; sc.onload = res; sc.onerror = () => { console.warn("missing scene file", src); res(); };
+    document.head.appendChild(sc);
+  })), Promise.resolve());
+}
+const PAGE_LOADED = document.readyState === "complete" ? Promise.resolve() : new Promise(r => window.addEventListener("load", r));
+Promise.all([loadFonts(), PAGE_LOADED]).then(loadExtraScenes).then(() => { window.FONTS_READY = true; });

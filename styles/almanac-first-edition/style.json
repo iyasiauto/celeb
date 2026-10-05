@@ -1,0 +1,32 @@
+{
+ "name": "Almanac, first edition",
+ "template": "almanac_v1",
+ "blurb": "The first Heritage almanac: slab serif, barn red, stitched badges, quilt frames.",
+ "overrides": {
+  "grade": "almanac",
+  "grain": 4.0,
+  "xfade": 0.5,
+  "sfx_style": "calm"
+ },
+ "devices": {
+  "ov:almhead": 4,
+  "almcard": 3,
+  "almstat": 2,
+  "almgrowth": 0.5,
+  "map": 1.5
+ },
+ "audit": {
+  "clip_share": [
+   0.35,
+   0.6
+  ],
+  "graphics_per_min": 0.6,
+  "max_gap_s": 80,
+  "max_plain_run": 6,
+  "chapter_every_s": 180,
+  "min_distinct_devices": 7,
+  "sfx_per_min": 0.6
+ },
+ "rules": "rules.md",
+ "example": "../../projects/amish_leaving/build.py"
+}

@@ -47,9 +47,35 @@ def file_uri(path):
 FPS = 30
 W, H = 1920, 1080
 
-X264 = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p",
-        "-profile:v", "high", "-r", str(FPS), "-g", str(FPS * 2), "-bf", "2",
-        "-video_track_timescale", "15360", "-an"]
+def _nvenc_works():
+    """NVENC when this machine can actually use it (an NVIDIA GPU + a driver FFmpeg sees); x264 otherwise.
+    DOCU_NVENC=0 / 1 forces either. Probed once with a tiny encode, so a laptop without a GPU never fails."""
+    v = os.environ.get("DOCU_NVENC", "auto").lower()
+    if v in ("0", "no", "false"):
+        return False
+    if v in ("1", "yes", "true"):
+        return True
+    try:
+        r = subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "color=c=black:s=256x144:d=0.1",
+                            "-c:v", "h264_nvenc", "-f", "null", "-"], capture_output=True, timeout=30)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+_USE_NVENC = _nvenc_works()
+os.environ.setdefault("DOCU_NVENC", "1" if _USE_NVENC else "0")     # edl._fit_size reads the same switch
+# Per-scene encoder: keep per-scene bitrate higher so dissolves don't degrade; the final
+# concat_xfade is what sets the deliverable's bitrate (and therefore its size).
+if _USE_NVENC:
+    X264 = ["-c:v", "h264_nvenc", "-preset", "p5", "-tune", "hq", "-rc", "vbr",
+            "-cq", "22", "-b:v", "8M", "-maxrate", "12M", "-bufsize", "16M",
+            "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", str(FPS),
+            "-g", str(FPS * 2), "-bf", "2", "-video_track_timescale", "15360", "-an"]
+else:
+    X264 = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-pix_fmt", "yuv420p",
+            "-profile:v", "high", "-r", str(FPS), "-g", str(FPS * 2), "-bf", "2",
+            "-video_track_timescale", "15360", "-an"]
 
 
 def log(msg):
@@ -125,7 +151,14 @@ def render_browser_scene(scene, out_path, cfg, quality=90, only_times=None, stil
     ff.stdin.close()
     if ff.wait() != 0:
         raise RuntimeError(f"encode failed for {scene['id']}")
-    os.replace(tmp, out_path)
+    for _try in range(8):
+        try:
+            os.replace(tmp, out_path)
+            break
+        except (PermissionError, OSError):
+            time.sleep(0.25 * (2 ** _try))
+    else:
+        os.replace(tmp, out_path)
 
 
 # -------------------------------------------------------------------- clips
@@ -139,6 +172,7 @@ GRADES = {
     "broadcast": "eq=saturation=0.94:contrast=1.1,colorbalance=rs=-0.03:bs=0.04:rh=0.01:bh=-0.01",
     "almanac": "eq=saturation=0.86:contrast=1.03,colorbalance=rs=0.03:gs=0.01:bs=-0.03:rh=0.03:bh=-0.04,curves=all='0/0.035 1/0.975'",
     "almanac2": "eq=saturation=0.82:contrast=1.05,colorbalance=rs=-0.02:gs=0.01:bs=0.03:rh=0.02:bh=-0.02,curves=all='0/0.03 1/0.97'",
+    "datadoc": "eq=contrast=1.06:saturation=0.86:gamma=0.97,colorbalance=rs=0.03:bs=-0.03:rh=0.02:bh=-0.02",
     "none": "",
 }
 
@@ -172,10 +206,15 @@ def render_clip_scene(scene, out_path, cfg):
     if z:
         # a fixed crop-in: trims edge artefacts and source bugs; the footage carries its own motion
         post.append(f"scale={int(W * z) // 2 * 2}:{int(H * z) // 2 * 2}:flags=lanczos,crop={W}:{H}")
+    pz = float(scene.get("push") or 0)
+    if pz:
+        # a slow linear push across the shot (Data Documentary: 100 -> 103.5 %), scaled per frame, centre crop
+        post.append(f"scale=w='2*trunc({W}*(1+{pz}*t/{dur:.3f})/2)':h='2*trunc({H}*(1+{pz}*t/{dur:.3f})/2)':eval=frame:flags=bicubic,"
+                    f"crop={W}:{H}:(iw-{W})/2:(ih-{H})/2")
     g = GRADES.get(scene.get("grade", "doc"), scene.get("grade", ""))
     if g:
         post.append(g)
-    post += ["vignette=PI/5", _grain(cfg)]
+    post += [scene.get("vignette") or "vignette=PI/5", _grain(cfg)]
     if scene.get("fadein"):
         post.append(f"fade=t=in:st=0:d={scene['fadein']}")
     if scene.get("fadeout"):
@@ -197,15 +236,82 @@ def render_clip_scene(scene, out_path, cfg):
         vout = "[v2]"
     else:
         vout = "[v]"
+    tex = scene.get("texture_png")
+    if tex:
+        # a static looping overlay (VHS lines, dust, paper grain) on top of everything else
+        tex_opacity = float(scene.get("texture_opacity", 0.6))
+        n2 = len(parts) + (1 if (mov or ovl) else 0)
+        inputs += ["-loop", "1", "-t", f"{dur:.3f}", "-i", tex]
+        fc += f";[{n2}:v]format=rgba,colorchannelmixer=aa={tex_opacity:.3f}[t];{vout}[t]overlay=0:0:format=auto[v3]"
+        vout = "[v3]"
     cmd = ["ffmpeg", "-v", "error", "-y"] + inputs + ["-filter_complex", fc, "-map", vout,
                                                        "-frames:v", str(_frames(scene)), "-threads", "3"] + X264 + [out_path + ".part.mp4"]
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(f"clip {scene['id']} failed: {r.stderr[-800:]}")
-    os.replace(out_path + ".part.mp4", out_path)
+    for _try in range(8):
+        try:
+            os.replace(out_path + ".part.mp4", out_path)
+            break
+        except (PermissionError, OSError):
+            time.sleep(0.25 * (2 ** _try))
+    else:
+        os.replace(out_path + ".part.mp4", out_path)
 
 
-ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead"}
+def apply_fx(path, scene):
+    """Finishing layers on a rendered segment, in one extra pass (same codec settings, so concat stays lossless):
+
+        texture_png + texture_opacity     a still paper / grain / VHS-lines texture over the picture
+        fx = [{src, mode, opacity}]        moving overlays on black (dust, light leak, VHS noise) blended in
+                                           with `screen` (default) - or {src, key: "green"} to key out the
+                                           green of a vintage-TV / film-gate frame and lay it over the shot
+
+    Clip scenes already burn their still texture in render_clip_scene; this adds it to browser scenes and the
+    moving overlays to both."""
+    fxs = list(scene.get("fx") or [])
+    tex = scene.get("texture_png")
+    if not fxs and not tex:
+        return
+    dur = _length(scene)
+    inputs, fc, last = ["-i", path], [], "[0:v]"
+    k = 1
+    if tex and os.path.exists(tex):
+        # neutral (mid-grey) textures blend with soft-light: grain and paper fibre, the colours stay the footage's
+        op = float(scene.get("texture_opacity", 0.6))
+        mode = scene.get("texture_mode", "softlight")
+        inputs += ["-loop", "1", "-t", f"{dur:.3f}", "-i", tex]
+        fc.append(f"{last}format=gbrp[a{k}];[{k}:v]scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},"
+                  f"fps={FPS},format=gbrp[t{k}];[a{k}][t{k}]blend=all_mode={mode}:all_opacity={op:.3f},format=yuv420p[v{k}]")
+        last, k = f"[v{k}]", k + 1
+    for f in fxs:
+        src = f.get("src")
+        if not src or not os.path.exists(src):
+            continue
+        inputs += ["-stream_loop", "-1", "-t", f"{dur:.3f}", "-i", src]
+        start = float(f.get("at", 0.0))
+        if f.get("key") == "green":
+            fc.append(f"[{k}:v]scale={W}:{H},fps={FPS},chromakey=0x22FF22:0.30:0.10,format=rgba,"
+                      f"setpts=PTS+{start:.3f}/TB[f{k}];{last}[f{k}]overlay=0:0:format=auto:eof_action=pass[v{k}]")
+        else:
+            op = float(f.get("opacity", 0.6))
+            mode = f.get("mode", "screen")
+            fc.append(f"{last}format=gbrp[a{k}];[{k}:v]scale={W}:{H},fps={FPS},format=gbrp,"
+                      f"trim=duration={dur:.3f},setpts=PTS-STARTPTS[f{k}];"
+                      f"[a{k}][f{k}]blend=all_mode={mode}:all_opacity={op:.3f}:enable='gte(t,{start:.3f})',format=yuv420p[v{k}]")
+        last, k = f"[v{k}]", k + 1
+    if not fc:
+        return
+    tmp = path + ".fx.mp4"
+    cmd = ["ffmpeg", "-v", "error", "-y"] + inputs + ["-filter_complex", ";".join(fc), "-map", last,
+                                                       "-frames:v", str(_frames(scene)), "-threads", "3"] + X264 + [tmp]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError(f"fx pass failed for {scene.get('id')}: {r.stderr[-600:]}")
+    os.replace(tmp, path)
+
+
+ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead", "ddlabel", "ddtab"}
 
 
 def render_overlay_video(scene, out_mov, cfg):
@@ -264,9 +370,10 @@ def _work(args):
                 render_overlay_png(scene["overlays"], png, cfg)
                 first = min(float(o.get("at", 0.5)) for o in scene["overlays"])
                 scene = dict(scene, overlay_png=png, overlay_at=first)
-            render_clip_scene(scene, out, cfg)
+            render_clip_scene(dict(scene, texture_png=None), out, cfg)
         else:
             render_browser_scene(scene, out, cfg)
+        apply_fx(out, scene)
         return scene["id"], time.time() - t0, None
     except Exception as e:
         return scene["id"], time.time() - t0, str(e)[-600:]
@@ -322,8 +429,23 @@ def concat_xfade(scenes, out_dir, out_path, batch=24):
         cmd = ["ffmpeg", "-v", "error", "-y"] + inputs
         if fc:
             cmd += ["-filter_complex", ";".join(fc), "-map", last]
-        cmd += ["-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", str(crf), "-pix_fmt", "yuv420p",
-                "-r", str(FPS), "-threads", "4", out]
+        # Final concat_xfade is the deliverable: target ~700 MB (override via DOCU_TARGET_MB).
+        # For a typical 15-20 min 1080p30 doc, ~5 Mbps lands around 650-800 MB.
+        _target_mb = int(os.environ.get("DOCU_TARGET_MB", "700"))
+        _mins_est = max(1.0, total / 60.0)
+        _bv_kbps = max(2500, int((_target_mb * 8192) / (_mins_est * 60)))
+        _bv = f"{_bv_kbps}k"
+        _max = f"{int(_bv_kbps * 1.4)}k"
+        _buf = f"{int(_bv_kbps * 2)}k"
+        if _USE_NVENC:
+            cmd += ["-t", f"{total:.3f}", "-c:v", "h264_nvenc", "-preset", "p5", "-tune", "hq",
+                    "-rc", "vbr", "-cq", str(max(22, min(30, int(crf) + 4))),
+                    "-b:v", _bv, "-maxrate", _max, "-bufsize", _buf,
+                    "-pix_fmt", "yuv420p", "-r", str(FPS), out]
+        else:
+            cmd += ["-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "veryfast",
+                    "-b:v", _bv, "-maxrate", _max, "-bufsize", _buf, "-pix_fmt", "yuv420p",
+                    "-r", str(FPS), "-threads", "4", out]
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0:
             raise RuntimeError(r.stderr[-1500:])

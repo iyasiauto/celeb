@@ -592,7 +592,8 @@ def _plan(proj, env):
         ok, err = True, ""
     except RuntimeError as e:
         ok, err = False, str(e)
-    info = dict(ok=ok, error=err, warns=[l.strip() for l in lines if "WARN" in l])
+    info = dict(ok=ok, error=err, warns=[l.strip() for l in lines if "WARN" in l],
+                audit=[l.strip()[6:].strip() for l in lines if l.strip().startswith("FAIL ")])
     for l in lines:
         m = re.search(r"(\d+) scenes, ([\d.]+)s, clips ([\d.]+)s \((\d+)%\), alignment (\d+)%", l)
         if m:
@@ -614,6 +615,10 @@ def _problems(info, target):
         out.append("Clips too short for their words (join more shots with then=(...) or use a photo):\n" + "\n".join(info["warns"][:30]))
     if info.get("reused", 0) > 3:
         out.append(f"{info['reused']} assets were already used by earlier videos; replace them with unused ones.")
+    if info.get("audit"):
+        out.append("The edit audit says the shot list does not use its template in full - the render is blocked until every "
+                   "line below is fixed. Use the template's devices (run docu/registry.py show <template> for the list, the "
+                   "previews and a working example of each):\n" + "\n".join("- " + x for x in info["audit"][:30]))
     return out
 
 
@@ -809,7 +814,8 @@ def cmd_make(a):
             E.log(f"sending the plan's problems back to {session.label}: " + "; ".join(p.split("\n")[0] for p in probs))
             body = session.fix("The engine's plan found these problems. Reply with the full corrected shot list.\n\n" + "\n\n".join(probs))
             P.write_build(proj, job, body, session.label, w)
-        E.stage("plan", "done", f"{info.get('scenes', '?')} scenes · {info.get('clip_pct', '?')} % clips")
+        E.stage("plan", "done", f"{info.get('scenes', '?')} scenes · {info.get('clip_pct', '?')} % clips" +
+                (f" · EDIT AUDIT: {len(info['audit'])} FAIL - render blocked until fixed" if info.get("audit") else " · edit audit passed"))
 
     if want("prep"):
         E.stage("prep")

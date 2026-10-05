@@ -1,0 +1,15 @@
+{
+ "name": "Paper Vox",
+ "template": "paper",
+ "blurb": "The Vox-style paper explainer, heavier on cut-outs and stamps.",
+ "overrides": {
+  "grain": 5.0
+ },
+ "devices": {
+  "collage": 10,
+  "words": 6,
+  "cutout": 10
+ },
+ "audit": {},
+ "rules": "rules.md"
+}

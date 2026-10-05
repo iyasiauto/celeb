@@ -1,0 +1,14 @@
+{
+ "name": "Documentary, calm",
+ "template": "documentary",
+ "blurb": "The calm documentary with fewer graphics and longer shots.",
+ "overrides": {
+  "xfade": 0.7
+ },
+ "devices": {},
+ "audit": {
+  "graphics_per_min": 0.6,
+  "max_gap_s": 75
+ },
+ "rules": "rules.md"
+}

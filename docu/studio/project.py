@@ -110,9 +110,16 @@ def media(w):
     return os.path.abspath(os.environ.get("VIDEO_ROOT") or os.path.join(w, "media"))
 
 
+def niches_dir():
+    """the niche registry: a niche workspace keeps its own (STUDIO_NICHES), so niches never mix"""
+    d = os.environ.get("STUDIO_NICHES") or os.path.join(HERE, "niches")
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
 def niches():
     out = []
-    for p in sorted(glob.glob(os.path.join(HERE, "niches", "*.json"))):
+    for p in sorted(glob.glob(os.path.join(niches_dir(), "*.json"))):
         try:
             out.append(json.load(open(p, encoding="utf-8")))
         except Exception:
@@ -129,7 +136,7 @@ def niche(nid):
 
 def save_niche(n):
     n["id"] = re.sub(r"[^a-z0-9_]+", "_", n["id"].lower()).strip("_")
-    json.dump(n, open(os.path.join(HERE, "niches", n["id"] + ".json"), "w", encoding="utf-8"), indent=2, ensure_ascii=False)
+    json.dump(n, open(os.path.join(niches_dir(), n["id"] + ".json"), "w", encoding="utf-8"), indent=2, ensure_ascii=False)
     return n
 
 

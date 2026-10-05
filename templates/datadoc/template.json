@@ -1,0 +1,99 @@
+{
+ "id": "datadoc",
+ "name": "Data Documentary",
+ "version": 1,
+ "theme": "datadoc",
+ "grade": "datadoc",
+ "grain": 1.5,
+ "xfade": 0.5,
+ "sfx_style": "calm",
+ "best_for": "data-led documentaries: economics, cities, demographics",
+ "requires": [
+  "docu/scenes_datadoc.js"
+ ],
+ "look": "Near-black navy graphics, Playfair Display for what is said, Poppins for labels and sources, one red accent, the midnight map.",
+ "examples": [],
+ "starter": "docu/templates/starter_documentary/build.py",
+ "preview_dir": "docu/templates/previews/datadoc",
+ "preview_sheet": "docu/templates/previews/sheet_datadoc.jpg",
+ "scene_files": [],
+ "theme_def": null,
+ "audit": {
+  "clip_share": [
+   0.25,
+   0.5
+  ],
+  "graphics_per_min": 1.0,
+  "max_gap_s": 50,
+  "max_plain_run": 4,
+  "chapter_every_s": 270,
+  "min_distinct_devices": 9,
+  "sfx_per_min": 1.2
+ },
+ "devices": [
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 2,
+   "use": "The midnight map: every place named."
+  },
+  {
+   "type": "stat",
+   "family": "number",
+   "min_per_10min": 2,
+   "use": "Every stressed figure."
+  },
+  {
+   "type": "timeline",
+   "family": "time",
+   "min_per_10min": 0.6,
+   "use": "Dated passages."
+  },
+  {
+   "type": "quote",
+   "family": "quote",
+   "min_per_10min": 0.5,
+   "use": "Quotations."
+  },
+  {
+   "type": "depth",
+   "family": "photofx",
+   "min_per_10min": 1,
+   "use": "Named people, places, objects."
+  },
+  {
+   "type": "spotlight",
+   "family": "photofx",
+   "min_per_10min": 0.6,
+   "use": "The detail that matters."
+  },
+  {
+   "type": "split",
+   "family": "compare",
+   "min_per_10min": 0.6,
+   "use": "Then / now, A / B."
+  },
+  {
+   "type": "tv",
+   "family": "archive",
+   "min_per_10min": 0.4,
+   "use": "Archive moments (archive=True adds the TV gate)."
+  },
+  {
+   "type": "words",
+   "family": "type",
+   "min_per_10min": 1.5,
+   "use": "The punch of a sentence."
+  },
+  {
+   "type": "checklist",
+   "family": "list",
+   "min_per_10min": 0.5,
+   "use": "Reasons, steps, lists."
+  }
+ ],
+ "also_available": "plus the datadoc scenes and overlays (ddlabel, ddtab...) in docu/scenes_datadoc.js",
+ "rules": [
+  "Graphics are near-black navy with one red accent; footage gets a slow 100->103.5 % push."
+ ]
+}

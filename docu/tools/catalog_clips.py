@@ -126,7 +126,15 @@ def build(cat, dst):
     for line in open(f"{cat}/notes_clips.txt", encoding="utf-8"):
         if not line.strip() or line.startswith("#"):
             continue
-        p = line.rstrip("\n").split("|", 4)
+        p = [x.strip() for x in line.rstrip("\n").split("|", 4)]
+        if not p[0].isdigit():
+            continue
+        if len(p) == 4:                                   # model merged tags and description: keep both
+            p.append(p[3])
+            p[3] = ",".join(t.strip() for t in p[3].split(",") if 0 < len(t.split()) <= 2)
+        p += [""] * (5 - len(p))                          # a model that drops a field must not stop the run
+        if len(p) == 5 and not p[1].isdigit():
+            p[1] = re.sub(r"\D", "", p[1])[:1]
         notes[int(p[0])] = p
     out = []
     for s in shots:

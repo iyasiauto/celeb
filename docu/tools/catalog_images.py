@@ -79,8 +79,34 @@ def info(path, topic_re):
         return dict(file=f, topic=topic, w=0, h=0, hash="", std=0, err=str(e)[:80])
 
 
+def _qc_rejected(src):
+    """pictures the vision QC rejected never reach a contact sheet (talking heads, influencers, logos...)"""
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    try:
+        import qc_guard
+    except Exception:
+        return set()
+    qc = qc_guard._load(qc_guard.find_qc(os.path.abspath(src)))
+    return {os.path.basename(k) for k, v in qc.items() if v.get("reject")}
+
+
+def _origin(picks, key_file, orig_file):
+    """picks/_origin.json: staged name -> the original file, so the QC gate can trace a copied pick back to it"""
+    p = os.path.join(picks, "_origin.json")
+    try:
+        m = json.load(open(p, encoding="utf-8"))
+    except Exception:
+        m = {}
+    m[key_file] = orig_file
+    json.dump(m, open(p, "w", encoding="utf-8"), indent=0)
+
+
 def scan(src, cat, topic_re):
-    files = sorted(f for f in os.listdir(src) if f.lower().endswith(IMG_EXT))
+    bad = _qc_rejected(src)
+    files = sorted(f for f in os.listdir(src) if f.lower().endswith(IMG_EXT) and f not in bad)
+    if bad:
+        print(len(bad), "pictures left out (rejected by QC)")
     with ThreadPoolExecutor(8) as ex:
         rows = list(ex.map(lambda f: info(os.path.join(src, f), topic_re), files))
     seen, clean = set(), []
@@ -138,6 +164,7 @@ def pick(cat, src, picks, dst):
         link = os.path.join(picks, key + (ext if ext in (".jpg", ".png", ".jpeg") else ".jpg"))
         if not os.path.exists(link):
             _link(os.path.join(src, r["file"]), link)
+        _origin(picks, os.path.basename(link), r["file"])
         out.append(dict(key=key, file=r["file"], w=r["w"], h=r["h"], tags=[t for t in tags.split(",") if t], desc=desc))
     os.makedirs(os.path.dirname(os.path.abspath(dst)), exist_ok=True)
     json.dump(out, open(dst, "w"), indent=0)
@@ -157,6 +184,7 @@ def stage(picks_json, src, picks):
         link = os.path.join(picks, r["key"] + (ext if ext in (".jpg", ".png", ".jpeg") else ".jpg"))
         if not os.path.lexists(link):
             _link(p, link)
+        _origin(picks, os.path.basename(link), r["file"])
         n += 1
     print(n, "picks staged in", picks, f"({miss} missing from {src})" if miss else "")
 

@@ -19,6 +19,7 @@ import base64
 import io
 import json
 import os
+import sys
 import re
 
 
@@ -102,13 +103,32 @@ def _read(p, limit=None):
         return ""
 
 
+def _playbook(st):
+    """docu/registry.py's playbook for this style: devices with minimums, previews, working examples, rules"""
+    try:
+        import io
+        import contextlib
+        sys.path.insert(0, DOCU)
+        import registry
+        name = os.environ.get("DOCU_STYLE") or st.get("id") or st.get("theme")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            registry.show(name, minutes=float(os.environ.get("DOCU_MINUTES", "15")))
+        return buf.getvalue()
+    except Exception:          # noqa: BLE001 - the playbook only adds to the brief
+        return ""
+
+
 def system_text(st):
     """the editor's standing instructions for one style (st: project.style_info)"""
     example = _read(st.get("example_path") or "")
     rules = _read(st["rules_path"]) if st.get("rules_path") else ""
     guide = _read(os.path.join(DOCU, "VISUAL_SYNC_GUIDE.md"))
     scenes = _read(os.path.join(DOCU, "templates", "README.md"))
+    playbook = _playbook(st)
     static = (RULES + "\n" + HELPERS +
+              (f"\n\n=== THE TEMPLATE'S PLAYBOOK - the edit audit blocks the render until every minimum is met ===\n{playbook}\n"
+               if playbook else "") +
               f"\n\n=== STYLE: {st['name']} (engine theme \"{st['theme']}\") ===\n{st.get('blurb', '')}\n"
               "The theme's full rules are in the scene reference below under \"" + st.get("readme", "") + "\".\n" +
               (f"\n=== THIS TEMPLATE'S OWN RULES ===\n{rules}\n" if rules else "") +

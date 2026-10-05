@@ -1,0 +1,146 @@
+{
+ "id": "expedition",
+ "name": "Expedition & courtroom",
+ "version": 2,
+ "theme": "expedition",
+ "grade": "warmsepia",
+ "grain": 2.0,
+ "xfade": 0.0,
+ "sfx_style": "full",
+ "best_for": "hunts, mysteries, 'myth or reality', a verdict at the end",
+ "look": "An explorer's field journal and a courtroom: ruled journal pages, leather desk, parchment map, brass and oxblood, evidence tags.",
+ "examples": [
+  "projects/noahs_ark_myth/build.py"
+ ],
+ "starter": "docu/templates/starter/build.py",
+ "preview_dir": "docu/templates/previews/expedition",
+ "preview_sheet": "docu/templates/previews/sheet_expedition.jpg",
+ "scene_files": [],
+ "theme_def": null,
+ "audit": {
+  "clip_share": [
+   0.15,
+   0.4
+  ],
+  "graphics_per_min": 1.4,
+  "max_gap_s": 40,
+  "max_plain_run": 3,
+  "chapter_every_s": 330,
+  "min_distinct_devices": 11,
+  "sfx_per_min": 5.0
+ },
+ "devices": [
+  {
+   "type": "collage",
+   "family": "paper",
+   "min_per_10min": 2,
+   "use": "Paper tabletop: photo prints (pc), cut-out props (cutout), typed strips, rubber stamps, sticky notes, circles and arrows - each lands on its word. The workhorse of the paper look: most explanations happen here."
+  },
+  {
+   "type": "words",
+   "family": "type",
+   "min_per_10min": 4,
+   "use": "Kinetic type: one to three big words slam in on the beat (items=[W_('...')]). The punch of a sentence, the question, the twist."
+  },
+  {
+   "type": "stat",
+   "family": "number",
+   "min_per_10min": 1.5,
+   "use": "One big number that counts up, with a kicker and a note. Every important figure the narrator says."
+  },
+  {
+   "type": "scales",
+   "family": "verdict",
+   "min_per_10min": 0.4,
+   "use": "Scales of justice tipping as each piece of evidence is weighed."
+  },
+  {
+   "type": "scoreboard",
+   "family": "verdict",
+   "min_per_10min": 0.4,
+   "use": "A split-flap scoreboard: for and against."
+  },
+  {
+   "type": "verdict",
+   "family": "verdict",
+   "min_per_10min": 0.3,
+   "use": "The final verdict stamp: REALITY / MYTH. Once, at the end."
+  },
+  {
+   "type": "timeline",
+   "family": "time",
+   "min_per_10min": 1.5,
+   "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+  },
+  {
+   "type": "ledger",
+   "family": "number",
+   "min_per_10min": 1,
+   "use": "An account that adds up line by line to a total: costs, counts, a running sum."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 1,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "geo",
+   "family": "map",
+   "min_per_10min": 1.5,
+   "use": "A terrain / satellite close-up of a region with labels and a profile: mountains, valleys, where exactly."
+  },
+  {
+   "type": "split",
+   "family": "compare",
+   "min_per_10min": 1,
+   "use": "Two pictures side by side with labels: before / after, then / now, A vs B."
+  },
+  {
+   "type": "spotlight",
+   "family": "photofx",
+   "min_per_10min": 2,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  },
+  {
+   "type": "depth",
+   "family": "photofx",
+   "min_per_10min": 1,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "quote",
+   "family": "quote",
+   "min_per_10min": 1,
+   "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+  },
+  {
+   "type": "chapter",
+   "family": "heading",
+   "min_per_10min": 1.4,
+   "use": "Full-screen chapter card: number, kicker, title. One per act."
+  },
+  {
+   "type": "measure",
+   "family": "number",
+   "min_per_10min": 1,
+   "use": "A size comparison: the object against a known scale (people, buses, football fields)."
+  },
+  {
+   "type": "tv",
+   "family": "archive",
+   "min_per_10min": 0.4,
+   "use": "The picture plays inside an old TV set and the camera pushes into the screen. 'Back then', archive, broadcast, 'on the news' moments. Mark archive shots archive=True to also get the vintage TV-gate overlay."
+  }
+ ],
+ "also_available": "every engine device works in every template; the list above is this template's vocabulary and its minimums",
+ "rules": [
+  "Every sentence gets the picture that shows what it says, landing on its words ('@words' timing).",
+  "Never two plain shots of the same kind for long: break runs of clips/photos with the template's devices.",
+  "Every number the narrator stresses is SHOWN with a number device; every place named is SHOWN on a map; every quotation is set as a quote.",
+  "No clip or picture twice in the same video; no talking heads, influencers, watermarks or logos (QC enforces it).",
+  "Look at the preview of each device (docu/templates/previews/<theme>/<device>.jpg) and copy its gallery spec as the starting point.",
+  "Each piece of evidence gets a tag (EXHIBIT A...) and is weighed on the scales.",
+  "End on the verdict."
+ ]
+}

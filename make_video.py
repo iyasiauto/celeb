@@ -28,7 +28,9 @@ import subprocess
 import sys
 import time
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.abspath(__file__))          # the kit: engine, templates, shared assets
+WS = ROOT                                                  # where projects / media live: the kit, or a niche workspace
+NICHE = {}                                                 # the workspace's niche.json (niche.py)
 DOCU = os.path.join(ROOT, "docu")
 STUDIO = os.path.join(DOCU, "studio", "studio.py")
 TOOLS = os.path.join(DOCU, "tools")
@@ -69,14 +71,29 @@ def slugify(s):
 
 def env():
     e = dict(os.environ, PYTHONUNBUFFERED="1", PYTHONIOENCODING="utf-8")
-    e.setdefault("STUDIO_WORKSPACE", ROOT)
-    e.setdefault("VIDEO_ROOT", os.path.join(ROOT, "media"))
+    e["STUDIO_WORKSPACE"] = WS
+    e["VIDEO_ROOT"] = os.path.join(WS, "media")
+    e.setdefault("VIDEO_KIT", os.path.join(ROOT, "media", "kit"))
+    e.setdefault("DOCU_ASSETS", os.path.join(ROOT, "media", "kit"))
+    if NICHE:
+        e["STUDIO_NICHES"] = os.path.join(WS, "niches")      # this niche's registry only - niches never mix
+        e["DOCU_NICHE"] = NICHE["id"]
     return e
+
+
+def find_workspace(arg):
+    """--workspace, or a niche.json in the current folder or one above it"""
+    for d in ([arg] if arg else [os.getcwd(), os.path.dirname(os.getcwd())]):
+        if d and os.path.isfile(os.path.join(d, "niche.json")):
+            return os.path.abspath(d)
+    if arg:
+        sys.exit(f"not a niche workspace (no niche.json): {arg}")
+    return None
 
 
 def studio(*args, quiet=False):
     """run one studio.py command, print its events as readable lines; returns the 'result' data or True"""
-    p = subprocess.Popen([PY, STUDIO, "--workspace", ROOT, *args], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env(),
+    p = subprocess.Popen([PY, STUDIO, "--workspace", WS, *args], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env(),
                          text=True, encoding="utf-8", errors="replace", bufsize=1)
     result, ok, last_p = None, None, 0
     for line in p.stdout:
@@ -111,19 +128,26 @@ def studio(*args, quiet=False):
     return result if result is not None else True
 
 
+LINKED = {}                       # linked name -> original path (to carry a pool's qc.json over)
+
+
 def link_into(src_dir, clips_dir, images_dir):
     """every video and picture under src_dir linked (or copied) flat into clips_dir / images_dir"""
     n = 0
     for d, dirs, files in os.walk(src_dir):
         dirs[:] = [x for x in dirs if not x.startswith((".", "_"))]
         for f in files:
+            if f.startswith(("qc_", ".", "_")):
+                continue                     # the kit's own reports and sheets, never footage
             ext = os.path.splitext(f)[1].lower()
             dst_dir = clips_dir if ext in VIDEO_EXT else images_dir if ext in IMAGE_EXT else None
             if not dst_dir:
                 continue
             rel = os.path.relpath(d, src_dir)
-            name = f if rel == "." else f"{slugify(rel)}__{f}"
+            pooled = rel.replace("\\", "/") in ("clips", "images", "source_video")    # a pool's own folders keep the names
+            name = f if (rel == "." or pooled) else f"{slugify(rel)}__{f}"
             dst = os.path.join(dst_dir, name)
+            LINKED[name] = os.path.join(d, f)
             if os.path.exists(dst):
                 continue
             os.makedirs(dst_dir, exist_ok=True)
@@ -165,6 +189,41 @@ def check_engine():
         studio("kit")
 
 
+def carry_qc(base):
+    """the pools' qc.json entries, renamed for the linked files, into <base>/qc.json"""
+    out_p = os.path.join(base, "qc.json")
+    out = json.load(open(out_p, encoding="utf-8")) if os.path.exists(out_p) else {}
+    cache = {}
+    n = 0
+    for name, src in LINKED.items():
+        if name in out:
+            continue
+        d = os.path.dirname(src)
+        for q in (os.path.join(d, "qc.json"), os.path.join(os.path.dirname(d), "qc.json")):
+            if q not in cache:
+                cache[q] = json.load(open(q, encoding="utf-8")) if os.path.exists(q) else {}
+            r = cache[q].get(os.path.basename(src))
+            if r:
+                out[name] = r
+                n += 1
+                break
+    if out:
+        json.dump(out, open(out_p, "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    return n
+
+
+def run_qc(base, topic):
+    """mandatory vision QC of everything this video may use; files QC'd before are not checked again"""
+    import ai
+    if not ai.resolve("vision"):
+        if os.environ.get("DOCU_SKIP_QC") == "1":
+            print("   QC skipped (DOCU_SKIP_QC=1) - talking heads and logos are NOT being checked")
+            return
+        sys.exit("No vision AI for QC. Put OPENLUX_API_KEY in api_keys/keys.env (Gemini 2.5 Flash Lite checks every clip for "
+                 "talking heads, influencers, watermarks and logos). QC is mandatory.")
+    subprocess.run([PY, os.path.join(TOOLS, "qc_pool.py"), base, "--topic", topic, "--workers", "8"], env=env(), check=True)
+
+
 # ------------------------------------------------------------------ main
 def main():
     ap = argparse.ArgumentParser(description="make a video from a template")
@@ -185,14 +244,35 @@ def main():
     ap.add_argument("--until", choices=["catalog", "shotlist", "plan", "stills", "render", "final"],
                     help="stop after this stage (agents: --until shotlist, write projects/<title>/build.py, then --resume plan)")
     ap.add_argument("--yes", action="store_true", help="no questions (use the flags and defaults)")
+    ap.add_argument("--workspace", help="a niche workspace (niche.py new ...); found automatically when you run from inside one")
+    ap.add_argument("--style", help="a style from styles/ (python docu/registry.py list)")
+    ap.add_argument("--topic", help="what the video is about - QC judges relevance against it")
     a = ap.parse_args()
     interactive = not a.yes
+    global WS, NICHE
+    w = find_workspace(a.workspace)
+    if w:
+        WS = w
+        NICHE = json.load(open(os.path.join(w, "niche.json"), encoding="utf-8"))
+        print(f"niche workspace: {NICHE['name']}  ({w})")
+        os.environ.update(STUDIO_NICHES=os.path.join(w, "niches"), STUDIO_WORKSPACE=w, VIDEO_ROOT=os.path.join(w, "media"),
+                          DOCU_NICHE=NICHE["id"])
+        a.template = a.template or (None if a.style else NICHE.get("template"))
+        a.style = a.style or (NICHE.get("style") if not a.template or a.template == NICHE.get("template") else None)
+        a.topic = a.topic or NICHE.get("topic")
+        if not (a.folder or a.drive or a.niche or a.online):
+            a.folder = os.path.join(w, NICHE.get("pool", "pool"))
+    if a.style:
+        import registry
+        pb = registry.resolve(a.style)
+        a.template = a.template or pb["id"]
+        os.environ["DOCU_STYLE"] = a.style
 
     print("\n=== Docu Templates · make a video ===\n")
     check_engine()
     title = a.title or ask("Video title")
     slug = slugify(title)
-    state_f = os.path.join(ROOT, "media", "runs", slug + ".json")
+    state_f = os.path.join(WS, "media", "runs", slug + ".json")
     state = json.load(open(state_f)) if os.path.exists(state_f) else {}
 
     script = a.script or state.get("script") or ask("Script file (.txt)")
@@ -211,7 +291,12 @@ def main():
         voice = dict(mode="file", mp3=os.path.abspath(mp3), srt=os.path.abspath(srt) if srt else None)
 
     import project as P
-    styles = P.all_styles(ROOT)
+    styles = P.all_styles(WS)
+    import registry
+    for tid in registry.templates():                       # templates dropped into templates/ are choosable too
+        if tid not in styles and registry.templates()[tid]["installed"]:
+            t = registry.templates()[tid]
+            styles[tid] = dict(name=t["name"], blurb=t.get("look", ""), theme=t["theme"])
     template = a.template or state.get("template")
     if not template:
         print("\nTemplates:")
@@ -249,7 +334,7 @@ def main():
 
     if not niche:
         niche = slug
-        base = os.path.join(ROOT, "media", niche, "src")
+        base = os.path.join(WS, "media", niche, "src")
         clips, images = os.path.join(base, "clips"), os.path.join(base, "images")
         if a.resume in (None, "footage"):
             print("\n[1/3] Footage")
@@ -259,7 +344,7 @@ def main():
                     sys.exit(f"folder not found: {folder}")
                 print(f"   {link_into(folder, clips, images)} files linked from {folder}")
             if drive:
-                dl = os.path.join(ROOT, "media", niche, "drive")
+                dl = os.path.join(WS, "media", niche, "drive")
                 subprocess.run([PY, os.path.join(TOOLS, "fetch_drive.py"), drive_id(drive), dl, "12"], env=env(), check=True)
                 print(f"   {link_into(dl, clips, images)} files from the Drive folder")
             if online:
@@ -270,18 +355,21 @@ def main():
             print(f"   footage ready: {nc} clips, {ni} pictures")
             if nc + ni == 0:
                 sys.exit("no footage: give a folder, a Drive link or --online searches")
+            print("\n[QC] talking heads, influencers, watermarks, logos, relevance")
+            print(f"   {carry_qc(base)} files already checked in their pool")
+            run_qc(base, a.topic or title)
             studio("niche-add", "--name", title, "--id", niche, "--folder", base, "--clips", clips, "--images", images,
                    "--style", template, "--clip-share", str(clip_share), quiet=True)
         a.resume = None if a.resume == "footage" else a.resume
     else:
         n = P.niche(niche)
-        if not P.niche_status(n, ROOT)["downloaded"] and a.resume in (None, "footage"):
+        if not P.niche_status(n, WS)["downloaded"] and a.resume in (None, "footage"):
             print("\n[1/3] Footage: downloading the niche from its Drive folder")
             studio("niche-fetch", "--niche", niche)
 
     # ---------------------------------------------------------- 2 catalog
     n = P.niche(niche)
-    st = P.niche_status(n, ROOT)
+    st = P.niche_status(n, WS)
     if a.resume in (None, "footage", "catalog") and (not st["clip_catalog"] or a.resume == "catalog" or not n.get("drive")):
         print("\n[2/3] Catalog (contact sheets + descriptions)")
         studio("niche-catalog", "--niche", niche)
@@ -293,7 +381,7 @@ def main():
     job = dict(title=title, niche=niche, style=template, clip_share=clip_share, script=os.path.abspath(script), voice=voice,
                shotlist="ai" if a.ai == "auto" else "auto", ai_qa=a.ai == "auto", effort="high",
                workers=max(2, min(8, (os.cpu_count() or 4) - 2)), deliver=dict(upload=bool(a.upload), limit_gb=a.limit_gb))
-    jf = os.path.join(ROOT, "media", "runs", slug + ".job.json")
+    jf = os.path.join(WS, "media", "runs", slug + ".job.json")
     json.dump(job, open(jf, "w"), indent=1)
     print(f"\n[3/3] Making the video · template {styles[template]['name']} · footage '{niche}' · {clip_share} % clips")
     args = ["make", "--job", jf]
@@ -307,7 +395,7 @@ def main():
     studio(*args)
     if a.until:
         print(f"\nStopped after '{a.until}'. Shot list: projects/{slug}/build.py · stills: media/work/{slug}/qa/ · "
-              f"continue with: python make_video.py --title \"{title}\" --yes --resume <next stage>")
+              f"continue with: {'make.bat / ./make.sh' if WS != ROOT else 'python make_video.py'} --title \"{title}\" --yes --resume <next stage>")
         return
     print("\nDone. The video, subtitles and YouTube metadata are in media/out/ and projects/" + slug + "/")
     print("Edit projects/" + slug + "/build.py to change any shot, then: python make_video.py --title \"" + title +
