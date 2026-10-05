@@ -68,6 +68,16 @@ You see {what}. Report ONLY what is visibly there - be literal, do not guess. An
   "desc": "one plain sentence: what the shot shows",
   "tags": ["3-8 short tags of visible things"]}}"""
 
+# celebrity / nostalgia niches: the named person IS the subject - their portraits and roles are wanted.
+# What still goes: other people's logos, chyrons, watermarks, YouTube thumbnails / memes, interviews to camera
+# (clips), and pictures of somebody else.
+PEOPLE_ADD = """
+This channel is about named people (celebrities, actors). The expected subject of this file: "{subject}".
+Add these keys to the same JSON object:
+  "subject_match": "yes|no|unsure",   // is the main person plausibly {subject} (right gender, era, age range, role)? "no" only if clearly someone else
+  "thumbnail_or_meme": bool,          // a YouTube thumbnail, meme, collage of several pictures, arrows/circles drawn on, big added text
+  "tv_interview": bool                // an interview / talk-show / news segment where the person speaks to an interviewer or camera"""
+
 LOCK = threading.Lock()
 
 # aspect-keeping crops that drop one corner or edge (x0, y0, x1, y1 as fractions of the frame)
@@ -127,12 +137,15 @@ def strip(p, tmpdir):
     return out
 
 
-def ask(chat_factory, topic, kind, picture):
+def ask(chat_factory, topic, kind, picture, subject=None):
     what = ("three frames from one video clip (start, middle, end), side by side" if kind == "clip"
             else "one photograph")
     for attempt in range(3):
         chat = chat_factory()
-        txt = chat.send(PROMPT.format(topic=topic, what=what), images=[picture], max_tokens=700)
+        prompt = PROMPT.format(topic=topic, what=what)
+        if subject is not None:
+            prompt = prompt.rstrip()[:-1].rstrip().rstrip("}") + "," + PEOPLE_ADD.format(subject=subject or "(no particular person - B-roll)") + "}"
+        txt = chat.send(prompt, images=[picture], max_tokens=800)
         m = re.search(r"\{.*\}", txt, re.S)
         if m:
             try:
@@ -170,13 +183,34 @@ def crop_for(r):
     return list(CORNER_CROP[corner]) if corner in CORNER_CROP else None
 
 
-def decide(r, strict):
-    """the rules, applied to what the model saw (strict lowers the face thresholds)"""
+def subject_of(name):
+    """people mode: the person a file is about, from its name ("river_phoenix__g1a2b.jpg" -> "River Phoenix")"""
+    if "__" not in name:
+        return ""
+    return name.split("__")[0].replace("_", " ").title()
+
+
+def decide(r, strict, mode="faceless", kind="clip"):
+    """the rules, applied to what the model saw (strict lowers the face thresholds).
+    mode "people" (celebrity / nostalgia niches): the named person's portraits and close-ups are the point, so the
+    face rules are off; interviews to camera (clips), thumbnails / memes, somebody else, logos, chyrons, watermarks
+    and captions in the middle still go."""
     why = []
     face = float(r.get("largest_face_pct") or 0)
-    if r.get("speaking_to_camera"):
+    if mode == "people":
+        if kind == "clip" and (r.get("tv_interview") or r.get("speaking_to_camera")):
+            why.append("interview / talking head")
+        if r.get("influencer_or_vlog"):
+            why.append("influencer / vlog")
+        if r.get("thumbnail_or_meme"):
+            why.append("thumbnail / meme / collage")
+        if str(r.get("subject_match", "")).lower() == "no":
+            why.append("not the person this file should show")
+        face = 0.0
+        r = dict(r, eye_contact=False, face_toward_camera=False, posed_portrait=False)
+    if mode != "people" and r.get("speaking_to_camera"):
         why.append("talking head")
-    if r.get("influencer_or_vlog"):
+    if mode != "people" and r.get("influencer_or_vlog"):
         why.append("influencer / vlog")
     if r.get("posed_portrait"):
         why.append("posed portrait")
@@ -230,6 +264,8 @@ def main():
     ap.add_argument("--limit", type=int, default=0, help="check at most N new files (a quick test)")
     ap.add_argument("--retopic", action="store_true", help="check files again when the topic changed (relevance)")
     ap.add_argument("--redecide", action="store_true", help="re-apply the rules to what the model already reported (no AI calls)")
+    ap.add_argument("--mode", choices=["faceless", "people"], default=None,
+                    help="people: celebrity / nostalgia niches - the named person's portraits are allowed (default: the pool's last mode, else faceless)")
     a = ap.parse_args()
     if a.redecide:
         pool = os.path.abspath(a.pool)
@@ -240,7 +276,7 @@ def main():
             if not v.get("seen"):
                 continue
             r = dict(v["seen"], relevance=v.get("relevance"), quality=v.get("quality"))
-            d = decide(r, a.strict)
+            d = decide(r, a.strict, a.mode or v.get("mode") or "faceless", v.get("kind", "clip"))
             for key in ("reject", "reason", "crop", "logo_corner", "note", "weak"):
                 v.pop(key, None)
             v.update(d)
@@ -264,6 +300,7 @@ def main():
     topic = a.topic or os.path.basename(pool.rstrip("/\\")).replace("_", " ")
     qc_path = os.path.join(pool, "qc.json")
     qc = json.load(open(qc_path, encoding="utf-8")) if os.path.exists(qc_path) else {}
+    mode = a.mode or next((v.get("mode") for v in qc.values() if v.get("mode")), None) or "faceless"
     todo = []
     for kind, d, ext in (("clip", vdir, VIDEO_EXT), ("image", idir, IMAGE_EXT)):
         if not d or (a.only == "clips" and kind == "image") or (a.only == "images" and kind == "clip"):
@@ -273,7 +310,8 @@ def main():
                 continue
             p = os.path.join(d, f)
             old = qc.get(f)
-            if old and not a.redo and old.get("sig") == sig(p) and (old.get("topic") == topic or not a.retopic):
+            if old and not a.redo and old.get("sig") == sig(p) and (old.get("topic") == topic or not a.retopic) \
+                    and (old.get("mode") or "faceless") == mode:
                 continue                  # unchanged file: faces / logos / watermarks don't depend on the topic's wording
             todo.append((kind, p))
     if a.limit:
@@ -292,12 +330,13 @@ def main():
                 rec = dict(kind=kind, reject=True, reason="unreadable file")
             else:
                 try:
-                    r = ask(factory, topic, kind, pic)
-                    rec = dict(kind=kind, **decide(r, a.strict), relevance=r.get("relevance"), quality=r.get("quality"),
+                    r = ask(factory, topic, kind, pic, subject_of(name) if mode == "people" else None)
+                    rec = dict(kind=kind, mode=mode, **decide(r, a.strict, mode, kind), relevance=r.get("relevance"), quality=r.get("quality"),
                                desc=r.get("desc", ""), tags=r.get("tags", []), seen={k: r.get(k) for k in (
                                    "people", "largest_face_pct", "face_toward_camera", "eye_contact", "speaking_to_camera",
                                    "posed_portrait", "influencer_or_vlog", "watermark", "logo", "logo_corner", "logo_box",
-                                   "edited_text", "edited_text_position", "screen_recording")})
+                                   "edited_text", "edited_text_position", "screen_recording", "subject_match",
+                                   "thumbnail_or_meme", "tv_interview")})
                 except Exception as e:         # noqa: BLE001 - one bad file must not stop the pool
                     rec = dict(kind=kind, reject=True, reason=f"QC failed: {str(e)[:120]}", error=True)
         rec.update(sig=sig(p), topic=topic, model=model)
