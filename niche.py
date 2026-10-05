@@ -194,7 +194,14 @@ def cmd_add(a):
     only = [x.lower() for x in (a.only or "").split(",") if x.strip()]
     n = dup = 0
     root = os.path.abspath(a.folder)
-    for dd, dirs, files in os.walk(root):
+    visited = set()
+    # follow linked folders too: an old kit linked a video's footage to the pool it came from
+    for dd, dirs, files in os.walk(root, followlinks=True):
+        real = os.path.realpath(dd)
+        if real in visited:
+            dirs[:] = []
+            continue
+        visited.add(real)
         dirs[:] = [x for x in dirs if x.lower() not in SKIP_DIRS and not x.startswith(".")]
         rel = os.path.relpath(dd, root).lower()
         if only and rel != "." and not any(o.strip() in rel for o in only):
@@ -220,6 +227,9 @@ def cmd_add(a):
             n += 1
             if n % 50 == 0:
                 print(f"  {n} files...")
+    if n == 0 and dup == 0:
+        print(f"no videos or pictures found under {root}" + (f" in folders matching {a.only!r}" if only else "") +
+              " - check the path, and the --only words against the folder names")
     print(f"{n} files added to {pool} ({dup} duplicates skipped) - now run: python niche.py qc {slug(a.name)}")
 
 
