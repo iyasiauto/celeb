@@ -162,9 +162,10 @@ def mix_for(slug, theme, assets_dir, overrides=None):
         if os.path.exists(tv):
             out["cinema_frame"] = tv
 
-    if pal.get("tv_gate") and active("tv_gate"):
-        g = os.path.join(assets_dir, "VINTAGE OVERLAY green screen.mp4")
-        if os.path.exists(g):
+    g = os.path.join(assets_dir, "VINTAGE OVERLAY green screen.mp4")
+    if os.path.exists(g):
+        out["tv_gate_file"] = g              # an editor's explicit archive=True always gets the gate
+        if pal.get("tv_gate") and active("tv_gate"):
             out["tv_gate"] = g
 
     if pal.get("props"):

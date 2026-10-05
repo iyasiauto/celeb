@@ -19,7 +19,7 @@ sees; the *rules* below decide, so the decision never depends on how a model phr
       aspect-keeping `crop`; edl.clip() applies it, and the template's grade, grain, push-in and texture
       do the rest, so the shot no longer looks like somebody else's.
 
-    python docu/tools/qc_pool.py <pool> --topic "Amish settlements in Wisconsin" [--only clips|images]
+    python docu/tools/qc_pool.py <pool> --topic "<what the niche is about>" [--only clips|images]
                                  [--workers 8] [--strict] [--redo] [--provider openlux] [--model ...]
 
 <pool> may be a niche pool (clips/ + images/), a footage folder (source_video/), or a project's media

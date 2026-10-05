@@ -9,7 +9,7 @@ sentence spoken over it. It is flagged when:
     - an influencer / vlog / face-cam shot slipped through
     - any channel logo, @handle, TV bug or stock watermark is still visible (the crop missed it)
     - captions or chyrons that are not ours are burnt in
-    - the picture does not fit what is being said (match 0-1 of 5)
+    - the picture is off-topic for the video (topic_fit 0-1 of 5); a loose literal match is only reported
 
     python docu/tools/final_qc.py <work_dir> --words <project>/data/words.json --topic "<topic>" [--workers 8]
 
@@ -31,16 +31,25 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "studio"))
 
-PROMPT = """Final check of a faceless documentary before it is published. Topic: "{topic}".
-The narrator says, over this picture: "{line}"
-Look at the picture and report literally, one JSON object and nothing else:
-{{"speaking_to_camera": bool, "posed_portrait": bool, "influencer_or_vlog": bool, "eye_contact": bool,
+PROMPT = """Final check of a faceless documentary before it is published. Topic of the whole video: "{topic}".
+Look at the picture and report literally, one JSON object and nothing else.
+
+First judge the picture ON ITS OWN, as B-roll for a documentary about that topic (ignore the narration here):
+"topic_fit" 0-5. Documentary B-roll sets place and mood: anything from the topic's own world - its places,
+landscapes, buildings, people at work, objects, animals, vehicles, archive material - fits (4-5) even when it does
+not show one exact sentence. Score 0-1 ONLY when the picture plainly belongs to a different subject altogether
+(something no viewer of this topic would expect to see).
+
+Then read what the narrator says over it: "{line}"
+"match" 0-5: how literally the picture shows those words (B-roll is often 1-2, and that is fine).
+
+{{"topic_fit": int, "match": int,
+  "speaking_to_camera": bool, "posed_portrait": bool, "influencer_or_vlog": bool, "eye_contact": bool,
   "largest_face_pct": number,          // biggest visible face as % of the frame, 0 if none
   "logo_or_handle": bool,              // a channel logo, TV bug, @handle, URL or stock watermark DRAWN ON TOP of the footage
                                        // (NOT shop signs, building lettering, labels or print that physically exist in the scene)
   "logo_where": "none|top-left|top-right|bottom-left|bottom-right|top|bottom|center",
   "burnt_in_text": bool,               // subtitles, captions, chyrons or titles added in someone else's edit (not signs in the scene)
-  "match": int,                        // 0-5: how well the picture shows what the narrator says (5 = exactly, 0 = unrelated)
   "desc": "what the picture shows, one sentence"}}"""
 
 
@@ -89,8 +98,10 @@ def judge(r, scene=None):
         why.append(f"logo / handle / watermark still visible ({r.get('logo_where', '?')})")
     if r.get("burnt_in_text"):
         why.append("someone else's captions burnt in")
-    if int(r.get("match") if r.get("match") is not None else 3) <= 0 and not (scene or {}).get("qc_ok"):
-        why.append("unrelated to the narration")      # an editor who chose a loose shot on purpose marks it qc_ok=True
+    fit = r.get("topic_fit")
+    fit = int(fit) if isinstance(fit, (int, float)) else 3
+    if fit <= 1 and not (scene or {}).get("qc_ok"):
+        why.append("off-topic for this video")        # an editor who chose a loose shot on purpose marks it qc_ok=True
     return why
 
 
@@ -121,7 +132,7 @@ def run(scenes, words, topic, assets_dir, out_dir, workers=8, provider=None, mod
                     os.makedirs(keep, exist_ok=True)
                     dst = os.path.join(keep, s["id"] + ".jpg")
                     os.replace(pic, dst)
-                    weak = int(r.get("match") if r.get("match") is not None else 3) == 1
+                    weak = int(r.get("match") if r.get("match") is not None else 3) <= 1 or int(r.get("topic_fit") or 3) == 2
                     return s["id"], dict(flags=judge(r, s), weak=weak, line=line, match=r.get("match"), desc=r.get("desc", ""), frame=dst)
                 except Exception as e:          # noqa: BLE001
                     err = str(e)

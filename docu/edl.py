@@ -37,6 +37,8 @@ def _pin(proj_dir, pb, niche, footage):
     """one video = one template (+ style) + one niche, written once, checked on every run"""
     p = os.path.join(proj_dir, "project.json")
     want = dict(template=pb.get("id"), style=pb.get("style"), niche=niche or os.environ.get("DOCU_NICHE"))
+    if os.environ.get("DOCU_TOPIC"):
+        want["topic"] = os.environ["DOCU_TOPIC"]
     if os.path.exists(p):
         have = json.load(open(p, encoding="utf-8"))
         clash = [k for k in ("template", "style", "niche") if have.get(k) and want.get(k) and have[k] != want[k]]
@@ -52,6 +54,30 @@ def _pin(proj_dir, pb, niche, footage):
     want.update(footage=os.path.abspath(footage), pinned=time.strftime("%Y-%m-%d %H:%M"))
     os.makedirs(proj_dir, exist_ok=True)
     json.dump(want, open(p, "w", encoding="utf-8"), indent=1)
+
+
+def _niche_topic(proj_dir, pinned):
+    """what the niche is about (QC judges relevance against it): DOCU_TOPIC, the pinned project, or the
+    workspace's niche.json found above the project - never just the video's title"""
+    t = os.environ.get("DOCU_TOPIC") or pinned.get("topic")
+    d = proj_dir
+    for _ in range(4):
+        if t:
+            break
+        d = os.path.dirname(d)
+        nj = os.path.join(d, "niche.json")
+        if os.path.isfile(nj):
+            try:
+                t = json.load(open(nj, encoding="utf-8")).get("topic")
+            except Exception:
+                pass
+    return t or ""
+
+
+def _topic(topic, name, proj_dir, pinned):
+    title = name.replace("_", " ")
+    t = topic or _niche_topic(proj_dir, pinned)
+    return f"{t} (this video: {title})" if t and title.lower() not in t.lower() else (t or title)
 
 
 def setup(*, name, kit, footage, work, data, out, vo=None, theme=None, grade=None, grain=None,
@@ -113,7 +139,7 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme=None, grade=Non
         grade = "almanac"                 # the first edition's warm print grade
     P.update(name=name, theme=theme, grade=grade, grain=grain, music_floor_db=music_floor_db,
              music_duck_db=music_duck_db, sfx_gain=sfx_gain, xfade=xfade, sfx_style=sfx_style, data=data,
-             topic=topic or name.replace("_", " "), finish=finish,
+             topic=_topic(topic, name, os.path.dirname(os.path.abspath(data)), pinned), finish=finish,
              assets=assets or os.environ.get("DOCU_ASSETS") or kit)
     if vary is not None:
         # shuffle the look per video; remember what earlier videos used (see variety.py)
@@ -371,11 +397,32 @@ HEADING_OVERLAYS = {"almhead", "gzhead", "ddlabel"}
 HEADING_TYPES = {"chapter", "doctitle", "title", "segment", "breaking"}
 
 
+NEEDS = {"spotlight": ("dim",), "depth": ("soft",)}
+
+
+def _variants_for(scenes):
+    """a scene written as a raw dict (copied from a playbook example) still gets the picture variants its device
+    needs: spotlight -> the dimmed copy, depth -> the cut-out subject"""
+    want = {}
+    for s in scenes:
+        for v in NEEDS.get(s.get("type"), ()):
+            if s.get("img"):
+                want.setdefault(s["img"], set()).add(v)
+    if not want:
+        return
+    for k, j in enumerate(JOBS):
+        if j[0] == "img" and j[2] + ".jpg" in want:
+            add = want[j[2] + ".jpg"]
+            cut = j[5] or "soft" in add
+            JOBS[k] = j[:5] + (cut, tuple(sorted(set(j[6]) | add)))
+
+
 def finish(scenes):
     """The template's own textures and overlays on every video (asset_mix decides which, per template):
     a soft-light grain / paper / scan-line texture on all footage and photographs, a dust / light-leak / VHS
     overlay screened over the opening and every chapter heading, and the vintage-TV gate over shots marked
     archive=True. A scene opts out with no_texture=True or no_fx=True."""
+    _variants_for(scenes)
     if not P.get("finish", True):
         return scenes
     try:
@@ -393,8 +440,9 @@ def finish(scenes):
         if (heading or k == 0) and mix.get("chapter_dust") and not s.get("no_fx"):
             s.setdefault("fx", []).append(dict(src=mix["chapter_dust"], mode="screen", opacity=0.7))
             n_fx += 1
-        if (s.get("archive") or s.get("gate")) and mix.get("tv_gate") and not s.get("no_fx"):
-            s.setdefault("fx", []).append(dict(src=mix["tv_gate"], key="green"))
+        gate = mix.get("tv_gate") or mix.get("tv_gate_file")
+        if (s.get("archive") or s.get("gate")) and gate and not s.get("no_fx"):
+            s.setdefault("fx", []).append(dict(src=gate, key="green"))
             n_gate += 1
     P["mix"] = asset_mix.summary(mix)
     print(f"{P['mix']}  ->  texture on {n_tex} scenes, overlay on {n_fx} headings, TV gate on {n_gate} archive shots")

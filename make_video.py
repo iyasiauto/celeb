@@ -260,6 +260,8 @@ def main():
         a.template = a.template or (None if a.style else NICHE.get("template"))
         a.style = a.style or (NICHE.get("style") if not a.template or a.template == NICHE.get("template") else None)
         a.topic = a.topic or NICHE.get("topic")
+    if a.topic:
+        os.environ["DOCU_TOPIC"] = a.topic          # QC and final QC judge relevance against the niche's topic
         if not (a.folder or a.drive or a.niche or a.online):
             a.folder = os.path.join(w, NICHE.get("pool", "pool"))
     if a.style:

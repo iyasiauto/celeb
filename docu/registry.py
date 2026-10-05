@@ -269,14 +269,21 @@ def check():
 
 def new_template(tid, base):
     T = templates()
-    if base not in T:
-        raise SystemExit(f"no template {base!r}")
+    base = ALIASES.get(base, base)
+    src = T[base]["dir"] if base in T else os.path.join(TPL_DIR, base)      # "_example" (hidden from lists) works too
+    if not os.path.isfile(os.path.join(src, "template.json")):
+        raise SystemExit(f"no template {base!r} (python docu/registry.py list)")
     dst = os.path.join(TPL_DIR, tid)
     if os.path.exists(dst):
         raise SystemExit(f"{dst} already exists")
-    shutil.copytree(T[base]["dir"], dst)
+    shutil.copytree(src, dst)
     t = _load(os.path.join(dst, "template.json"))
-    t.update(id=tid, name=f"{t['name']} (copy)", examples=t.get("examples", []))
+    t.update(id=tid, name=f"{t['name']} (copy)" if base != "_example" else tid, examples=t.get("examples", []))
+    if t.get("theme_def"):
+        t["theme"] = tid                     # a template with its own look renders under its own theme name
+    for k in ("preview_dir", "preview_sheet"):
+        if isinstance(t.get(k), str):
+            t[k] = t[k].replace(f"templates/{base}/", f"templates/{tid}/")
     # a new template brings its own look: the base theme copied as a theme_def you can edit freely
     t.setdefault("theme_def", None)
     json.dump(t, open(os.path.join(dst, "template.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)

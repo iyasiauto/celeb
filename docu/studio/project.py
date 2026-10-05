@@ -177,7 +177,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 JOB = json.load(open(os.path.join(HERE, "data", "studio_job.json"), encoding="utf-8"))
-DOCU = os.environ.get("DOCU_DIR") or os.path.join(HERE, "..", "..", "docu")
+DOCU = os.environ.get("DOCU_DIR") or next((d for d in (os.path.join(HERE, "..", "..", "docu"), JOB.get("docu", ""))
+                                           if d and os.path.isfile(os.path.join(d, "edl.py"))), "docu")
 sys.path[:0] = [DOCU, os.path.join(DOCU, "studio")]
 
 import edl                       # noqa: E402
@@ -232,7 +233,8 @@ def create(job, w):
         json.dump([], open(os.path.join(data, "catalog_all.json"), "w"))
     job = dict(job, slug=slug, name=name_of(job["title"]), engine=st.get("engine", "docu"), theme=st.get("theme"),
                sfx_style=st.get("sfx", "full"), xfade=st.get("xfade", 0.0),
-               paths=dict(footage=n["footage"], image_dirs=n["image_dirs"], picks=n.get("picks")) if n else {})
+               paths=dict(footage=n["footage"], image_dirs=n["image_dirs"], picks=n.get("picks")) if n else {},
+               docu=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))      # the kit's engine, for workspaces
     json.dump(job, open(os.path.join(data, "studio_job.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     return proj, work, job
 

@@ -434,6 +434,7 @@ def concat_xfade(scenes, out_dir, out_path, batch=24):
         _target_mb = int(os.environ.get("DOCU_TARGET_MB", "700"))
         _mins_est = max(1.0, total / 60.0)
         _bv_kbps = max(2500, int((_target_mb * 8192) / (_mins_est * 60)))
+        _bv_kbps = min(_bv_kbps, int(os.environ.get("DOCU_MAX_KBPS", "12000")))   # a short video must not get 90 Mbps
         _bv = f"{_bv_kbps}k"
         _max = f"{int(_bv_kbps * 1.4)}k"
         _buf = f"{int(_bv_kbps * 2)}k"

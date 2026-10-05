@@ -7,12 +7,14 @@ everything that belongs to a niche - its footage pool, its QC, its projects, its
 in the workspace and nowhere else. Open a workspace folder in Claude / Antigravity and the agent sees one niche,
 one default template, one pool.
 
-    python niche.py new amish --template almanac --pool "D:\\Footage\\Amish" --topic "Amish life and settlements"
-    python niche.py new hasidic --template documentary --drive "https://drive.google.com/drive/folders/..."
-    python niche.py new noah --style paper-vox --topic "Noah's Ark expeditions"         (empty pool: fill it later)
+    python niche.py new true-crime --template forensic --pool "D:\\Footage\\Crime" --topic "unsolved crimes in the US"
+    python niche.py new space --template documentary --drive "https://drive.google.com/drive/folders/..." --topic "space missions"
+    python niche.py new history --style paper-vox --topic "ancient empires"        (empty pool: fill it later)
     python niche.py list
-    python niche.py qc amish                     # vision QC of the whole pool (talking heads, logos, watermarks...)
-    python niche.py add amish <folder>           # merge more footage into the pool (then qc again)
+    python niche.py qc space                     # vision QC of the whole pool (talking heads, logos, watermarks...)
+    python niche.py add space <folder>           # merge more footage into the pool (then qc again)
+
+Any subject works: the niche's --topic is what QC judges relevance against; the template decides the look.
 
     workspaces/<niche>/
         niche.json      name, template, style, topic, pool - the defaults every video of this niche uses
