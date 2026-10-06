@@ -336,11 +336,11 @@ def music_plan(scenes, music):
     plan = []
     for m in music:
         if m["at"] is None:
-        t = 0.0
-    elif isinstance(m["at"], (int, float)):
-        t = float(m["at"]) + m.get("lead", 0)          # a time in seconds
-    else:
-        t = next(s["t0"] for s in scenes if s["cue"] == m["at"]) + m.get("lead", 0)
+            t = 0.0
+        elif isinstance(m["at"], (int, float)):
+            t = float(m["at"]) + m.get("lead", 0)          # a time in seconds
+        else:
+            t = next(s["t0"] for s in scenes if s["cue"] == m["at"]) + m.get("lead", 0)
         plan.append({"from": max(0.0, t), "track": m["track"], "db": m.get("db", 0)})
     return plan
 
