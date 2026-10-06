@@ -237,8 +237,11 @@ def memoriam(person, years, line=None, **kw):
     return s
 
 
+ROLL = {"Malcolm-Jamal Warner": "malcolm_jamal_warner__g158d6792.jpg"}      # a portrait of him alone, not the cast photo
+
+
 def rollcall(people, title, sub=None, **kw):
-    stems = [pics(p)[0] for p in people if pics(p)]
+    stems = [ROLL.get(p) or pics(p)[0] for p in people if pics(p)]
     s = dict(type="rollcall", imgs=[img(os.path.splitext(f)[0], "reel") for f in stems], names=list(people), cols=7,
              fillFor=kw.pop("fillFor", 2.4), title=title, sub=sub)
     s.update(kw)
