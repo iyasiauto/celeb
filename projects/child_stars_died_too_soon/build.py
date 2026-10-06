@@ -468,7 +468,8 @@ FIX = {
     360.9: lambda: P("sawyer_sweeten__g0739ddf3", move="left"),
     446.55: lambda: bclip("broll_rainy_street_lights_night__pe3638386.mp4"),
     524.68: lambda: P("michelle_trachtenberg__g12d06adb", move="in"),
-    647.55: lambda: bclip("broll_kids_riding_bikes_suburb__pe3683318.mp4"),
+    647.55: lambda: P("nikita_pearl_waligwa__g87098635", move="in"),
+    794.49: lambda: bclip("broll_rainy_street_lights_night__pe12570193.mp4"),
     670.47: lambda: bclip("broll_suburban_house_sunset__pe17972365.mp4"),
     286.09: lambda: P("corey_haim__g290551b1", move="in"),            # an event backdrop logo behind him
 }
