@@ -463,9 +463,9 @@ edl.E[:] = [_seen[k] for k in sorted(_seen)]
 
 edl.main(music=[
     dict(at=None, track="04_Sad_Trio_Somber_Piano_Cello.mp3"),
-    dict(at="Bobby Driscoll was Disney's golden boy", track="02_Leaving_Home_Somber_Long_Bed.mp3", lead=-1.0),
-    dict(at="Lee Thompson Young was", track="Mark Jubel - Efteraar.mp3", lead=-1.0),
-    dict(at="Rebecca Schaeffer starred", track="07_Wounded_Dark_Strings.mp3", lead=-1.0),
-    dict(at="Sammy Kane Kraft was", track="03_Sovereign_Dark_Piano_Bed.mp3", lead=-1.0),
-    dict(at="Thirty-five names", track="05_Despair_and_Triumph_Dark_Piano.mp3", lead=-1.0),
+    dict(at=starts[NAMES.index("Bobby Driscoll")], track="02_Leaving_Home_Somber_Long_Bed.mp3", lead=-1.0),
+    dict(at=starts[NAMES.index("Lee Thompson Young")], track="Mark Jubel - Efteraar.mp3", lead=-1.0),
+    dict(at=starts[NAMES.index("Rebecca Schaeffer")], track="07_Wounded_Dark_Strings.mp3", lead=-1.0),
+    dict(at=starts[NAMES.index("Sammi Kane Kraft")], track="03_Sovereign_Dark_Piano_Bed.mp3", lead=-1.0),
+    dict(at=OUTRO, track="05_Despair_and_Triumph_Dark_Piano.mp3", lead=-1.0),
 ])
