@@ -464,6 +464,7 @@ FIX = {
     119.38: lambda: P("anton_yelchin__g78316817", move="in"),
     191.47: lambda: P("brad_renfro__g1d84c2a1", move="in"),
     172.57: lambda: tv("billy_laughlin__cmp_019_161s.mp4"),          # the photo had a printed caption under it
+    705.07: lambda: depth("anissa_jones__g4c772798", subject=(0.5, 0.42), grade="reel", move="in"),   # autograph on the first
     360.9: lambda: P("sawyer_sweeten__g0739ddf3", move="left"),
     446.55: lambda: bclip("broll_rainy_street_lights_night__pe3638386.mp4"),
     524.68: lambda: P("michelle_trachtenberg__g12d06adb", move="in"),
