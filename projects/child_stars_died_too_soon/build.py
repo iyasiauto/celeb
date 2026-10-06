@@ -462,7 +462,8 @@ at(line_at("because every one of these"), memoriam("Judith Barsi", "1978 — 198
 FIX = {
     43.06: lambda: bclip("broll_vhs_tape__pe10599677.mp4"),
     119.38: lambda: P("anton_yelchin__g78316817", move="in"),
-    191.47: lambda: framed("brad_renfro__cmp_052_427s.mp4", "THE CURE · 1995", "▸ 35mm"),
+    191.47: lambda: P("brad_renfro__g1d84c2a1", move="in"),
+    172.57: lambda: tv("billy_laughlin__cmp_019_161s.mp4"),          # the photo had a printed caption under it
     360.9: lambda: P("sawyer_sweeten__g0739ddf3", move="left"),
     446.55: lambda: bclip("broll_rainy_street_lights_night__pe3638386.mp4"),
     524.68: lambda: P("michelle_trachtenberg__g12d06adb", move="in"),
