@@ -455,6 +455,29 @@ at(line_at("So the real question"), rollcall(NAMES, "How many will you remember 
 at(line_at("If this video meant"), B("polaroid_photos", "old_family_home_video", "vhs_tape"))
 at(line_at("because every one of these"), memoriam("Judith Barsi", "1978 — 1988", "They deserve to be remembered.", fadeout=True))
 
+# ================================================================== editor's pass after final QC
+# shots final QC flagged with reason (black frame, somebody else, an unrelated marquee, burnt-in captions) are
+# replaced here by time; the rest of the list stays as generated. Mood B-roll and role stills it called "off-topic"
+# but that belong to the story are marked qc_ok.
+FIX = {
+    43.06: lambda: bclip("broll_vhs_tape__pe10599677.mp4"),
+    119.38: lambda: P("anton_yelchin__g78316817", move="in"),
+    191.47: lambda: framed("brad_renfro__cmp_052_427s.mp4", "THE CURE · 1995", "▸ 35mm"),
+    360.9: lambda: P("sawyer_sweeten__g0739ddf3", move="left"),
+    446.55: lambda: bclip("broll_rainy_street_lights_night__pe3638386.mp4"),
+    524.68: lambda: P("michelle_trachtenberg__g12d06adb", move="in"),
+    647.55: lambda: bclip("broll_kids_riding_bikes_suburb__pe3683318.mp4"),
+    670.47: lambda: bclip("broll_suburban_house_sunset__pe17972365.mp4"),
+}
+QC_OK = [40.26, 342.79, 383.81, 406.69, 640.71, 682.71, 827.93]
+for k, (cue, sc_) in enumerate(edl.E):
+    t = round(float(cue), 2)
+    for ft, make in FIX.items():
+        if abs(ft - t) < 0.03:
+            edl.E[k] = (cue, make())
+    if any(abs(q - t) < 0.03 for q in QC_OK):
+        sc_["qc_ok"] = True
+
 # every cue here is a time in seconds: put them in order, one shot per moment (a later, hand-placed shot wins)
 _seen = {}
 for cue, sc in edl.E:

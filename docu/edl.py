@@ -593,7 +593,7 @@ def main(music=()):
             sys.path.insert(0, os.path.join(_HERE, "studio"))
             import final_qc
             words = json.load(open(WORDS, encoding="utf-8"))
-            bad = final_qc.run(scenes, words, P.get("topic", ""), ASSETS, WORK)
+            bad = final_qc.run(scenes, words, P.get("topic", ""), ASSETS, WORK, mode=PB.get("qc_mode") or "faceless")
             if bad:
                 print(f"*** final QC flagged {len(bad)} shots - see {WORK}/final_qc.md and final_qc_flags.jpg; "
                       f"replace them in build.py, then: python build.py render {' '.join(sorted(bad)[:8])} && python build.py final")

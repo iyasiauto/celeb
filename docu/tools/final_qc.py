@@ -81,16 +81,22 @@ def frame_of(scene, assets_dir, tmp):
     return out if os.path.exists(out) else None
 
 
-def judge(r, scene=None):
+def judge(r, scene=None, mode="faceless"):
+    """mode "people" (celebrity / nostalgia templates): the named person's portraits are the point - posed
+    portraits, eye contact and close-ups pass; a talking head counts only on moving footage"""
     why = []
     face = float(r.get("largest_face_pct") or 0)
-    if r.get("speaking_to_camera"):
+    people = mode == "people"
+    moving = (scene or {}).get("type") == "clip"
+    if r.get("speaking_to_camera") and (moving or not people):
         why.append("talking head")
     if r.get("influencer_or_vlog"):
         why.append("influencer / vlog")
-    if r.get("posed_portrait"):
+    if r.get("posed_portrait") and not people:
         why.append("posed portrait")
-    if r.get("eye_contact") and face >= 1:
+    if people:
+        pass
+    elif r.get("eye_contact") and face >= 1:
         why.append("looks into the camera")
     elif face >= 25:
         why.append(f"a face is the subject ({face:.0f}%)")
@@ -105,7 +111,7 @@ def judge(r, scene=None):
     return why
 
 
-def run(scenes, words, topic, assets_dir, out_dir, workers=8, provider=None, model=None, log=print):
+def run(scenes, words, topic, assets_dir, out_dir, workers=8, provider=None, model=None, log=print, mode="faceless"):
     import ai
     prov = provider or ai.resolve("vision")
     if not prov:
@@ -133,7 +139,7 @@ def run(scenes, words, topic, assets_dir, out_dir, workers=8, provider=None, mod
                     dst = os.path.join(keep, s["id"] + ".jpg")
                     os.replace(pic, dst)
                     weak = int(r.get("match") if r.get("match") is not None else 3) <= 1 or int(r.get("topic_fit") or 3) == 2
-                    return s["id"], dict(flags=judge(r, s), weak=weak, line=line, match=r.get("match"), desc=r.get("desc", ""), frame=dst)
+                    return s["id"], dict(flags=judge(r, s, mode), weak=weak, line=line, match=r.get("match"), desc=r.get("desc", ""), frame=dst)
                 except Exception as e:          # noqa: BLE001
                     err = str(e)
             return s["id"], dict(flags=[f"QC call failed: {err[:80]}"], line=line)
