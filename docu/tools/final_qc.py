@@ -106,7 +106,9 @@ def judge(r, scene=None, mode="faceless"):
         why.append("someone else's captions burnt in")
     fit = r.get("topic_fit")
     fit = int(fit) if isinstance(fit, (int, float)) else 3
-    if fit <= 1 and not (scene or {}).get("qc_ok"):
+    src = os.path.basename(str((scene or {}).get("img") or (scene or {}).get("src") or ""))
+    own = people and "__" in src and not src.startswith("broll_")      # the named person's own picture / role clip
+    if fit <= 1 and not own and not (scene or {}).get("qc_ok"):
         why.append("off-topic for this video")        # an editor who chose a loose shot on purpose marks it qc_ok=True
     return why
 

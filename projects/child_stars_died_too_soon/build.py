@@ -468,15 +468,16 @@ FIX = {
     524.68: lambda: P("michelle_trachtenberg__g12d06adb", move="in"),
     647.55: lambda: bclip("broll_kids_riding_bikes_suburb__pe3683318.mp4"),
     670.47: lambda: bclip("broll_suburban_house_sunset__pe17972365.mp4"),
+    286.09: lambda: P("corey_haim__g290551b1", move="in"),            # an event backdrop logo behind him
 }
-QC_OK = [40.26, 342.79, 383.81, 406.69, 640.71, 682.71, 827.93]
+QC_OK = [9.5, 191.47, 670.47, 40.26, 342.79, 383.81, 406.69, 640.71, 682.71, 827.93]
 for k, (cue, sc_) in enumerate(edl.E):
     t = round(float(cue), 2)
     for ft, make in FIX.items():
         if abs(ft - t) < 0.03:
             edl.E[k] = (cue, make())
     if any(abs(q - t) < 0.03 for q in QC_OK):
-        sc_["qc_ok"] = True
+        edl.E[k][1]["qc_ok"] = True
 
 # every cue here is a time in seconds: put them in order, one shot per moment (a later, hand-placed shot wins)
 _seen = {}
