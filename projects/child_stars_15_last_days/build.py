@@ -564,10 +564,13 @@ for a, b, text in ot:
 FIX = {0.0: lambda: _fr("Aaron Carter"),          # a boy on screen, from his own clips
        43.22: lambda: B("tv_studio_cameras", "vintage_tv_living_room", "old_crt_television_static"),
        696.2: lambda: P(take("Tyler Sanders"), move="left")}
+QC_OK = [767.7]          # "accidents on water": the Costa Rica sea from Malcolm-Jamal Warner's story - it belongs here
 for k, (cue, sc_) in enumerate(edl.E):
     for ft, make in FIX.items():
         if abs(ft - float(cue)) < 0.03:
             edl.E[k] = (cue, make())
+    if any(abs(q - float(cue)) < 0.03 for q in QC_OK):
+        edl.E[k][1]["qc_ok"] = True
 
 # every cue here is a time in seconds: put them in order, one shot per moment (a later, hand-placed shot wins)
 _seen = {}
