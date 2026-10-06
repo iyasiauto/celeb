@@ -47,8 +47,8 @@ TEMPLATE_PALETTE = {
         cutouts=True, photofx=True, cinema_frame=True, tv_gate=True, music_beds=True, map_lib=True,
     ),
     "finalreel": dict(
-        textures=["grain_film.png"], texture_opacity=(0.4, 0.55),
-        chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"], chapter_opacity=0.35,
+        textures=["grain_film.png"], texture_opacity=(0.22, 0.3),
+        chapter_overlays=["overlay_dust.mp4"], chapter_opacity=0.15,      # calm: no light-leak flashes over faces
         card_bgs=None, props=None,
         cutouts=False, photofx=True, cinema_frame=False, tv_gate=True, music_beds=True, map_lib=True,
     ),

@@ -34,8 +34,8 @@ overlay with the same `box` (and `at: 0`). `flip=True` mirrors a shot. Short bor
 - Body slow: castcard on the name → their roles (framed clips, photos with slow pushes) → the turn (photos, B-roll)
   → `ageclock` on the age → `memoriam` for the endings that land hardest; a `map` where the place matters.
 - ~25–40 % moving footage (framed borrowed clips + nostalgic B-roll: VHS, CRT TVs, projectors, Hollywood).
-- Grade `reel` (faded archive print), film-grain texture, light leak on every castcard, calm sound (paper, pop on
-  the age chip, a counter roll on the ageclock).
+- Grade `reel` (faded archive print), faint film grain, a faint dust pass on castcards (no light leaks), calm sound
+  (paper, pop on the age chip, a counter roll on the ageclock).
 
 ## Footage for this niche
 
@@ -45,3 +45,16 @@ overlay with the same `box` (and `at: 0`). `flip=True` mirrors a shot. Short bor
   pool — the person's own portraits are allowed; thumbnails / memes, somebody else, interviews to camera, logos,
   chyrons and watermarks are rejected.
 - Competitor clips: cut from inside their frame, silent, 2–4 s, named `<person_slug>__cmp_NNN.mp4`; never full screen.
+
+## v2 (second video): calmer, and text on the spoken word
+
+- Motion is calm: projector flicker is a slow breath (no strobe), castcard tilt -0.8°, 24 px rise, 1.04 push;
+  textures at ~0.24, the chapter overlay is dust at 0.15 (`chapter_opacity` in docu/asset_mix.py). No light leaks.
+- **Nothing is written before it is said.** Build from word timing (`data/words.json`, `docu/tools/transcribe.py`
+  when the client has none): a castcard starts on "Number N" with only the rank (`rankAt`), the name wipes in at the
+  spoken name (`at`), role / years / age chip after it (`roleAt`, `yearsAt`, `ageAt`); an ageclock counts up to the
+  age as the number is spoken; a quote lands on its word. See `projects/child_stars_15_last_days/build.py`
+  (`word_t()`, `_chunks()` for a ~2 s cold open on word boundaries).
+- Clips for the shows / films themselves (trailers, promos, episodes on archive.org): `docu/tools/cut_shots.py`
+  cuts 2–4 s silent shots on the source's own scene cuts. Name them `<person>__cmp_...` when the person is in them,
+  `film_<title>__...` / `show_<title>__...` when they are context (the build's `CTX` map alternates them).

@@ -36,7 +36,7 @@ function frGround(root, img, dim) {
 /* projector flicker: a faint warm light that breathes */
 function frFlicker(root, amt) {
   const f = el("div", "full", root, { background: "radial-gradient(ellipse at 50% 40%, rgba(255,226,170,.10) 0%, rgba(0,0,0,0) 60%)", mixBlendMode: "screen" });
-  return t => setO(f, (amt || 1) * (0.75 + 0.25 * Math.sin(t * 17.3) * Math.sin(t * 5.1 + 1.3)));
+  return t => setO(f, (amt || 1) * (0.88 + 0.08 * Math.sin(t * 1.7) * Math.sin(t * 0.9 + 1.3)));      /* a slow breath, not a strobe */
 }
 /* an ivory film frame with sprocket holes; returns {box, inner} - put a picture in inner */
 function frFrame(parent, x, y, w, h, opts) {
@@ -78,7 +78,7 @@ function wipeIn(node, p) { css(node, "clipPath", `inset(-20% ${((1 - p) * 100).t
 /* ------------------------------------------------------------------ castcard */
 SCENES.castcard = async (s, root) => {
   frGround(root, s.img, 0.76);
-  const fl = frFlicker(root, 1);
+  const fl = frFlicker(root, 0.6);
   const fw = s.fw || 600, fh = s.fh || 760;
   const F = frFrame(root, 190, (H - fh) / 2, fw, fh, { label: s.frameLabel || "" , foot: 56 });
   const draw = frCover(F.inner, s.img, s.fx, s.fy, fw - 2 * 30, fh - 26 - 56);
@@ -98,10 +98,11 @@ SCENES.castcard = async (s, root) => {
   return t => {
     fl(t);
     const a = eOut5(seg(t, 0, 0.9));
-    setO(F.box, a); F.box.style.transform = `translateY(${((1 - a) * 60).toFixed(1)}px) rotate(${(s.tilt != null ? s.tilt : -2) * (0.6 + 0.4 * a)}deg)`;
-    draw(lerp(1.0, s.zoom || 1.10, drift(cl(t / D, 0, 1))));
-    if (rank) setO(rank, eOut(seg(t, at, 0.6)));
-    r0(eInOut(seg(t, at + 0.1, 0.9)));
+    setO(F.box, a); F.box.style.transform = `translateY(${((1 - a) * 24).toFixed(1)}px) rotate(${(s.tilt != null ? s.tilt : -0.8)}deg)`;
+    draw(lerp(1.0, s.zoom || 1.04, drift(cl(t / D, 0, 1))));
+    const ra = s.rankAt != null ? s.rankAt : at;          /* the rank can show first ("Number one, ..."), the name on the name */
+    if (rank) setO(rank, eOut(seg(t, ra, 0.6)));
+    r0(eInOut(seg(t, ra + 0.1, 0.9)));
     const q = eOut(seg(t, at + 0.25, 0.9)); wipeIn(name, q); setT(name, (1 - q) * -16, 0);
     if (role) { const p = eOut(seg(t, s.roleAt != null ? s.roleAt : at + 0.9, 0.8)); setO(role, p); setT(role, 0, (1 - p) * 14); }
     if (yrs) { const p = eOut(seg(t, s.yearsAt != null ? s.yearsAt : at + 1.4, 0.8)); setO(yrs, p); }
@@ -112,7 +113,7 @@ SCENES.castcard = async (s, root) => {
 /* ------------------------------------------------------------------ ageclock */
 SCENES.ageclock = async (s, root) => {
   frGround(root, s.img, 0.84);
-  const fl = frFlicker(root, 1.2);
+  const fl = frFlicker(root, 0.6);
   const at = s.at != null ? s.at : 0.3;
   const kick = s.kicker ? el("div", "abs", root, { left: 0, width: W + "px", top: "250px", textAlign: "center", font: "32px 'LabelB'",
     letterSpacing: ".46em", color: FR.gold }, esc(s.kicker)) : null;
@@ -158,9 +159,9 @@ SCENES.memoriam = async (s, root) => {
     textAlign: "center", font: "36px 'ReelI'", color: "rgba(237,230,214,.82)", lineHeight: "1.3" }, esc(s.line)) : null;
   const D = s.duration, at = s.at != null ? s.at : 0.2;
   return t => {
-    setO(glow, 0.8 + 0.2 * Math.sin(t * 9.1) * Math.sin(t * 3.7 + 0.7));
+    setO(glow, 0.9 + 0.06 * Math.sin(t * 1.3) * Math.sin(t * 0.7 + 0.7));
     const a = eOut(seg(t, 0, 1.4)); setO(arch, a);
-    draw(lerp(1.0, s.zoom || 1.07, drift(cl(t / D, 0, 1))));
+    draw(lerp(1.0, s.zoom || 1.04, drift(cl(t / D, 0, 1))));
     setO(name, eOut(seg(t, at + 0.6, 1.0)));
     setO(yrs, eOut(seg(t, at + 1.1, 1.0)));
     if (line) setO(line, eOut(seg(t, s.lineAt != null ? s.lineAt : at + 1.7, 1.0)));
@@ -200,7 +201,7 @@ SCENES.rollcall = async (s, root) => {
   return t => {
     tiles.forEach((T, i) => {
       const a = eOut(seg(t, when[i], 0.45)); setO(T.tile, a);
-      T.p.style.transform = `scale(${(1.12 - 0.12 * a + 0.04 * cl(t / D, 0, 1)).toFixed(4)})`;
+      T.p.style.transform = `scale(${(1.05 - 0.05 * a + 0.02 * cl(t / D, 0, 1)).toFixed(4)})`;
       if (hi.has(i)) { const c = eOut(seg(t, s.colorAt || at + fill + 0.3, 0.8)); T.p.style.filter = `grayscale(${(1 - c).toFixed(3)}) contrast(1.05) brightness(${(0.82 + 0.18 * c).toFixed(3)})`;
         T.tile.style.outline = `${(3 * c).toFixed(1)}px solid ${FR.crimson}`; }
     });
@@ -213,7 +214,7 @@ SCENES.rollcall = async (s, root) => {
 /* ------------------------------------------------------------------ lifeline */
 SCENES.lifeline = async (s, root) => {
   frGround(root, s.img, 0.86);
-  const fl = frFlicker(root, 0.8);
+  const fl = frFlicker(root, 0.5);
   const x0 = 260, x1 = W - 200, y = 600;
   const b = Number(s.born), d = Number(s.died);
   const X = yr => x0 + (x1 - x0) * cl((yr - b) / Math.max(1, d - b), 0, 1);

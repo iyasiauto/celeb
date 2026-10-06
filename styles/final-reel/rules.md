@@ -7,5 +7,7 @@
 - Every age at death is an ageclock or the castcard's age chip; every named place of death that matters gets a map.
 - No interviews / talking heads, no thumbnails or memes, no logos or other channels' captions (QC people mode enforces it).
 - Facts only as the script states them; never show a living person as dead.
+- Text never before the voice: rank on "Number N", the name when it is spoken, the age as it is said (word timing).
+- Calm motion: slow flicker, small pushes (1.04), no light leaks; the story carries the video, not the effects.
 
 Niche guide (footage, QC people mode, shot list from a PEOPLE table): kit_docs/NICHE_NOSTALGIA.md

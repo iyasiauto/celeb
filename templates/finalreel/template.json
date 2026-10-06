@@ -1,16 +1,17 @@
 {
  "id": "finalreel",
  "name": "Final Reel",
- "version": 1,
+ "version": 2,
  "theme": "finalreel",
  "grade": "reel",
- "grain": 3.0,
+ "grain": 2.0,
  "xfade": 0.6,
  "sfx_style": "calm",
  "best_for": "childhood nostalgia, familiar faces, child stars and celebrities, tragic endings, 'where are they now', memorial lists",
  "look": "A film-archive memorial. Charcoal and ivory with a muted gold for what they were known for and one crimson for the ending. Names in Playfair, labels in condensed caps, dates on a typewriter. Portraits in ivory film frames with sprocket holes over the same photo blurred and dark; borrowed clips play inside the frame, never full screen. Fast cold open (1.5-2 s cuts, a wall of faces), then a slow documentary body: one person = castcard -> their roles (framed clips, photos) -> the turn -> ageclock -> memoriam.",
  "examples": [
-  "projects/child_stars_died_too_soon/build.py"
+  "projects/child_stars_15_last_days/build.py",
+"projects/child_stars_died_too_soon/build.py"
  ],
  "starter": "templates/finalreel/README.md",
  "preview_dir": "templates/finalreel/previews",
@@ -86,7 +87,7 @@
   "graphics_per_min": 2.2,
   "max_gap_s": 40,
   "max_plain_run": 5,
-  "chapter_every_s": 45,
+  "chapter_every_s": 55,
   "min_distinct_devices": 8,
   "sfx_per_min": 1.0
  },
@@ -94,7 +95,7 @@
   {
    "type": "castcard",
    "family": "heading",
-   "min_per_10min": 18,
+   "min_per_10min": 9,
    "use": "Who this is - one per person: framed portrait, rank, name wiping in, the role they are remembered for, years, age chip."
   },
   {
@@ -169,7 +170,9 @@
   "Borrowed show / film clips: short (2-4 s), silent, inside the reelframe (or flipped / cropped), always under narration, never full screen.",
   "Every age at death is an ageclock or the castcard's age chip; every named place of death that matters gets a map.",
   "No interviews / talking heads, no thumbnails or memes, no logos or other channels' captions (QC people mode enforces it).",
-  "Facts only as the script states them; never show a living person as dead."
+  "Facts only as the script states them; never show a living person as dead.",
+  "Motion stays calm: slow pushes (<= 4-5 %), no light-leak flashes, faint grain - nothing should pull the eye from the face.",
+  "A castcard starts on 'Number N' and its name wipes in on the spoken name (word timing), never before it."
  ],
  "qc_mode": "people",
  "guide": "kit_docs/NICHE_NOSTALGIA.md"

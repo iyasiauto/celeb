@@ -37,6 +37,15 @@ reject. Phir Claude ko `workspaces\child-stars` folder mein kholein.
    ```
    phir files ke naam ke aage `broll_` laga kar `pool/clips/` mein daal dein.
 
+4. **Asal shows / films ki clips** (trailer, promo, episodes - archive.org par aksar milte hain; YouTube cloud se
+   block hota hai): file ka naam `<person_slug>__<kuch bhi>.mp4` (shakhs khud ho) ya `show_<naam>__...` /
+   `film_<naam>__...` (sirf show / film ka scene), phir
+   ```
+   python docu/tools/cut_shots.py <file ya folder> workspaces/child-stars/pool/clips --per 8
+   ```
+   Ye source ke apne scene cuts par 2–4 s ki bina awaaz clips kaatta hai (shuru / aakhir ke logo / title cards
+   chhod kar). Subtitles wali films (burnt-in) QC nikal deta hai.
+
 Phir **QC**: `python niche.py qc child-stars` (sirf nayi files check hoti hain).
 
 ## 3. Video banana (Claude editor)
@@ -45,7 +54,9 @@ Phir **QC**: `python niche.py qc child-stars` (sirf nayi files check hoti hain).
 make.bat --yes --title "<title>" --script <script.txt> --audio <vo.mp3> --srt <vo.srt> --until shotlist
 ```
 
-Shot list ke liye **`projects/child_stars_died_too_soon/build.py` copy karein** — ye data se chalta hai:
+Shot list ke liye **`projects/child_stars_15_last_days/build.py` copy karein** (naya, word timing wala; pehla
+`projects/child_stars_died_too_soon/build.py`) — ye data se chalta hai. **Text kabhi bolne se pehle nahi aata**:
+castcard "Number N" par sirf rank dikhata hai, naam tab aata hai jab bola jaye; ageclock umar bolte waqt ginta hai.
 - `PEOPLE` table: `(naam, us ki entry ke pehle alfaaz, role / mash'hoor kis se, "1970 — 1993", umar, umar wali line, extras)`
   extras: `memo` (memoriam card ki line) + `memo_at`, `life` (lifeline events), `map` (jagah), `quote`, `note`, `tv=True`
   (purani black & white shows TV frame mein).
