@@ -363,6 +363,16 @@ def render_overlay_png(scene_overlays, out_png, cfg):
 
 # ------------------------------------------------------------------- driver
 
+def _blank(path, dur):
+    """True when the middle frames of a rendered scene are (nearly) all black"""
+    for f in (0.35, 0.75):
+        b = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{dur * f:.2f}", "-i", path, "-frames:v", "1", "-vf",
+                            "scale=64:36,format=gray", "-f", "rawvideo", "-"], capture_output=True).stdout
+        if b and sum(b) / len(b) > 2.0:
+            return False
+    return True
+
+
 def _work(args):
     scene, out_dir, cfg = args
     out = os.path.join(out_dir, f"{scene['id']}.mp4")
@@ -383,6 +393,12 @@ def _work(args):
             render_clip_scene(dict(scene, texture_png=None), out, cfg)
         else:
             render_browser_scene(scene, out, cfg)
+            if _blank(out, scene["duration"]):
+                # a busy machine can hand back empty captures: render the scene once more before giving up
+                log(f"   {scene['id']}: blank render, trying again")
+                render_browser_scene(scene, out, cfg)
+                if _blank(out, scene["duration"]):
+                    raise RuntimeError(f"{scene['id']} rendered blank twice")
         apply_fx(out, scene)
         return scene["id"], time.time() - t0, None
     except Exception as e:

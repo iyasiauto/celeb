@@ -445,7 +445,7 @@ def finish(scenes):
         heading = s["type"] in HEADING_TYPES | own or any(o.get("type") in HEADING_OVERLAYS or "ov:" + str(o.get("type")) in own
                                                           for o in s.get("overlays", []))
         if (heading or k == 0) and mix.get("chapter_dust") and not s.get("no_fx"):
-            s.setdefault("fx", []).append(dict(src=mix["chapter_dust"], mode="screen", opacity=0.7))
+            s.setdefault("fx", []).append(dict(src=mix["chapter_dust"], mode="screen", opacity=mix.get("chapter_opacity", 0.7)))
             n_fx += 1
         gate = mix.get("tv_gate") or mix.get("tv_gate_file")
         if (s.get("archive") or s.get("gate")) and gate and not s.get("no_fx"):

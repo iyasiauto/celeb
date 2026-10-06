@@ -48,7 +48,7 @@ TEMPLATE_PALETTE = {
     ),
     "finalreel": dict(
         textures=["grain_film.png"], texture_opacity=(0.4, 0.55),
-        chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"],
+        chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"], chapter_opacity=0.35,
         card_bgs=None, props=None,
         cutouts=False, photofx=True, cinema_frame=False, tv_gate=True, music_beds=True, map_lib=True,
     ),
@@ -149,6 +149,7 @@ def mix_for(slug, theme, assets_dir, overrides=None):
         pick = _pick(pal["chapter_overlays"], rng)
         # these live at assets/ root, not under a subfolder
         out["chapter_dust"] = abs_root(pick)
+        out["chapter_opacity"] = float(pal.get("chapter_opacity", 0.7))
 
     if pal.get("card_bgs") and active("card_bg"):
         pick = _pick(pal["card_bgs"], rng)
