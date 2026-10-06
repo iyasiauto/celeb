@@ -44,7 +44,7 @@ edl.setup(
     image_dirs=[f"{NS}/src/images"],
     template="finalreel",
     topic="child actors and child stars who died young: childhood nostalgia, classic TV shows and films, their lives and tragic endings",
-    music_floor_db=-21.0, music_duck_db=-10.0, sfx_gain=0.5,
+    music_floor_db=-16.0, music_duck_db=-8.0, sfx_gain=0.5,
 )
 
 GOLD, CRIMSON, IVORY = "#C9A45C", "#A3262A", "#EDE6D6"
@@ -557,6 +557,17 @@ for a, b, text in ot:
         if NORM(key) in NORM(text):
             at(a, make())
             break
+
+# ================================================================== editor's pass after final QC
+# s000: the first face is Aaron Carter as a boy (not the adult); s012: Hayden's music video under the Heroes line;
+# s122: a bicycle B-roll that "career" pulled in by its letters - a photograph of Tyler instead
+FIX = {0.0: lambda: _fr("Aaron Carter"),          # a boy on screen, from his own clips
+       43.22: lambda: B("tv_studio_cameras", "vintage_tv_living_room", "old_crt_television_static"),
+       696.2: lambda: P(take("Tyler Sanders"), move="left")}
+for k, (cue, sc_) in enumerate(edl.E):
+    for ft, make in FIX.items():
+        if abs(ft - float(cue)) < 0.03:
+            edl.E[k] = (cue, make())
 
 # every cue here is a time in seconds: put them in order, one shot per moment (a later, hand-placed shot wins)
 _seen = {}

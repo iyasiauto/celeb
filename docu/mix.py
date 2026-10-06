@@ -28,6 +28,26 @@ def load(path, sr=SR, ch=2):
     return np.frombuffer(raw, np.float32).reshape(-1, ch).copy()
 
 
+# the narrator, cleaned the same way every time: rumble cut below 70 Hz, a gentle compressor that makes the voice
+# fuller and steadier (so it sits above the music without turning the whole mix up), nothing that adds noise
+VOICE_CHAIN = "highpass=f=70,acompressor=threshold=-22dB:ratio=2.5:attack=8:release=160:knee=4:makeup=1.6"
+
+
+def load_voice(path, sr=SR, ch=2):
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-af", VOICE_CHAIN, "-f", "f32le", "-ac", str(ch),
+                          "-ar", str(sr), "-"], capture_output=True).stdout
+    x = np.frombuffer(raw, np.float32).reshape(-1, ch).copy()
+    return x if len(x) else load(path, sr, ch)
+
+
+def integrated_lufs(path):
+    import re
+    o = subprocess.run(["ffmpeg", "-hide_banner", "-i", path, "-af", "ebur128", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    m = re.findall(r"I:\s+(-?[\d.]+) LUFS", o)
+    return float(m[-1]) if m else -14.0
+
+
 def save_wav(path, x, sr=SR):
     p = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ac", str(x.shape[1]), "-ar", str(sr),
                           "-i", "-", "-c:a", "pcm_s24le", path], stdin=subprocess.PIPE)
@@ -560,7 +580,7 @@ def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None, music_floor_d
     dips under the narrator; sfx_gain: overall level of the sound design."""
     total = float(total)
     n = int(total * SR) + SR
-    vo = load(vo_path)
+    vo = load_voice(vo_path)
     vo = vo / (np.max(np.abs(vo)) or 1) * 0.89
     voice = np.zeros((n, 2), np.float32)
     voice[:len(vo)] = vo[:n]
@@ -596,9 +616,12 @@ def build_mix(scenes, vo_path, kit_dir, out_wav, total, plan=None, music_floor_d
     mix = voice + music + sfx * sfx_gain
     tmp = out_wav + ".raw.wav"
     save_wav(tmp, mix)
-    # loudness to YouTube's reference with a true-peak ceiling
+    # loudness to YouTube's reference (-14 LUFS): one fixed gain, then a peak limiter (no level riding, so the
+    # voice never breathes or pumps; the old one-pass loudnorm could)
+    gain = -14.0 - integrated_lufs(tmp)
     r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-af",
-                        "loudnorm=I=-14:TP=-1.2:LRA=11", "-ar", str(SR), "-c:a", "pcm_s24le", out_wav],
+                        f"volume={gain:.2f}dB,alimiter=limit=0.84:attack=5:release=80:level=0",
+                        "-ar", str(SR), "-c:a", "pcm_s24le", out_wav],
                        capture_output=True, text=True)
     if r.returncode != 0:
         raise RuntimeError(r.stderr[-800:])
