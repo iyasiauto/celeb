@@ -631,10 +631,13 @@ FIX = {72.98: lambda: P("kings_county_supreme_court__wm67269858", move="in", pla
        913.862: lambda: P("brooklyn_courthouse__wm80250918", move="in"),
        1055.46: lambda: P("old_documents_archive__pe51191", move="in"),
        1071.8: lambda: P("judge_gavel__pe6077447", move="left")}
+QC_OK = [810.52]     # a faceless handheld street shot under "live in." - final QC calls every walking shot a vlog
 for k, (cue, sc_) in enumerate(edl.E):
     for ft, make in FIX.items():
         if abs(ft - float(cue)) < 0.03:
             edl.E[k] = (cue, make())
+    if any(abs(q - float(cue)) < 0.03 for q in QC_OK):
+        edl.E[k][1]["qc_ok"] = True
 
 if os.environ.get("CUES"):
     for cue, sc in edl.E:
