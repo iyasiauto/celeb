@@ -611,6 +611,31 @@ for _ in range(6):
         _seen[round(float(cue), 2)] = (cue, sc)
     edl.E[:] = [_seen[k] for k in sorted(_seen)]
 
+# ================================================================== editor's pass
+# s021: the Commons search for the DA returned a census page - the court building instead, labelled on the word;
+# s089: a Crown Heights crime-scene photo under the gatekeeper line - a Williamsburg street instead
+FIX = {72.98: lambda: P("kings_county_supreme_court__wm67269858", move="in", place="Downtown Brooklyn",
+                        sub="KINGS COUNTY DISTRICT ATTORNEY · 2009", src="KOL TZEDEK PROGRAM · 2009", place_at=1.4),
+       460.12: lambda: P("williamsburg_brooklyn_hasidic__wm63991997", move="left"),
+       # final QC: a seascape phone, POV walking shots read as vlogs, a Romanian Satmar town, a phone at a shelf
+       15.56: lambda: P("empty_courtroom__pe14766052", move="in"),
+       41.52: lambda: P("williamsburg_brooklyn_hasidic__wm63992098", move="left"),
+       142.56: lambda: P("lee_avenue_williamsburg__wm85681661", move="in"),
+       409.882: lambda: P("hand_holding_phone_dialing__pe7346611", move="in"),
+       522.62: lambda: P("pashkevil__wm140614695", move="in"),
+       587.98: lambda: P("lee_avenue_williamsburg__wm83630839", move="right"),
+       789.841: lambda: P("mea_shearim_posters__wm159295706", move="in"),
+       806.121: lambda: P("williamsburg_bridge__pe13653997", move="in"),
+       828.62: lambda: P("brooklyn_courthouse__wm65602649", move="left"),
+       891.78: lambda: P("kings_county_supreme_court__wm80250911", move="in"),
+       913.862: lambda: P("brooklyn_courthouse__wm80250918", move="in"),
+       1055.46: lambda: P("old_documents_archive__pe51191", move="in"),
+       1071.8: lambda: P("judge_gavel__pe6077447", move="left")}
+for k, (cue, sc_) in enumerate(edl.E):
+    for ft, make in FIX.items():
+        if abs(ft - float(cue)) < 0.03:
+            edl.E[k] = (cue, make())
+
 if os.environ.get("CUES"):
     for cue, sc in edl.E:
         print(f"  {float(cue):7.2f}  {sc.get('type'):10s} {sc.get('title') or sc.get('kicker') or ''}")

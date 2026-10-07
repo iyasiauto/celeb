@@ -129,6 +129,15 @@ clips), QC `--mode people` (us shakhs ke portraits allowed; thumbnails / memes /
 
 ---
 
+## 6c. Investigative documentaries — The Record template
+
+`templates/record`: case file / record ka look (ink, bone paper, ek amber signal). Devices: `docket`, `transcript`,
+`lexicon`, `tally`, `counts`, `chain`, `redacted`, `wall`, `docketline`, `ripple`, `ballot`; overlays `casebox`
+(har stock clip evidence viewer ke andar), `source`, `place`. Har clip 5 s se chhoti; koi text bolne se pehle nahi.
+Guide: `templates/record/README.md` · example: `projects/hasidic_mesirah/build.py`.
+
+---
+
 ## 7. Ab tak kya ban chuka hai (channel ki history)
 
 | # | Video | Template | Project folder |
@@ -139,6 +148,8 @@ clips), QC `--mode people` (us shakhs ke portraits allowed; thumbnails / memes /
 | 7 | Why Thousands of Amish Are Leaving Their 300-Year Homeland (17 min) | heritage almanac, **pehla edition** | `projects/amish_leaving` |
 | 8 | Pennsylvania Has 95,000 Amish — So Why Does Wisconsin Have MORE Settlements? (20:35) | heritage almanac, **updated edition** | `projects/amish_two_states` |
 | 9 | 35 Child Actors Who Died Too Soon — How Many Do You Remember? (14:13) | **Final Reel** (naya: nostalgia / celebrity) | `projects/child_stars_died_too_soon` |
+| 10 | 15 MOST FAMOUS Child Stars Who Died in the Last Few Days (13:20) | Final Reel v2 (calm, text on the word) | `projects/child_stars_15_last_days` |
+| 11 | Why 20,000 Hasidic Jews Were Told To Stay Silent About Crime? (18:46) | **The Record** (naya: investigative) | `projects/hasidic_mesirah` |
 
 Har project folder mein uski poori shot list (`build.py`), uska data (`data/`) aur YouTube metadata
 (`youtube_metadata.txt`) mojood hai. **Nayi video likhte waqt sab se milta-julta project kholein aur

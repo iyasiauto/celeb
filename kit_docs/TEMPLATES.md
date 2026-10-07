@@ -1,6 +1,6 @@
 # The templates
 
-Kit ke saath 7 templates aate hain (neeche; 7th: **Final Reel** — `templates/finalreel/README.md`). Ye sab **registry** mein hain: `templates/<id>/template.json` har
+Kit ke saath 8 templates aate hain (neeche; 7th: **Final Reel** — `templates/finalreel/README.md`, 8th: **The Record** — `templates/record/README.md`). Ye sab **registry** mein hain: `templates/<id>/template.json` har
 template ki playbook hai (devices aur kitne chahiye, audit limits, rules, previews, examples) aur
 `styles/<id>/` un ke variations. Naya template / style = naya folder (`python docu/registry.py new-template` /
 `new-style`, guide: `templates/README.md`, `styles/README.md`). Agent har video se pehle
@@ -174,3 +174,18 @@ Bilkul naya look chahiye (naye scenes) to `docu/scenes_almanac.js` ek mukammal m
 - **Signature scenes:** `castcard`, `ageclock`, `memoriam`, `rollcall`, `lifeline`; overlays `reelframe`, `nameplate`.
 - **Settings:** `template="finalreel"` (grade `reel`, grain 3, xfade 0.6, calm sound), ~25–30 % clips, QC people mode.
 - **Example:** *35 Child Actors Who Died Too Soon*: `projects/child_stars_died_too_soon/` · niche guide: `NICHE_NOSTALGIA.md`.
+
+
+## 8 · The Record — `record`
+![sheet](templates/record/previews/sheet.jpg)
+
+- **Best for:** investigative documentaries — closed communities and institutions, cover-ups, silence and pressure,
+  court cases, rulings, how a system protects itself.
+- **Look:** the case assembled from the record — blue-black ink ground with a ledger grid, bone paper pages, steel
+  labels, one sodium-amber signal; Crimson Pro statements, condensed caps, Kode Mono for files, Hebrew in Frank Ruhl.
+- **Signature scenes:** `docket` (FILE 03 / 10), `transcript` (line-numbered ruling, marked words), `lexicon`
+  (Hebrew term), `tally`, `counts`, `chain` (gate, delay clock, block), `redacted`, `wall` (posters), `docketline`,
+  `ripple`, `ballot`; overlays `casebox` (evidence viewer for every stock clip), `source`, `place`.
+- **Settings:** `template="record"` (grade `record`, grain 1.6, xfade 0.4, full sound under the voice), 30–38 % clips,
+  every clip under 5 s, QC faceless mode.
+- **Example:** *Why 20,000 Hasidic Jews Were Told To Stay Silent About Crime?*: `projects/hasidic_mesirah/`.
