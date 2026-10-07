@@ -167,6 +167,8 @@ GRADES = {
     "doc": "eq=saturation=0.84:contrast=1.05:gamma=0.98,colorbalance=rs=0.02:bs=-0.02:rh=0.03:bh=-0.03",
     "bw": "hue=s=0,eq=contrast=1.12",
     # finalreel: a faded archive print - lifted blacks, warm mids, less colour
+    # the record (investigative): drained colour, cool shadows, true blacks
+    "record": "eq=saturation=0.6:contrast=1.08:gamma=0.97,colorbalance=rs=-0.03:gs=-0.01:bs=0.04:rh=0.02:bh=-0.01",
     "reel": "eq=saturation=0.78:contrast=1.04:gamma=1.0,colorbalance=rs=0.04:gs=0.01:bs=-0.04:rh=0.03:bh=-0.04,curves=all='0/0.04 0.5/0.5 1/0.96'",
     "warmsepia": "eq=saturation=0.74:contrast=1.02,colorbalance=rs=0.04:gs=0.01:bs=-0.06:rm=0.03:bm=-0.04",
     "cool": "eq=saturation=0.8:contrast=1.07:gamma=0.98,colorbalance=rs=-0.02:bs=0.03:rh=-0.01:bh=0.02",

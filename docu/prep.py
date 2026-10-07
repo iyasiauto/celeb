@@ -90,6 +90,15 @@ def grade(im, kind):
         a = a * (lum * np.array([1.02, 1.0, 0.97], np.float32) + (1 - lum) * np.array([0.96, 0.99, 1.05], np.float32))
         a = 0.03 + 0.94 * a
         return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
+    if kind == "record":
+        # the record (investigative): drained colour, cool shadows, clean neutral highlights, true blacks
+        im = ImageEnhance.Color(im).enhance(0.6)
+        im = ImageEnhance.Contrast(im).enhance(1.08)
+        a = np.asarray(im, dtype=np.float32) / 255.0
+        lum = a.mean(-1, keepdims=True)
+        a = a * (lum * np.array([1.01, 1.0, 0.98], np.float32) + (1 - lum) * np.array([0.95, 0.99, 1.06], np.float32))
+        a = 0.01 + 0.97 * a
+        return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
     if kind == "reel":
         # finalreel: a faded archive print - less colour, warm mids, lifted blacks, soft highlights
         im = ImageEnhance.Color(im).enhance(0.8)
