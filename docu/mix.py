@@ -355,6 +355,59 @@ def spot(scenes, style="full"):
         if ty == "rollcall":
             for k in range(4):
                 add(t0 + float(s.get("at", 0.1)) + k * float(s.get("fillFor", 2.4)) / 4, "pop", -16)
+        # the record (templates/record): paper and typewriter for the record, a low hit for stamps, a riser on files
+        A = lambda k, d=0.3: float(s.get(k, d) if not isinstance(s.get(k, d), str) else d)
+        if ty == "docket":
+            add(t0 - 1.2, "riser", -16)
+            add(t0 + A("at") + 0.2, "impact", -11)
+            add(t0 + A("at") + 1.1, "type", -15, d=1.2)
+        if ty == "transcript":
+            add(t0 + 0.1, "paper", -10)
+            la = s.get("lineAt") or []
+            for i, _ in enumerate(s.get("lines", [])[:8]):
+                w = la[i] if i < len(la) and la[i] is not None else A("at") + 0.5 + i * float(s.get("every", 0.9))
+                add(t0 + float(w), "type", -14, d=0.5)
+            if s.get("hiAt") is not None:
+                add(t0 + float(s["hiAt"]), "pen", -11)
+        if ty == "lexicon":
+            add(t0 + A("at"), "type", -14, d=0.7)
+            for w in (s.get("defAt") or [])[:4]:
+                add(t0 + float(w), "pen", -14)
+        if ty in ("tally", "counts"):
+            for r in (s.get("rows") or s.get("items") or [])[:7]:
+                add(t0 + float(r.get("at", 0.5)) + 0.15, "roll", -13, d=1.0)
+                if r.get("strikeAt") is not None:
+                    add(t0 + float(r["strikeAt"]), "zip", -10)
+            if s.get("stamp") and s.get("stampAt") is not None:
+                add(t0 + float(s["stampAt"]), "stamp", -8)
+        if ty == "chain":
+            for nd in s.get("nodes", [])[:6]:
+                add(t0 + float(nd.get("at", 0.6)), "pop", -12)
+            if s.get("delayAt") is not None:
+                add(t0 + float(s["delayAt"]), "clank", -12)
+            if s.get("blockAt") is not None:
+                add(t0 + float(s["blockAt"]), "stamp", -9)
+        if ty == "redacted":
+            add(t0 + 0.1, "paper", -10)
+            for i in range(int(s.get("rows", 8))):
+                add(t0 + A("at") + i * float(s.get("every", 0.35)) + 0.15, "zip", -15)
+            add(t0 + float(s.get("stampAt", A("at") + int(s.get("rows", 8)) * float(s.get("every", 0.35)) + 0.4)), "stamp", -8)
+        if ty == "wall":
+            for i in range(int(s.get("count", 7))):
+                add(t0 + A("at", 0.2) + i * float(s.get("every", 0.4)), "paper", -13)
+            if s.get("wordAt") is not None:
+                add(t0 + float(s["wordAt"]), "stamp", -8)
+        if ty == "docketline":
+            add(t0 + A("at") + 0.2, "pen", -13)
+            for e in s.get("events", [])[:8]:
+                add(t0 + float(e.get("at", 1)), "pop", -14)
+        if ty == "ripple":
+            for r in s.get("rings", [])[:7]:
+                add(t0 + float(r.get("at", 0.5)), "pop", -15)
+                if r.get("cutAt") is not None:
+                    add(t0 + float(r["cutAt"]), "zip", -15)
+        if ty == "ballot":
+            add(t0 + float(s.get("blocAt", 1.6)), "roll", -12, d=0.8)
         # almanac template (scenes_almanac.js): soft paper and pen only
         if ty == "almstat":
             add(t0 + float(s.get("at", 0.5)) + 0.2, "roll", -13, d=float(s.get("countFor", 1.4)))
