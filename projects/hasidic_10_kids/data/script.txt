@@ -1,0 +1,119 @@
+In a village about an hour north of New York City, the median age is 15.7 years. Not 35. Not 40. Fifteen point seven. According to World Population Review, using census data, the village of Kiryas Joel, New York has a median age of just 15.7 years — which means half the people living there are children.
+
+Now add the other numbers from that same place. Median household income: around $50,000, per the U.S. Census Bureau. Per capita income: $14,440. Poverty rate: nearly 38 percent. And these aren't households of two people. In Kiryas Joel, families of eight, nine, ten children are completely normal.
+
+So the question writes itself, and it's a question millions of people have typed into search bars: how do Hasidic families afford ten kids — without jobs?
+
+But here's what you'll learn in the next few minutes: that question is half wrong. And the half that's wrong is the key to the whole story.
+
+Because when you actually pull the data — census records, university studies, federal court filings — you find something stranger than the stereotype. Not a community surviving without work. But an entire economic system, deliberately built, that makes large families possible on very little money. A system with its own rules, its own banking, its own math.
+
+And once you see how it works, you'll understand something about poverty in America that no headline ever explains.
+
+Let's go inside the numbers.
+
+Start with the facts that make people ask this question in the first place, because they're real.
+
+Kiryas Joel — a village in Orange County, New York, home to the Satmar Hasidic community — had about 33,000 residents at the 2020 census, and has kept growing since. Census Reporter data shows its median household income is roughly half that of its own metropolitan area, which sits near $98,000. Per capita income is about $12,000 to $14,000 depending on the year measured.
+
+Then there's New Square, another Hasidic village, this one in Rockland County. It is, by multiple measures, one of the poorest incorporated places in New York State. Wikipedia's summary of census data puts its poverty rate at 64.4 percent. A study covered by The Center Square found a poverty rate of 63.3 percent with median household income of $23,578.
+
+In Williamsburg, Brooklyn, home to one of the largest Hasidic communities in the world, WNYC reporting found that 55 percent of Hasidic households live below the federal poverty line — nearly triple the rate of New York City as a whole. And a 2023 UJA-Federation study of New York Jews found that one in three Jewish households in the region receives some form of government assistance, with subsidized health insurance the most common.
+
+And in Lakewood, New Jersey, a 2017 Los Angeles Times report found that 65,000 people — more than half the township's population — were on Medicaid.
+
+So yes. The poverty numbers are real. The benefits usage is real. Now here's the part almost nobody checks: the other half of the ledger.
+
+Ask yourself this: who is actually bringing home money in these households?
+
+The stereotype says the men don't work — that they sit in study halls all day while the government pays the bills. And full-time Torah study is genuinely central to this culture; in Israel, a 2021 report from the Israel Democracy Institute found that only 51 percent of ultra-Orthodox men participated in the workforce, compared to roughly 78 percent of ultra-Orthodox women — a rate that actually exceeds the national female average.
+
+But that's Israel. What about the United States?
+
+Here's where it gets interesting. A 2025 analysis of American Community Survey data published by the education advocacy group YAFFED examined Hasidic communities in New York — and found that Hasidic males were marginally more likely to participate in the labor force and to be employed than their non-Hasidic counterparts in comparable age groups.
+
+Let that sink in. In America, Hasidic men work — at rates comparable to, or slightly above, similar non-Hasidic men.
+
+The difference isn't whether they work. It's what they earn. Because most Hasidic men aren't in corporate careers. They run small businesses — kosher groceries, contracting crews, jewelry stores, insurance agencies. They work long hours for modest incomes. Many combine that with part-time study. The image of the man who never earns a dollar describes a minority, not the norm.
+
+So if the men usually work, and the women often work, why does the poverty map look the way it does?
+
+Two reasons. One: large single-income or modest dual-income families stretched across many children. Two — and this is the part outsiders almost always miss — the system is designed so that it doesn't need much money. And that design starts with a form you fill out at the kitchen table.
+
+Here is the single most misunderstood mechanic in this entire story.
+
+Government benefit programs don't ask what your family is worth. They look at your household income relative to your household size. And in America, the eligibility line moves with every child you add.
+
+That means a family of twelve with a $70,000 income may qualify for programs that a family of three with the same income never could. As one analysis of New Jersey's Orthodox communities put it: these communities have high birth rates and large household sizes — and because eligibility for programs like Medicaid and SNAP is income-tested per household, big families qualify at income levels where smaller ones don't.
+
+Now, notice what that means economically. For a ten-child family, public programs aren't a lifestyle — they're the health insurance, the food cushion, the housing support that a smaller family might buy with a bigger salary. The community isn't gaming this. It's arithmetic. Add a child, and the household's benefit eligibility shifts.
+
+And that leads to the second half of the equation — because affordability isn't just about income coming in. It's about costs going out. And this is where the Hasidic economic system becomes genuinely remarkable.
+
+Ask any middle-class American parent their biggest expense, and the answer is usually the same: childcare and education.
+
+Here, that entire category is structurally different. Hasidic children attend yeshivas — private religious schools run by the community itself. And those schools price nothing like the private schools of the surrounding world. Surveys on Jewish education forums put typical Hasidic yeshiva tuition in the low thousands per child per year — often around $4,000 or less in many communities — a fraction of what elite private schools charge, and far below the cost of raising a child in many secular systems.
+
+How is that possible? Because teachers are community members working at community wages, buildings are donated or communally financed, and the system's goal isn't profit — it's continuity. Tuition breaks are standard for large families. A family with ten children is often charged a fraction per child of what two children would cost elsewhere.
+
+Then add the food economy. Community groceries buy wholesale. Families buy in bulk — ten-pound bags of flour, cases of oil — because a household of twelve consumes like a small restaurant. Shared institutions negotiate group rates on everything from camp to clothing.
+
+Every dollar here works harder than a dollar outside. But even that isn't the deepest layer.
+
+In nearly every Hasidic neighborhood there's a word you'll hear constantly: gemach. It comes from the Hebrew for "acts of kindness" — and it refers to a free-loan society, a volunteer-run fund where members can borrow money — or baby cribs, or wedding dresses, or medical equipment — at zero interest.
+
+This isn't informal. As the Times of Israel has documented, gemach networks are a vast, organized financial layer of ultra-Orthodox life — thousands of them, some handling serious money, all built on a religious principle: lending to someone in need is a commandment, and charging interest is forbidden.
+
+The economic effect is hard to overstate. In the outside economy, poverty compounds — because the poor pay more for everything. Payday loans, credit card interest, security deposits. In the gemach economy, the poor pay less. A bride's family needs $8,000 for a wedding? There's a fund for that. A father loses his job? Rent relief is a rabbi's phone call away.
+
+Layer on top: tzedakah — the obligation of charity — which channels money from wealthier community members, sometimes entire wealthy dynasties, directly into the neighborhoods. Plus organizations like the Hebrew Free Loan Society, which has provided interest-free loans to low-income New Yorkers for over a century.
+
+So the ledger now reads: modest earned income, plus size-adjusted public benefits, plus near-zero education costs, plus interest-free credit, plus internal charity. That's five financial layers most analysts never count.
+
+But there are two more. And the next one explains the housing.
+
+Poverty statistics measure income per household — but nobody sleeps in a statistic. They sleep in an apartment. And here, the Hasidic model does something the American housing market considers almost impossible: it lowers the cost per person by raising the number of people per room.
+
+In Williamsburg, Hasidic families routinely house eight, ten, twelve people in apartments or homes that other families would call crowded for four. In Kiryas Joel, urban planners have documented the demand for high-density multifamily housing — the community builds upward and close, precisely so that a young couple can live near parents, schools, and synagogue without owning a car.
+
+The 2018 comprehensive plan for Kiryas Joel literally enshrined it: the Satmar community needs high-density multifamily housing. Public reporting on the village describes how families moved out of crowded Williamsburg precisely to build that density on cheaper suburban land — single-family homes that quickly filled with wings, additions, and second families.
+
+Is this comfortable by suburban American standards? Often no. Federal data has repeatedly flagged overcrowding in these census tracts. But it collapses the most expensive line item in any family budget. A family that would need $4,000 a month for a five-bedroom house elsewhere might pay under half that, shared across a household structure with multiple earners.
+
+Now — we have to talk about the part of this story that's ugly. Because not everything inside this system is charity and math.
+
+In 2019, in federal court in Brooklyn, the Central United Talmudical Academy — the largest private Hasidic school system in New York State — admitted to what the U.S. Attorney's Office called a pervasive program and benefit fraud conspiracy. Its administrators had underreported income on applications for federal programs. The school agreed to pay $8 million. Its director, Elozer Porges, was sentenced to two years in prison.
+
+In Lakewood, New Jersey, in 2017, law enforcement charged seven Orthodox couples — fourteen defendants — in a welfare fraud sting, alleging they failed to report outside income while collecting benefits.
+
+And in New York, prosecutors have brought cases involving members of prominent Hasidic families — including one sweep in which thirteen people were accused of securing $20 million in mortgage loans alongside welfare fraud.
+
+Here's what matters about these cases — in both directions. They are real, they are documented, and pretending they don't exist would be dishonest. They fed a political backlash and deepened distrust in these communities.
+
+But zoom out, and the honest picture is this: these are prosecutions of specific people and institutions — and they represent a minority of benefit recipients in these communities. Statistically, benefit fraud is not unique to any one group; federal data on improper payments spans every demographic. The Hasidic cases got headlines because they were organized and because they confirmed a narrative. They do not explain how a system of a hundred thousand honest households functions.
+
+The system functions because of the layers we've already counted. And one layer remains — the one that reframes the entire question.
+
+Here is the deepest difference between the Hasidic economic model and the American one. It isn't a trick or a loophole. It's a different definition of wealth.
+
+In the surrounding culture, a child is a cost — estimates of raising a child in America run past $200,000, and every additional kid pushes the timeline for financial freedom further away.
+
+In Hasidic theology, a child is the opposite: the purpose. The commandment to be fruitful isn't a suggestion — it's the first commandment in the Torah. And the data reflects it. Research by demographer Lydia Stone, published in the journal Demographic Research in 2023, documented the extraordinarily high fertility of America's ultra-Orthodox — driven by near-universal marriage in the early twenties and cultural norms favoring large families. One widely cited analysis found that a Yiddish-speaking woman in the United States can expect to have 6.6 children — compared to 1.6 for the country overall.
+
+So when you ask "how do they afford ten kids," the community's honest answer is: that question assumes kids are something you afford. To them, children are the return, not the expense.
+
+And once you see that, every strange number in this story snaps into place.
+
+So — how do Hasidic Jews afford ten kids without jobs?
+
+They don't. The men do some work — often in small business, often for modest wages, with labor force participation that a 2025 census analysis put at or above comparable non-Hasidic men. What they don't have is high income and what they've built is a system that doesn't require it.
+
+Layer by layer: benefits scaled to household size. Yeshiva education at a fraction of market cost. Interest-free credit through thousands of gemachs. Charity built into the tax code of daily life. Dense, cheap, shared housing. And underneath all of it, a value system where ten children isn't a financial crisis — it's the crown of a life.
+
+Is the model perfect? No. Poverty rates near 40, 50, even 60 percent are real, and they're not a rounding error — they're the price of the design, softened but not erased by every mechanism we've covered. And where individuals abused the system, courts have said so out loud.
+
+But here's the final implication, the one that matters for everyone watching from outside: this community accidentally ran an experiment America said was impossible. It proved that family size isn't determined by income — it's determined by cost structure and values. Somewhere between the poverty map and the playgrounds full of children in Kiryas Joel is a question the rest of the country might want to sit with.
+
+If your economy makes children the most expensive thing you'll ever do — is the economy the sensible part?
+
+Because that village where the median age is fifteen? By most census projections, it's the future of its whole county.

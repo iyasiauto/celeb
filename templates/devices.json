@@ -1,0 +1,266 @@
+{
+ "clip": {
+  "family": "footage",
+  "use": "Moving footage from the pool - the default B-roll. Calm templates open on it."
+ },
+ "photo": {
+  "family": "footage",
+  "use": "A photograph with a slow camera move (move=in/out/left/right/up, focus, zoom); can carry chip / lower / place overlays."
+ },
+ "depth": {
+  "family": "photofx",
+  "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+ },
+ "spotlight": {
+  "family": "photofx",
+  "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+ },
+ "tv": {
+  "family": "archive",
+  "use": "The picture plays inside an old TV set and the camera pushes into the screen. 'Back then', archive, broadcast, 'on the news' moments. Mark archive shots archive=True to also get the vintage TV-gate overlay."
+ },
+ "card": {
+  "family": "archive",
+  "use": "A document, scan, letter or clipping held as a card with a slow zoom: records, evidence, official papers."
+ },
+ "split": {
+  "family": "compare",
+  "use": "Two pictures side by side with labels: before / after, then / now, A vs B."
+ },
+ "collage": {
+  "family": "paper",
+  "use": "Paper tabletop: photo prints (pc), cut-out props (cutout), typed strips, rubber stamps, sticky notes, circles and arrows - each lands on its word. The workhorse of the paper look: most explanations happen here."
+ },
+ "newspaper": {
+  "family": "paper",
+  "use": "A newspaper page with headline and photo; the camera moves into the article. 'It was reported that...'."
+ },
+ "headlines": {
+  "family": "paper",
+  "use": "Headlines slam in one after another - 'everyone reported it', a wave of coverage."
+ },
+ "baskets": {
+  "family": "paper",
+  "use": "Claims sorted into folders: known / claimed / unknown. The video's argument made visible."
+ },
+ "chapter": {
+  "family": "heading",
+  "use": "Full-screen chapter card: number, kicker, title. One per act."
+ },
+ "words": {
+  "family": "type",
+  "use": "Kinetic type: one to three big words slam in on the beat (items=[W_('...')]). The punch of a sentence, the question, the twist."
+ },
+ "title": {
+  "family": "heading",
+  "use": "The title card of the video."
+ },
+ "stat": {
+  "family": "number",
+  "use": "One big number that counts up, with a kicker and a note. Every important figure the narrator says."
+ },
+ "quote": {
+  "family": "quote",
+  "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+ },
+ "ledger": {
+  "family": "number",
+  "use": "An account that adds up line by line to a total: costs, counts, a running sum."
+ },
+ "timeline": {
+  "family": "time",
+  "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+ },
+ "measure": {
+  "family": "number",
+  "use": "A size comparison: the object against a known scale (people, buses, football fields)."
+ },
+ "checklist": {
+  "family": "list",
+  "use": "Points ticked off one by one: requirements, reasons, steps, 'three things...'."
+ },
+ "geo": {
+  "family": "map",
+  "use": "A terrain / satellite close-up of a region with labels and a profile: mountains, valleys, where exactly."
+ },
+ "map": {
+  "family": "map",
+  "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+ },
+ "doctitle": {
+  "family": "heading",
+  "use": "Calm chapter title over a darkened photo: 'Chapter N' + serif title + sub."
+ },
+ "textcard": {
+  "family": "type",
+  "use": "One to three calm lines over a darkened photo: the key sentence of a passage."
+ },
+ "bars": {
+  "family": "chart",
+  "use": "A calm bar chart."
+ },
+ "ledgerlist": {
+  "family": "list",
+  "use": "A household ledger that writes in line by line."
+ },
+ "sizechart": {
+  "family": "chart",
+  "use": "Bars that grow with family size against one fixed income line."
+ },
+ "filter": {
+  "family": "evidence",
+  "use": "Claims fall through a filter into OBSERVED / CLAIMED / CONFIRMED."
+ },
+ "gauge": {
+  "family": "evidence",
+  "use": "A certainty ring that falls from 100 % - how sure can we be."
+ },
+ "network": {
+  "family": "evidence",
+  "use": "Many reports traced back to a single source."
+ },
+ "valley": {
+  "family": "evidence",
+  "use": "A cross-section / terrain profile of where something lies."
+ },
+ "cells": {
+  "family": "evidence",
+  "use": "A grid of cells filling to show a proportion."
+ },
+ "scales": {
+  "family": "verdict",
+  "use": "Scales of justice tipping as each piece of evidence is weighed."
+ },
+ "scoreboard": {
+  "family": "verdict",
+  "use": "A split-flap scoreboard: for and against."
+ },
+ "verdict": {
+  "family": "verdict",
+  "use": "The final verdict stamp: REALITY / MYTH. Once, at the end."
+ },
+ "breaking": {
+  "family": "heading",
+  "use": "BREAKING NEWS slab with the headline - the open and every big reveal."
+ },
+ "borehole": {
+  "family": "evidence",
+  "use": "A drill / borehole cross-section."
+ },
+ "factcheck": {
+  "family": "evidence",
+  "use": "Fact-check meters: true / misleading / false."
+ },
+ "echo": {
+  "family": "evidence",
+  "use": "A wall of headlines that collapses to one source."
+ },
+ "columns": {
+  "family": "chart",
+  "use": "Columns comparison in news style."
+ },
+ "videowall": {
+  "family": "archive",
+  "use": "A wall of screens; one pushes in to full frame."
+ },
+ "newslist": {
+  "family": "list",
+  "use": "A numbered news list with status tags."
+ },
+ "segment": {
+  "family": "heading",
+  "use": "Segment bumper between parts of the show."
+ },
+ "gzcard": {
+  "family": "type",
+  "use": "A key point on a ledger slip (punched holes, double keyline) over a dimmed photo."
+ },
+ "gzstat": {
+  "family": "number",
+  "use": "One figure stamped between two hairlines with a pencil note."
+ },
+ "gzversus": {
+  "family": "compare",
+  "use": "Two things compared row by row (people / places / districts); each value counts up on its own word."
+ },
+ "gzgiants": {
+  "family": "compare",
+  "use": "One circle sized by its value beside a field of small dots - one big thing against many small ones."
+ },
+ "gzdivide": {
+  "family": "number",
+  "use": "One cell inside a boundary dividing into 2, 3, 10 - growth by division."
+ },
+ "gzindex": {
+  "family": "list",
+  "use": "Gazetteer index rows: name, dotted leader, figure; one row highlighted."
+ },
+ "gzdelta": {
+  "family": "number",
+  "use": "Then -> now with an arrow and the difference stamped (2015 -> 2025)."
+ },
+ "almgrowth": {
+  "family": "chart",
+  "use": "A line drawn across years on paper; each point appears on its words."
+ },
+ "almsplit": {
+  "family": "number",
+  "use": "A field fenced into equal strips: one whole divided among many."
+ },
+ "almdots": {
+  "family": "number",
+  "use": "Rows of dots: generations, multiplication, 1 dot = N people."
+ },
+ "almshare": {
+  "family": "chart",
+  "use": "One bar split into shares that grow in turn: 'more than half...'."
+ },
+ "almbars": {
+  "family": "chart",
+  "use": "Columns that rise to their values on paper."
+ },
+ "almdistrict": {
+  "family": "number",
+  "use": "A ring of houses around a centre, with roles as tags: a community and its structure."
+ },
+ "ov:chip": {
+  "family": "overlay",
+  "use": "A label chip that wipes in: a name, a date, a place, a figure."
+ },
+ "ov:lower": {
+  "family": "overlay",
+  "use": "Name + role lower third."
+ },
+ "ov:caption": {
+  "family": "overlay",
+  "use": "A quiet centred caption line."
+ },
+ "ov:place": {
+  "family": "overlay",
+  "use": "Location caption with a thin rule (documentary)."
+ },
+ "ov:doclower": {
+  "family": "overlay",
+  "use": "Calm name lower third (documentary)."
+ },
+ "ov:gzhead": {
+  "family": "heading",
+  "use": "Chapter heading stamped over MOVING footage: plate stamp, engraved title, pencil note. One per act."
+ },
+ "ov:gztag": {
+  "family": "overlay",
+  "use": "Place cartouche over footage: where we are."
+ },
+ "ov:ticker": {
+  "family": "overlay",
+  "use": "News ticker crawling at the bottom."
+ },
+ "ov:bug": {
+  "family": "overlay",
+  "use": "LIVE bug in the corner."
+ },
+ "ov:newslower": {
+  "family": "overlay",
+  "use": "News lower-third bars: who / where."
+ }
+}
