@@ -324,7 +324,7 @@ def sample(tid, scenes, work):
                     silent], capture_output=True)
     video = os.path.join(work, "reel_video.mp4")
     R.concat(scenes, work, video)
-    tracks = sorted(os.listdir(os.path.join(KIT, "music")))
+    tracks = sorted(f for f in os.listdir(os.path.join(KIT, "music")) if f.lower().endswith((".mp3", ".wav", ".m4a", ".ogg")))
     track = tracks[sum(map(ord, tid)) % len(tracks)] if tracks else None
     wav = os.path.join(work, "reel.wav")
     pb = registry.resolve(tid)
