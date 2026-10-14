@@ -57,7 +57,7 @@ const FRONTIER = (() => {
     S.duration = Number(spec.duration || S.duration || 6);
     S.seed = S.seed || 7;
     if (pg.palette) S.palette = Object.assign({}, pg.palette, spec.palette || {});
-    if (!S.ground && spec.img && pg.groundFromImg !== false) S.ground = spec.img;
+    if (!S.ground && spec.img && pg.groundFromImg !== false && !S.paper) S.ground = spec.img;   /* a chart sits on its paper */
     if (!S.frame && spec.img) S.frame = spec.img;          /* the kits' still of the footage (a board, a wave, a monitor) */
     delete S.img;
     const found = [];

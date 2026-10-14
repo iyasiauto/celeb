@@ -97,6 +97,8 @@ def demo_scenes(tid, work, cap=4.6):
     first = True
     for ty, info in F.types.items():
         ex = F.example(ty)
+        if not ex:
+            continue                      # no worked example for this type (docgfx card / step): not shown in the demo
         dur = min(cap, F.seconds(ty))
         if info.get("over_footage") and not first:
             sc = clip(over=F.over(ty, at=0.25, **ex), framed=False)
