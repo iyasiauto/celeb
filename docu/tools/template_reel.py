@@ -339,7 +339,7 @@ def sample(tid, scenes, work):
     mix.mux(video, wav, tmp)
     # small enough to ship in the kit: 1280 wide, ~2.5 Mbps
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", tmp, "-vf", "scale=1280:-2", "-c:v", "libx264", "-preset", "medium",
-                    "-b:v", "2600k", "-maxrate", "3500k", "-bufsize", "5000k", "-c:a", "aac", "-b:a", "128k",
+                    "-b:v", "1700k", "-maxrate", "2400k", "-bufsize", "3400k", "-c:a", "aac", "-b:a", "128k",
                     "-movflags", "+faststart", out], capture_output=True)
     return out
 
