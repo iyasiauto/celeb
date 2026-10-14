@@ -18,18 +18,6 @@ DEMO = [
     F.g('compare', **{'title': 'Persona and shadow', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [{'label': 'Persona', 'text': 'The face you show'}, {'label': 'Shadow', 'text': 'The part you hide'}], 'image': ''}),      # ~4.6 s
     F.g('steps', **{'title': 'Three steps', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [{'label': 'Notice', 'text': 'what repeats'}, {'label': 'Own', 'text': 'your part'}, {'label': 'Change', 'text': 'one habit'}], 'image': ''}),      # ~4.6 s
     F.g('warning', **{'title': 'Do not ignore it', 'subtitle': 'it grows in the dark', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('reveal', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('image', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('typing', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('collage', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('photonote', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('scatter', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('pillars', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('opener', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('strikelist', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('icongrid', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
     F.g('quotemark', **{'title': 'What you resist persists.', 'subtitle': 'Carl Jung', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
-    F.g('deckfan', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
     F.g('timeline', **{'title': 'How it builds', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [{'label': 'Childhood', 'text': 'a rule is learned'}, {'label': 'Youth', 'text': 'it is hidden'}, {'label': 'Adult', 'text': 'it returns'}], 'image': ''}),      # ~4.6 s
-    F.g('splitreveal', **{'title': '', 'subtitle': '', 'value': '', 'count': None, 'highlight': None, 'items': [], 'image': ''}),      # ~4.6 s
 ]
