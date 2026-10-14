@@ -10,5 +10,7 @@
   "graphics_per_min": 0.6,
   "max_gap_s": 75
  },
- "rules": "rules.md"
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4"
 }

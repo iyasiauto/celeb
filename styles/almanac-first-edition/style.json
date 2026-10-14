@@ -28,5 +28,7 @@
   "sfx_per_min": 0.6
  },
  "rules": "rules.md",
- "example": "../../projects/amish_leaving/build.py"
+ "example": "../../projects/amish_leaving/build.py",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4"
 }

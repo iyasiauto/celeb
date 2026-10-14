@@ -11,5 +11,7 @@
   "cutout": 10
  },
  "audit": {},
- "rules": "rules.md"
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4"
 }
