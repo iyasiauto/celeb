@@ -372,10 +372,20 @@ def main():
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--sheet-only", action="store_true")
     ap.add_argument("--keep", action="store_true", help="reuse segments already rendered")
+    ap.add_argument("--force", action="store_true", help="render even when a recent sample exists")
     a = ap.parse_args()
     ids = [x for x in a.template.split(",") if x] if a.template != "all" else \
         [t for t in registry.templates() if not t.startswith("_")]
+    import time
     for tid in ids:
+        smp = os.path.join(ROOT, "styles", tid, "sample.mp4")
+        busy = os.path.join(ROOT, "media", "work", f"_reel_{tid}", "scenes.json")
+        if not a.force and not a.sheet_only and os.path.exists(smp) and time.time() - os.path.getmtime(smp) < 3 * 3600:
+            print(f"{tid}: sample made in the last 3 hours - skipped (--force to redo)")
+            continue
+        if not a.force and os.path.exists(busy) and time.time() - os.path.getmtime(busy) < 600:
+            print(f"{tid}: another run is rendering it - skipped")
+            continue
         one(tid, a.workers, a.sheet_only, a.keep)
 
 
