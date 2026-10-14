@@ -55,58 +55,100 @@ STYLES = {
 def custom_styles(w):
     """your own templates: <workspace>/styles/<name>/style.json (re-read every time, so new folders show up at once)
 
-    style.json: {"name": "Cold Case Files", "theme": "forensic", "blurb": "...", "letter": "G",
+    style.json: {"name": "Cold Case Files", "template": "forensic" (or the older "theme"), "blurb": "...", "letter": "G",
                  "example": "build.py" (a finished shot list in this style, optional),
                  "rules": "rules.md" (how this style is edited, optional),
                  "preview": "preview.jpg", "sample": "sample.mp4", "sfx": "full|calm", "xfade": 0.0}
+    A style names its template; the template's own look (templates/<id>/) is what renders - never a fallback.
     """
     out = {}
-    for p in sorted(glob.glob(os.path.join(w, "styles", "*", "style.json"))):
-        d0 = os.path.dirname(p)
-        if os.path.basename(d0).startswith("_"):
-            continue                                   # _example and other parked templates
-        try:
-            d = json.load(open(p, encoding="utf-8"))
-        except Exception:
-            continue
-        theme = d.get("theme", "documentary")
-        if theme not in STYLES:
-            theme = "documentary"
-        base = STYLES[theme]
-        f = lambda k: os.path.join(d0, d[k]) if d.get(k) and os.path.exists(os.path.join(d0, d[k])) else None
-        out["custom:" + os.path.basename(d0)] = dict(
-            name=d.get("name") or os.path.basename(d0), letter=d.get("letter", "★"), blurb=d.get("blurb", ""),
-            theme=theme, sfx=d.get("sfx", base["sfx"]), xfade=float(d.get("xfade", base["xfade"])), readme=base["readme"],
-            example_path=f("example") or os.path.join(os.path.dirname(DOCU), base["example"], "build.py"),
-            rules_path=f("rules"), preview_path=f("preview") or os.path.join(DOCU, base["preview"]),
-            sample_path=f("sample"), engine="docu", folder=d0)
+    try:
+        import sys as _s
+        _s.path.insert(0, DOCU)
+        import registry
+        T = registry.templates()
+    except Exception:                                  # noqa: BLE001
+        registry, T = None, {}
+    roots = [os.path.join(w, "styles")]
+    kit_styles = os.path.join(os.path.dirname(DOCU), "styles")
+    if os.path.abspath(kit_styles) != os.path.abspath(roots[0]):
+        roots.append(kit_styles)                       # a niche workspace also sees the kit's styles
+    for root in roots:
+        for p in sorted(glob.glob(os.path.join(root, "*", "style.json"))):
+            d0 = os.path.dirname(p)
+            sid = os.path.basename(d0)
+            if sid.startswith("_") or ("custom:" + sid) in out:
+                continue                               # _example and other parked templates
+            try:
+                d = json.load(open(p, encoding="utf-8"))
+            except Exception:
+                continue
+            tid = d.get("template") or d.get("theme") or "documentary"
+            t = T.get(tid) or {}
+            base = STYLES.get(tid) or STYLES.get(t.get("theme", ""), STYLES["documentary"])
+            f = lambda k: os.path.join(d0, d[k]) if d.get(k) and os.path.exists(os.path.join(d0, d[k])) else None
+            sheet = os.path.join(os.path.dirname(DOCU), t["preview_sheet"]) if t.get("preview_sheet") else None
+            ex = f("example")
+            if not ex and t.get("examples"):
+                ex = os.path.join(os.path.dirname(DOCU), t["examples"][0])
+            out["custom:" + sid] = dict(
+                id="custom:" + sid, style_id=sid, template=tid,
+                name=d.get("name") or sid, letter=d.get("letter", "★"), blurb=d.get("blurb", ""),
+                tagline=d.get("tagline", ""), points=d.get("points", []), best_for=d.get("best_for") or t.get("best_for", ""),
+                theme=t.get("theme") or tid, sfx=d.get("sfx", t.get("sfx_style", base["sfx"])),
+                xfade=float(d.get("xfade", t.get("xfade", base["xfade"]))), readme=d.get("name") or base["readme"],
+                example_path=ex if ex and os.path.exists(ex) else os.path.join(os.path.dirname(DOCU), base["example"], "build.py"),
+                rules_path=f("rules"),
+                preview_path=f("preview") or (sheet if sheet and os.path.exists(sheet) else os.path.join(DOCU, base["preview"])),
+                sample_path=f("sample"), engine="docu", folder=d0, installed=bool(t.get("installed", True)))
     return out
 
 
 def all_styles(w):
-    """every style the app can offer: built-in templates, your template folders, Frontier's channel styles"""
+    """every look the app can offer, one card each: the style folders (styles/<id>/ - each with its template, preview
+    picture and sample video), then the built-in templates that have no folder of their own, then Frontier's channel
+    styles that were not imported into the kit yet (those still run through Frontier's own app)"""
     out = {}
+    custom = custom_styles(w)
+    have = {v["template"] for v in custom.values()}
     samples = dict(documentary="What_Happens_If_the_Government_Cuts_Hasidic_Benefits.mp4",
                    paper="Noahs_Ark_Confirmed_After_4300_Years_1080p.mp4", forensic="Noahs_Ark_100_Percent_Confirmed.mp4",
                    expedition="Noahs_Ark_Myth_or_Reality.mp4", broadcast="Noahs_Ark_Breaking_Drill_Bit_Shattered.mp4",
                    almanac="Pennsylvania_Has_95000_Amish_So_Why_Does_Wisconsin_Have_MORE_Settlements.mp4")
+    out.update(custom)
     for k, v in STYLES.items():
+        if k in have:
+            continue                                   # its style folder already shows it, with preview and sample
         smp = os.path.join(media(w), "out", samples.get(k, "-"))
         out[k] = dict(v, theme=k, engine="docu", preview_path=os.path.join(DOCU, v["preview"]),
                       example_path=os.path.join(os.path.dirname(DOCU), v["example"], "build.py"),
                       sample_path=smp if os.path.exists(smp) else None)
-    out.update(custom_styles(w))
     try:
         import frontier
+        imported = set()
+        for v in custom.values():
+            if v.get("template"):
+                try:
+                    fj = json.load(open(os.path.join(os.path.dirname(DOCU), "templates", v["template"], "frontier.json"),
+                                        encoding="utf-8"))
+                    imported.add(fj.get("style"))
+                except Exception:                      # noqa: BLE001
+                    pass
         for st in frontier.styles(frontier.find_dir(w)):
-            out[st["id"]] = st
+            if st["id"].split(":", 1)[-1] not in imported:
+                out[st["id"]] = st
     except Exception:
         pass
     return out
 
 
 def style_info(sid, w):
-    st = all_styles(w).get(sid)
+    every = all_styles(w)
+    st = every.get(sid) or every.get("custom:" + str(sid))      # an older job may name a built-in that has a folder now
+    if not st and sid in STYLES:
+        v = STYLES[sid]
+        st = dict(v, theme=sid, engine="docu", preview_path=os.path.join(DOCU, v["preview"]),
+                  example_path=os.path.join(os.path.dirname(DOCU), v["example"], "build.py"), sample_path=None)
     if not st:
         raise KeyError(f"unknown style {sid}")
     return st
@@ -207,6 +249,7 @@ edl.setup(
     out=os.path.join(M, "out"),
     image_dirs=[os.path.join(M, d) for d in P_["image_dirs"]],
     theme=JOB.get("theme") or JOB["style"],
+    style=JOB.get("style_id"), template=JOB.get("template_id"),
     music_floor_db=-21.0, music_duck_db=-10.0, sfx_gain=0.55,
     sfx_style=JOB["sfx_style"], xfade=JOB["xfade"], vary="auto",
 )
@@ -242,6 +285,7 @@ def create(job, w):
     if not os.path.exists(os.path.join(data, "catalog_all.json")):
         json.dump([], open(os.path.join(data, "catalog_all.json"), "w"))
     job = dict(job, slug=slug, name=name_of(job["title"]), engine=st.get("engine", "docu"), theme=st.get("theme"),
+               style_id=st.get("style_id"), template_id=st.get("template"),
                sfx_style=st.get("sfx", "full"), xfade=st.get("xfade", 0.0),
                paths=dict(footage=n["footage"], image_dirs=n["image_dirs"], picks=n.get("picks")) if n else {},
                docu=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))      # the kit's engine, for workspaces

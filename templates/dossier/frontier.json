@@ -1,0 +1,128 @@
+{
+ "template": "dossier",
+ "style": "dossier",
+ "kind": "kit",
+ "kit": "dossier",
+ "prefix": "dossier",
+ "frame": "print",
+ "frame_every": 2,
+ "types": {
+  "alert": {
+   "scene": "dossier_alert",
+   "page": "dossier",
+   "seconds": 6.5,
+   "example": {
+    "head": "CODE RED",
+    "sub": "U.S. EMBASSY",
+    "lines": [
+     "URGENT ALERT",
+     "ALL CITIZENS IN AFGHANISTAN"
+    ],
+    "stamp": "EVACUATE NOW",
+    "body": "one or two sentences of the real notice, warning or message, typed out"
+   },
+   "over_footage": false
+  },
+  "crosshair": {
+   "scene": "dossier_crosshair",
+   "page": "dossier",
+   "seconds": 5.0,
+   "example": {
+    "label": "PROOF",
+    "icon": "folder",
+    "sub": "13 Aug 2021"
+   },
+   "over_footage": false
+  },
+  "disclaimer": {
+   "scene": "dossier_disclaimer",
+   "page": "dossier",
+   "seconds": 5.5,
+   "example": {
+    "title": "DISCLAIMER",
+    "body": "two short sentences: what this video documents and that it endorses nothing",
+    "foot": "VIEWER DISCRETION IS ADVISED"
+   },
+   "over_footage": false
+  },
+  "title_gold": {
+   "scene": "dossier_title_gold",
+   "page": "dossier",
+   "seconds": 5.0,
+   "example": {
+    "name": "MILES",
+    "sub": "a 4chan user from Birmingham"
+   },
+   "over_footage": false
+  },
+  "tracker": {
+   "scene": "dossier_tracker",
+   "page": "dossier",
+   "seconds": 5.5,
+   "example": {
+    "name": "Mary Jo Bailey",
+    "tag": "SUSPECT",
+    "year": "2022",
+    "subject": "Mary Jo Bailey",
+    "query": "Mary Jo Bailey arrest bodycam"
+   },
+   "over_footage": false
+  },
+  "dialogue": {
+   "scene": "dossier_dialogue",
+   "page": "dossier",
+   "seconds": 6.5,
+   "example": {
+    "a": "OFFICER",
+    "b": "SUSPECT",
+    "lines": [
+     {
+      "who": "a",
+      "text": "we have a warrant for your arrest"
+     },
+     {
+      "who": "b",
+      "text": "I got some appointments I'm supposed to be at"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "stack": {
+   "scene": "dossier_stack",
+   "page": "dossier",
+   "seconds": 6.5,
+   "example": {
+    "docs": [
+     {
+      "title": "4chan /pol/ — 13 Aug 2021",
+      "lines": [
+       "Decided to pop down to Afghanistan for a few days",
+       "never been before. Just goofing off"
+      ],
+      "mark": 0
+     },
+     {
+      "title": "Passport scan",
+      "lines": [
+       "ROUTLEDGE, MILES",
+       "British citizen"
+      ],
+      "mark": -1
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "stamp": {
+   "scene": "dossier_stamp",
+   "page": "dossier",
+   "seconds": 4.0,
+   "example": {
+    "text": "2021",
+    "sub": "Kabul, Afghanistan"
+   },
+   "over_footage": false
+  }
+ }
+}

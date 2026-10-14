@@ -1,0 +1,86 @@
+{
+ "template": "legend",
+ "style": "legend",
+ "kind": "kit",
+ "kit": "legend",
+ "prefix": "legend",
+ "frame": "blurfill",
+ "frame_every": 1,
+ "types": {
+  "chapter": {
+   "scene": "legend_chapter",
+   "page": "legend",
+   "seconds": 4.8,
+   "example": {
+    "n": 1,
+    "name": "Fuzzy Zoeller",
+    "note": "Masters champion, 1979",
+    "subject": "Fuzzy Zoeller",
+    "query": "Fuzzy Zoeller golfer portrait"
+   },
+   "over_footage": false
+  },
+  "lower": {
+   "scene": "legend_lower",
+   "page": "legend",
+   "seconds": 4.0,
+   "example": {
+    "name": "Tom Watson",
+    "role": "8 major titles"
+   },
+   "over_footage": true
+  },
+  "scorecard": {
+   "scene": "legend_scorecard",
+   "page": "legend",
+   "seconds": 6.0,
+   "example": {
+    "title": "CROOKED STICK, 1991",
+    "rows": [
+     {
+      "label": "Round 1",
+      "value": "69"
+     },
+     {
+      "label": "Round 2",
+      "value": "67"
+     },
+     {
+      "label": "Total",
+      "value": "-12"
+     }
+    ],
+    "source": "PGA Championship"
+   },
+   "over_footage": false
+  },
+  "line": {
+   "scene": "legend_line",
+   "page": "legend",
+   "seconds": 5.5,
+   "example": {
+    "line": "That's where you score.",
+    "who": "John Daly"
+   },
+   "over_footage": false
+  },
+  "years": {
+   "scene": "legend_years",
+   "page": "legend",
+   "seconds": 5.5,
+   "example": {
+    "years": [
+     {
+      "year": "1991",
+      "label": "PGA Championship"
+     },
+     {
+      "year": "1995",
+      "label": "The Open, St Andrews"
+     }
+    ]
+   },
+   "over_footage": false
+  }
+ }
+}

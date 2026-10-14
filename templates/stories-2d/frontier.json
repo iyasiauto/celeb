@@ -1,0 +1,460 @@
+{
+ "template": "stories-2d",
+ "style": "stories",
+ "kind": "motion",
+ "kit": "",
+ "prefix": "mg",
+ "frame": null,
+ "frame_every": 0,
+ "types": {
+  "title": {
+   "scene": "mg_title",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "The shadow you refuse to see",
+    "subtitle": "and why it follows you"
+   },
+   "over_footage": false
+  },
+  "stat": {
+   "scene": "mg_stat",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Most people never notice",
+    "value": "7",
+    "subtitle": "out of ten repeat the same pattern"
+   },
+   "over_footage": false
+  },
+  "bars": {
+   "scene": "mg_bars",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Where the pressure lands",
+    "items": [
+     {
+      "label": "Work",
+      "value": 5
+     },
+     {
+      "label": "Love",
+      "value": 3
+     },
+     {
+      "label": "Money",
+      "value": 4
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "crowd": {
+   "scene": "mg_crowd",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Most people feel it",
+    "count": 60,
+    "highlight": 22,
+    "subtitle": "but only a few know why"
+   },
+   "over_footage": false
+  },
+  "flow": {
+   "scene": "mg_flow",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "How it moves",
+    "items": [
+     {
+      "label": "Trigger",
+      "icon": "bolt"
+     },
+     {
+      "label": "You",
+      "icon": "person"
+     },
+     {
+      "label": "Reaction",
+      "icon": "fire"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "cards": {
+   "scene": "mg_cards",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Three signs",
+    "items": [
+     {
+      "label": "Projection",
+      "text": "You see it in others",
+      "icon": "eye"
+     },
+     {
+      "label": "Denial",
+      "text": "You call it their fault",
+      "icon": "shield"
+     },
+     {
+      "label": "Return",
+      "text": "It comes back stronger",
+      "icon": "clock"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "checklist": {
+   "scene": "mg_checklist",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Before you react",
+    "items": [
+     {
+      "label": "Name the feeling"
+     },
+     {
+      "label": "Ask where it started"
+     },
+     {
+      "label": "Wait one day"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "compare": {
+   "scene": "mg_compare",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Persona and shadow",
+    "items": [
+     {
+      "label": "Persona",
+      "text": "The face you show"
+     },
+     {
+      "label": "Shadow",
+      "text": "The part you hide"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "steps": {
+   "scene": "mg_steps",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Three steps",
+    "items": [
+     {
+      "label": "Notice",
+      "text": "what repeats"
+     },
+     {
+      "label": "Own",
+      "text": "your part"
+     },
+     {
+      "label": "Change",
+      "text": "one habit"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "warning": {
+   "scene": "mg_warning",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "Do not ignore it",
+    "subtitle": "it grows in the dark"
+   },
+   "over_footage": false
+  },
+  "reveal": {
+   "scene": "mg_reveal",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "image": {
+   "scene": "mg_image",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "typing": {
+   "scene": "mg_typing",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "collage": {
+   "scene": "mg_collage",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "photonote": {
+   "scene": "mg_photonote",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "scatter": {
+   "scene": "mg_scatter",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "pillars": {
+   "scene": "mg_pillars",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "opener": {
+   "scene": "mg_opener",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "strikelist": {
+   "scene": "mg_strikelist",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "icongrid": {
+   "scene": "mg_icongrid",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "quotemark": {
+   "scene": "mg_quotemark",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "What you resist persists.",
+    "subtitle": "Carl Jung"
+   },
+   "over_footage": false
+  },
+  "deckfan": {
+   "scene": "mg_deckfan",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  },
+  "timeline": {
+   "scene": "mg_timeline",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {
+    "title": "How it builds",
+    "items": [
+     {
+      "label": "Childhood",
+      "text": "a rule is learned"
+     },
+     {
+      "label": "Youth",
+      "text": "it is hidden"
+     },
+     {
+      "label": "Adult",
+      "text": "it returns"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "splitreveal": {
+   "scene": "mg_splitreveal",
+   "page": "mg_stories_2d_noir",
+   "seconds": 6.0,
+   "example": {},
+   "over_footage": false
+  }
+ },
+ "skins": [
+  "noir"
+ ],
+ "pages": {
+  "noir": "mg_stories_2d_noir"
+ },
+ "icons": {
+  "person": "M50 18a16 16 0 1 1 0 32 16 16 0 0 1 0-32zM22 92V74c0-12 12-20 28-20s28 8 28 20v18z",
+  "people": "M32 22a13 13 0 1 1 0 26 13 13 0 0 1 0-26zM68 22a13 13 0 1 1 0 26 13 13 0 0 1 0-26zM6 90V76c0-10 10-16 26-16s26 6 26 16v14zM60 90V76c0-6-3-11-8-14 4-1 9-2 16-2 16 0 26 6 26 16v14z",
+  "bank": "M50 10 92 34v8H8v-8zM18 50h10v30H18zM40 50h10v30H40zM62 50h10v30H62zM84 50h-6v30h6zM8 84h84v8H8z",
+  "card": "M8 24h84a6 6 0 0 1 6 6v6H2v-6a6 6 0 0 1 6-6zM2 46h96v24a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6zM12 58h24v8H12z",
+  "money": "M6 24h88v52H6zM50 36a14 14 0 1 1 0 28 14 14 0 0 1 0-28zM16 34h8v8h-8zM76 58h8v8h-8z",
+  "coins": "M34 20c15 0 27 5 27 11s-12 11-27 11S7 37 7 31 19 20 34 20zM7 42c5 5 15 8 27 8s22-3 27-8v10c0 6-12 11-27 11S7 58 7 52zM66 44c15 0 27 5 27 11s-12 11-27 11-27-5-27-11 12-11 27-11zM39 66c5 5 15 8 27 8s22-3 27-8v10c0 6-12 11-27 11s-27-5-27-11z",
+  "chart": "M10 88V44h18v44zM40 88V20h18v68zM70 88V56h18v32zM6 92h88v6H6z",
+  "trend": "M8 76 36 48l16 16 30-32 12 12V20H62l8 8-18 20-16-16-32 32z",
+  "clock": "M50 8a42 42 0 1 1 0 84 42 42 0 0 1 0-84zm0 12a30 30 0 1 0 0 60 30 30 0 0 0 0-60zm-4 10h8v22l16 10-4 7-20-12z",
+  "calendar": "M22 12h10v10H22zM68 12h10v10H68zM10 24h80v10H10zM10 42h80v46H10zm12 10v10h12V52zm22 0v10h12V52zm22 0v10h12V52zM22 68v10h12V68zm22 0v10h12V68z",
+  "doc": "M22 6h38l20 20v68H22zM58 8v20h20zM32 46h36v7H32zM32 60h36v7H32zM32 74h24v7H32z",
+  "box": "M50 8 92 26 50 44 8 26zM8 34l38 17v41L8 74zM92 34v40L54 92V51z",
+  "house": "M50 12 94 48h-12v42H62V64H38v26H18V48H6z",
+  "star": "M50 8l12 26 28 3-21 19 6 28-25-14-25 14 6-28L10 37l28-3z",
+  "heart": "M50 88C22 68 8 54 8 38c0-13 10-22 22-22 8 0 15 4 20 11 5-7 12-11 20-11 12 0 22 9 22 22 0 16-14 30-42 50z",
+  "eye": "M50 22c24 0 42 18 46 28-4 10-22 28-46 28S8 60 4 50c4-10 22-28 46-28zm0 12a16 16 0 1 0 0 32 16 16 0 0 0 0-32z",
+  "lock": "M30 42V32a20 20 0 0 1 40 0v10h8v50H22V42zm12 0h16V32a8 8 0 0 0-16 0z",
+  "key": "M64 8a28 28 0 1 1-26 38l-4 4H22v12H10v12H-2V58l40-40a28 28 0 0 1 26-10zm6 14a8 8 0 1 0 0 16 8 8 0 0 0 0-16z",
+  "bulb": "M50 6c17 0 30 13 30 29 0 11-6 18-11 24-3 4-5 7-5 11H36c0-4-2-7-5-11-5-6-11-13-11-24C20 19 33 6 50 6zM38 78h24v8H38zM42 90h16v6H42z",
+  "warning": "M50 8 96 90H4zm-6 26h12v34H44zm0 42h12v12H44z",
+  "check": "M50 6a44 44 0 1 1 0 88 44 44 0 0 1 0-88zm22 28-8-8-20 20-8-8-8 8 16 16z",
+  "cross": "M50 6a44 44 0 1 1 0 88 44 44 0 0 1 0-88zm16 22L50 44 34 28l-6 6 16 16-16 16 6 6 16-16 16 16 6-6-16-16 16-16z",
+  "search": "M42 8a34 34 0 0 1 26 56l26 26-8 8-26-26A34 34 0 1 1 42 8zm0 12a22 22 0 1 0 0 44 22 22 0 0 0 0-44z",
+  "bell": "M50 6c4 0 7 3 7 7v3c14 3 21 15 21 30 0 14 4 18 8 22v6H14v-6c4-4 8-8 8-22 0-15 7-27 21-30v-3c0-4 3-7 7-7zM38 78h24a12 12 0 0 1-24 0z",
+  "chat": "M10 14h80v52H54L30 86V66H10zM26 32h48v8H26zM26 46h32v8H26z",
+  "gear": "M42 6h16l3 12 9 5 12-5 8 14-9 8v10l9 8-8 14-12-5-9 5-3 12H42l-3-12-9-5-12 5-8-14 9-8V40l-9-8 8-14 12 5 9-5zm8 26a18 18 0 1 0 0 36 18 18 0 0 0 0-36z",
+  "shield": "M50 6 88 20v30c0 22-16 36-38 44C28 86 12 72 12 50V20z",
+  "globe": "M50 6a44 44 0 1 1 0 88 44 44 0 0 1 0-88zm0 10c-6 0-14 12-16 30h32c-2-18-10-30-16-30zM22 46c1-11 5-20 10-25-9 5-16 14-19 25zM16 54c1 11 6 21 14 27-4-6-8-16-9-27zm18 0c2 18 10 30 16 30s14-12 16-30zm44 0c-1 11-4 20-9 26 8-6 13-15 14-26zm3-8c-3-11-10-20-19-25 5 5 9 14 10 25z",
+  "moon": "M58 6a44 44 0 1 0 36 62A38 38 0 0 1 58 6z",
+  "sun": "M50 28a22 22 0 1 1 0 44 22 22 0 0 1 0-44zM46 2h8v16h-8zM46 82h8v16h-8zM2 46h16v8H2zM82 46h16v8H82zM16 22l6-6 11 11-6 6zM67 73l6-6 11 11-6 6zM73 27 84 16l6 6-11 11zM22 78l-6-6 11-11 6 6z",
+  "fire": "M50 4c4 18 22 26 22 44 0 20-14 34-22 46-8-12-22-26-22-46 0-18 18-26 22-44zm0 34c-6 8-10 14-10 22 0 8 5 14 10 20 5-6 10-12 10-20 0-8-4-14-10-22z",
+  "bolt": "M56 4 20 56h20l-8 40 40-56H50z",
+  "seed": "M50 92V52C50 30 68 12 92 10c0 24-18 42-42 42M50 62C50 44 36 30 16 28c0 20 14 34 34 34",
+  "brain": "M50 10c18 0 32 12 32 28 0 8-3 14-8 19v13H26V57c-5-5-8-11-8-19 0-16 14-28 32-28zm-4 14v40h8V24zM34 78h32v8H34zM38 90h24v6H38z",
+  "road": "M30 8h14v84H30zM56 8h14v84H56zM46 8h8v14h-8zM46 34h8v14h-8zM46 60h8v14h-8z",
+  "target": "M50 6a44 44 0 1 1 0 88 44 44 0 0 1 0-88zm0 14a30 30 0 1 0 0 60 30 30 0 0 0 0-60zm0 14a16 16 0 1 1 0 32 16 16 0 0 1 0-32z",
+  "trophy": "M26 10h48v22c0 16-10 28-24 28S26 48 26 32zM14 14h10v14c0 6-10 6-10-2zM86 14H76v14c0 6 10 6 10-2zM44 62h12v14H44zM30 80h40v10H30z",
+  "book": "M14 10h30c6 0 6 6 6 6v70s0-6-6-6H14zM86 10H56c-6 0-6 6-6 6v70s0-6 6-6h30z",
+  "phone": "M28 6h44a8 8 0 0 1 8 8v72a8 8 0 0 1-8 8H28a8 8 0 0 1-8-8V14a8 8 0 0 1 8-8zm14 6v4h16v-4zM42 78h16v6H42z",
+  "arrow": "M6 42h60V24l30 26-30 26V58H6z"
+ },
+ "icon_rotation": [
+  "person",
+  "chart",
+  "bulb",
+  "clock",
+  "star",
+  "shield",
+  "trend",
+  "target",
+  "heart",
+  "eye",
+  "key",
+  "globe",
+  "brain",
+  "fire"
+ ],
+ "fa_aliases": {
+  "broken chain": "link-slash",
+  "chain": "link",
+  "unlocked": "lock-open",
+  "locked": "lock",
+  "open door": "door-open",
+  "closed door": "door-closed",
+  "mountain": "mountain-sun",
+  "voice": "microphone-lines",
+  "speak": "comment",
+  "prayer": "hands-praying",
+  "hands": "hands",
+  "bible": "book-bible",
+  "light": "lightbulb",
+  "sun": "sun",
+  "moon": "moon",
+  "star": "star",
+  "money": "sack-dollar",
+  "bill": "file-invoice-dollar",
+  "coin": "coins",
+  "debt": "file-invoice-dollar",
+  "gate": "dungeon",
+  "wall": "block-brick",
+  "mirror": "clone",
+  "seed": "seedling",
+  "growth": "arrow-trend-up",
+  "fear": "triangle-exclamation",
+  "mind": "brain",
+  "heart": "heart",
+  "eye": "eye",
+  "clock": "clock",
+  "night": "cloud-moon",
+  "sleep": "bed",
+  "path": "route",
+  "road": "road",
+  "key": "key",
+  "crown": "crown",
+  "shield": "shield-halved",
+  "fire": "fire",
+  "water": "droplet",
+  "storm": "cloud-bolt",
+  "wind": "wind",
+  "chart": "chart-line",
+  "person": "user",
+  "people": "users",
+  "house": "house",
+  "bank": "building-columns",
+  "phone": "mobile-screen",
+  "letter": "envelope",
+  "signature": "signature",
+  "trophy": "trophy",
+  "target": "bullseye",
+  "check": "check",
+  "cross": "xmark",
+  "warning": "triangle-exclamation",
+  "search": "magnifying-glass",
+  "bell": "bell",
+  "chat": "comment-dots",
+  "book": "book-open",
+  "doc": "file-lines",
+  "bulb": "lightbulb",
+  "trend": "arrow-trend-up",
+  "globe": "earth-americas",
+  "bolt": "bolt",
+  "card": "credit-card",
+  "box": "box",
+  "gear": "gear",
+  "calendar": "calendar-days",
+  "arrow": "arrow-right",
+  "sound wave": "wave-square",
+  "wave": "wave-square",
+  "chains": "link-slash",
+  "door": "door-open",
+  "scroll": "scroll",
+  "crown of thorns": "crown",
+  "lightning": "bolt",
+  "sword": "khanda",
+  "anchor": "anchor",
+  "footsteps": "shoe-prints",
+  "hourglass": "hourglass-half",
+  "mask": "mask",
+  "ladder": "stairs",
+  "bridge": "bridge",
+  "compass": "compass",
+  "map": "map",
+  "tree": "tree",
+  "cloud": "cloud"
+ },
+ "ground": "",
+ "paper_bg": "kit:frontier/vintage_old_paper_background.jpg",
+ "dark": true
+}

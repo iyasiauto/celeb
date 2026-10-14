@@ -1,0 +1,232 @@
+{
+ "id": "hasidic-frontier",
+ "name": "Hasidic Documentary",
+ "version": 1,
+ "source": "Frontier styles/hasidic.json",
+ "theme": "hasidic-frontier",
+ "grade": "eq=contrast=1.04:saturation=0.94:gamma=0.99",
+ "grain": 1.0,
+ "xfade": 0.45,
+ "sfx_style": "full",
+ "best_for": "Your own footage, cut to the story.",
+ "look": "Documentary about Hasidic Jewish community life (weddings, babies, gemachs, Kupat Ha'ir) built from THIS channel's own collected footage and archival photos, matched to the narration, with maps, real headlines, graphics, real objects and depth pop. Its own asset library — never mixes with another niche.",
+ "tagline": "Your own footage, cut to the story.",
+ "examples": [
+  "templates/hasidic-frontier/demo_build.py"
+ ],
+ "starter": "templates/hasidic-frontier/README.md",
+ "preview_dir": "templates/hasidic-frontier/previews",
+ "preview_sheet": "templates/hasidic-frontier/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_hasidic-frontier.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "EB-Garamond.ttf",
+   "Garamond": "EB-Garamond.ttf",
+   "Engr": "EB-Garamond.ttf",
+   "Rec": "EB-Garamond.ttf",
+   "GaramondI": "EB-Garamond-Italic.ttf",
+   "RecI": "EB-Garamond-Italic.ttf",
+   "Caveat": "EB-Garamond-Italic.ttf",
+   "Barlow": "Roboto-Condensed.ttf",
+   "Oswald": "Roboto-Condensed.ttf",
+   "Label": "Roboto-Condensed.ttf",
+   "BarlowB": "Roboto-Condensed.ttf",
+   "OswaldB": "Roboto-Condensed.ttf",
+   "LabelB": "Roboto-Condensed.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "InterDisplay-Black.ttf",
+   "Num": "InterDisplay-Black.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#F3EEE4",
+   "gold": "#E3B25B",
+   "mustard": "#E3B25B",
+   "red": "#C4553F",
+   "cyan": "#8FB3D9",
+   "green": "#6E9B7B",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "227,178,91",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#E3B25B",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#E3B25B",
+   "hiLine": "rgba(227,178,91,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.1,
+  "max_gap_s": 72,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 5,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "doc_dateline",
+   "family": "graphic",
+   "min_per_10min": 1.5,
+   "use": "a new place or time begins: PLACE, a gold rule, the date (over the blurred real picture)"
+  },
+  {
+   "type": "doc_number",
+   "family": "graphic",
+   "min_per_10min": 1.2,
+   "use": "one figure that matters, counting up, its unit, what it means and its source"
+  },
+  {
+   "type": "doc_chart",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "a comparison with real numbers: 2-6 bars on warm paper, the one that matters highlighted, source under"
+  },
+  {
+   "type": "doc_timeline",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "3-5 dated events on a line the camera travels along"
+  },
+  {
+   "type": "doc_quote",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "a documented quote, word by word, with who said it and when"
+  },
+  {
+   "type": "doc_pivot",
+   "family": "graphic",
+   "min_per_10min": 0.8,
+   "use": "one short serif line where the story turns"
+  },
+  {
+   "type": "doc_question",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "the question the next part answers"
+  },
+  {
+   "type": "doc_card",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a short card of key lines, the words that matter highlighted"
+  },
+  {
+   "type": "doc_step",
+   "family": "graphic",
+   "min_per_10min": 0,
+   "use": "one numbered step of a process"
+  },
+  {
+   "type": "doc_social",
+   "family": "graphic",
+   "min_per_10min": 0,
+   "use": "a follow / unfollow between two public accounts"
+  },
+  {
+   "type": "doc_chapter",
+   "family": "heading",
+   "min_per_10min": 3,
+   "use": "the chapter card: number, kicker, title"
+  },
+  {
+   "type": "doc_place",
+   "family": "graphic",
+   "min_per_10min": 1,
+   "use": "a place name card (city, region)"
+  },
+  {
+   "type": "doc_pull",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "a real sentence from a real article with outlet, byline and date"
+  },
+  {
+   "type": "doc_table",
+   "family": "graphic",
+   "min_per_10min": 0.4,
+   "use": "a small table of real figures with its source"
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.6,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.8,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0.4,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "hasidic",
+  "kind": "docgfx",
+  "kit": "",
+  "frame": null,
+  "frame_every": 0
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC)."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/hasidic-frontier/README.md",
+ "captions": {
+  "font": "Roboto Condensed",
+  "size": 46,
+  "upper": false,
+  "karaoke": false,
+  "outline": 0.5,
+  "shadow": 0.6,
+  "line_chars": 48
+ },
+ "caption_accent": "&H5BB2E3&"
+}

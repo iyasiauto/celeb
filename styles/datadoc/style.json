@@ -1,0 +1,99 @@
+{
+ "name": "Data Documentary",
+ "label": "Data Documentary — data-led documentaries: economics, cities, demographics",
+ "letter": "G",
+ "template": "datadoc",
+ "theme": "datadoc",
+ "blurb": "Data-led documentary: big quiet numbers on near-black navy (ddroll, ddbars, dddots, ddstrike, ddread), stats, checklists, splits, the midnight map, chapter tabs on full-frame footage.",
+ "tagline": "Big quiet numbers on near-black navy: rolls, bars, dots, strikes, the midnight map.",
+ "points": [
+  "Counting numbers (ddroll)",
+  "Bars, dots, strikes",
+  "Chapter tabs on footage",
+  "The midnight map"
+ ],
+ "best_for": "data-led documentaries: economics, cities, demographics",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "calm",
+ "xfade": 0.5,
+ "look": {
+  "engine_theme": "datadoc",
+  "grade": "datadoc",
+  "grain": 1.5,
+  "xfade": 0.5,
+  "fonts": "the engine theme's own (docu/engine.js THEMES['datadoc'])",
+  "palette": "engine theme",
+  "captions": null
+ },
+ "pacing": {
+  "clip_share": [
+   0.25,
+   0.5
+  ],
+  "graphics_per_min": 1.0,
+  "max_gap_s": 50,
+  "max_plain_run": 4,
+  "chapter_every_s": 270,
+  "min_distinct_devices": 9,
+  "sfx_per_min": 1.2
+ },
+ "devices_summary": [
+  {
+   "type": "map",
+   "min_per_10min": 2,
+   "use": "The midnight map: every place named."
+  },
+  {
+   "type": "stat",
+   "min_per_10min": 2,
+   "use": "Every stressed figure."
+  },
+  {
+   "type": "timeline",
+   "min_per_10min": 0.6,
+   "use": "Dated passages."
+  },
+  {
+   "type": "quote",
+   "min_per_10min": 0.5,
+   "use": "Quotations."
+  },
+  {
+   "type": "depth",
+   "min_per_10min": 1,
+   "use": "Named people, places, objects."
+  },
+  {
+   "type": "spotlight",
+   "min_per_10min": 0.6,
+   "use": "The detail that matters."
+  },
+  {
+   "type": "split",
+   "min_per_10min": 0.6,
+   "use": "Then / now, A / B."
+  },
+  {
+   "type": "tv",
+   "min_per_10min": 0.4,
+   "use": "Archive moments (archive=True adds the TV gate)."
+  },
+  {
+   "type": "words",
+   "min_per_10min": 1.5,
+   "use": "The punch of a sentence."
+  },
+  {
+   "type": "checklist",
+   "min_per_10min": 0.5,
+   "use": "Reasons, steps, lists."
+  }
+ ],
+ "worked_examples": [],
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}

@@ -1,0 +1,305 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Template Gallery</title><style>
+:root{--bg:#111214;--card:#1B1D21;--ink:#ECE8E1;--soft:#A7A39B;--acc:#E3B25B}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,Segoe UI,Arial,sans-serif}
+header{padding:28px 32px 8px} h1{margin:0 0 4px;font-size:28px} header p{color:var(--soft);margin:0}
+h2{margin:28px 32px 12px;font-size:19px;color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:18px;padding:0 32px}
+article{background:var(--card);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+article video,article img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000;display:block}
+.none{aspect-ratio:16/9;display:grid;place-items:center;color:var(--soft);background:#000}
+.body{padding:14px 16px 16px} h3{margin:0 0 4px;font-size:18px} code{font-size:12px;color:var(--acc);background:#0004;padding:1px 5px;border-radius:4px}
+.tag{margin:0 0 6px;color:var(--ink)} .best,.use,.links,.var{margin:6px 0;color:var(--soft);font-size:13.5px}
+ul{margin:6px 0 6px 18px;padding:0;color:var(--soft);font-size:13.5px} a{color:var(--acc)}
+@media (max-width:520px){.grid{grid-template-columns:1fr;padding:0 16px} h2{margin:24px 16px 10px} header{padding:20px 16px 4px}}
+</style></head><body><header><h1>Template Gallery</h1>
+<p>24 templates. Play a sample, open the preview sheet, then pick the card in Docu Studio (or the style id on the command line).</p></header>
+<h2>Docu templates (made for this channel)</h2><div class='grid'><article>
+  <img src="styles/documentary/preview.jpg" alt="">
+  <div class="body">
+    <h3>Calm documentary <code>documentary</code></h3>
+    <p class="tag">Slow photographs, soft dissolves, serif chapters - understanding, not spectacle.</p>
+    <p class="best"><b>Best for:</b> communities, economics, culture - understanding, not spectacle</p>
+    <ul><li>Real photographs with slow moves</li><li>Soft dissolves between shots</li><li>Serif chapter headings and place captions</li><li>Gentle charts, one recurring device</li></ul>
+    <p class="var">Variations: documentary-calm</p>
+    <p class="use">Use it: Docu Studio card <b>Calm documentary</b> · <code>python niche.py new &lt;niche&gt; --style documentary</code> ·
+    <code>python docu/registry.py show documentary</code></p>
+    <p class="links"><a href="styles/documentary/preview.jpg">preview sheet</a> · 15 devices</p>
+  </div>
+</article><article>
+  <img src="styles/almanac/preview.jpg" alt="">
+  <div class="body">
+    <h3>Heritage almanac <code>almanac</code></h3>
+    <p class="tag">Engraved caps on a letterpress plate, didone figures, plat maps - slate ink on oatmeal paper.</p>
+    <p class="best"><b>Best for:</b> rural life, traditions, migrations, land and family stories, arguments built on numbers</p>
+    <ul><li>Engraved chapter plates over footage</li><li>Didone figures and ledger slips</li><li>State-against-state comparisons</li><li>Plat map with a township grid</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Heritage almanac</b> · <code>python niche.py new &lt;niche&gt; --style almanac</code> ·
+    <code>python docu/registry.py show almanac</code></p>
+    <p class="links"><a href="styles/almanac/preview.jpg">preview sheet</a> · 17 devices</p>
+  </div>
+</article><article>
+  <img src="styles/paper/preview.jpg" alt="">
+  <div class="body">
+    <h3>Paper / Vox explainer <code>paper</code></h3>
+    <p class="tag">Paper tabletop collages, cut-outs, typed strips, stamps, newspaper pages.</p>
+    <p class="best"><b>Best for:</b> explainers, myths, history, &#x27;how it works&#x27;</p>
+    <ul><li>Paper collages and cut-outs</li><li>Typed strips and rubber stamps</li><li>Newspaper pages</li><li>Ledger arithmetic</li></ul>
+    <p class="var">Variations: paper-vox</p>
+    <p class="use">Use it: Docu Studio card <b>Paper / Vox explainer</b> · <code>python niche.py new &lt;niche&gt; --style paper</code> ·
+    <code>python docu/registry.py show paper</code></p>
+    <p class="links"><a href="styles/paper/preview.jpg">preview sheet</a> · 21 devices</p>
+  </div>
+</article><article>
+  <img src="styles/forensic/preview.jpg" alt="">
+  <div class="body">
+    <h3>Forensic lab report <code>forensic</code></h3>
+    <p class="tag">Observed / Claimed / Confirmed: a lab report on a claim, with a certainty gauge.</p>
+    <p class="best"><b>Best for:</b> &#x27;is this claim true?&#x27;, evidence checks, debunks</p>
+    <ul><li>Observed / Claimed / Confirmed filter</li><li>Certainty gauge</li><li>Scans and one-source network</li><li>Lab-report headings</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Forensic lab report</b> · <code>python niche.py new &lt;niche&gt; --style forensic</code> ·
+    <code>python docu/registry.py show forensic</code></p>
+    <p class="links"><a href="styles/forensic/preview.jpg">preview sheet</a> · 19 devices</p>
+  </div>
+</article><article>
+  <img src="styles/expedition/preview.jpg" alt="">
+  <div class="body">
+    <h3>Expedition &amp; courtroom <code>expedition</code></h3>
+    <p class="tag">A field journal and a courtroom: routes, evidence tags, scales of justice, a verdict.</p>
+    <p class="best"><b>Best for:</b> hunts, mysteries, &#x27;myth or reality&#x27;, a verdict at the end</p>
+    <ul><li>Field journal pages</li><li>Antique map routes</li><li>Evidence tags and scales of justice</li><li>Scoreboard and verdict</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Expedition &amp; courtroom</b> · <code>python niche.py new &lt;niche&gt; --style expedition</code> ·
+    <code>python docu/registry.py show expedition</code></p>
+    <p class="links"><a href="styles/expedition/preview.jpg">preview sheet</a> · 17 devices</p>
+  </div>
+</article><article>
+  <img src="styles/broadcast/preview.jpg" alt="">
+  <div class="body">
+    <h3>Breaking-news broadcast <code>broadcast</code></h3>
+    <p class="tag">LIVE bug, BREAKING slab, ticker, fact-check meters - the story as a news broadcast.</p>
+    <p class="best"><b>Best for:</b> news-style updates, &#x27;BREAKING&#x27;, fast reveals</p>
+    <ul><li>LIVE bug and ticker</li><li>BREAKING slab</li><li>Fact-check meters</li><li>Headline wall, segment bumpers</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Breaking-news broadcast</b> · <code>python niche.py new &lt;niche&gt; --style broadcast</code> ·
+    <code>python docu/registry.py show broadcast</code></p>
+    <p class="links"><a href="styles/broadcast/preview.jpg">preview sheet</a> · 20 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Data Documentary <code>datadoc</code></h3>
+    <p class="tag">Big quiet numbers on near-black navy: rolls, bars, dots, strikes, the midnight map.</p>
+    <p class="best"><b>Best for:</b> data-led documentaries: economics, cities, demographics</p>
+    <ul><li>Counting numbers (ddroll)</li><li>Bars, dots, strikes</li><li>Chapter tabs on footage</li><li>The midnight map</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Data Documentary</b> · <code>python niche.py new &lt;niche&gt; --style datadoc</code> ·
+    <code>python docu/registry.py show datadoc</code></p>
+    <p class="links"> · 10 devices</p>
+  </div>
+</article><article>
+  <video controls preload="none" poster="styles/final-reel/preview.jpg" src="styles/final-reel/sample.mp4"></video>
+  <div class="body">
+    <h3>Final Reel <code>finalreel</code></h3>
+    <p class="tag"></p>
+    <p class="best"><b>Best for:</b> childhood nostalgia, familiar faces, child stars and celebrities, tragic endings, &#x27;where are they now&#x27;, memorial lists</p>
+    <ul></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Final Reel</b> · <code>python niche.py new &lt;niche&gt; --style final-reel</code> ·
+    <code>python docu/registry.py show finalreel</code></p>
+    <p class="links"><a href="styles/final-reel/preview.jpg">preview sheet</a> · 10 devices</p>
+  </div>
+</article><article>
+  <video controls preload="none" poster="styles/the-record/preview.jpg" src="styles/the-record/sample.mp4"></video>
+  <div class="body">
+    <h3>The Record <code>record</code></h3>
+    <p class="tag"></p>
+    <p class="best"><b>Best for:</b> investigative documentaries: closed communities and institutions, cover-ups, silence and pressure, court cases, rulings, how a system protects itself</p>
+    <ul></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>The Record</b> · <code>python niche.py new &lt;niche&gt; --style the-record</code> ·
+    <code>python docu/registry.py show record</code></p>
+    <p class="links"><a href="styles/the-record/preview.jpg">preview sheet</a> · 15 devices</p>
+  </div>
+</article></div><h2>Frontier&#x27;s channel looks (imported)</h2><div class='grid'><article>
+  <img src="styles/dossier/preview.jpg" alt="">
+  <div class="body">
+    <h3>Dossier <code>dossier</code></h3>
+    <p class="tag">A case file on a black table: typed alerts, red crosshairs, real documents.</p>
+    <p class="best"><b>Best for:</b> true crime &amp; internet mysteries</p>
+    <ul><li>Typewriter captions, top-left</li><li>Footage as prints on a chart</li><li>Real posts and documents</li><li>Red crosshair, tracking box</li><li>Gold serif names</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Dossier</b> · <code>python niche.py new &lt;niche&gt; --style dossier</code> ·
+    <code>python docu/registry.py show dossier</code></p>
+    <p class="links"><a href="styles/dossier/preview.jpg">preview sheet</a> · 11 devices</p>
+  </div>
+</article><article>
+  <img src="styles/kinetic/preview.jpg" alt="">
+  <div class="body">
+    <h3>Kinetic <code>kinetic</code></h3>
+    <p class="tag">The words are the picture: clusters, white pages, phone cards, comments.</p>
+    <p class="best"><b>Best for:</b> essays where the words are the picture</p>
+    <ul><li>One huge word on a turn</li><li>Clips on a chalkboard, the line in chalk</li><li>Chalk icons that draw themselves</li><li>Line-drawn stills sketch on</li><li>Phone cards, comments, headlines</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Kinetic</b> · <code>python niche.py new &lt;niche&gt; --style kinetic</code> ·
+    <code>python docu/registry.py show kinetic</code></p>
+    <p class="links"><a href="styles/kinetic/preview.jpg">preview sheet</a> · 11 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Atlas <code>atlas</code></h3>
+    <p class="tag">History as a bold cartoon: the time machine, the flipchart, the paint wipe.</p>
+    <p class="best"><b>Best for:</b> cartoon history explainers</p>
+    <ul><li>Flat cartoon pictures, bold outlines</li><li>TIME MACHINE bar on every jump</li><li>Flipchart of eras and rulers</li><li>Wristwatch years, paint wipes</li><li>Cartoon maps, handwritten names</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Atlas</b> · <code>python niche.py new &lt;niche&gt; --style atlas</code> ·
+    <code>python docu/registry.py show atlas</code></p>
+    <p class="links"> · 10 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Deep <code>deep</code></h3>
+    <p class="tag">Teal and orange: stencil dates, sonar, cutaways, the map room.</p>
+    <p class="best"><b>Best for:</b> military &amp; tech mysteries</p>
+    <ul><li>Footage in a dark monitor</li><li>Stencilled datelines</li><li>Cutaways with glowing crew</li><li>Sonar, readouts, the map room</li><li>Two-tone maps, white routes</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Deep</b> · <code>python niche.py new &lt;niche&gt; --style deep</code> ·
+    <code>python docu/registry.py show deep</code></p>
+    <p class="links"> · 9 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>News <code>news-frontline</code></h3>
+    <p class="tag">A newsroom&#x27;s best segment: heat maps, arrows, tickers, panels over time.</p>
+    <p class="best"><b>Best for:</b> geopolitics &amp; news explainers</p>
+    <ul><li>Footage with a news band and ticker</li><li>Relief maps with red heat</li><li>Arrows between named places</li><li>Boxed labels pinned on footage</li><li>Panels of one person over years</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>News</b> · <code>python niche.py new &lt;niche&gt; --style news-frontline</code> ·
+    <code>python docu/registry.py show news-frontline</code></p>
+    <p class="links"> · 9 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Legend <code>legend</code></h3>
+    <p class="tag">A real clip, then the story in the star&#x27;s own cloned voice.</p>
+    <p class="best"><b>Best for:</b> told in the athlete&#x27;s own voice</p>
+    <ul><li>Opens on a real clip of the star</li><li>Voice cloned from that clip</li><li>First person, over real footage</li><li>Real photo of every person named</li><li>Numbered chapter cards</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Legend</b> · <code>python niche.py new &lt;niche&gt; --style legend</code> ·
+    <code>python docu/registry.py show legend</code></p>
+    <p class="links"> · 8 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Hustle <code>hustle</code></h3>
+    <p class="tag">Glossy black, glow, difficulty bars, money rain, counters.</p>
+    <p class="best"><b>Best for:</b> make-money &amp; youth business</p>
+    <ul><li>Footage on a glossy dark stage</li><li>Big pop captions, key word red</li><li>DIFFICULTY LEVEL bars</li><li>Glossy 3D icons, money rain</li><li>Counters and versus bars</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Hustle</b> · <code>python niche.py new &lt;niche&gt; --style hustle</code> ·
+    <code>python docu/registry.py show hustle</code></p>
+    <p class="links"> · 10 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Documentary <code>frontier-documentary</code></h3>
+    <p class="tag">Real stories, told like a streaming documentary.</p>
+    <p class="best"><b>Best for:</b> Real stories, told like a streaming documentary.</p>
+    <ul><li>Real YouTube footage</li><li>Maps and real headlines</li><li>Real photos and objects</li><li>Vox-style collage scenes</li><li>Graphics and sound design</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Documentary</b> · <code>python niche.py new &lt;niche&gt; --style frontier-documentary</code> ·
+    <code>python docu/registry.py show frontier-documentary</code></p>
+    <p class="links"> · 17 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Courtside <code>courtside</code></h3>
+    <p class="tag">Real photos, old newspapers, Kodak strips, VHS — the story first.</p>
+    <p class="best"><b>Best for:</b> sports documentaries</p>
+    <ul><li>Real footage and real photos only</li><li>Old newspapers, animated</li><li>Kodak strips and an old TV</li><li>Cinematic maps and chapter cards</li><li>Interview clips with their own sound</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Courtside</b> · <code>python niche.py new &lt;niche&gt; --style courtside</code> ·
+    <code>python docu/registry.py show courtside</code></p>
+    <p class="links"> · 17 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>AI Presenter <code>ai-presenter</code></h3>
+    <p class="tag">A face people trust, then the pictures do the talking.</p>
+    <p class="best"><b>Best for:</b> A face people trust, then the pictures do the talking.</p>
+    <ul><li>A presenter opens every video</li><li>gpt-image-2 pictures, a new one every ten seconds</li><li>Depth pop brings every picture to life</li><li>No generated clips — the cheapest way to fill a video</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>AI Presenter</b> · <code>python niche.py new &lt;niche&gt; --style ai-presenter</code> ·
+    <code>python docu/registry.py show ai-presenter</code></p>
+    <p class="links"> · 17 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Hasidic Documentary <code>hasidic-frontier</code></h3>
+    <p class="tag">Your own footage, cut to the story.</p>
+    <p class="best"><b>Best for:</b> Your own footage, cut to the story.</p>
+    <ul><li>Your collected clips + archival photos</li><li>Matched to the narration, synced</li><li>Maps, headlines, graphics</li><li>Real objects + depth pop (local)</li><li>AI fill for gaps (on-topic)</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Hasidic Documentary</b> · <code>python niche.py new &lt;niche&gt; --style hasidic-frontier</code> ·
+    <code>python docu/registry.py show hasidic-frontier</code></p>
+    <p class="links"> · 17 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Modern Homes <code>modern-homes</code></h3>
+    <p class="tag">Plain home advice from someone who has actually done it.</p>
+    <p class="best"><b>Best for:</b> Plain home advice from someone who has actually done it.</p>
+    <ul><li>A presenter in a rounded card</li><li>Big serif titles on warm paper</li><li>Real products and real methods</li><li>A picture every ten seconds</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Modern Homes</b> · <code>python niche.py new &lt;niche&gt; --style modern-homes</code> ·
+    <code>python docu/registry.py show modern-homes</code></p>
+    <p class="links"> · 17 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>Carl Jung <code>dark-psychology</code></h3>
+    <p class="tag">The original Frontier look, built for long videos.</p>
+    <p class="best"><b>Best for:</b> dark psychology</p>
+    <ul><li>Dark psychology, calm narrator</li><li>Stock footage and AI pictures</li><li>Depth pop and motion graphics</li><li>Rewrite it for your own niche</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>Carl Jung</b> · <code>python niche.py new &lt;niche&gt; --style dark-psychology</code> ·
+    <code>python docu/registry.py show dark-psychology</code></p>
+    <p class="links"> · 27 devices</p>
+  </div>
+</article><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>2D Stories <code>stories-2d</code></h3>
+    <p class="tag">Second-person money stories, told over the years.</p>
+    <p class="best"><b>Best for:</b> one decision, ten years</p>
+    <ul><li>Flat 2D cartoon pictures</li><li>One recurring character</li><li>Depth pop on people and cars</li><li>Figures on phones and bills</li><li>Swap in your own cast and art</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>2D Stories</b> · <code>python niche.py new &lt;niche&gt; --style stories-2d</code> ·
+    <code>python docu/registry.py show stories-2d</code></p>
+    <p class="links"> · 27 devices</p>
+  </div>
+</article></div><h2>New Style 3</h2><div class='grid'><article>
+  <div class="none">no preview yet</div>
+  <div class="body">
+    <h3>New Style 3 — Documentary <code>emerge-documentary</code></h3>
+    <p class="tag">Real footage first; quiet cream-and-gold scenes exactly on the words.</p>
+    <p class="best"><b>Best for:</b> Documentary (Emerge X)</p>
+    <ul><li>Real archive footage, a new shot every ~4 s</li><li>Maps, real headline pages, photo spotlights</li><li>Cream &amp; gold serif graphics (EB Garamond)</li><li>Still one-line captions, labels in the corners</li><li>Match cut and text match cut once a video</li></ul>
+    
+    <p class="use">Use it: Docu Studio card <b>New Style 3 — Documentary</b> · <code>python niche.py new &lt;niche&gt; --style emerge-documentary</code> ·
+    <code>python docu/registry.py show emerge-documentary</code></p>
+    <p class="links"> · <a href="styles/emerge-documentary/reference.mp4">reference video</a> · 18 devices</p>
+  </div>
+</article></div><p style="height:40px"></p></body></html>

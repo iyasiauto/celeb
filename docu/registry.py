@@ -32,7 +32,8 @@ ROOT = os.path.dirname(DOCU)
 TPL_DIR = os.environ.get("DOCU_TEMPLATES") or os.path.join(ROOT, "templates")
 STY_DIR = os.environ.get("DOCU_STYLES") or os.path.join(ROOT, "styles")
 ALIASES = {"almanac2": "almanac", "gazetteer": "almanac", "vox": "paper", "news": "broadcast", "lab": "forensic",
-           "court": "expedition", "doc": "documentary"}
+           "court": "expedition", "doc": "documentary", "frontline": "news-frontline", "jung": "dark-psychology",
+           "stories": "stories-2d", "avatar": "ai-presenter", "emerge": "emerge-documentary", "style3": "emerge-documentary"}
 
 
 def _load(p):
@@ -241,6 +242,22 @@ def show(name, minutes=15.0):
             spec = {k: v for k, v in e[1].items() if k not in ("id", "duration", "t0")}
             js = json.dumps(spec, ensure_ascii=False)
             print(f"  {'':14s}      example: {js[:400]}{' ...' if len(js) > 400 else ''}")
+    fj = os.path.join(pb.get("dir", ""), "frontier.json")
+    if os.path.exists(fj):
+        # a template imported from Frontier: its graphics are written with docu/frontier.py
+        info = json.load(open(fj, encoding="utf-8"))
+        print(f"\n## Writing this template's graphics (Frontier {info.get('kind')}, docu/frontier.py)\n")
+        print(f"    import frontier\n    F = frontier.Template({pb['id']!r})")
+        print("    at(cue, F.g(type, **fields, img=<picture for the ground>))    a graphic, Frontier's own sounds included")
+        print("    at(cue, clip(i, overlays=[F.over(type, at=0.4, **fields)]))   a graphic over footage (over_footage types)")
+        if info.get("frame"):
+            print(f"    at(cue, F.every(clip(i)))   footage: every {info.get('frame_every')}-th shot in the {info['frame']!r} frame "
+                  f"(F.framed(scene) for a chosen one)")
+        print()
+        for ty, v in info.get("types", {}).items():
+            ex = json.dumps(v.get("example", {}), ensure_ascii=False)
+            print(f"- F.g({ty!r}, ...)  ~{v.get('seconds')} s{'  (also over footage)' if v.get('over_footage') else ''}")
+            print(f"      fields: {ex[:420]}{' ...' if len(ex) > 420 else ''}")
     if pb.get("also_available"):
         print(f"\n({pb['also_available']})")
     print("\n## Rules\n")

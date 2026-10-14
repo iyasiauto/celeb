@@ -1,0 +1,103 @@
+{
+ "template": "deep",
+ "style": "deep",
+ "kind": "kit",
+ "kit": "deep",
+ "prefix": "deep",
+ "frame": "monitor",
+ "frame_every": 2,
+ "types": {
+  "stencil": {
+   "scene": "deep_stencil",
+   "page": "deep",
+   "seconds": 4.5,
+   "example": {
+    "line1": "OCTOBER",
+    "line2": "1971",
+    "note": "Sea of Okhotsk"
+   },
+   "over_footage": false
+  },
+  "route": {
+   "scene": "deep_route",
+   "page": "deep",
+   "seconds": 7.0,
+   "example": {
+    "from": "VLADIVOSTOK",
+    "to": "PETROPAVLOVSK",
+    "label": "the cable",
+    "unit": "1,200 km"
+   },
+   "over_footage": false
+  },
+  "cutaway": {
+   "scene": "deep_cutaway",
+   "page": "deep",
+   "seconds": 6.0,
+   "example": {
+    "shape": "submarine",
+    "label": "USS HALIBUT",
+    "figures": 9,
+    "red": 2,
+    "note": "two divers in the bell"
+   },
+   "over_footage": false
+  },
+  "sonar": {
+   "scene": "deep_sonar",
+   "page": "deep",
+   "seconds": 5.5,
+   "example": {
+    "title": "CONTACT",
+    "contacts": [
+     {
+      "bearing": 40,
+      "range": 0.6,
+      "label": "K-129"
+     },
+     {
+      "bearing": 210,
+      "range": 0.35,
+      "label": "escort"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "readout": {
+   "scene": "deep_readout",
+   "page": "deep",
+   "seconds": 6.0,
+   "example": {
+    "title": "OPERATION IVY BELLS",
+    "classification": "TOP SECRET",
+    "rows": [
+     {
+      "k": "DEPTH",
+      "v": "120 m"
+     },
+     {
+      "k": "CREW",
+      "v": "140"
+     },
+     {
+      "k": "RECORDER",
+      "v": "6 t, nuclear"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "maproom": {
+   "scene": "deep_maproom",
+   "page": "deep",
+   "seconds": 7.0,
+   "example": {
+    "title": "SEA OF OKHOTSK",
+    "grid": "A1-D4",
+    "note": "the route of the Halibut"
+   },
+   "over_footage": false
+  }
+ }
+}

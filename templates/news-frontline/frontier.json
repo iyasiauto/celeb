@@ -1,0 +1,120 @@
+{
+ "template": "news-frontline",
+ "style": "news",
+ "kind": "kit",
+ "kit": "frontline",
+ "prefix": "news",
+ "frame": "news",
+ "frame_every": 3,
+ "types": {
+  "newsbar": {
+   "scene": "news_newsbar",
+   "page": "frontline",
+   "seconds": 6.0,
+   "example": {
+    "tag": "BREAKING NEWS",
+    "text": "Foreign Secretary says \"we must make sure we are doing all we can\"",
+    "source": "Sky News, 24 Feb 2022"
+   },
+   "over_footage": true
+  },
+  "timeline": {
+   "scene": "news_timeline",
+   "page": "frontline",
+   "seconds": 7.0,
+   "example": {
+    "note": "how it escalated",
+    "events": [
+     {
+      "date": "FEB 2022",
+      "text": "Russian troops cross the border"
+     },
+     {
+      "date": "SEP 2022",
+      "text": "Kharkiv counteroffensive"
+     },
+     {
+      "date": "JUN 2023",
+      "text": "Kakhovka dam destroyed"
+     },
+     {
+      "date": "AUG 2024",
+      "text": "Ukraine enters Kursk"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "label": {
+   "scene": "news_label",
+   "page": "frontline",
+   "seconds": 3.8,
+   "example": {
+    "text": "KYIV",
+    "sub": "capital, 2.9 million"
+   },
+   "over_footage": true
+  },
+  "arrows": {
+   "scene": "news_arrows",
+   "page": "frontline",
+   "seconds": 6.0,
+   "example": {
+    "title": "THREE AXES",
+    "arrows": [
+     {
+      "from": "BELARUS",
+      "to": "KYIV"
+     },
+     {
+      "from": "DONBAS",
+      "to": "KHARKIV"
+     },
+     {
+      "from": "CRIMEA",
+      "to": "KHERSON"
+     }
+    ],
+    "hot": [
+     "KYIV",
+     "KHARKIV"
+    ]
+   },
+   "over_footage": false
+  },
+  "ticker": {
+   "scene": "news_ticker",
+   "page": "frontline",
+   "seconds": 5.5,
+   "example": {
+    "headline": "RUSSIAN FORCES ARE CLOSE TO KYIV",
+    "items": [
+     "Zelensky: fate of Ukraine being decided right now",
+     "EU agrees new sanctions",
+     "NATO holds emergency summit"
+    ],
+    "time": "9:01 PM ET"
+   },
+   "over_footage": false
+  },
+  "count": {
+   "scene": "news_count",
+   "page": "frontline",
+   "seconds": 5.0,
+   "example": {
+    "value": "190000",
+    "unit": "troops on the border",
+    "source": "US intelligence estimate, Feb 2022",
+    "trend": [
+     30,
+     45,
+     60,
+     90,
+     130,
+     190
+    ]
+   },
+   "over_footage": false
+  }
+ }
+}

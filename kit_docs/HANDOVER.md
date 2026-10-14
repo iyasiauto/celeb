@@ -93,6 +93,14 @@ python docu/registry.py check
   (Frontier ke styles jaisa).
 - `datadoc` template ke liye apne PC wali `scenes_datadoc.js` ko `docu/` mein rakh dein (fonts kit mein hain).
 
+### 5b. Template chunna (24 templates)
+
+Kit root mein **`TEMPLATES_GALLERY.html`** kholein: har template ka sample video aur preview sheet ek page par.
+Docu Studio ki list bhi ab **har `styles/<id>/` folder se** banti hai (preview picture aur sample ke saath), aur style
+apne template ka look hi render karti hai (pehle naam match na ho to "documentary" lag jata tha — wo masla khatam).
+Frontier ke 14 looks aur New Style 3 isi list mein hain — `kit_docs/TEMPLATES.md` §9–10.
+Gallery dobara banani ho (naya template daala): `python docu/tools/template_catalog.py`.
+
 ---
 
 ## 6. Ek nayi video banane ka tareeqa

@@ -292,13 +292,32 @@ def bank():
     if not BANK:
         BANK.update(whoosh=whoosh(0.7), whoosh_s=whoosh(0.45, 600, 7000), whoosh_l=whoosh(1.4, 200, 3500),
                     impact=impact(), riser=riser(), stamp=stamp_hit(), paper=paper(), pop=pop(),
-                    ping=ping(), zip=zip_(), pen=pen(), tv=tv_on(), boom=boom_soft(), clank=clank(), sting=sting(), glitch=glitch(), shatter=shatter())
+                    ping=ping(), zip=zip_(), pen=pen(), tv=tv_on(), boom=boom_soft(), clank=clank(), sting=sting(), glitch=glitch(), shatter=shatter(),
+                    tick=tick(), click=type_click())
     return BANK
 
 
 # ------------------------------------------------------------------ spotting
 
 CALM_KEEP = {"paper", "pen", "type", "ping", "roll", "pop", "clank"}
+
+# Frontier's sound names (templates imported from Frontier carry their own marks: scene["sfx"]) -> this bank
+FRONTIER_SFX = {"whoosh": "whoosh", "whoosh_out": "whoosh_l", "hit": "impact", "riser": "riser", "typekey": "click",
+                "click": "tick", "tap": "tick", "static": "glitch", "ping": "ping", "pop": "pop", "boing": "pop",
+                "paper": "paper", "hum": "boom", "cash": "ping", "crackle": "paper", "sting": "sting", "tape": "tv",
+                "stamp": "stamp", "zip": "zip", "pen": "pen", "impact": "impact", "tick": "tick"}
+
+
+def _marks(add, t0, dur, marks, shift=-8.0):
+    """a scene's own sound marks [(second, name, dB)] (Frontier's levels sit ~8 dB above this mix's)"""
+    for m in marks or []:
+        try:
+            at, name, db = float(m[0]), str(m[1]), float(m[2])
+        except (TypeError, ValueError, IndexError):
+            continue
+        name = FRONTIER_SFX.get(name, name)
+        if at <= dur + 0.05 and name in BANK:
+            add(t0 + at, name, db + shift)
 
 
 def spot(scenes, style="full"):
@@ -323,8 +342,16 @@ def spot(scenes, style="full"):
         t0, ty = s["t0"], s["type"]
         cur[:] = [t0]
         graphic = ty not in ("clip", "photo")
+        # a scene that brings its own sound marks (Frontier templates) is spotted from them alone
+        if s.get("sfx"):
+            bank()
+            _marks(add, t0, float(s.get("duration", 6)), s["sfx"])
+        for o in s.get("overlays", []):
+            if o.get("type") == "frontier" and o.get("sfx"):
+                bank()
+                _marks(add, t0 + float(o.get("at", 0)), float(s.get("duration", 6)), o["sfx"])
         # cuts into graphic scenes carry a whoosh; clip-to-clip and photo cuts stay clean
-        if graphic and ty not in ("chapter", "title", "segment") and prev is not None:
+        if graphic and not s.get("sfx") and ty not in ("chapter", "title", "segment") and prev is not None:
             add(t0 - 0.28, "whoosh_s" if ty in ("words", "stat", "quote") else "whoosh", -9)
         if ty == "chapter":
             add(t0 - 1.75, "riser", -13)

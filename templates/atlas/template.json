@@ -1,0 +1,193 @@
+{
+ "id": "atlas",
+ "name": "Atlas",
+ "version": 1,
+ "source": "Frontier styles/atlas.json",
+ "theme": "atlas",
+ "grade": "eq=contrast=1.05:saturation=1.1",
+ "grain": 1.2,
+ "xfade": 0.0,
+ "sfx_style": "full",
+ "best_for": "cartoon history explainers",
+ "look": "History explained in a thick-outline cartoon world: every picture drawn flat with bold black outlines and a yellowed-paper palette, a TIME MACHINE bar at the bottom when the story jumps in time, a flipchart of eras and dynasties, a wristwatch showing the year, a bouncy title card, paint-wave wipes between chapters, scoreboards of armies and gold, a signpost of where the story could go, cartoon maps with thick outlines and handwritten names, and comic captions. Playful narration, real facts.",
+ "tagline": "History as a bold cartoon: the time machine, the flipchart, the paint wipe.",
+ "examples": [
+  "templates/atlas/demo_build.py"
+ ],
+ "starter": "templates/atlas/README.md",
+ "preview_dir": "templates/atlas/previews",
+ "preview_sheet": "templates/atlas/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_atlas.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "Bangers.ttf",
+   "Garamond": "Bangers.ttf",
+   "Engr": "Bangers.ttf",
+   "Rec": "Bangers.ttf",
+   "GaramondI": "Bangers.ttf",
+   "RecI": "Bangers.ttf",
+   "Caveat": "Bangers.ttf",
+   "Barlow": "Roboto-Condensed.ttf",
+   "Oswald": "Roboto-Condensed.ttf",
+   "Label": "Roboto-Condensed.ttf",
+   "BarlowB": "Roboto-Condensed.ttf",
+   "OswaldB": "Roboto-Condensed.ttf",
+   "LabelB": "Roboto-Condensed.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "Bangers.ttf",
+   "Num": "Bangers.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#F3E3B3",
+   "gold": "#D93B2B",
+   "mustard": "#D93B2B",
+   "red": "#D93B2B",
+   "cyan": "#3B8BD9",
+   "green": "#6DB33F",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "217,59,43",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#D93B2B",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#D93B2B",
+   "hiLine": "rgba(217,59,43,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.2,
+  "max_gap_s": 67,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 5,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "atlas_timemachine",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "the time-travel bar when the story jumps in time (years as numbers, BC negative)"
+  },
+  {
+   "type": "atlas_flipchart",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "2-4 eras, rulers, dynasties or stages as flipped pages, each with its year, its name and a colour (green|blue|red|yellow|purple| orange)"
+  },
+  {
+   "type": "atlas_watch",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a wristwatch showing the year the story lands in"
+  },
+  {
+   "type": "atlas_stamp",
+   "family": "heading",
+   "min_per_10min": 3,
+   "use": "the bouncy title card of an episode or a part"
+  },
+  {
+   "type": "atlas_wave",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a paint wipe between two eras or places (yellow|red|blue|green)"
+  },
+  {
+   "type": "atlas_scoreboard",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "two sides compared with real numbers counting up"
+  },
+  {
+   "type": "atlas_signpost",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "the places the story could go next or the roads out of a place."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.6,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.2,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0.4,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "atlas",
+  "kind": "kit",
+  "kit": "atlas",
+  "frame": "paper",
+  "frame_every": 2
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: every 2-th shot sits in the paper frame (frame='paper'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).",
+  "This is a cartoon history explainer: the first minute opens on a stamp (the episode's title card), a timemachine on the first jump in time (from now to the year of the story), a watch on the year the story lands in, a map (cartoon) on the first place, a flipchart when eras, rulers or stages are listed, and text labels for names and years over the pictures.",
+  "After the hook: the drawn pictures carry it; a timemachine on every jump of more than a century; a wave (paint wipe) between chapters; a scoreboard whenever two sides or two numbers are compared; a signpost when the story could go several ways or the roads out of a place are named; a flipchart for any list of eras, rulers, dynasties or stages; a map when the story moves; a watch on a new year that matters. Keep it moving: something new every 8 to 12 seconds.",
+  "ATLAS: a cartoon world drawn for the exact words, with the TIME MACHINE bar, the flipchart, the wristwatch, paint wipes, scoreboards and cartoon maps. Real footage is off by default so the world stays drawn — tick YouTube footage to mix real shots in as paper prints. Every other drawn picture is set in motion by a cheap image-to-video model (look.animate)."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/atlas/README.md",
+ "captions": {
+  "mode": "comic",
+  "font": "Lilita One",
+  "size": 62,
+  "colour": "#FFFFFF",
+  "outline_colour": "#2A1D12",
+  "line_chars": 34,
+  "margin_v": 90
+ },
+ "caption_accent": "&H2B3BD9&"
+}

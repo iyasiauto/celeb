@@ -329,7 +329,7 @@ def apply_fx(path, scene):
     os.replace(tmp, path)
 
 
-ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead", "ddlabel", "ddtab"}
+ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead", "ddlabel", "ddtab", "frontier"}
 
 
 def render_overlay_video(scene, out_mov, cfg):
@@ -381,6 +381,18 @@ def _blank(path, dur, lim=2.0):
     return True
 
 
+def _kit_dir(cfg):
+    """the kit folder (media/kit) behind cfg["kit"] (a file:// URL)"""
+    from urllib.parse import urlparse, unquote
+    u = cfg.get("kit", "")
+    if u.startswith("file:"):
+        p = unquote(urlparse(u).path)
+        if os.name == "nt" and p.startswith("/") and p[2:3] == ":":
+            p = p[1:]
+        return p
+    return u
+
+
 def _work(args):
     scene, out_dir, cfg = args
     out = os.path.join(out_dir, f"{scene['id']}.mp4")
@@ -408,6 +420,11 @@ def _work(args):
                 render_browser_scene(scene, out, cfg)
                 if _blank(out, scene["duration"], lim):
                     raise RuntimeError(f"{scene['id']} rendered blank twice")
+        if scene.get("footage_frame"):
+            # a Frontier footage frame (templates imported from Frontier: print, monitor, news, board ...)
+            import frames_frontier
+            frames_frontier.ENC = list(X264)
+            frames_frontier.apply(out, dict(scene, duration=_length(scene), pad=0.0), _kit_dir(cfg))
         apply_fx(out, scene)
         return scene["id"], time.time() - t0, None
     except Exception as e:

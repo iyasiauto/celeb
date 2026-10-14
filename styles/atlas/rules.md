@@ -1,0 +1,7 @@
+# Atlas — how it is edited
+
+- Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.
+- Footage: every 2-th shot sits in the paper frame (frame='paper'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).
+- This is a cartoon history explainer: the first minute opens on a stamp (the episode's title card), a timemachine on the first jump in time (from now to the year of the story), a watch on the year the story lands in, a map (cartoon) on the first place, a flipchart when eras, rulers or stages are listed, and text labels for names and years over the pictures.
+- After the hook: the drawn pictures carry it; a timemachine on every jump of more than a century; a wave (paint wipe) between chapters; a scoreboard whenever two sides or two numbers are compared; a signpost when the story could go several ways or the roads out of a place are named; a flipchart for any list of eras, rulers, dynasties or stages; a map when the story moves; a watch on a new year that matters. Keep it moving: something new every 8 to 12 seconds.
+- ATLAS: a cartoon world drawn for the exact words, with the TIME MACHINE bar, the flipchart, the wristwatch, paint wipes, scoreboards and cartoon maps. Real footage is off by default so the world stays drawn — tick YouTube footage to mix real shots in as paper prints. Every other drawn picture is set in motion by a cheap image-to-video model (look.animate).

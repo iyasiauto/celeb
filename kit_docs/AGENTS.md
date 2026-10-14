@@ -110,6 +110,14 @@ Final QC checks every shot against its sentence: replace flagged shots and re-re
 - New style: `python docu/registry.py new-style <id> --template <template>`; palette / fonts / pacing / device
   minimums / rules. Each video pins one style in `projects/<slug>/project.json`, so styles never mix.
 - `python docu/registry.py check` validates everything.
+- Templates imported from Frontier (`templates/<id>/frontier.json`: dossier, kinetic, atlas, deep, news-frontline,
+  legend, hustle, frontier-documentary, courtside, ai-presenter, hasidic-frontier, modern-homes, dark-psychology,
+  stories-2d, emerge-documentary) write their graphics with `docu/frontier.py` (`F = frontier.Template(id)`,
+  `F.g(type, **fields)`, `F.over(...)` on a clip, `F.every(clip(...))` for the footage frame). `registry.py show`
+  prints every type's fields; `templates/<id>/demo_build.py` has one line per device. Their captions burn at `final`
+  (`docu/captions.py`).
+- Re-import after Frontier changes: `python docu/tools/frontier_import.py --frontier <folder>`; previews and samples:
+  `python docu/tools/template_reel.py <id>`; the choosing page: `python docu/tools/template_catalog.py`.
 
 ## Rules
 

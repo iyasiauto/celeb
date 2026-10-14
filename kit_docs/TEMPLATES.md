@@ -1,6 +1,6 @@
 # The templates
 
-Kit ke saath 8 templates aate hain (neeche; 7th: **Final Reel** — `templates/finalreel/README.md`, 8th: **The Record** — `templates/record/README.md`). Ye sab **registry** mein hain: `templates/<id>/template.json` har
+Kit ke saath **24 templates** aate hain: channel ke apne 9 (neeche 1–8 + Data Documentary), **Frontier ke 14 channel looks** (§9) aur **New Style 3 — Documentary** (§10). Sab ek page par: kit root mein **`TEMPLATES_GALLERY.html`** browser mein kholein — har template ki preview picture aur sample video saath saath. Table: `kit_docs/TEMPLATE_CATALOG.md`. Ye sab **registry** mein hain: `templates/<id>/template.json` har
 template ki playbook hai (devices aur kitne chahiye, audit limits, rules, previews, examples) aur
 `styles/<id>/` un ke variations. Naya template / style = naya folder (`python docu/registry.py new-template` /
 `new-style`, guide: `templates/README.md`, `styles/README.md`). Agent har video se pehle
@@ -189,3 +189,61 @@ Bilkul naya look chahiye (naye scenes) to `docu/scenes_almanac.js` ek mukammal m
 - **Settings:** `template="record"` (grade `record`, grain 1.6, xfade 0.4, full sound under the voice), 30–38 % clips,
   every clip under 5 s, QC faceless mode.
 - **Example:** *Why 20,000 Hasidic Jews Were Told To Stay Silent About Crime?*: `projects/hasidic_mesirah/`.
+
+
+## 9 · Frontier ke 14 channel looks (Docu ke andar)
+
+Frontier app ke saare styles ab **Docu ke apne templates** hain — wahi graphics (Frontier ka apna page code), wahi
+footage frames (print, monitor, news band, chalkboard, stage, blurfill, paper), wahi sound marks, wahi captions —
+magar video Docu ke pipeline se banti hai: QC, edit audit, final QC, word-timing, mix sab lagte hain.
+Har ek ka folder: `templates/<id>/` (template.json, `scenes_<id>.js`, `frontier.json`, README, `demo_build.py`,
+previews) aur `styles/<id>/` (detailed style.json — Frontier ki poori style file `"frontier"` key mein — rules.md,
+**preview.jpg**, **sample.mp4**).
+
+| id | Look | Best for |
+|---|---|---|
+| `dossier` | DOSSIER: black table, typed alerts, red crosshair, gold names, prints on a chart | true crime, internet mysteries |
+| `kinetic` | KINETIC: words are the picture, chalkboard, phone cards, comments | essays: psychology, business, culture |
+| `atlas` | ATLAS: cartoon world, time machine bar, flipchart, paint wipes | history explainers |
+| `deep` | DEEP: teal monitor, stencil dates, sonar, cutaways, map room | submarines, spy missions, aircraft |
+| `news-frontline` | NEWS: broadcast band, lower thirds, arrows, dated timeline, ticker | wars, crises, geopolitics |
+| `legend` | LEGEND: numbered chapters, lower thirds, scorecards, blurfill footage | first-person sports / celebrity lists |
+| `hustle` | HUSTLE: glossy black, 3D icons, money rain, counters, versus | side hustles, money |
+| `frontier-documentary` | Documentary (docgfx): cream & gold serif graphics | true stories, history, business |
+| `courtside` | COURTSIDE: sports doc, VHS for old stories, stats tables | sports / NBA documentaries |
+| `ai-presenter` | AI Presenter: docgfx graphics, karaoke captions | explainers with a presenter opener |
+| `hasidic-frontier` | Hasidic Documentary (docgfx) | Hasidic community life |
+| `modern-homes` | Modern Homes: warm paper, big serif titles, boxed captions | home advice |
+| `dark-psychology` | Carl Jung: motion graphics (bars, crowd, flow, cards…) | dark psychology, long calm videos |
+| `stories-2d` | 2D Stories: big upper-case captions, motion cards | second-person money stories |
+
+Shot list mein graphics `docu/frontier.py` se likhe jaate hain:
+
+```python
+import frontier
+F = frontier.Template("dossier")
+at(cue, F.g("alert", head="CODE RED", lines=["URGENT ALERT"], stamp="EVACUATE NOW", body="...", img=pic))
+at(cue, F.every(clip(12)))                                   # har 2nd shot "print" frame mein
+at(cue, clip(14, overlays=[F.over("stamp", at=0.4, text="2021", sub="Kabul")]))
+```
+
+`python docu/registry.py show <id>` har graphic ke fields aur misaal dikhata hai; `templates/<id>/demo_build.py`
+mein har device ki ek line hai. Frontier folder update ho to: `python docu/tools/frontier_import.py --frontier <folder>`
+(templates dobara ban jaate hain), phir `python docu/tools/template_reel.py <id>` (preview + sample).
+
+Captions: in templates ki caption style (typewriter, stack, comic, pop, karaoke, box, upper) `docu/captions.py` se
+`final` par burn hoti hai; band karni ho to `DOCU_CAPTIONS=0`.
+
+## 10 · New Style 3 — Documentary — `emerge-documentary`
+
+Aap ka "Style 1 - Documentary" (Emerge X) pack: `templates/emerge-documentary/pack/` mein EDITING-STYLE.md,
+EDIT-PLAYBOOK.md, WHAT-ITS-FOR.md aur reference pictures; reference video `styles/emerge-documentary/reference.mp4`.
+
+- **Best for:** history, business & brand stories, crime & scandal (reported), sport history, science & space,
+  biographies, investigations, geopolitics explainers.
+- **Look:** real footage first (har ~4 s naya shot, hard cuts), cream #F3EEE4 aur gold #E3B25B, EB Garamond +
+  Roboto Condensed; still one-line captions; labels corners mein.
+- **Devices:** serif graphics (`doc_dateline`, `doc_number`, `doc_chart`, `doc_timeline`, `doc_quote`, `doc_pivot`,
+  `doc_question`), labels (`emname`, `emplace`, `emfigure`, `emphrase` overlays), `emmatch` (match cut), `emtextcut`
+  (text match cut), `empage` (real headline page with marker), `collage`, `map` (midnight teal map), spotlight, depth.
+- **Settings:** grade `eq=contrast=1.04:saturation=0.94:gamma=0.99`, xfade 0 (hard cuts), 58–65 % footage.

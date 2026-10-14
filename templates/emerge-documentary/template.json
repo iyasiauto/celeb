@@ -1,0 +1,409 @@
+{
+ "id": "emerge-documentary",
+ "name": "New Style 3 — Documentary",
+ "version": 1,
+ "source": "Emerge X editing pack 'Style 1 - Documentary' (templates/emerge-documentary/pack/EDITING-STYLE.md)",
+ "theme": "emerge-documentary",
+ "grade": "eq=contrast=1.04:saturation=0.94:gamma=0.99",
+ "grain": 0.8,
+ "xfade": 0.0,
+ "sfx_style": "full",
+ "best_for": "Documentary (Emerge X)",
+ "look": "A premium streaming-documentary look where real archive footage carries the picture and quiet, expensive-looking scenes — maps, real headlines, photo spotlights, cut-out objects, calm cream-and-gold serif graphics — land exactly on the words.",
+ "tagline": "Real footage first; quiet cream-and-gold scenes exactly on the words.",
+ "examples": [
+  "templates/emerge-documentary/demo_build.py"
+ ],
+ "starter": "templates/emerge-documentary/README.md",
+ "preview_dir": "templates/emerge-documentary/previews",
+ "preview_sheet": "templates/emerge-documentary/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_emerge-documentary.js",
+  "scenes_emerge.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "EB-Garamond.ttf",
+   "Garamond": "EB-Garamond.ttf",
+   "Engr": "EB-Garamond.ttf",
+   "Rec": "EB-Garamond.ttf",
+   "GaramondI": "EB-Garamond-Italic.ttf",
+   "RecI": "EB-Garamond-Italic.ttf",
+   "Caveat": "EB-Garamond-Italic.ttf",
+   "Barlow": "Roboto-Condensed.ttf",
+   "Oswald": "Roboto-Condensed.ttf",
+   "Label": "Roboto-Condensed.ttf",
+   "BarlowB": "Roboto-Condensed.ttf",
+   "OswaldB": "Roboto-Condensed.ttf",
+   "LabelB": "Roboto-Condensed.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "InterDisplay-Black.ttf",
+   "Num": "InterDisplay-Black.ttf",
+   "EmSerif": "EB-Garamond.ttf",
+   "EmSerifI": "EB-Garamond-Italic.ttf",
+   "EmCond": "Roboto-Condensed.ttf",
+   "EmDisplay": "InterDisplay-Black.ttf",
+   "EmBody": "Inter-SemiBold.ttf"
+  },
+  "pal": {
+   "ink": "#0A0907",
+   "cream": "#F3EEE4",
+   "gold": "#E3B25B",
+   "mustard": "#D9A441",
+   "red": "#C4553F",
+   "cyan": "#9DB1BA",
+   "green": "#7FA58F",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)",
+   "tan": "#C9BB9C"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#1A1E21",
+   "bg1": "#040506",
+   "sea": "#040506",
+   "rim": "rgba(120,226,255,.35)",
+   "grat": "rgba(120,226,255,.06)",
+   "land": "#0C7393",
+   "border": "rgba(120,226,255,.75)",
+   "admin": "120,226,255",
+   "hi": "47,154,98",
+   "hiA": 0.75,
+   "text": "#FFFFFF",
+   "sub": "rgba(255,255,255,.88)",
+   "dot": "#FF5A4E",
+   "dotText": "#FFFFFF",
+   "name": "rgba(255,255,255,.85)",
+   "shadow": "rgba(0,0,0,.85)",
+   "pin": "dot",
+   "route": "#FFC94D",
+   "hiLine": "rgba(170,240,200,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.5,
+   0.78
+  ],
+  "graphics_per_min": 1.3,
+  "max_gap_s": 60,
+  "max_plain_run": 12,
+  "chapter_every_s": 100000,
+  "min_distinct_devices": 7,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "doc_dateline",
+   "family": "heading",
+   "min_per_10min": 2,
+   "use": "a new place or time begins: PLACE, a gold rule, the date (over the blurred real picture)"
+  },
+  {
+   "type": "doc_number",
+   "family": "graphic",
+   "min_per_10min": 1.2,
+   "use": "one figure that matters, counting up, its unit, what it means and its source"
+  },
+  {
+   "type": "doc_chart",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "a comparison with real numbers: 2-6 bars on warm paper, the one that matters highlighted, source under"
+  },
+  {
+   "type": "doc_timeline",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "3-5 dated events on a line the camera travels along"
+  },
+  {
+   "type": "doc_quote",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "a documented quote, word by word, with who said it and when"
+  },
+  {
+   "type": "doc_pivot",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "one short serif line where the story turns"
+  },
+  {
+   "type": "doc_question",
+   "family": "graphic",
+   "min_per_10min": 0.4,
+   "use": "the question the next part answers"
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.6,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.8,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0,
+   "use": "a 2.5D push into a still"
+  },
+  {
+   "type": "ov:emname",
+   "family": "label",
+   "min_per_10min": 12,
+   "use": "a person's name over footage (bottom-left caps, gold rule, role in serif italic) - every public person named; private people get a label, never a photo"
+  },
+  {
+   "type": "ov:emplace",
+   "family": "place",
+   "min_per_10min": 5,
+   "use": "a place / date stamp top-left over footage (a dateline at the same moment as a map becomes the map's subtitle instead)"
+  },
+  {
+   "type": "ov:emfigure",
+   "family": "number",
+   "min_per_10min": 4,
+   "use": "a figure counting up over footage, bottom-left, with what it counts"
+  },
+  {
+   "type": "ov:emphrase",
+   "family": "label",
+   "min_per_10min": 0,
+   "use": "a key term the viewer must remember (one or two a video): dark caps on a gold box"
+  },
+  {
+   "type": "emmatch",
+   "family": "heading",
+   "min_per_10min": 1,
+   "use": "the match cut, ONCE a video, on the first naming of the main person: photos=[{img, face:[x, y, height] as fractions}]"
+  },
+  {
+   "type": "emtextcut",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "the text match cut, once a video where facts pile up (not within 20 s of the match cut): lines=[1-4 words x 3-5], photos=[...]"
+  },
+  {
+   "type": "empage",
+   "family": "document",
+   "min_per_10min": 6,
+   "use": "the real headline page behind a claim: img (a screenshot of the real page), url, marks=[{box:[x0,y0,x1,y1], at}], source, move window|paper|scan"
+  },
+  {
+   "type": "collage",
+   "family": "collage",
+   "min_per_10min": 4,
+   "use": "a paper-collage moment (7-14 s as 2-4 s shots): halftone cut-outs of the real people, torn photos, typed strips, stamps, red number cards, pins and string"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight",
+  "collage",
+  "doc_place",
+  "doc_pull",
+  "doc_table",
+  "doc_social",
+  "doc_card",
+  "doc_step"
+ ],
+ "frontier": {
+  "style": "emerge",
+  "kind": "docgfx",
+  "kit": "",
+  "frame": null,
+  "frame_every": 0
+ },
+ "rules": [
+  "Real footage carries it (58 % of the hook, 60-65 % of the body), cut sentence by sentence - a new real shot about every 4 s, never looped; a repeat >= 30 s later, reframed. No stock, no AI pictures unless asked.",
+  "Hard cuts only (xfade 0) - no dissolves, whips or leaks as transitions; a whoosh on the cut into every scene, a softer one out.",
+  "Scenes land on the words: a map when a place matters, a dateline on a new date, the real headline page on a reported fact (empage), a spotlight / depth push on every public person named, cut-out objects, a paper-collage moment inside the first 30 s.",
+  "Labels on footage, 3-5 a minute (>= 5 in the first minute): names bottom-left (emname), places / dates top-left (emplace), figures bottom-left (emfigure); never over a graphic, map, page or collage; 2.2-4.5 s each.",
+  "Graphics add a fact the voice does not (dateline, number with source, chart of 3+ things, timeline, documented quote, pivot / question at a real turn); one about every 45 s; never the same type twice in a row.",
+  "Captions: still, one line <= 48 chars, Roboto Condensed 46 px, bottom-centre, hidden over graphics, maps, pages and collage (docu/captions.py burns them at `final`).",
+  "Grade eq=contrast=1.04:saturation=0.94:gamma=0.99, no vignette on footage, a faint dust bed; 1-2 warm leaks only on emotional shots.",
+  "The full spec: templates/emerge-documentary/pack/EDITING-STYLE.md and EDIT-PLAYBOOK.md (read both before writing the shot list)."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/emerge-documentary/pack/EDITING-STYLE.md",
+ "captions": {
+  "font": "Roboto Condensed",
+  "size": 46,
+  "upper": false,
+  "karaoke": false,
+  "outline": 1.7,
+  "shadow": 1.2,
+  "line_chars": 48,
+  "margin_v": 96
+ },
+ "demo": [
+  {
+   "pos": 0,
+   "type": "emmatch",
+   "duration": 4.6,
+   "photos": [
+    {
+     "img": "$img",
+     "face": [
+      0.5,
+      0.4,
+      0.3
+     ]
+    },
+    {
+     "img": "$img",
+     "face": [
+      0.5,
+      0.4,
+      0.3
+     ]
+    },
+    {
+     "img": "$img",
+     "face": [
+      0.5,
+      0.4,
+      0.3
+     ]
+    },
+    {
+     "img": "$img",
+     "face": [
+      0.5,
+      0.4,
+      0.3
+     ]
+    },
+    {
+     "img": "$img",
+     "face": [
+      0.5,
+      0.4,
+      0.3
+     ]
+    },
+    {
+     "img": "$img",
+     "face": [
+      0.5,
+      0.4,
+      0.3
+     ]
+    }
+   ]
+  },
+  {
+   "pos": 2,
+   "clip": true,
+   "duration": 3.8,
+   "overlays": [
+    {
+     "type": "emname",
+     "name": "Jane Doe",
+     "role": "Chief executive, 1998 - 2004",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "pos": 4,
+   "clip": true,
+   "duration": 3.8,
+   "overlays": [
+    {
+     "type": "emplace",
+     "text": "Detroit, Michigan",
+     "sub": "March 1983",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "pos": 6,
+   "clip": true,
+   "duration": 3.8,
+   "overlays": [
+    {
+     "type": "emfigure",
+     "value": "48,000",
+     "label": "workers laid off",
+     "at": 0.3
+    }
+   ]
+  },
+  {
+   "pos": 8,
+   "type": "empage",
+   "duration": 6.5,
+   "img": "$img",
+   "url": "www.example-news.com/2004/the-collapse",
+   "marks": [
+    {
+     "box": [
+      0.08,
+      0.12,
+      0.92,
+      0.22
+     ],
+     "at": 1.4
+    },
+    {
+     "box": [
+      0.08,
+      0.24,
+      0.7,
+      0.32
+     ],
+     "at": 2.3
+    }
+   ],
+   "source": "Example News, 12 May 2004",
+   "move": "window"
+  },
+  {
+   "pos": 10,
+   "type": "emtextcut",
+   "duration": 5.0,
+   "lines": [
+    "Three plants",
+    "Two lawsuits",
+    "One verdict"
+   ],
+   "photos": [
+    "$img",
+    "$img",
+    "$img"
+   ]
+  },
+  {
+   "clip": true,
+   "duration": 3.6,
+   "overlays": [
+    {
+     "type": "emphrase",
+     "text": "Chapter 11",
+     "at": 0.3
+    }
+   ]
+  }
+ ]
+}
