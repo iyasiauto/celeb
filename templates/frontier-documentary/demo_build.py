@@ -15,8 +15,6 @@ DEMO = [
     F.g('quote', **{'quote': "That's one small step for man, one giant leap for mankind.", 'who': 'Neil Armstrong', 'role': 'Commander, Apollo 11', 'year': '1969', 'img': '<picture>'}),      # ~4.6 s
     clip(12, overlays=[F.over('pivot', at=0.25, **{'line': 'But the numbers were wrong.', 'duration': 4.6})]),
     clip(12, overlays=[F.over('question', at=0.25, **{'line': 'So what went wrong?', 'duration': 4.2})]),
-    F.g('card', **{'img': '<picture>'}),      # ~4.6 s
-    F.g('step', **{'img': '<picture>'}),      # ~3.2 s
     F.g('social', **{'action': 'unfollow', 'frm': 'Lamine Yamal', 'to': 'Alex Padilla', 'mutual': True, 'note': 'late 2024', 'platform': '', 'img': '<picture>'}),      # ~4.6 s
     F.g('chapter', **{'n': '2', 'kicker': 'CHAPTER 2', 'title': 'The Man Who Sued the League', 'episode': '', 'dark': True, 'img': '<picture>'}),      # ~3.8 s
     clip(12, overlays=[F.over('place', at=0.25, **{'place': 'CHICAGO', 'sub': 'ILLINOIS', 'duration': 4.4})]),
