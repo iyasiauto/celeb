@@ -610,7 +610,21 @@ def main(music=()):
         else:
             render.concat(scenes, SEGS, f"{WORK}/video.mp4")
         out = os.path.join(OUT, P["name"] + ".mp4")
-        mix.mux(f"{WORK}/video.mp4", f"{WORK}/mix.wav", out)
+        video = f"{WORK}/video.mp4"
+        cap = PB.get("captions")
+        if cap and not cap.get("off") and os.environ.get("DOCU_CAPTIONS", "1") != "0":
+            # the template's burned-in captions (Frontier looks, New Style 3): docu/captions.py; DOCU_CAPTIONS=0 = none
+            try:
+                import captions
+                ass = captions.build_ass(json.load(open(WORDS, encoding="utf-8")), scenes, cap, f"{WORK}/captions.ass",
+                                         accent=PB.get("caption_accent"))
+                captions.burn(video, ass, f"{WORK}/video_cap.mp4", os.path.join(KIT, "fonts"),
+                              nvenc=bool(getattr(render, "_USE_NVENC", False)))
+                video = f"{WORK}/video_cap.mp4"
+                print("captions burned:", cap.get("mode") or "still")
+            except Exception as e:          # noqa: BLE001 - captions must never lose a finished render
+                print("captions skipped:", e)
+        mix.mux(video, f"{WORK}/mix.wav", out)
         _fit_size(out)
         print("final:", out)
         # the last gate: every shot against the words it sits under (talking heads, logos, irrelevance)

@@ -117,9 +117,14 @@ def demo_scenes(tid, work, cap=4.6):
     # a template's own extra devices (template.json "demo"): "$img" = the next demo picture, {"clip": true} = footage
     tj = json.load(open(os.path.join(ROOT, "templates", tid, "template.json"), encoding="utf-8"))
 
+    docs = [_prepared(p, work, 90 + i) for i, p in enumerate([p for p in imgs if any(w in os.path.basename(p).lower()
+                                                                for w in ("document", "newspaper", "archive", "paper", "letter"))][:2])]
+
     def fill(v):
         nonlocal k
-        if v == "$img":
+        if v == "$doc" and docs:
+            return docs[0]
+        if v == "$img" or v == "$doc":
             k += 1
             return pics[k % len(pics)] if pics else None
         if isinstance(v, list):

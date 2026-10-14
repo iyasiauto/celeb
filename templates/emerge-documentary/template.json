@@ -354,7 +354,7 @@
    "pos": 8,
    "type": "empage",
    "duration": 6.5,
-   "img": "$img",
+   "img": "$doc",
    "url": "www.example-news.com/2004/the-collapse",
    "marks": [
     {

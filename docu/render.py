@@ -329,7 +329,8 @@ def apply_fx(path, scene):
     os.replace(tmp, path)
 
 
-ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead", "ddlabel", "ddtab", "frontier"}
+ANIMATED_OVERLAYS = {"ticker", "bug", "newslower", "almhead", "gzhead", "ddlabel", "ddtab", "frontier",
+                     "emname", "emplace", "emfigure", "emphrase"}
 
 
 def render_overlay_video(scene, out_mov, cfg):
@@ -401,7 +402,7 @@ def _work(args):
     t0 = time.time()
     try:
         if scene["type"] == "clip":
-            if any(o["type"] in ANIMATED_OVERLAYS for o in scene.get("overlays", [])):
+            if any(o["type"] in ANIMATED_OVERLAYS or o.get("animated") for o in scene.get("overlays", [])):
                 mov = os.path.join(out_dir, f"{scene['id']}_ovl.mov")
                 render_overlay_video(scene, mov, cfg)
                 scene = dict(scene, overlay_mov=mov)
