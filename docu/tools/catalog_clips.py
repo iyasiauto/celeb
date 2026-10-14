@@ -90,7 +90,10 @@ def scan(src_dir, cat, split=False, workers=8):
 
     def grab(s):
         for k, frac in enumerate((0.2, 0.5, 0.8)):
-            frame(os.path.join(src_dir, s["video"]), s["s"] + (s["e"] - s["s"]) * frac, f"{cat}/frames/{s['i']:05d}_{k}.jpg")
+            dst = f"{cat}/frames/{s['i']:05d}_{k}.jpg"
+            if os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(os.path.join(src_dir, s["video"])):
+                continue                               # grabbed by an earlier run from the same file
+            frame(os.path.join(src_dir, s["video"]), s["s"] + (s["e"] - s["s"]) * frac, dst)
     with ThreadPoolExecutor(workers) as ex:
         list(ex.map(grab, shots))
     json.dump(shots, open(f"{cat}/shots.json", "w"), indent=0)

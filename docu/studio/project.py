@@ -39,6 +39,16 @@ STYLES = {
                           "Slate ink on oatmeal paper. Slow and calm.",
                     sfx="calm", xfade=0.55, preview="templates/previews/almanac2/gzhead.jpg",
                     sheet="templates/previews/sheet_almanac2.jpg", readme="Style F"),
+    "record": dict(name="The Record", letter="R", example="projects/hasidic_mesirah",
+                   blurb="Investigative documentary: dockets, transcript pages with marked lines, lexicon, tally, chain, "
+                         "redacted lists, stock inside an evidence viewer. Blue-black ink, bone paper, one amber signal.",
+                   sfx="full", xfade=0.4, preview="../templates/record/previews/sheet.jpg",
+                   sheet="../templates/record/previews/sheet.jpg", readme="The Record"),
+    "datadoc": dict(name="Data Documentary", letter="G", example="docu/templates/starter_documentary",
+                    blurb="Data-led documentary: big quiet numbers on near-black navy (ddroll, ddbars, dddots, ddstrike, "
+                          "ddread), stats, checklists, splits, the midnight map, chapter tabs on full-frame footage.",
+                    sfx="calm", xfade=0.5, preview="../templates/record/previews/sheet.jpg",
+                    sheet="../templates/record/previews/sheet.jpg", readme="Data Documentary"),
 }
 
 
@@ -81,7 +91,7 @@ def all_styles(w):
                    expedition="Noahs_Ark_Myth_or_Reality.mp4", broadcast="Noahs_Ark_Breaking_Drill_Bit_Shattered.mp4",
                    almanac="Pennsylvania_Has_95000_Amish_So_Why_Does_Wisconsin_Have_MORE_Settlements.mp4")
     for k, v in STYLES.items():
-        smp = os.path.join(media(w), "out", samples[k])
+        smp = os.path.join(media(w), "out", samples.get(k, "-"))
         out[k] = dict(v, theme=k, engine="docu", preview_path=os.path.join(DOCU, v["preview"]),
                       example_path=os.path.join(os.path.dirname(DOCU), v["example"], "build.py"),
                       sample_path=smp if os.path.exists(smp) else None)

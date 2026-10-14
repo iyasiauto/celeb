@@ -38,3 +38,6 @@ docu/templates/_gallery_work/
 # agent inputs (scripts, voiceovers)
 inputs/
 workspaces/
+
+# shared stock B-roll library (user kit)
+/stock_library

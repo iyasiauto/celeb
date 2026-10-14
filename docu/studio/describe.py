@@ -39,6 +39,40 @@ For EVERY shot write ONE line:
 Output only the lines, no other text."""
 
 
+def _cache_path(cat_dir):
+    """one cache per workspace media folder: <media>/_describe_cache.json (cat_dir = <media>/<niche>/cat)"""
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(cat_dir))), "_describe_cache.json")
+
+
+def _cached(cat_dir, kind, sheet_path, ask):
+    """a contact sheet already described (same pixels, same name) is not sent to the AI again - every video of a
+    niche draws on the same pool, so its sheets repeat from video to video"""
+    import hashlib
+    cp = _cache_path(cat_dir)
+    key = f"{kind}:{os.path.basename(sheet_path)}:{hashlib.md5(open(sheet_path, 'rb').read()).hexdigest()}"
+    with _LOCK:
+        try:
+            cache = json.load(open(cp, encoding="utf-8"))
+        except Exception:                        # noqa: BLE001
+            cache = {}
+    if key in cache and cache[key]:
+        return cache[key]
+    lines = ask()
+    if lines:
+        with _LOCK:
+            try:
+                cache = json.load(open(cp, encoding="utf-8"))
+            except Exception:                    # noqa: BLE001
+                cache = {}
+            cache[key] = lines
+            json.dump(cache, open(cp, "w", encoding="utf-8"), ensure_ascii=False)
+    return lines
+
+
+import threading as _threading            # noqa: E402
+_LOCK = _threading.Lock()
+
+
 def _ask_sheet(session_args, prompt, path):
     import ai
     provider, model = session_args
@@ -59,7 +93,8 @@ def describe_images(cat_dir, niche_name, provider=None, model=None, log=print, p
 
     def one(f):
         sheet = os.path.splitext(f)[0]
-        lines = _ask_sheet((provider, model), IMG_PROMPT.format(niche=niche_name, sheet=sheet), os.path.join(cat_dir, "sheets_img", f))
+        sp = os.path.join(cat_dir, "sheets_img", f)
+        lines = _cached(cat_dir, "img", sp, lambda: _ask_sheet((provider, model), IMG_PROMPT.format(niche=niche_name, sheet=sheet), sp))
         good = [l for l in lines if re.match(rf"^{re.escape(sheet)}:\d+\|", l)]
         done[0] += 1
         if progress:
@@ -79,7 +114,8 @@ def describe_clips(cat_dir, niche_name, provider=None, model=None, log=print, pr
     out, done = [], [0]
 
     def one(f):
-        lines = _ask_sheet((provider, model), CLIP_PROMPT.format(niche=niche_name), os.path.join(cat_dir, "sheets_clips", f))
+        sp = os.path.join(cat_dir, "sheets_clips", f)
+        lines = _cached(cat_dir, "clip", sp, lambda: _ask_sheet((provider, model), CLIP_PROMPT.format(niche=niche_name), sp))
         good = [l for l in lines if re.match(r"^\d+\|\d\|", l)]
         done[0] += 1
         if progress:

@@ -89,7 +89,7 @@ def pick(seed, hist=(), tracks=()):
     fonts = choose(range(len(FONTSETS)), last.get("fonts"))
     kicker = choose(list(KICKERS), last.get("kicker"))
     grade, grain = r.choice(GRADES)
-    used_openers = {h.get("vary", {}).get("music", [None])[0] for h in hist}
+    used_openers = {(h.get("vary", {}).get("music") or [None])[0] for h in hist}
     music = list(tracks)
     r.shuffle(music)
     music.sort(key=lambda t: t in used_openers)          # a fresh opener first

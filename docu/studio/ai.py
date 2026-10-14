@@ -225,8 +225,12 @@ class Chat:
             prompt = "First read these image files so you can see them:\n" + "\n".join(f"- {os.path.abspath(p)}" for p in images) + "\n\n" + prompt
         cwd = os.path.join(tempfile.gettempdir(), "docu-studio-claude")
         os.makedirs(cwd, exist_ok=True)
+        system = self.system or "Answer the user."
+        if len(system) > 6000:          # Windows caps a command line at ~32k characters: long instructions go on stdin
+            prompt = f"<instructions>\n{system}\n</instructions>\n\n{prompt}"
+            system = "Follow the <instructions> block at the start of the user message exactly."
         cmd = [exe, "-p", "--model", self.model, "--output-format", "text", "--no-session-persistence",
-               "--disable-slash-commands", "--strict-mcp-config", "--system-prompt", self.system or "Answer the user."]
+               "--disable-slash-commands", "--strict-mcp-config", "--system-prompt", system]
         if images:
             cmd += ["--tools", "Read", "--allowedTools", "Read", "--permission-mode", "dontAsk"]
             for d in sorted({os.path.dirname(os.path.abspath(p)) for p in images}):

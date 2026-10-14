@@ -57,6 +57,16 @@ def _link(src, dst):
     shutil.copy2(src, dst)
 
 
+def _same_file(link, src):
+    """does picks/<key> already show this picture? (symlink target, hard link, or an identical copy)"""
+    try:
+        if os.path.samefile(link, src):
+            return True
+        return os.path.getsize(link) == os.path.getsize(src) and open(link, "rb").read() == open(src, "rb").read()
+    except OSError:
+        return False
+
+
 def _font(size):
     for p in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"):
         if os.path.exists(p):
@@ -162,6 +172,10 @@ def pick(cat, src, picks, dst):
         key = f"{sheet}_{pos}"
         ext = os.path.splitext(r["file"])[1].lower()
         link = os.path.join(picks, key + (ext if ext in (".jpg", ".png", ".jpeg") else ".jpg"))
+        # a re-catalog renumbers the sheets: a key from the last run may now name a different picture, so a stale
+        # link is replaced (the key's name alone would keep showing the old picture under the new description)
+        if os.path.lexists(link) and not _same_file(link, os.path.join(src, r["file"])):
+            os.remove(link)
         if not os.path.exists(link):
             _link(os.path.join(src, r["file"]), link)
         _origin(picks, os.path.basename(link), r["file"])

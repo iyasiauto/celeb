@@ -104,6 +104,10 @@ def setup(*, name, kit, footage, work, data, out, vo=None, theme=None, grade=Non
     xfade = xfade if xfade is not None else (PB.get("xfade") or 0.0)
     sfx_style = sfx_style or PB.get("sfx_style") or "full"
     _pin(os.path.dirname(os.path.abspath(data)), PB, niche, footage)
+    if not os.path.isdir(os.path.join(kit, "maps")):        # a workspace has no media/kit: use the kit root's
+        root_kit = os.path.join(_HERE, "..", "media", "kit")
+        if os.path.isdir(os.path.join(root_kit, "maps")):
+            kit = os.path.abspath(root_kit)
     KIT, FOOT, WORK, OUT = kit, footage, work, out
     # fonts shipped with the templates (docu/fonts, all OFL) join the kit's fonts once
     fdir = os.path.join(_HERE, "fonts")
@@ -225,14 +229,25 @@ def photo(name, move="in", focus=None, zoom=None, grade=None, crop=None, fit=Non
     return s
 
 
+def _cat(i):
+    """catalog shot by its catalog number (the idx in notes_clips.txt) - QC filtering removes entries from CAT,
+    so a list position would point at the wrong shot"""
+    for c in CAT:
+        if c.get("i") == i:
+            return c
+    if CAT and "i" in CAT[0]:
+        raise SystemExit(f"clip {i}: not in the catalog after QC (rejected: talking head / logo / text) - pick another")
+    return CAT[i]
+
+
 def clip(i, zoom=None, chip=None, chip_at=0.4, grade=None, skip=0.0, crop=None, lower=None, then=(), **kw):
     """A catalog shot; `then` appends further catalog shots when one is too short for its words."""
-    c = CAT[i]
+    c = _cat(i)
     src = os.path.join(FOOT, "source_video", c["video"])
     s = dict(type="clip", src=src, start=c["s"] + 0.15 + skip, end=c["e"] - 0.1, grade=_g(grade), cat=i)
     if then:
-        s["more"] = [dict(src=os.path.join(FOOT, "source_video", CAT[j]["video"]), start=CAT[j]["s"] + 0.15,
-                          end=CAT[j]["e"] - 0.1) for j in then]
+        s["more"] = [dict(src=os.path.join(FOOT, "source_video", _cat(j)["video"]), start=_cat(j)["s"] + 0.15,
+                          end=_cat(j)["e"] - 0.1) for j in then]
     if zoom: s["zoom"] = zoom
     if crop:
         s["crop"] = crop
@@ -444,15 +459,20 @@ def finish(scenes):
         own = {d["type"] for d in (PB or {}).get("devices", []) if d.get("family") == "heading"}
         heading = s["type"] in HEADING_TYPES | own or any(o.get("type") in HEADING_OVERLAYS or "ov:" + str(o.get("type")) in own
                                                           for o in s.get("overlays", []))
-        if (heading or k == 0) and mix.get("chapter_dust") and not s.get("no_fx"):
-            s.setdefault("fx", []).append(dict(src=mix["chapter_dust"], mode="screen", opacity=mix.get("chapter_opacity", 0.7)))
-            n_fx += 1
+        # the overlay (dust / VHS) goes on footage now and then - never on the opening or a heading (user's rule)
+        if (not heading and k >= 3 and s["type"] in FOOTAGE_TYPES and mix.get("chapter_dust") and not s.get("no_fx")
+                and "leak" not in os.path.basename(mix["chapter_dust"]).lower()):
+            n_foot = sum(1 for x in scenes[:k] if x["type"] in FOOTAGE_TYPES)
+            if n_foot % 9 == 4:
+                s.setdefault("fx", []).append(dict(src=mix["chapter_dust"], mode="screen",
+                                                   opacity=min(0.4, mix.get("chapter_opacity", 0.7))))
+                n_fx += 1
         gate = mix.get("tv_gate") or mix.get("tv_gate_file")
         if (s.get("archive") or s.get("gate")) and gate and not s.get("no_fx"):
             s.setdefault("fx", []).append(dict(src=gate, key="green"))
             n_gate += 1
     P["mix"] = asset_mix.summary(mix)
-    print(f"{P['mix']}  ->  texture on {n_tex} scenes, overlay on {n_fx} headings, TV gate on {n_gate} archive shots")
+    print(f"{P['mix']}  ->  texture on {n_tex} scenes, overlay on {n_fx} footage shots, TV gate on {n_gate} archive shots")
     return scenes
 
 
@@ -508,8 +528,10 @@ def main(music=()):
     """music: [dict(at=cue or None, track=..., db=0, lead=0)] - one bed per act."""
     import subprocess
     import multiprocessing
-    if multiprocessing.parent_process() is not None:
-        return                         # a render worker re-importing build.py (Windows / macOS spawn): do nothing
+    # a render worker re-importing build.py (Windows / macOS spawn): do nothing. parent_process() is still None while
+    # a spawned worker imports the main module, but its name is already set ("SpawnPoolWorker-n"), so check both
+    if multiprocessing.parent_process() is not None or multiprocessing.current_process().name != "MainProcess":
+        return
     cmd = sys.argv[1] if len(sys.argv) > 1 else "plan"
     if cmd == "path":                  # where `final` writes the video (for pipeline scripts)
         print(os.path.join(OUT, P["name"] + ".mp4"))
@@ -519,7 +541,7 @@ def main(music=()):
                                   capture_output=True, text=True).stdout)
     scenes = finish(resolve(T, vo_dur))
     os.makedirs(OUT, exist_ok=True)
-    json.dump(scenes, open(f"{WORK}/scenes.json", "w"), indent=1, ensure_ascii=False)
+    json.dump(scenes, open(f"{WORK}/scenes.json", "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     import render as _r
     cfg = {"kit": _r.file_uri(KIT), "assets": _r.file_uri(ASSETS), "theme": P["theme"], "grain": P["grain"]}
     import registry
@@ -564,6 +586,10 @@ def main(music=()):
         sel = [s for s in scenes if not only or s["id"] in only]
         paths = render.stills(sel, cfg, f"{WORK}/stills")
         print(len(paths), "stills")
+        if not only and os.environ.get("DOCU_QC_EARLY", "1") == "1":
+            _footage_qc(scenes)            # the final QC's judgement, before a single frame is rendered
+    if cmd == "qc":
+        _footage_qc(scenes)
     if cmd in ("render", "all"):
         only = sys.argv[2:] or None
         sel = [s for s in scenes if not only or s["id"] in only]
@@ -599,6 +625,23 @@ def main(music=()):
                       f"replace them in build.py, then: python build.py render {' '.join(sorted(bad)[:8])} && python build.py final")
         except Exception as e:          # noqa: BLE001 - QC must never lose a finished render
             print("final QC could not run:", e)
+
+
+def _footage_qc(scenes):
+    """final_qc.run on the planned shots (it judges the source clip / picture against its words, so it needs no
+    render). Verdicts are cached per shot + words, so the run after `final` only asks about shots that changed."""
+    try:
+        sys.path.insert(0, os.path.join(_HERE, "tools"))
+        sys.path.insert(0, os.path.join(_HERE, "studio"))
+        import final_qc
+        words = json.load(open(WORDS, encoding="utf-8"))
+        bad = final_qc.run(scenes, words, P.get("topic", ""), ASSETS, WORK, mode=PB.get("qc_mode") or "faceless")
+        if bad:
+            print(f"*** footage QC flagged {len(bad)} shots BEFORE the render - see {WORK}/final_qc.md; replace them, "
+                  f"then plan again")
+        return bad
+    except Exception as e:          # noqa: BLE001
+        print("footage QC could not run:", e)
 
 
 def _fit_size(path):

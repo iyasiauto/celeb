@@ -99,6 +99,15 @@ def grade(im, kind):
         a = a * (lum * np.array([1.01, 1.0, 0.98], np.float32) + (1 - lum) * np.array([0.95, 0.99, 1.06], np.float32))
         a = 0.01 + 0.97 * a
         return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
+    if kind == "datadoc":
+        # Data Documentary: muted, faintly warm, deep blacks (matches render.py's ffmpeg "datadoc" grade)
+        im = ImageEnhance.Color(im).enhance(0.86)
+        im = ImageEnhance.Contrast(im).enhance(1.06)
+        a = np.asarray(im, dtype=np.float32) / 255.0
+        a = a ** (1 / 0.97)
+        lum = a.mean(-1, keepdims=True)
+        a = a * (lum * np.array([1.02, 1.0, 0.98], np.float32) + (1 - lum) * np.array([1.03, 1.0, 0.97], np.float32))
+        return Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8))
     if kind == "reel":
         # finalreel: a faded archive print - less colour, warm mids, lifted blacks, soft highlights
         im = ImageEnhance.Color(im).enhance(0.8)

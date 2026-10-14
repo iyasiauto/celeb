@@ -13,6 +13,7 @@ Workers each keep one browser open and render whole scenes, longest first.
 import os
 import sys
 import json
+import re
 import time
 import base64
 import pathlib
@@ -65,6 +66,7 @@ def _nvenc_works():
 
 _USE_NVENC = _nvenc_works()
 os.environ.setdefault("DOCU_NVENC", "1" if _USE_NVENC else "0")     # edl._fit_size reads the same switch
+os.environ.setdefault("DOCU_GPU", "1" if _USE_NVENC else "0")       # a machine with NVENC draws frames on the GPU too
 # Per-scene encoder: keep per-scene bitrate higher so dissolves don't degrade; the final
 # concat_xfade is what sets the deliverable's bitrate (and therefore its size).
 if _USE_NVENC:
@@ -97,9 +99,13 @@ def _browser(cfg):
     else:
         from playwright.sync_api import sync_playwright
         pw = sync_playwright().start()
+        # DOCU_GPU=1: draw frames on the graphics card (ANGLE/D3D11 on Windows) instead of the CPU rasteriser
+        gpu = (["--enable-gpu", "--ignore-gpu-blocklist", "--enable-gpu-rasterization", "--enable-zero-copy",
+                "--use-angle=d3d11" if os.name == "nt" else "--use-gl=angle"]
+               if os.environ.get("DOCU_GPU") == "1" else ["--disable-gpu"])
         b = pw.chromium.launch(executable_path=CHROME if CHROME and os.path.exists(CHROME) else None, args=[
             "--allow-file-access-from-files", "--disable-web-security", "--force-device-scale-factor=1",
-            "--disable-gpu", "--hide-scrollbars", "--font-render-hinting=none"])
+            "--hide-scrollbars", "--font-render-hinting=none"] + gpu)
     page = b.new_page(viewport={"width": W, "height": H})
     page.add_init_script(f"window.CFG = {json.dumps(cfg)};")
     page.on("console", lambda m: m.type in ("error", "warning") and print("  [page]", m.text, flush=True))
@@ -438,59 +444,146 @@ def concat_xfade(scenes, out_dir, out_path, batch=24):
     """Join scene segments with dissolves. Each segment was rendered `pad` seconds longer than
     its slot; the dissolve into the next scene happens over that overlap, so every cut still
     lands exactly on its word. A scene with xfade=0 (or no pad) cuts hard.
-    Runs in batches (a few dozen decoders at a time), then joins the batches the same way."""
-    def join(items, out, crf):
-        # items: [(path, slot_seconds, pad_seconds)]
+
+    Seamless batches: every batch ends exactly where the dissolve into the next batch ends, and the next batch
+    starts that far into its first segment - so the batches are encoded in parallel (and only when one of their
+    segments changed) and joined by stream copy, without encoding the whole film a second time.
+    DOCU_FAST_JOIN=0 (or any problem) falls back to the old way: batches, then one full re-encode."""
+    import hashlib
+    from concurrent.futures import ThreadPoolExecutor
+    items = [(os.path.join(out_dir, s["id"] + ".mp4"), float(s["duration"]), float(s.get("pad", 0.0))) for s in scenes]
+    total_all = sum(x[1] for x in items) + items[-1][2]
+
+    def enc_args(total, crf, exact=False):
+        # the deliverable targets ~700 MB (DOCU_TARGET_MB); the rate follows the WHOLE film, so batches match.
+        # Seamless batches aim 5 % lower so the joined file never crosses the size check (no second encode)
+        _target_mb = int(os.environ.get("DOCU_TARGET_MB", "700")) * (0.95 if exact else 1.0)
+        _bv_kbps = max(2500, int((_target_mb * 8192) / (max(1.0, total / 60.0) * 60)))
+        _bv_kbps = min(_bv_kbps, int(os.environ.get("DOCU_MAX_KBPS", "12000")))   # a short video must not get 90 Mbps
+        _bv, _max, _buf = f"{_bv_kbps}k", f"{int(_bv_kbps * 1.4)}k", f"{int(_bv_kbps * 2)}k"
+        if _USE_NVENC:
+            # exact=True (seamless batches): plain VBR on the film's bitrate, so the joined file lands on the target
+            # size and never needs a second, size-fitting encode; -cq would let quality override the rate
+            return (["-c:v", "h264_nvenc", "-preset", "p5", "-tune", "hq", "-rc", "vbr"]
+                    + ([] if exact else ["-cq", str(max(22, min(30, int(crf) + 4)))])
+                    + ["-b:v", _bv, "-maxrate", _max, "-bufsize", _buf,
+                       "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", str(FPS), "-g", str(FPS * 2)])
+        return ["-c:v", "libx264", "-preset", "veryfast", "-b:v", _bv, "-maxrate", _max, "-bufsize", _buf,
+                "-pix_fmt", "yuv420p", "-profile:v", "high", "-r", str(FPS), "-g", str(FPS * 2), "-threads", "4"]
+
+    def join(parts, out, crf, frames=None, rate_total=None):
+        # parts: [(path, slot_seconds, pad_seconds, start_into_segment)]
         inputs, fc, last, t = [], [], "[0:v]", 0.0
-        for k, (p, slot, pad) in enumerate(items):
-            inputs += ["-i", p]
-        for k in range(1, len(items)):
-            t += items[k - 1][1]
-            pad = items[k - 1][2]
+        for (p, slot, pad, ss) in parts:
+            inputs += (["-ss", f"{ss:.4f}"] if ss > 0 else []) + ["-i", p]
+        hard = any(parts[k][2] <= 0.01 for k in range(len(parts) - 1))
+        if hard:
+            # hard cuts (concat) and dissolves (xfade) in one graph: every input gets the same rate, aspect and
+            # timebase first, or xfade refuses a concat output (1/1000000 vs 1/15360) and concat a SAR mismatch
+            for k in range(len(parts)):
+                fc.append(f"[{k}:v]fps={FPS},setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[i{k}]")
+            last = "[i0]"
+        for k in range(1, len(parts)):
+            t += parts[k - 1][1]
+            pad = parts[k - 1][2]
             d = max(1.0 / FPS, pad)
             lab = f"[x{k}]"
+            src = f"[i{k}]" if hard else f"[{k}:v]"
             if pad > 0.01:
-                fc.append(f"{last}[{k}:v]xfade=transition=fade:duration={d:.3f}:offset={t:.3f}{lab}")
+                fc.append(f"{last}{src}xfade=transition=fade:duration={d:.4f}:offset={t:.4f}{lab}")
             else:
-                fc.append(f"{last}[{k}:v]concat=n=2:v=1:a=0{lab}")
+                fc.append(f"{last}{src}concat=n=2:v=1:a=0{lab}")
             last = lab
-        total = sum(x[1] for x in items) + items[-1][2]
+        total = sum(x[1] for x in parts) + parts[-1][2]
         cmd = ["ffmpeg", "-v", "error", "-y"] + inputs
         if fc:
             cmd += ["-filter_complex", ";".join(fc), "-map", last]
-        # Final concat_xfade is the deliverable: target ~700 MB (override via DOCU_TARGET_MB).
-        # For a typical 15-20 min 1080p30 doc, ~5 Mbps lands around 650-800 MB.
-        _target_mb = int(os.environ.get("DOCU_TARGET_MB", "700"))
-        _mins_est = max(1.0, total / 60.0)
-        _bv_kbps = max(2500, int((_target_mb * 8192) / (_mins_est * 60)))
-        _bv_kbps = min(_bv_kbps, int(os.environ.get("DOCU_MAX_KBPS", "12000")))   # a short video must not get 90 Mbps
-        _bv = f"{_bv_kbps}k"
-        _max = f"{int(_bv_kbps * 1.4)}k"
-        _buf = f"{int(_bv_kbps * 2)}k"
-        if _USE_NVENC:
-            cmd += ["-t", f"{total:.3f}", "-c:v", "h264_nvenc", "-preset", "p5", "-tune", "hq",
-                    "-rc", "vbr", "-cq", str(max(22, min(30, int(crf) + 4))),
-                    "-b:v", _bv, "-maxrate", _max, "-bufsize", _buf,
-                    "-pix_fmt", "yuv420p", "-r", str(FPS), out]
-        else:
-            cmd += ["-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "veryfast",
-                    "-b:v", _bv, "-maxrate", _max, "-bufsize", _buf, "-pix_fmt", "yuv420p",
-                    "-r", str(FPS), "-threads", "4", out]
+        cmd += (["-frames:v", str(frames)] if frames else ["-t", f"{total:.3f}"]) + enc_args(rate_total or total, crf, exact=bool(frames)) + [out]
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0:
             raise RuntimeError(r.stderr[-1500:])
         return total
-    items = [(os.path.join(out_dir, s["id"] + ".mp4"), s["duration"], float(s.get("pad", 0.0))) for s in scenes]
-    parts = []
-    for b in range(0, len(items), batch):
-        chunk = items[b:b + batch]
-        out = os.path.join(out_dir, f"_xf_{b // batch:03d}.mp4")
-        log(f"  dissolves: batch {b // batch + 1}/{(len(items) + batch - 1) // batch}")
-        join(chunk, out, 14)
-        parts.append((out, sum(x[1] for x in chunk), chunk[-1][2]))
+
+    def sig(parts, extra=""):          # a batch is re-encoded only when one of its segments or timings changed
+        h = hashlib.md5(extra.encode())
+        for p, d, pad, ss in parts:
+            st = os.stat(p)
+            h.update(f"{p}|{st.st_size}|{st.st_mtime_ns}|{d:.4f}|{pad:.4f}|{ss:.4f};".encode())
+        return h.hexdigest()
+
+    def run_jobs(jobs):
+        nb = len(jobs)
+
+        def run(job):
+            i, parts, out, frames, rate_total = job
+            crf = 18 if frames else 14          # seamless batches ARE the deliverable: final quality, no second pass
+            sg = sig(parts, f"{frames}|{rate_total}|{crf}|v5")
+            stamp = out + ".sig"
+            if os.path.exists(out) and os.path.exists(stamp) and open(stamp).read() == sg:
+                log(f"  dissolves: batch {i + 1}/{nb} unchanged")
+                return
+            join(parts, out, crf, frames=frames, rate_total=rate_total)
+            open(stamp, "w").write(sg)
+            log(f"  dissolves: batch {i + 1}/{nb} done")
+        # NVENC on a GeForce takes several sessions at once; x264 batches share the CPU
+        with ThreadPoolExecutor(int(os.environ.get("DOCU_XFADE_JOBS", "4" if _USE_NVENC else "2"))) as ex:
+            list(ex.map(run, jobs))
+
+    starts = [0.0]
+    for x in items:
+        starts.append(starts[-1] + x[1])          # starts[i] = when scene i begins in the film
+    bounds = list(range(0, len(items), batch)) + [len(items)]
+    seamless = os.environ.get("DOCU_FAST_JOIN", "1") == "1" and len(bounds) > 2
+    if seamless:
+        for e in bounds[1:-1]:                    # the first scene of a batch must outlast the dissolve into it
+            if items[e - 1][2] > 0.01 and items[e][1] <= items[e - 1][2] + 2.0 / FPS:
+                seamless = False
+    if seamless:
+        try:
+            jobs = []
+
+            def frame_at(tt):
+                return int(round(tt * FPS))
+            for j in range(len(bounds) - 1):
+                b, e = bounds[j], bounds[j + 1]
+                pad_in = items[b - 1][2] if b > 0 and items[b - 1][2] > 0.01 else 0.0
+                p0, s0, d0 = items[b]
+                parts = [(p0, s0 - pad_in, d0, pad_in)] + [(p, s, d, 0.0) for p, s, d in items[b + 1:e]]
+                S = starts[b] + pad_in
+                if e < len(items):
+                    pad_out = items[e - 1][2] if items[e - 1][2] > 0.01 else 0.0
+                    if pad_out:
+                        parts.append((items[e][0], pad_out, 0.0, 0.0))   # the dissolve into the next batch, to its end
+                    E = starts[e] + pad_out
+                else:
+                    E = total_all
+                jobs.append((j, parts, os.path.join(out_dir, f"_xs_{j:03d}.mp4"), frame_at(E) - frame_at(S), total_all))
+            run_jobs(jobs)
+            lst = os.path.join(out_dir, "_xs_list.txt")
+            with open(lst, "w") as f:
+                for _, _, out, _, _ in jobs:
+                    f.write("file '" + out.replace(os.sep, "/") + "'\n")
+            r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy",
+                                "-movflags", "+faststart", out_path], capture_output=True, text=True)
+            if r.returncode != 0:
+                raise RuntimeError(r.stderr[-800:])
+            n = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_packets", "-show_entries",
+                                "stream=nb_read_packets", "-of", "csv=p=0", out_path], capture_output=True, text=True).stdout
+            m = re.search(r"\d+", n or "")
+            want = int(round(total_all * FPS))
+            if not m or abs(int(m.group()) - want) > 3:
+                raise RuntimeError(f"seamless join has {n.strip()} frames, expected {want}")
+            log(f"  joined {len(jobs)} batches by stream copy ({want} frames)")
+            return
+        except Exception as ex_:           # noqa: BLE001 - never lose the final: do it the old way
+            log(f"  seamless join failed ({str(ex_)[:160]}) - joining the classic way")
+    jobs = []
+    for j in range(len(bounds) - 1):
+        chunk = [(p, s, d, 0.0) for p, s, d in items[bounds[j]:bounds[j + 1]]]
+        jobs.append((j, chunk, os.path.join(out_dir, f"_xf_{j:03d}.mp4"), None, None))
+    run_jobs(jobs)
+    parts = [(out, sum(x[1] for x in chunk), chunk[-1][2], 0.0) for _, chunk, out, _, _ in jobs]
     join(parts, out_path, 18)
-    for p, _, _ in parts:
-        os.remove(p)
 
 
 def stills(scenes, cfg, still_dir, per_scene=1):

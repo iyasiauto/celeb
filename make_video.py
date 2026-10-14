@@ -66,7 +66,7 @@ def yes(q, default=False):
 
 
 def slugify(s):
-    return re.sub(r"[^a-z0-9]+", "_", s.lower()).strip("_")[:50] or "video"
+    return re.sub(r"[^a-z0-9]+", "_", s.lower()).strip("_")[:50].strip("_") or "video"   # cut at 50, then no trailing "_" (niche ids have none)
 
 
 def env():
@@ -387,7 +387,7 @@ def main():
     json.dump(state, open(state_f, "w"), indent=1)
     job = dict(title=title, niche=niche, style=template, clip_share=clip_share, script=os.path.abspath(script), voice=voice,
                shotlist="ai" if a.ai == "auto" else "auto", ai_qa=a.ai == "auto", effort="high",
-               workers=max(2, min(8, (os.cpu_count() or 4) - 2)), deliver=dict(upload=bool(a.upload), limit_gb=a.limit_gb))
+               workers=max(2, min(int(os.environ.get("DOCU_WORKERS", 8)), (os.cpu_count() or 4) - 2)), deliver=dict(upload=bool(a.upload), limit_gb=a.limit_gb))
     jf = os.path.join(WS, "media", "runs", slug + ".job.json")
     json.dump(job, open(jf, "w"), indent=1)
     print(f"\n[3/3] Making the video · template {styles[template]['name']} · footage '{niche}' · {clip_share} % clips")

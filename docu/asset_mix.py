@@ -36,13 +36,13 @@ import re
 TEMPLATE_PALETTE = {
     "datadoc": dict(
         textures=["grain_film.png"], texture_opacity=(0.45, 0.6),
-        chapter_overlays=["overlay_dust.mp4", "lightleak.mp4", "overlay_vhs.mp4"],
+        chapter_overlays=["overlay_dust.mp4", "overlay_vhs.mp4"],
         card_bgs=["background dark.png"], props=["paper earth.jpg"],
         cutouts=True, photofx=True, cinema_frame=True, tv_gate=True, music_beds=True, map_lib=True,
     ),
     "documentary": dict(
         textures=["grain_film.png", "grain_paper.png"], texture_opacity=(0.45, 0.65),
-        chapter_overlays=["overlay_dust.mp4", "lightleak.mp4"],
+        chapter_overlays=["overlay_dust.mp4"],
         card_bgs=["background dark.png"], props=["paper earth.jpg"],
         cutouts=True, photofx=True, cinema_frame=True, tv_gate=True, music_beds=True, map_lib=True,
     ),
@@ -60,7 +60,7 @@ TEMPLATE_PALETTE = {
     ),
     "almanac": dict(
         textures=["grain_paper.png"], texture_opacity=(0.55, 0.75),
-        chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"],
+        chapter_overlays=["overlay_dust.mp4"],
         card_bgs=None, props=["paper earth.jpg"],
         cutouts=True, photofx=True, cinema_frame=False, tv_gate=False, music_beds=True, map_lib=True,
     ),
@@ -84,7 +84,7 @@ TEMPLATE_PALETTE = {
     ),
     "expedition": dict(
         textures=["grain_paper.png"], texture_opacity=(0.55, 0.75),
-        chapter_overlays=["lightleak.mp4", "overlay_dust.mp4"],
+        chapter_overlays=["overlay_dust.mp4"],
         card_bgs=["background 2.jpg"], props=["paper earth.jpg"],
         cutouts=True, photofx=True, cinema_frame=False, tv_gate=True, music_beds=True, map_lib=True,
     ),
@@ -151,8 +151,10 @@ def mix_for(slug, theme, assets_dir, overrides=None):
         lo, hi = pal.get("texture_opacity", (0.45, 0.65))
         out["texture_opacity"] = round(lo + rng.random() * (hi - lo), 2)
 
-    if pal.get("chapter_overlays") and active("chapter_overlay"):
-        pick = _pick(pal["chapter_overlays"], rng)
+    # never a light leak (the channel's rule): only dust / VHS, and only now and then (edl.finish places them)
+    overlays = [o for o in (pal.get("chapter_overlays") or []) if "leak" not in o.lower()]
+    if overlays and active("chapter_overlay"):
+        pick = _pick(overlays, rng)
         # these live at assets/ root, not under a subfolder
         out["chapter_dust"] = abs_root(pick)
         out["chapter_opacity"] = float(pal.get("chapter_opacity", 0.7))

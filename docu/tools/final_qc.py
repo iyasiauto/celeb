@@ -123,8 +123,28 @@ def run(scenes, words, topic, assets_dir, out_dir, workers=8, provider=None, mod
     todo = [s for s in scenes if s["type"] in ("clip", "photo", "depth", "spotlight")]
     log(f"final QC: {len(todo)} footage scenes · {ai.LABEL.get(prov, prov)} · {model}")
     res = {}
+    cache_p = os.path.join(out_dir, "final_qc_cache.json")
+    try:
+        cache = json.load(open(cache_p, encoding="utf-8"))
+    except Exception:                  # noqa: BLE001
+        cache = {}
+
+    def key_of(s):
+        line = spoken(words, s["t0"], s["t0"] + s["duration"])
+        src = s.get("src") if s["type"] == "clip" else s.get("img")
+        return json.dumps([s["type"], src, round(float(s.get("start", 0)), 2), s.get("crop"), line, topic, mode,
+                           bool(s.get("qc_ok"))], ensure_ascii=False)
 
     def one(s):
+        k = key_of(s)
+        if k in cache:                 # the same shot under the same words was judged before: same verdict
+            return s["id"], dict(cache[k])
+        sid, r = _one(s)
+        if not any(f.startswith("QC call failed") or f.startswith("frame could not") for f in r["flags"]):
+            cache[k] = r
+        return sid, r
+
+    def _one(s):
         with tempfile.TemporaryDirectory() as tmp:
             pic = frame_of(s, assets_dir, tmp)
             if not pic:
@@ -149,6 +169,7 @@ def run(scenes, words, topic, assets_dir, out_dir, workers=8, provider=None, mod
     with cf.ThreadPoolExecutor(max(1, workers)) as ex:
         for sid, r in ex.map(one, todo):
             res[sid] = r
+    json.dump(cache, open(cache_p, "w", encoding="utf-8"), ensure_ascii=False)
     bad = {k: v for k, v in res.items() if v["flags"]}
     json.dump(res, open(os.path.join(out_dir, "final_qc.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     with open(os.path.join(out_dir, "final_qc.md"), "w", encoding="utf-8") as f:
