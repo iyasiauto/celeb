@@ -364,6 +364,8 @@ def one(tid, workers=4, sheet_only=False, keep=False):
         smp = sample(tid, scenes, work)
         print(f"{tid}: sample {os.path.relpath(smp, ROOT)} ({os.path.getsize(smp) / 1e6:.1f} MB, "
               f"{sum(s['duration'] for s in scenes):.0f} s)")
+        if not keep:
+            shutil.rmtree(work, ignore_errors=True)        # the segments are not needed once the sample exists
 
 
 def main():
