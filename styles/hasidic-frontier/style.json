@@ -1,0 +1,271 @@
+{
+ "name": "Hasidic Documentary",
+ "label": "Hasidic Documentary",
+ "letter": "V",
+ "template": "hasidic-frontier",
+ "theme": "hasidic-frontier",
+ "blurb": "Documentary about Hasidic Jewish community life (weddings, babies, gemachs, Kupat Ha'ir) built from THIS channel's own collected footage and archival photos, matched to the narration, with maps, real headlines, graphics, real objects and depth pop. Its own asset library — never mixes with another niche.",
+ "tagline": "Your own footage, cut to the story.",
+ "points": [
+  "Your collected clips + archival photos",
+  "Matched to the narration, synced",
+  "Maps, headlines, graphics",
+  "Real objects + depth pop (local)",
+  "AI fill for gaps (on-topic)",
+  "No stock, no mixing across niches"
+ ],
+ "best_for": "Your own footage, cut to the story.",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "full",
+ "xfade": 0.45,
+ "look": {
+  "accent": [
+   "#E3B25B",
+   "#F3EEE4",
+   "#9DB1BA",
+   "#C4553F"
+  ],
+  "title_font": "'EB Garamond', Georgia, serif",
+  "grade": "eq=contrast=1.04:saturation=0.94:gamma=0.99",
+  "captions": {
+   "font": "Roboto Condensed",
+   "size": 46,
+   "upper": false,
+   "karaoke": false,
+   "outline": 0.5,
+   "shadow": 0.6,
+   "line_chars": 48
+  },
+  "labels": null,
+  "footage_frame": null,
+  "frame_every": 0,
+  "fonts": [
+   [
+    "Doc Serif",
+    "EB-Garamond.ttf",
+    "400 800",
+    "normal"
+   ],
+   [
+    "Doc Serif",
+    "EB-Garamond-Italic.ttf",
+    "400 800",
+    "italic"
+   ],
+   [
+    "Doc Sans",
+    "Roboto-Condensed.ttf",
+    "100 900",
+    "normal"
+   ],
+   [
+    "Doc Sans",
+    "Roboto-Condensed-Italic.ttf",
+    "100 900",
+    "italic"
+   ],
+   [
+    "Doc Display",
+    "InterDisplay-Black.ttf",
+    "100 900",
+    "normal"
+   ],
+   [
+    "Doc Body",
+    "Inter-Bold.ttf",
+    "700",
+    "normal"
+   ],
+   [
+    "Doc Body",
+    "Inter-SemiBold.ttf",
+    "600",
+    "normal"
+   ],
+   [
+    "EB Garamond",
+    "EB-Garamond.ttf",
+    "100 1000",
+    "normal"
+   ]
+  ],
+  "palette": {
+   "ink": "#F3EEE4"
+  }
+ },
+ "voice": {
+  "provider": "famespeak",
+  "voice_id": "",
+  "speed": 0.98,
+  "note": "Pick the narrator in Docu Studio (FameSpeak) or put your own voice id here."
+ },
+ "pacing": {
+  "graphic_every_min": 0.75,
+  "graphic_ratio": 0.3,
+  "graphic_dur_s": 6.0,
+  "graphic_max_s": 9.0,
+  "cold_open_s": 0,
+  "white_fade": 0.0,
+  "punch": false,
+  "wpm": 120
+ },
+ "features": {
+  "offered": [
+   "youtube",
+   "stock",
+   "ai_images",
+   "depth",
+   "objects",
+   "motion",
+   "vox",
+   "maps",
+   "spotlight",
+   "headlines",
+   "sound"
+  ],
+  "on": [
+   "ai_images",
+   "depth",
+   "objects",
+   "motion",
+   "vox",
+   "maps",
+   "spotlight",
+   "headlines",
+   "sound"
+  ],
+  "prefer": "stock"
+ },
+ "overrides": {},
+ "devices": {},
+ "audit": {},
+ "frontier": {
+  "name": "hasidic",
+  "order": 2,
+  "label": "Hasidic Documentary",
+  "description": "Documentary about Hasidic Jewish community life (weddings, babies, gemachs, Kupat Ha'ir) built from THIS channel's own collected footage and archival photos, matched to the narration, with maps, real headlines, graphics, real objects and depth pop. Its own asset library — never mixes with another niche.",
+  "tagline": "Your own footage, cut to the story.",
+  "points": [
+   "Your collected clips + archival photos",
+   "Matched to the narration, synced",
+   "Maps, headlines, graphics",
+   "Real objects + depth pop (local)",
+   "AI fill for gaps (on-topic)",
+   "No stock, no mixing across niches"
+  ],
+  "script_craft": "story",
+  "cost": "your own assets + FameSpeak voice",
+  "render_x": 3.5,
+  "language": "English",
+  "voice": {
+   "provider": "famespeak",
+   "voice_id": "",
+   "speed": 0.98,
+   "note": "Pick the narrator in Docu Studio (FameSpeak) or put your own voice id here."
+  },
+  "asset_library": {
+   "enabled": true,
+   "tags": "D:\\New Hasidic\\editor\\configs\\hasidic_tags.json",
+   "images": "D:\\New Hasidic\\assets\\images",
+   "clips": "D:\\New Hasidic\\assets\\clips",
+   "beat_s": 5.0,
+   "ai_fill": true,
+   "note": "This niche's own folders only. tags is an optional keyword file {\"tags\":{path:[kw]}}; without it the assets are vision-tagged once. images/clips are the source folders (nothing outside them is ever used)."
+  },
+  "features": {
+   "offered": [
+    "youtube",
+    "stock",
+    "ai_images",
+    "depth",
+    "objects",
+    "motion",
+    "vox",
+    "maps",
+    "spotlight",
+    "headlines",
+    "sound"
+   ],
+   "on": [
+    "ai_images",
+    "depth",
+    "objects",
+    "motion",
+    "vox",
+    "maps",
+    "spotlight",
+    "headlines",
+    "sound"
+   ],
+   "prefer": "stock"
+  },
+  "look": {
+   "graphics": "documentary",
+   "title_font": "'EB Garamond', Georgia, serif",
+   "title_weight": "500",
+   "accent": [
+    "#E3B25B",
+    "#F3EEE4",
+    "#9DB1BA",
+    "#C4553F"
+   ],
+   "warn": "#C4553F",
+   "good": "#7FA58F",
+   "skins": [
+    "noir"
+   ],
+   "caption_accent": "&H5BB2E3&",
+   "captions": {
+    "font": "Roboto Condensed",
+    "size": 46,
+    "upper": false,
+    "karaoke": false,
+    "outline": 0.5,
+    "shadow": 0.6,
+    "line_chars": 48
+   },
+   "footage_grade": "eq=contrast=1.04:saturation=0.94:gamma=0.99",
+   "dust": false,
+   "vignette": false,
+   "leak": false,
+   "encode": {
+    "preset": "medium",
+    "tune": "film",
+    "crf": 19
+   },
+   "photofx": {
+    "every_s": 25,
+    "gap_s": 3
+   },
+   "sound": {
+    "music_rel_db": -12,
+    "duck_db": -16,
+    "sfx_db": -19,
+    "music": true
+   },
+   "director": true
+  },
+  "pacing": {
+   "graphic_every_min": 0.75,
+   "graphic_ratio": 0.3,
+   "graphic_dur_s": 6.0,
+   "graphic_max_s": 9.0,
+   "cold_open_s": 0,
+   "white_fade": 0.0,
+   "punch": false,
+   "wpm": 120
+  },
+  "stock_queries": [],
+  "prompts": {
+   "outline": "You are the head writer of a documentary YouTube channel about Hasidic Jewish community life, in the tradition of the best streaming documentaries: real events, real people, told as a story you cannot stop watching.\n\nTITLE: [INSERT TITLE HERE]\nLENGTH: [INSERT LENGTH — e.g., 15 minutes, 20 minutes]\n\nPlan the episode in plain prose, as numbered beats of about one minute each, in causal or chronological order.\n- Everything is real: real people, real places, real institutions (Kupat Ha'ir, specific gemachs, named batei din), real dates and numbers. Use only facts you are certain of; round disputed figures with \"around\".\n- Beat 1 is a cold open: a specific scene — a Satmar wedding at a named hall, a real dollar figure — then pull back to how the system works.\n- Every beat is anchored to things the edit can SHOW: a named person, a place (Boro Park, Kiryas Joel, Williamsburg, Bnei Brak), a building, a document, a headline. Name them precisely.\n- Give first mention of Hebrew/Yiddish terms a short phonetic hint: gemach (guh-MOCK), sheitel (SHAY-tel), heter iska (HEH-ter ISS-ka).\n- Neutral, attributed, community-aware. No mocking.\nFor each beat, write the facts it states and the concrete things on screen that prove them.",
+   "script": "Write the complete narration for this documentary from the plan below.\n\nTHE PLAN:\n[INSERT OUTLINE HERE]\n\nHOW IT SOUNDS\n- A calm, confident narrator. Short declarative sentences, present tense for the story.\n- The first words are the cold open: a specific place, date or number in the middle of the most vivid moment.\n- Every sentence carries something concrete: a name, place, date, number or object the edit can show.\n- Real facts only. No invented quotes or figures; disputed figures rounded with \"around\".\n- First mention of a Hebrew/Yiddish term gets a phonetic hint in parentheses; later mentions do not.\n- Plain spoken text only: no headings, no stage directions, no labels, no lists, no markdown. Never output a word count or any note — only the spoken words.\n- Write dates and numbers as a narrator reads them ('twenty five thousand dollars', 'nineteen ninety'), never digits.\n- Neutral and community-aware. End on the consequence, back at the cold open image; then one short subscribe line."
+  },
+  "thumbnail": {
+   "brief": "A real, dramatic moment from Hasidic community life as a cinematic documentary still: a wedding hall, a gemach, a Brooklyn street, deep contrast, natural colour, strong subject. Two to four words of headline in a clean condensed sans, cream white, one word in warm gold. No stickers, no arrows, no cartoon.",
+   "accent": "#E3B25B"
+  }
+ }
+}

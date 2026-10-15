@@ -80,7 +80,18 @@ class RenderEngine:
 
     # ----------------------------------------------------------- filtergraph
 
+    @property
+    def _is_nvenc(self):
+        return "nvenc" in self.encoder
+
     def _gpu_encode_args(self):
+        if not self._is_nvenc:
+            # Software encoders (libx264 on a machine with no NVIDIA GPU) do
+            # not understand NVENC's p1 preset or -rc, so use x264's own.
+            return ["-c:v", self.encoder, "-preset", "veryfast",
+                    "-b:v", self.bitrate, "-maxrate", self.maxrate,
+                    "-bufsize", self.bufsize, "-pix_fmt", "yuv420p",
+                    "-threads", "2", "-r", str(self.fps), "-an"]
         return ["-c:v", self.encoder, "-preset", self.preset, "-rc", "vbr",
                 "-b:v", self.bitrate, "-maxrate", self.maxrate,
                 "-bufsize", self.bufsize, "-pix_fmt", "yuv420p",
@@ -216,7 +227,9 @@ class RenderEngine:
         elif stype == "clip":
             vf = _join(self._fit(self.W, self.H), self.look["grade"],
                        self._fades(dur))
-            cmd = (["ffmpeg", "-y", "-hwaccel", self.hwaccel, "-ss", "0",
+            hw = ["-hwaccel", self.hwaccel] if self._is_nvenc and self.hwaccel else []
+            ss = str(float(seg.get("src_start", 0.0)))
+            cmd = (["ffmpeg", "-y"] + hw + ["-ss", ss,
                     "-t", str(dur), "-i", src, "-vf", vf] + gpu + [out_file])
         else:
             return idx, out_file, False, 0.0, f"unknown segment type: {stype!r}"

@@ -1,0 +1,110 @@
+{
+ "name": "New Style 3 — Documentary",
+ "label": "New Style 3 — Documentary (Emerge X)",
+ "letter": "E3",
+ "template": "emerge-documentary",
+ "theme": "emerge-documentary",
+ "blurb": "A premium streaming-documentary look where real archive footage carries the picture and quiet, expensive-looking scenes — maps, real headlines, photo spotlights, cut-out objects, calm cream-and-gold serif graphics — land exactly on the words.",
+ "tagline": "Real footage first; quiet cream-and-gold scenes exactly on the words.",
+ "points": [
+  "Real archive footage, a new shot every ~4 s",
+  "Maps, real headline pages, photo spotlights",
+  "Cream & gold serif graphics (EB Garamond)",
+  "Still one-line captions, labels in the corners",
+  "Match cut and text match cut once a video"
+ ],
+ "best_for": "history, business and brand stories, crime and scandal, sport history, science and space, biographies, investigations, geopolitics explainers",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "full",
+ "xfade": 0.0,
+ "look": {
+  "accent": [
+   "#E3B25B",
+   "#F3EEE4",
+   "#9DB1BA",
+   "#C4553F"
+  ],
+  "title_font": "'EB Garamond', Georgia, serif",
+  "grade": "eq=contrast=1.04:saturation=0.94:gamma=0.99",
+  "captions": {
+   "font": "Roboto Condensed",
+   "size": 46,
+   "upper": false,
+   "karaoke": false,
+   "outline": 1.7,
+   "shadow": 1.2,
+   "line_chars": 48,
+   "margin_v": 96
+  },
+  "labels": null,
+  "footage_frame": null,
+  "frame_every": 0,
+  "fonts": [
+   [
+    "EB Garamond",
+    "EB-Garamond.ttf"
+   ],
+   [
+    "EB Garamond Italic",
+    "EB-Garamond-Italic.ttf"
+   ],
+   [
+    "Roboto Condensed",
+    "Roboto-Condensed.ttf"
+   ],
+   [
+    "Inter Display Black",
+    "InterDisplay-Black.ttf"
+   ],
+   [
+    "Inter SemiBold",
+    "Inter-SemiBold.ttf"
+   ]
+  ],
+  "palette": {
+   "gold": "#E3B25B",
+   "cream": "#F3EEE4",
+   "soft": "rgba(243,238,228,.72)",
+   "steel": "#9DB1BA",
+   "warn": "#C4553F",
+   "good": "#7FA58F",
+   "marker": "#F2D027",
+   "map_land": "#0C7393",
+   "map_place": "#2F9A62",
+   "pin": "#FF5A4E",
+   "route": "#FFC94D"
+  }
+ },
+ "voice": null,
+ "pacing": {
+  "graphic_every_min": 0.75,
+  "wpm": 120,
+  "hook_notes": "The first 60 s is the most edited stretch: a map of the first place, a dateline on the first date, a spotlight on the first public figure, an object for the product at the centre, a paper-collage moment of 7-11 s inside the first 30 s, the real headline on the first reported fact, the match cut on the first naming of the main person, the sound-up, and at least 5 labels.",
+  "body_notes": "Body: scenes cover at most 42 %; at least 6 s of plain footage between scenes; per minute roughly one collage, 1-2 spotlights/objects, one graphic (one every ~45 s), 1-2 real headlines on reported facts, 3-5 labels; a map when a new place matters. Never the same scene type twice in a row."
+ },
+ "features": {
+  "on": [
+   "youtube",
+   "objects",
+   "motion",
+   "vox",
+   "maps",
+   "spotlight",
+   "headlines",
+   "sound"
+  ]
+ },
+ "overrides": {},
+ "devices": {},
+ "audit": {},
+ "reference": "reference.mp4",
+ "pack": {
+  "what_its_for": "templates/emerge-documentary/pack/WHAT-ITS-FOR.md",
+  "editing_style": "templates/emerge-documentary/pack/EDITING-STYLE.md",
+  "playbook": "templates/emerge-documentary/pack/EDIT-PLAYBOOK.md",
+  "reference": "templates/emerge-documentary/pack/reference.jpg"
+ }
+}

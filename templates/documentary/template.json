@@ -1,0 +1,135 @@
+{
+ "id": "documentary",
+ "name": "Calm documentary",
+ "version": 2,
+ "theme": "documentary",
+ "grade": "doc",
+ "grain": 1.5,
+ "xfade": 0.6,
+ "sfx_style": "calm",
+ "best_for": "communities, economics, culture - understanding, not spectacle",
+ "look": "Slow photographs, 0.6 s dissolves, serif chapter cards, location captions with a gold rule, calm text cards and charts.",
+ "examples": [
+  "projects/hasidic_benefits_cut/build.py",
+  "projects/hasidic_10_kids/build.py"
+ ],
+ "starter": "docu/templates/starter_documentary/build.py",
+ "preview_dir": "docu/templates/previews/documentary",
+ "preview_sheet": "docu/templates/previews/sheet_documentary.jpg",
+ "scene_files": [],
+ "theme_def": null,
+ "audit": {
+  "clip_share": [
+   0.25,
+   0.5
+  ],
+  "graphics_per_min": 0.8,
+  "max_gap_s": 60,
+  "max_plain_run": 5,
+  "chapter_every_s": 300,
+  "min_distinct_devices": 9,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "doctitle",
+   "family": "heading",
+   "min_per_10min": 1.2,
+   "use": "Calm chapter title over a darkened photo: 'Chapter N' + serif title + sub."
+  },
+  {
+   "type": "textcard",
+   "family": "type",
+   "min_per_10min": 3,
+   "use": "One to three calm lines over a darkened photo: the key sentence of a passage."
+  },
+  {
+   "type": "stat",
+   "family": "number",
+   "min_per_10min": 1,
+   "use": "One big number that counts up, with a kicker and a note. Every important figure the narrator says."
+  },
+  {
+   "type": "bars",
+   "family": "chart",
+   "min_per_10min": 0.4,
+   "use": "A calm bar chart."
+  },
+  {
+   "type": "ledgerlist",
+   "family": "list",
+   "min_per_10min": 0.3,
+   "use": "A household ledger that writes in line by line."
+  },
+  {
+   "type": "sizechart",
+   "family": "chart",
+   "min_per_10min": 0.2,
+   "use": "Bars that grow with family size against one fixed income line."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 2,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "ov:place",
+   "family": "overlay",
+   "min_per_10min": 1,
+   "use": "Location caption with a thin rule (documentary)."
+  },
+  {
+   "type": "ov:doclower",
+   "family": "overlay",
+   "min_per_10min": 0.3,
+   "use": "Calm name lower third (documentary)."
+  },
+  {
+   "type": "depth",
+   "family": "photofx",
+   "min_per_10min": 1,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "spotlight",
+   "family": "photofx",
+   "min_per_10min": 0.5,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  },
+  {
+   "type": "quote",
+   "family": "quote",
+   "min_per_10min": 0.5,
+   "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+  },
+  {
+   "type": "timeline",
+   "family": "time",
+   "min_per_10min": 0.5,
+   "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+  },
+  {
+   "type": "tv",
+   "family": "archive",
+   "min_per_10min": 0.3,
+   "use": "The picture plays inside an old TV set and the camera pushes into the screen. 'Back then', archive, broadcast, 'on the news' moments. Mark archive shots archive=True to also get the vintage TV-gate overlay."
+  },
+  {
+   "type": "card",
+   "family": "archive",
+   "min_per_10min": 0.4,
+   "use": "A document, scan, letter or clipping held as a card with a slow zoom: records, evidence, official papers."
+  }
+ ],
+ "also_available": "every engine device works in every template; the list above is this template's vocabulary and its minimums",
+ "rules": [
+  "Every sentence gets the picture that shows what it says, landing on its words ('@words' timing).",
+  "Never two plain shots of the same kind for long: break runs of clips/photos with the template's devices.",
+  "Every number the narrator stresses is SHOWN with a number device; every place named is SHOWN on a map; every quotation is set as a quote.",
+  "No clip or picture twice in the same video; no talking heads, influencers, watermarks or logos (QC enforces it).",
+  "Look at the preview of each device (docu/templates/previews/<theme>/<device>.jpg) and copy its gallery spec as the starting point.",
+  "Pictures carry the story; graphics only where they clarify.",
+  "Every chapter opens on a doctitle; places get a place caption."
+ ]
+}

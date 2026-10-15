@@ -1,0 +1,297 @@
+{
+ "id": "stories-2d",
+ "name": "2D Stories",
+ "version": 1,
+ "source": "Frontier styles/stories.json",
+ "theme": "stories-2d",
+ "grade": "eq=saturation=0.9:contrast=1.04",
+ "grain": 1.0,
+ "xfade": 0.45,
+ "sfx_style": "full",
+ "best_for": "one decision, ten years",
+ "look": "Second-person money stories told over years, drawn as flat 2D cartoons with one recurring main character, the same face and clothes in every frame. Replace the cast and the art direction with your own.",
+ "tagline": "Second-person money stories, told over the years.",
+ "examples": [
+  "templates/stories-2d/demo_build.py"
+ ],
+ "starter": "templates/stories-2d/README.md",
+ "preview_dir": "templates/stories-2d/previews",
+ "preview_sheet": "templates/stories-2d/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_stories-2d.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "EB-Garamond.ttf",
+   "Garamond": "EB-Garamond.ttf",
+   "Engr": "EB-Garamond.ttf",
+   "Rec": "EB-Garamond.ttf",
+   "GaramondI": "EB-Garamond-Italic.ttf",
+   "RecI": "EB-Garamond-Italic.ttf",
+   "Caveat": "EB-Garamond-Italic.ttf",
+   "Barlow": "Roboto-Condensed.ttf",
+   "Oswald": "Roboto-Condensed.ttf",
+   "Label": "Roboto-Condensed.ttf",
+   "BarlowB": "Roboto-Condensed.ttf",
+   "OswaldB": "Roboto-Condensed.ttf",
+   "LabelB": "Roboto-Condensed.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "InterDisplay-Black.ttf",
+   "Num": "InterDisplay-Black.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#F4EDDF",
+   "gold": "#F2C14E",
+   "mustard": "#F2C14E",
+   "red": "#C4553F",
+   "cyan": "#8FB3D9",
+   "green": "#6E9B7B",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "242,193,78",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#F2C14E",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#F2C14E",
+   "hiLine": "rgba(242,193,78,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 0.5,
+  "max_gap_s": 75,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 4,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "mg_title",
+   "family": "heading",
+   "min_per_10min": 2,
+   "use": "a title card for the idea of the moment (title + subtitle)"
+  },
+  {
+   "type": "mg_stat",
+   "family": "graphic",
+   "min_per_10min": 1,
+   "use": "one number that matters, big, with a line"
+  },
+  {
+   "type": "mg_bars",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "2-6 bars compared (items: label, value)"
+  },
+  {
+   "type": "mg_crowd",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a crowd of people filling in, some highlighted (count, highlight)"
+  },
+  {
+   "type": "mg_flow",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "an idea moving through 2-4 steps with icons and arrows"
+  },
+  {
+   "type": "mg_cards",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "2-4 cards with an icon, a label and a line"
+  },
+  {
+   "type": "mg_checklist",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "2-5 items ticked one by one"
+  },
+  {
+   "type": "mg_compare",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "two sides, before / after or this / that"
+  },
+  {
+   "type": "mg_steps",
+   "family": "graphic",
+   "min_per_10min": 0.4,
+   "use": "2-5 numbered steps"
+  },
+  {
+   "type": "mg_warning",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a warning sign with one line"
+  },
+  {
+   "type": "mg_reveal",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "items revealed one after another"
+  },
+  {
+   "type": "mg_image",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a picture with a caption"
+  },
+  {
+   "type": "mg_typing",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a line typed out"
+  },
+  {
+   "type": "mg_collage",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "paper stickers and cut-outs around a title"
+  },
+  {
+   "type": "mg_photonote",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a photo with a handwritten note"
+  },
+  {
+   "type": "mg_scatter",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "cut-outs scattered around a word"
+  },
+  {
+   "type": "mg_pillars",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "2-4 pillars of an idea"
+  },
+  {
+   "type": "mg_opener",
+   "family": "heading",
+   "min_per_10min": 0.3,
+   "use": "the opening card of the video"
+  },
+  {
+   "type": "mg_strikelist",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a list where items are struck through"
+  },
+  {
+   "type": "mg_icongrid",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a grid of icons"
+  },
+  {
+   "type": "mg_quotemark",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "a short quote in big quote marks"
+  },
+  {
+   "type": "mg_deckfan",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "cards fanned out like a deck"
+  },
+  {
+   "type": "mg_timeline",
+   "family": "graphic",
+   "min_per_10min": 0.4,
+   "use": "3-5 dated steps"
+  },
+  {
+   "type": "mg_splitreveal",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a split screen revealing two sides"
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.2,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.2,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0.4,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "stories",
+  "kind": "motion",
+  "kit": "",
+  "frame": null,
+  "frame_every": 0
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC)."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/stories-2d/README.md",
+ "ai_images": {
+  "scene_prompt": "You are the storyboard artist for a 2D story video on a faceless YouTube channel.\n\nCHANNEL: [INSERT CHANNEL HERE]\n\nBelow is the narration. Draw [INSERT COUNT HERE] consecutive frames, about one for every five or six\nseconds of narration, covering it from its first line to its last, so that each frame shows EXACTLY\nwhat the viewer is hearing at that moment.\n\nTHE MAIN CHARACTER is in every frame. The image model is handed a reference picture of them, so in\nevery prompt name them the way THE CAST below does (\"the man from the reference image\") and never give\nthem a different face, hair or clothes. In a close-up they are still there: their hand, their sleeve,\ntheir shoulder in the foreground.\n\nBE SPECIFIC — the frame shows the precise thing the line names:\n- A sum of money: a phone or bank screen showing that exact figure, big enough to read at a glance —\n  the phone fills most of the frame and the figure is the largest thing on it, e.g. a banking app\n  with \"-$480.00\" in red under \"Midas Auto Repair\", a thumb beside it.\n- A car: that exact make and model, seen from behind with the badge readable, and the number that\n  was spoken shown where it naturally lives — the year on a dealer sticker in the rear window, the\n  mileage on the odometer, the price on a windshield sign, the monthly payment on a phone.\n- A place and an hour: that place at that time — \"6:15 on a Saturday\" is the kitchen in early light\n  with the oven clock reading 6:15.\n- A bill, a letter, a message, a sign: its words and numbers spelled exactly as the narration says them.\n- Every figure sits on the thing it belongs to, exactly as the sentence says. In \"she leased a new\n  SUV, your repair cost two hundred\", the two hundred is on YOUR repair bill — never on her SUV.\n  Before you answer, check each figure you put in a frame against its sentence.\n- A named person: the same face and clothes every time they come back.\n\nBE A STORYTELLER, NOT A STOCK LIBRARY:\n- Frames follow each other like a comic. Set a place up, then use it: if the neighbour's truck\n  matters in the next line, it is already parked in the driveway, seen through the window over the\n  sink, in this one.\n- Vary the shot the way an editor would: the wide room, over the shoulder, close on the hands, the\n  other person's reaction, the object on its own with a hand reaching for it.\n- Every composition is new. Never repeat a frame, never reuse a layout two frames in a row.\n- Never illustrate an idea with a symbol (no scales, no arrows, no light bulbs, no piggy banks).\n  Show the real moment.\n- Describe the scene, not the art style — one flat 2D look is added to every prompt for you.\n\nReturn ONLY a JSON array of [INSERT COUNT HERE] objects, in narration order. Laid end to end, the\n\"text\" fields are the narration itself, with nothing skipped:\n\n  {\"text\": \"<the narration this frame covers, COPIED WORD FOR WORD from the script>\",\n   \"prompt\": \"<a complete image prompt: the shot, the main character from the reference image doing\n              what the line says, the specific objects and figures, the setting, the time of day,\n              the light>\"}\n\nSCRIPT:\n[INSERT SCRIPT HERE]",
+  "still_suffix": " Flat 2D cartoon illustration, clean confident line art, soft cel shading, muted natural palette, everyday American home, office and street settings, honest light, 16:9. Text appears only when it is itself the subject of the shot — a figure on a phone screen, a price sticker, a note on the fridge — and exactly as the prompt spells it. No captions, no watermark, no logo.",
+  "character": "THE MAIN CHARACTER is the man from the reference image, and he is in EVERY frame:\nearly thirties, short messy dark-brown hair, a simple flat cartoon face with small dark eyes and thin\neyebrows, pale skin, a plain dark-grey crew-neck t-shirt, dark navy trousers, grey socks at home or plain\ndark shoes outside, a thin wedding ring on his left hand. Always this exact man, drawn exactly this way.\nIn a close-up he is still there — his hand and grey sleeve holding the phone, his shoulder in the\nforeground as he looks out of the window.\nAnyone else who returns in the story keeps the same face, hair and clothes every time.",
+  "placement": "story",
+  "every_s": 5.5,
+  "channel": "Second-person money stories told over years, drawn as flat 2D cartoons with one recurring main character, the same face and clothes in every frame. Replace the cast and the art direction with your own."
+ },
+ "captions": {
+  "size": 84,
+  "upper": true,
+  "outline": 1.35,
+  "line_chars": 34
+ },
+ "caption_accent": "&H4EC1F2&"
+}

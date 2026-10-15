@@ -1,0 +1,526 @@
+# idx|quality 1-5|flags (p=presenter/vlogger, s=subtitles, t=text/caption, g=graphic, i=interview)|tags|description
+0|2|p,s|family,street|vlogger with Hasidic kids on sidewalk
+1|2|p,t|night,street|night street vlog; man with name caption
+2|3|p|family,home|Hasidic mother and boys in a kitchen
+3|2|p|family,home|kitchen with family, vlogger face
+4|2|p|meal|home dining table, men smiling
+5|3||meal,shabbat|men around a Shabbat table eating
+6|3||meal,tish|crowded table of men in hats, bottles
+7|2|i|man|Hasidic man with hat and beard talking to camera
+8|3||rabbi,home|rabbi meeting visitors in a home
+9|2|s|meal|table gathering with subtitles
+10|2|i|man|Hasidic man talking at a table
+11|2|i|man|same man talking
+12|1|p|shop|men posing in a liquor store
+13|1|t,p|street|EPISODE title card then school bus
+14|3||street|Borough Park crosswalk, Hasidic man walking
+15|2|t|street,holiday|man in shtreimel on street, SUKKOT caption
+16|3||holiday,street|inside a sukkah, men on street
+17|2|p,t|street|masked vlogger with Hasid on street
+18|2|p|shop|man in shtreimel inside a newsstand
+19|2|t|shop|Judaica store, MEZUZAH caption
+20|2|p|street|vlogger with Hasid outside
+21|3||street,bus|school bus, brownstones, parked cars
+22|2|p|street|vlogger walking with Hasid
+23|2|p|street|vlogger talking with Hasid
+24|4||wedding|Hasidic wedding: bride, women dancing, crowd of men
+25|4||family,park|Hasidic families by a lake, children playing
+26|4||street,children|crowded Borough Park sidewalk, families and children
+27|4||street,women|women and men walking on a street
+28|2|i|book|reading a booklet, woman interview
+29|4||children,street|children on sidewalk, girl on scooter
+30|3||children,shop|girls walking by a synagogue; store shelves
+31|4||street,family|men walking, stroller, busy street
+32|3|i|women,street|women walking; woman interview
+33|3||street,winter|red-brick street in snow, men walking
+34|2|i|children|kids, then women interviews
+35|4||street,children|families and children on sidewalk
+36|4||women,street,shopping|women walking with shopping bags, sunny
+37|3|i|family,street|strollers crossing street, then interview
+38|4||children,school|large group of boys with bags walking
+39|4||women,street|women crossing a street in a group
+40|4||children,street|kids with shopping bags by a brownstone stoop
+41|1|i|women|interview women
+42|4||atmosphere,park|Hasidim silhouetted by a lake
+43|4||family,street|families with strollers past construction
+44|4||study,school|boys studying in a cheder; large synagogue building
+45|4||family,winter|man shoveling snow with small kids
+46|3||street,rain|men with bags on a rainy street
+47|3|t|770,crowd|Chabad Lubavitch World HQ sign, crowd
+48|2||tunnel|dark footage of the tunnel
+49|3||770,crowd|synagogue hall crowded, chaos
+50|2|g|770|vertical phone video of a crowd
+51|3||tunnel,street|cement trucks on street
+52|3||770,crowd|synagogue crowd
+53|2|i|man|young Hasid interview
+54|2|g|women,wig|wig (sheitel) diagram graphic
+55|4||street,family|busy street with families
+56|3||street,women|women and children on a street
+57|3||atmosphere|lake silhouettes, then street
+58|2|p|women,wig|wig salon
+59|4||women,street|women walking, seen from behind
+60|4||women,street|woman pushing a stroller
+61|4||women,shopping|woman with shopping bags
+62|4||street,family|families with strollers, busy sidewalk
+63|3||women,street|women on a street
+64|2|g|women,wig|head-covering graphic, modern to pious
+65|2|p|women,wig|wig salon
+66|3||women,wig|wigs on display; women on street
+67|2|p|women|head coverings demo
+68|3||women|women in scarves, woman on phone
+69|3||women|woman walking; hands with scarf
+70|2|p|women|hats demo
+71|3|g|women,street|women and strollers; head-covering board game
+72|3|g|women,street|board game; women with strollers
+73|4||historical|archival B&W: immigrant ships, Manhattan Bridge
+74|3||wedding|bride with candles (badeken)
+75|3||wedding,women|hair net; women at wedding
+76|2|p|women|head-covering demo; mother and baby
+77|2||women|hands folding fabric
+78|2|p|women,wig|wig demo
+79|2|g|home|graphic of family at a table with laptop
+80|2|p|women,wig|wig on a stand
+81|3||crowd,children|women and children behind barricades
+82|1|i|women|webcam interview
+83|4||women,street|women walking with flowers
+84|1|g|women|white transition, demo
+85|1|i|women|interview
+86|2|g|celebration|small framed video, men celebrating
+87|2|p|car|car vlog, police
+88|2|p,s|torah|vlogger with Hasid, subtitles; Torah crown
+89|3||synagogue|men entering a building, mezuzah
+90|2|p|street|vlogger with Hasid outdoors
+91|3||celebration|celebration hall crowd
+92|2|p|torah|vlogger; Torah scroll
+93|3||torah,celebration|Torah scroll completion ceremony, crowd
+94|2|p|street|vlogger with Hasid
+95|3||street,procession|street procession of Hasidim
+96|2|p|crowd|group of Hasidim with vlogger
+97|2|p,s|wedding|wedding hall pink lights, vlogger
+98|1|p|wedding|same
+99|1|p|wedding|same
+100|4||synagogue,prayer|synagogue interior, men in tallit praying
+101|3|s|street,winter|snowy street, Hasid walking
+102|3||street,winter|man on snowy stairs
+103|2|p|street,winter|vlogger with Hasid in snow
+104|4||street,winter|Hasid walking a snowy street by a fence
+105|3||bus|inside a bus/van, red seats
+106|4||street,winter|snowy street, wide
+107|3||street,winter|snowy street, cars
+108|3||street,winter|Hasid walking past vans in snow
+109|2|p,s|synagogue|inside a shul hallway, crowd of Hasidim, subtitles
+110|3||synagogue,crowd|crowd of Hasidim in a hallway, tallit
+111|3||study,synagogue|glass doors to a study hall, men inside
+112|2|p,s|street|vlogger talking with young Hasidim, subtitles
+113|3||street,winter|elderly Hasid walking across a parking lot
+114|2|p|street,winter|vlogger in snowy street
+115|2|p|street,winter|vlogger with Hasid by car
+116|3||street,winter|parking lot, people walking, sunny cold
+117|3||street,winter|Hasid walking by parked cars, sun glare
+118|3||shop,street|shop entrance, women and kids, busy sidewalk
+119|3||street,shop|Hasid walking past storefronts, merchandise outside
+120|2|p|street,winter|vlogger with two Hasidim in snow
+121|2|p|street,winter|man in jacket, snowy lot
+122|1|p|car|man in a car window talking
+123|1|p|car|same
+124|1|p|car|same
+125|1|p|car|same
+126|1|p|car|same
+127|1|p|car|same
+128|1|p|car|same
+129|2|p|street,winter|elderly Hasid with vlogger by cars
+130|2|s|street,bus|bus and cars on street, subtitles
+131|3||street,winter|man walking behind white car
+132|2|p,s|shop|business owner at a store entrance, subtitles
+133|3||shop|men in white shirts inside a store window
+134|2|p|shop|Hasid talking at store window
+135|2|p|shop|market stall, woman
+136|3||community,emergency|Kiryas Joel fire department truck, volunteer
+137|3||community,emergency|Hasidic volunteer by an emergency SUV
+138|3||community,emergency|ambulance vehicle in snowy lot
+139|3||community,emergency|EMT volunteers inside an ambulance
+140|4||home,family|large family at a dining table, chandelier
+141|3||shop,signage|kosher store interior, Hebrew signs
+142|4||shop,food|woman and Hasid shopping in a grocery store, produce
+143|3||street,shop|storefronts; Hasid in tallit walking
+144|3||street,institution|street, Tudor-style building, a door
+145|3||street,women|street corner, woman entering a salon
+146|3||crowd,prayer|crowd of Hasidim praying outdoors
+147|3||historical,photo|hand pointing at a framed old group photo
+148|4||crowd,newspaper|men reading newspapers; huge crowd gathering
+149|3||street|ballpark stadium; man walking by a building
+150|4||school,children|schoolgirls in uniforms on a playground; classroom
+151|3||street,suburb|suburban street, people crossing
+152|3||suburb,housing|townhouses, men walking
+153|2|i|women|women in a dark car, interview
+154|3||women,home|two women at a table with flowers
+155|4||street|brownstone street, Hasid walking, crossing
+156|4||street,family,children|mother with stroller and kids on sidewalk
+157|4||street,family|mother crossing with a double stroller
+158|1|i|women|women interview
+159|1|i|women|women interview
+160|1|i|women|women interview
+161|1|i|women|women interview
+162|1|i|women|women interview
+163|1|i|women|women interview
+164|1|i|women|women interview
+165|1|i|women|women interview
+166|3|t|family|family portrait on stoop; title card HANGING WITH HASIDICS
+167|3|s|study,library|man studying; bookshelves library
+168|2|s|street,family|man greeting kids on a stoop, subtitles
+169|2|t|women,home|woman interview with name caption
+170|2|s|home,family|father holding a child, bookshelves
+171|2|s|home,family|father with son in a home library
+172|3|s|home,children|kids in a dining room with father
+173|2|s|home,family|mother holding a child
+174|3||home,art|painting of an old rabbi; woman interview
+175|2|i|home|woman interview; notebook
+176|2|i|home|woman with baby, interview
+177|3||home|letter writing, family photo
+178|2|i|home|woman in kitchen interview
+179|3||home,children|child's hands with toys and a ball
+180|2|s|children|girl eating, subtitles
+181|2|s|children|girl on sofa eating
+182|2|s|home|hallway, woman carrying a child
+183|3||children,home|kids running in a backyard, father
+184|2|p|office|man at an office desk with floor plans on screen
+185|4||school,bus,street|large yeshiva building, school buses, street
+186|4||school,bus,street|same building, buses and cars
+187|3||street,women|woman walking in a park, men
+188|3||home,family|modern kitchen, family moving around
+189|2|i|car|man in a car window
+190|3||women,wig|wig close-up; smiling woman
+191|3||home,children|kids on a balcony / stoop, family
+192|3||rabbi,historical|elderly rabbi in tallit; giant group photo of a yeshiva
+193|4||street,family|woman walking with stroller in a park
+194|2|i|home|elderly Hasid interview; woman with baby
+195|3|t|children,school|children in class (blurred faces), tallit costumes
+196|3||family,photo|phone showing a family photo
+197|3|i|street|man interview; Hasid walking with children
+198|4||home,meal|Shabbat dinner table with rabbi and family
+199|4||street|Brooklyn crosswalk, Hasidim walking (walking tour)
+200|3||synagogue|men entering a synagogue, backs
+201|4||street|Williamsburg street with shops, Hasidim walking
+202|4||synagogue,study|rabbi with papers at a desk; crowd of Hasidim dancing
+203|4||street|busy intersection, stroller, cars
+204|3||synagogue|man adjusting hat; rabbi reading
+205|4||street,shop|shopping street with storefronts, Hasidim
+206|4||study,meal|men studying at a long table, bookshelves
+207|4||street,shop|fruit stand on sidewalk, woman shopping
+208|3||historical,home|portraits of rebbes; elderly man with child in a home
+209|4||street|tree-lined street, vans, people walking
+210|3||crowd|crowd of men in hats, car
+211|4||street|sidewalk with pedestrians, trees
+212|3||shop,clothing|white shirts on a rack; men in a store
+213|4||street|avenue with shops, woman with bags
+214|3||prayer,street|man in striped tallit outdoors; hands with tefillin
+215|4||street|narrow sidewalk, children walking, shuttered store
+216|4||prayer,synagogue|man in tallit singing in a packed synagogue
+217|4||street,women|woman walking on a Brooklyn sidewalk, shops
+218|3||street,women|woman with stroller by a stoop, bikes
+219|4||street|street corner, Hasid crossing
+220|4||man,portrait|close portrait of a bearded Hasid in hat, shallow focus
+221|4||street|wide intersection, trees, people crossing
+222|4||crowd,historical,rabbi|huge group photo of rabbis; elderly rabbi in tallit at a desk
+223|4||street,bus|school bus at intersection, kids crossing
+224|3||street,family|stroller, men walking by a truck
+225|4||street,bus,children|school bus by a school, crowd of children
+226|3||synagogue|man at a mezuzah / charity box, hands
+227|4||street|wide avenue, men crossing
+228|4||home,family,meal|mother feeding kids at a kitchen table, big family
+229|4||street|sidewalk with trash bags, Hasid walking
+230|3||home,women|woman in a kitchen, man in hat
+231|4||street|street with row houses, man walking
+232|3||street,crowd|crosswalk; blurred crowd
+233|4||street,shop|shopping street, blue container, women
+234|3||family,children|father kissing a child in kippah
+235|4||street|street with shops and scaffolding
+236|3||children,street|children playing, girls dancing
+237|4||street,shop|sidewalk shops, people walking
+238|4||street,family|couple walking; man with stroller in park
+239|4||street,family|busy avenue, families
+240|3||home,children|baby with toys; man in shtreimel outdoors
+241|4||street,children|avenue, girl in pink, strollers
+242|3||street,women|woman walking with coffee; families in park
+243|4||street|residential street with parked cars
+244|3||home,children|toddler at a table; old clock
+245|4||street|avenue with shops, men walking
+246|4||celebration,crowd|large hall full of Hasidim dancing
+247|4||street|sidewalk, school bus, men walking
+248|3||office,women|women working at desks in an office (organization logos)
+249|4||street,bus|avenue with school bus, Hasidim
+250|3||home|man at a door, touching mezuzah; woman in room
+251|4||street,bus|avenue, Hasidim, school bus
+252|3||home,family|elderly rabbi; mother holding a baby in a library
+253|4||street|intersection, red-brick building
+254|3||children,bus|children boarding a white van
+255|4||street|Hasid crossing a street with blue pole
+256|3||school|father carrying a child into a school hallway
+257|4||street|tree-lined sidewalk
+258|4||school,children|classroom of boys in uniforms, portrait of a rebbe
+259|4||street|sidewalk with parked vans
+260|3||prayer|men in tallit raising a Torah scroll
+261|4||street|construction barriers, Hasidim walking
+262|3||school,children|preschool, children playing
+263|4||street|quiet residential street
+264|2|i|man|Hasid interview
+265|4||street,night,jerusalem|Mea Shearim alley at night, posters
+266|3||school,children|child writing Hebrew letters
+267|4||street,night,jerusalem|Mea Shearim street at night
+268|2||man|man singing, arm raised
+269|4||shop,night,jerusalem|Mea Shearim shops at night
+270|3||street,family|Hasidim walking in a park; man interview
+271|3||shop,night,jerusalem|bookstore at night, Hebrew books
+272|3||study,women|woman studying; man reading
+273|4||street,night,jerusalem|night street, car headlights
+274|2|i|man|man in kippah interview
+275|4||street,night,jerusalem|night street, men walking
+276|3||shop,clothing|hat shop, man by shelves
+277|4||street,night,jerusalem|night street, crowd
+278|3||shop,clothing|hat shop
+279|4||street,night,jerusalem|dark alley, man walking
+280|2|p|shop,clothing|hat shop, vlogger
+281|4||street,night,jerusalem|night street, blue shop lights
+282|3|p|shop,clothing|hat shop, man talking
+283|4||street,night,jerusalem|night street, crowd
+284|2|p|shop,clothing|hat shop, man talking
+285|4||street,jerusalem|Jerusalem sidewalk, daytime
+286|2|p,t|street|guide on a street, STORY TIME caption
+287|4||street,jerusalem|Jerusalem street
+288|2|p|street|guide with a woman (blurred)
+289|4||street,jerusalem|Jerusalem crosswalk
+290|2|p|street|guide with a woman (blurred)
+291|4||street,jerusalem|Jerusalem sidewalk, man walking
+292|2|p,t|street|guide, caption JUDAISM CAME TO AMERICA
+293|4||street,jerusalem|Jerusalem sidewalk
+294|3||torah|Torah scroll on a table, scribe's hand
+295|4||street,jerusalem|Jerusalem street with trees
+296|3|p|torah|man with Torah scroll
+297|3||street,jerusalem|police on a scooter, street
+298|3|p|torah|man with Torah scroll
+299|4||street,jerusalem|wall and railings, people walking
+300|2|t,p|torah|scroll, caption SCROLL WITH SHEMA
+301|4||street,jerusalem|Jerusalem street, people walking
+302|4||street,jerusalem|men walking across a plaza
+303|2|p|office|guide in an office
+304|3||street,jerusalem|stone building facade
+305|4||street,jerusalem|men walking in a plaza
+306|4||study,yeshiva|yeshiva study hall packed with men studying
+307|3||street,jerusalem|empty plaza
+308|3|i|study,yeshiva|young yeshiva student smiling, study hall
+309|3||street,jerusalem|rocks on a street
+310|4||study,yeshiva|yeshiva hall, men studying with books
+311|4||street,jerusalem|people walking on a sidewalk
+312|4||study,yeshiva|yeshiva hall, crowded study
+313|4||street,jerusalem|quiet Jerusalem street
+314|2|i|man|smiling red-bearded Hasid interview
+315|4||street,jerusalem|street, green scaffold, Hasid walking
+316|3||shop,work|Hasid working in an electronics store
+317|4||street,jerusalem|street, cars
+318|3||shop,work|Hasid in electronics store
+319|4||street,jerusalem|family walking on a street
+320|3||shop,work|Hasid looking at a phone
+321|4||street,jerusalem|children crossing a street
+322|3||street,jerusalem|Hasid at a gate, woman walking
+323|4||street,jerusalem|sidewalk by a fence
+324|3||community,emergency|Shmira (neighborhood patrol) command center van; Hasid talking
+325|4||street,jerusalem,shop|Jerusalem shop street
+326|2|p|street|man talking, ambulance, elderly Hasid
+327|4||street,jerusalem,shop|Jerusalem shopping street
+328|3||street,prayer|man in tallit on a stoop
+329|4||street,jerusalem,shop|Jerusalem shopping street
+330|3||food,kosher|kashering pots in a sink, rabbi supervising
+331|4||street,jerusalem|Jerusalem street
+332|2|i|meal|man talking at a table
+333|4||street,jerusalem,shop|street with a drinks stand
+334|3||home,rabbi|elderly rabbi in a kitchen talking
+335|4||street,jerusalem|street with shutters
+336|3||street,children|kids in tallit walking past posters
+337|4||street,jerusalem,shop|street with a kippah stall, shoppers
+338|2|t|money|$200,000 caption; rabbi blessing a man
+339|3||shop,jerusalem|Judaica store windows
+340|3||prayer,synagogue|men in tallit and tefillin praying
+341|4||shop,jerusalem,shopping|shoe stall with price tags
+342|3||prayer|men in tallit praying, close
+343|4||shop,jerusalem,shopping|crowded market stall, women shopping
+344|3||prayer,synagogue|synagogue, men in tallit
+345|4||street,jerusalem|street with pedestrians and shops
+346|2|p|man|Hasid talking
+347|4||street,jerusalem|busy street
+348|3|i|rabbi|elderly rabbi smiling, library
+349|4||street,jerusalem,shop|bakery display on the street
+350|3||crowd,celebration|men dancing, crowd
+351|4||street,jerusalem|street with shops
+352|3||meal,celebration|men at a long table, rabbi talking
+353|4||street,jerusalem|street, boy on phone
+354|3||prayer|men in tallit on the street; window
+355|4||food,shop,jerusalem|baked goods in a display, street
+356|3||crowd|crowd of men; car door
+357|4||street,jerusalem|women walking on a street
+358|3||family,street|father holding a child on a street
+359|4||street,jerusalem,shop|street with posters, shutters
+360|4||prayer,torah|crowd of men around a Torah, tallit
+361|4||street,jerusalem|street, men walking
+362|3||women,wig|hair salon, woman getting a haircut
+363|4||street,jerusalem|street with posters
+364|4||atmosphere,cemetery|men walking in silhouette at a cemetery (ohel)
+365|4||street,jerusalem,shop|shop street
+366|3|i|rabbi|elderly rabbi talking
+367|4||street|Brooklyn street corner
+368|3||family|father holding a toddler; man with phone
+369|4||street|Brooklyn street, parked cars
+370|3||home,children|kids on stairs; baking challah dough
+371|4||street,bus|school bus on a Brooklyn street
+372|3||home,food|kitchen stove with pots, woman with challah
+373|4||street|intersection, crosswalk
+374|4||family|large family portrait, dozens of children
+375|4||street|sidewalk, parked cars
+376|3||children,crowd|children in a crowd of men
+377|4||street|street with shops, people crossing
+378|4||family,park|man in shtreimel pushing a stroller in a park
+379|4||street|street with shuttered stores
+380|3||park,family|park bench, people
+381|4||street|street corner, women walking
+382|3||home,family|smiling young father on sofa; baby
+383|4||street|residential street
+384|4||celebration,crowd|large crowd of Hasidim dancing in shtreimels
+385|4||street|street with trees
+386|3||office,women|woman in an office (charity organization)
+387|4||street|street with men walking
+388|3||crowd,stadium|stadium gathering (Asifa) on screen, filled stands
+389|4||street|busy street
+390|3|i|rabbi|elderly rabbi talking in a kitchen
+391|4||street|street with school bus
+392|3||school,women|school hallway, girl studying, teacher
+393|4||street|street with graffiti, men crossing
+394|3||prayer|man in striped tallit
+395|4||street|street with barriers
+396|2|g|tunnel|vertical tunnel footage
+397|2|g|tunnel|tunnel footage
+398|2|g|tunnel|tunnel footage
+399|2||tunnel,crowd|synagogue doors; crowd at night
+400|1|t|tunnel|news text
+401|1|t|tunnel|news text
+402|4||historical,family|sepia old family photo with many children
+403|3||home,rabbi|rabbi pointing at a framed family photo
+404|3||home,food|soup; elderly couple at a table
+405|2|g|portrait|smiling boy in hat portrait
+406|3||women,wig|wig store with mannequin heads
+407|2|i|rabbi|elderly Hasid interview
+408|3||meeting,rabbi|rabbis at a meeting table
+409|3||home,food|woman cooking in a kitchen
+410|2||home|dark room; bicycle
+411|3||rabbi|rabbi blowing a shofar; close-up bearded man
+412|3||press|rabbi and lawyer talking to press microphones
+413|2|i|home|elderly couple in a kitchen
+414|1|t|tunnel|news footage with text
+415|1|t|tunnel|news footage with text
+416|1|t|tunnel|news footage with text
+417|2|p|shop,clothing|women in a clothing store
+418|2|p|shop,clothing|same
+419|2|p|street|woman talking on a street
+420|1|p|street|woman talking
+421|1|p|street|woman talking
+422|1|p|street|woman talking
+423|1|p|street|woman talking
+424|1|p|street|woman talking
+425|3||shop,books|Jewish bookstore shelves
+426|3||synagogue,study|guide in a synagogue; study hall
+427|3||street,family|hair; street with families, strollers
+428|4||study,yeshiva|large yeshiva study hall, men with books
+429|3|p|study|men studying Talmud together
+430|3|p|study|library, man talking
+431|3||street|men walking on a street
+432|4||street,family,women|women with strollers on a busy sidewalk (faces blurred)
+433|3|t|street,money|man in tallit walking; $100,000+ caption
+434|2|i|man|red-bearded Hasid interview on street
+435|3||street|men on a street
+436|3||shop,work|Hasid working in an electronics store
+437|3||shop,work|electronics store counter
+438|3||shop,work|Hasid selling phones
+439|3||women,wig|women with wigs, wig salon
+440|2|p|street|two men talking on a street
+441|4||study,prayer|study hall; elderly man in tallit reading
+442|3||street,community|Shomrim patrol car; parking meter
+443|3|g|bus|school bus with arrow graphic
+444|4||signage,institution|yeshiva building with Hebrew sign; billboard
+445|3||celebration|concert on stage, Hasidim
+446|3|p|street|two men talking on a corner
+447|4||shop,children|toy store front, families with strollers
+448|2||tunnel|synagogue interior, blurred
+449|3||tunnel,exterior|770 building exterior
+450|3||street,770|Eastern Pkwy sign, police
+451|3||770|police at 770 steps
+452|2||tunnel|synagogue interior
+453|3||770,police|NYPD cars outside 770
+454|2|t|770|chaos inside a synagogue, logo
+455|2|t|770|police and crowd, logo
+456|3||street,jerusalem|Hasidim in the street; soldier
+457|3||study,yeshiva|yeshiva study hall, masks
+458|3||street,jerusalem|Hasidim and police on a street
+459|3||historical,work|framed old photos; woman working with plans
+460|3||family,park|young couple in a park
+461|2||women|women in an office; woman by the sea
+462|2|p|home,family|father with child; STOP caption
+463|2|p|home|woman holding baby in an entrance hall
+464|2|p|home|same, vlogger
+465|4||home,shabbat|large Shabbat table set with candles and flowers
+466|3||home,shabbat|silver candlesticks; man in shtreimel
+467|3||home,food|kitchen with challah and food
+468|2|t|home,family|father holding a child, SUKKAH caption
+469|2|p|home,family|man with child
+470|4||shabbat|woman lighting Shabbat candles
+471|3||prayer,home|men praying in a living room
+472|3||home,family|family in a large living room
+473|3||shabbat|table with candles, men in shtreimels
+474|4||shabbat,meal|Shabbat table, man in shtreimel
+475|4||shabbat,meal|Shabbat meal, family around the table
+476|3||meal,food|plates of food close up
+477|3||shabbat,meal|table close-ups
+478|3||meal|couple at the table
+479|3||meal|guests at the table
+480|3||meal,children|children at the table
+481|3||meal|family at the table
+482|3||meal|table and kitchen
+483|3||meal|bookshelves; table
+484|2|p|meal|vlogger at the table
+485|4||shabbat,meal|long Shabbat table with a big family
+486|3||home,children|toddler with a tricycle in a living room
+487|4||shabbat,meal|Shabbat table, family
+488|2|t|770|Chabad HQ building with caption
+489|2|g|tunnel|tunnel footage with red bars
+490|3||street|sidewalk grate, cones
+491|2|g|tunnel|tunnel footage
+492|3||770,work|workers in hi-vis
+493|3||rabbi,770|Rebbe portrait mural
+494|2|t|770|aerial of 770 with caption
+495|2||tunnel|wooden hatch
+496|3||street|Hasid by a brick wall with posters
+497|3||770|770 exterior
+498|3||home,women|woman with glasses; man praying
+499|3||work,office|businessman in an office; man talking
+500|3||street,shop|street and shop, Hasid shopkeeper
+501|3||food,shop|kosher food counter with workers
+502|4||historical,children|B&W photo of many children (Holocaust-era orphans)
+503|3||home,women|woman and man with phones
+504|3||home,technology|kosher phone in hand; couple
+505|3||synagogue,historical|synagogue interior; old B&W boys photo
+506|3||home,children|mother at home, girls
+507|3||shop,street|shop owner; street
+508|4||shabbat,women|lighting Shabbat candles with daughters
+509|3||community,emergency|Hatzalah ambulance, volunteer
+510|3||children,holiday|Purim costumes; twins in a stroller
+511|4||family,children|wall of children's photos; big family with grandfather
+512|4||children,school|boys in crowns at a school celebration
+513|4||jerusalem,wall|Western Wall plaza, Hasid walking
+514|4||jerusalem,aerial|panorama of Jerusalem
+515|3||jerusalem|driving through Jerusalem; aerial
+516|4||crowd,celebration|packed stands at a tish/gathering, dancing
+517|3||work,women|women filling out forms
+518|3|t|holiday|shofar text card; man blowing a shofar
+519|3||money,women|hand with cash; woman with money on her head
+520|1|g|women|framed interview
+521|1|i|women|interview
+522|1|i|women|interview
+523|1|i|women|interview
+524|1|i|women|interview

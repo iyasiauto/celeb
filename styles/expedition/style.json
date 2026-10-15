@@ -1,0 +1,136 @@
+{
+ "name": "Expedition & courtroom",
+ "label": "Expedition & courtroom — hunts, mysteries, 'myth or reality', a verdict at the end",
+ "letter": "C",
+ "template": "expedition",
+ "theme": "expedition",
+ "blurb": "Field journal, antique map routes, evidence tags, scales of justice, scoreboard, verdict.",
+ "tagline": "A field journal and a courtroom: routes, evidence tags, scales of justice, a verdict.",
+ "points": [
+  "Field journal pages",
+  "Antique map routes",
+  "Evidence tags and scales of justice",
+  "Scoreboard and verdict"
+ ],
+ "best_for": "hunts, mysteries, 'myth or reality', a verdict at the end",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "full",
+ "xfade": 0.0,
+ "look": {
+  "engine_theme": "expedition",
+  "grade": "warmsepia",
+  "grain": 2.0,
+  "xfade": 0.0,
+  "fonts": "the engine theme's own (docu/engine.js THEMES['expedition'])",
+  "palette": "engine theme",
+  "captions": null
+ },
+ "pacing": {
+  "clip_share": [
+   0.15,
+   0.4
+  ],
+  "graphics_per_min": 1.4,
+  "max_gap_s": 40,
+  "max_plain_run": 3,
+  "chapter_every_s": 330,
+  "min_distinct_devices": 11,
+  "sfx_per_min": 5.0
+ },
+ "devices_summary": [
+  {
+   "type": "collage",
+   "min_per_10min": 2,
+   "use": "Paper tabletop: photo prints (pc), cut-out props (cutout), typed strips, rubber stamps, sticky notes, circles and arrows - each lands on its word. The workhorse of the paper look: most explanations happen here."
+  },
+  {
+   "type": "words",
+   "min_per_10min": 4,
+   "use": "Kinetic type: one to three big words slam in on the beat (items=[W_('...')]). The punch of a sentence, the question, the twist."
+  },
+  {
+   "type": "stat",
+   "min_per_10min": 1.5,
+   "use": "One big number that counts up, with a kicker and a note. Every important figure the narrator says."
+  },
+  {
+   "type": "scales",
+   "min_per_10min": 0.4,
+   "use": "Scales of justice tipping as each piece of evidence is weighed."
+  },
+  {
+   "type": "scoreboard",
+   "min_per_10min": 0.4,
+   "use": "A split-flap scoreboard: for and against."
+  },
+  {
+   "type": "verdict",
+   "min_per_10min": 0.3,
+   "use": "The final verdict stamp: REALITY / MYTH. Once, at the end."
+  },
+  {
+   "type": "timeline",
+   "min_per_10min": 1.5,
+   "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+  },
+  {
+   "type": "ledger",
+   "min_per_10min": 1,
+   "use": "An account that adds up line by line to a total: costs, counts, a running sum."
+  },
+  {
+   "type": "map",
+   "min_per_10min": 1,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "geo",
+   "min_per_10min": 1.5,
+   "use": "A terrain / satellite close-up of a region with labels and a profile: mountains, valleys, where exactly."
+  },
+  {
+   "type": "split",
+   "min_per_10min": 1,
+   "use": "Two pictures side by side with labels: before / after, then / now, A vs B."
+  },
+  {
+   "type": "spotlight",
+   "min_per_10min": 2,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  },
+  {
+   "type": "depth",
+   "min_per_10min": 1,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "quote",
+   "min_per_10min": 1,
+   "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+  },
+  {
+   "type": "chapter",
+   "min_per_10min": 1.4,
+   "use": "Full-screen chapter card: number, kicker, title. One per act."
+  },
+  {
+   "type": "measure",
+   "min_per_10min": 1,
+   "use": "A size comparison: the object against a known scale (people, buses, football fields)."
+  },
+  {
+   "type": "tv",
+   "min_per_10min": 0.4,
+   "use": "The picture plays inside an old TV set and the camera pushes into the screen. 'Back then', archive, broadcast, 'on the news' moments. Mark archive shots archive=True to also get the vintage TV-gate overlay."
+  }
+ ],
+ "worked_examples": [
+  "projects/noahs_ark_myth/build.py"
+ ],
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}

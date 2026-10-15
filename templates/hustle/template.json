@@ -1,0 +1,201 @@
+{
+ "id": "hustle",
+ "name": "Hustle",
+ "version": 1,
+ "source": "Frontier styles/hustle.json",
+ "theme": "hustle",
+ "grade": "eq=contrast=1.12:saturation=1.15:gamma=0.98",
+ "grain": 1.2,
+ "xfade": 0.0,
+ "sfx_style": "full",
+ "best_for": "make-money & youth business",
+ "look": "Side hustles, online business and money explainers with the energy of the best young creators: footage on a dark glossy stage with a glow and a drop shadow, big two-to-four-word captions popping in the middle with the key word in red, DIFFICULTY LEVEL bars filling segment by segment, glossy 3D icons with one word, money raining over the footage, corner titles with a glossy blob logo, counters rolling up to the figure, one option versus another on scored bars, checklists ticked one by one. Fast cuts, punchy grade.",
+ "tagline": "Glossy black, glow, difficulty bars, money rain, counters.",
+ "examples": [
+  "templates/hustle/demo_build.py"
+ ],
+ "starter": "templates/hustle/README.md",
+ "preview_dir": "templates/hustle/previews",
+ "preview_sheet": "templates/hustle/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_hustle.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "Poppins-ExtraBold.ttf",
+   "Garamond": "Poppins-ExtraBold.ttf",
+   "Engr": "Poppins-ExtraBold.ttf",
+   "Rec": "Poppins-ExtraBold.ttf",
+   "GaramondI": "Poppins-ExtraBold.ttf",
+   "RecI": "Poppins-ExtraBold.ttf",
+   "Caveat": "Poppins-ExtraBold.ttf",
+   "Barlow": "Roboto-Condensed.ttf",
+   "Oswald": "Roboto-Condensed.ttf",
+   "Label": "Roboto-Condensed.ttf",
+   "BarlowB": "Roboto-Condensed.ttf",
+   "OswaldB": "Roboto-Condensed.ttf",
+   "LabelB": "Roboto-Condensed.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "Poppins-ExtraBold.ttf",
+   "Num": "Poppins-ExtraBold.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#F3EEE4",
+   "gold": "#E8232A",
+   "mustard": "#E8232A",
+   "red": "#E8232A",
+   "cyan": "#8FB3D9",
+   "green": "#2ED573",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "232,35,42",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#E8232A",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#E8232A",
+   "hiLine": "rgba(232,35,42,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.7,
+  "max_gap_s": 48,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 5,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "hustle_bar",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a rating of something on a segmented bar (difficulty, risk, profit) with value out of max"
+  },
+  {
+   "type": "hustle_icon3d",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a glossy icon (search | dollar | rocket | bulb | chart | clock | fire | lock) with one word"
+  },
+  {
+   "type": "hustle_moneyrain",
+   "family": "over-footage",
+   "min_per_10min": 1.5,
+   "use": "money raining over the footage with a figure (can also sit on a clip: overlay frontier)"
+  },
+  {
+   "type": "hustle_corner",
+   "family": "heading",
+   "min_per_10min": 3,
+   "use": "the two-line title of a section in the corner (can also sit on a clip: overlay frontier)"
+  },
+  {
+   "type": "hustle_counter",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a figure counting up with a label"
+  },
+  {
+   "type": "hustle_versus",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "two options compared on 2-4 stats scored 1-10"
+  },
+  {
+   "type": "hustle_checklist",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "2-5 items ticked one by one."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.2,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.2,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "hustle",
+  "kind": "kit",
+  "kit": "hustle",
+  "frame": "stage",
+  "frame_every": 1
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: every 1-th shot sits in the stage frame (frame='stage'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).",
+  "This is a make-money explainer told with one 2D character: the first minute opens on a moneyrain (the figure the title promises) or a counter on the first sum, a headline with the REAL page of the first platform named (its url — etsy.com, upwork.com, fiverr.com, printify.com — photographed as it is), a bar (difficulty, risk or profit) on the first option rated, an icon3d with the key word of the first idea, and text labels for every figure.",
+  "After the hook: the 2D character's pictures carry it; a headline with the real page for every platform or tool named (give its url); a bar rating every option; a counter on every sum; a versus when two options are compared; a checklist for what is needed; an icon3d on the key word of each idea; a real object (a product, a device) only when one is named. Something new every 8 to 12 seconds.",
+  "HUSTLE: footage on a glossy dark stage, big pop captions with the key word in red, difficulty bars, glossy icons, money rain, counters, versus bars, checklists. Stock footage is on by default for the lifestyle shots; YouTube footage for real products and creators."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/hustle/README.md",
+ "ai_images": {
+  "scene_prompt": "You are the storyboard artist for a 2D make-money explainer on a faceless YouTube channel.\n\nCHANNEL: [INSERT CHANNEL HERE]\n\nBelow is the narration. Draw [INSERT COUNT HERE] consecutive frames, about one for every five or six\nseconds of narration, covering it from its first line to its last, so that each frame shows EXACTLY\nwhat the viewer is hearing at that moment.\n\nTHE MAIN CHARACTER is in every frame. The image model is handed a reference picture of them, so in\nevery prompt name them the way THE CAST below does (\"the man from the reference image\") and never give\nthem a different face, hair or clothes. In a close-up they are still there: their hand, their sleeve,\ntheir shoulder in the foreground.\n\nBE SPECIFIC — the frame shows the precise thing the line names:\n- A sum of money: a phone or bank screen showing that exact figure, big enough to read at a glance —\n  the phone fills most of the frame and the figure is the largest thing on it, e.g. a banking app\n  with \"-$480.00\" in red under \"Midas Auto Repair\", a thumb beside it.\n- A car: that exact make and model, seen from behind with the badge readable, and the number that\n  was spoken shown where it naturally lives — the year on a dealer sticker in the rear window, the\n  mileage on the odometer, the price on a windshield sign, the monthly payment on a phone.\n- A place and an hour: that place at that time — \"6:15 on a Saturday\" is the kitchen in early light\n  with the oven clock reading 6:15.\n- A bill, a letter, a message, a sign: its words and numbers spelled exactly as the narration says them.\n- Every figure sits on the thing it belongs to, exactly as the sentence says. In \"she leased a new\n  SUV, your repair cost two hundred\", the two hundred is on YOUR repair bill — never on her SUV.\n  Before you answer, check each figure you put in a frame against its sentence.\n- A named person: the same face and clothes every time they come back.\n\nBE A STORYTELLER, NOT A STOCK LIBRARY:\n- Frames follow each other like a comic. Set a place up, then use it: if the neighbour's truck\n  matters in the next line, it is already parked in the driveway, seen through the window over the\n  sink, in this one.\n- Vary the shot the way an editor would: the wide room, over the shoulder, close on the hands, the\n  other person's reaction, the object on its own with a hand reaching for it.\n- Every composition is new. Never repeat a frame, never reuse a layout two frames in a row.\n- Never illustrate an idea with a symbol (no scales, no arrows, no light bulbs, no piggy banks).\n  Show the real moment.\n- Describe the scene, not the art style — one flat 2D look is added to every prompt for you.\n\nReturn ONLY a JSON array of [INSERT COUNT HERE] objects, in narration order. Laid end to end, the\n\"text\" fields are the narration itself, with nothing skipped:\n\n  {\"text\": \"<the narration this frame covers, COPIED WORD FOR WORD from the script>\",\n   \"prompt\": \"<a complete image prompt: the shot, the main character from the reference image doing\n              what the line says, the specific objects and figures, the setting, the time of day,\n              the light>\"}\n\nSCRIPT:\n[INSERT SCRIPT HERE] Each frame shows ONE clear thing: one person, one action, one prop, on a plain background. NEVER describe any words, numbers, prices, buttons, badges, checkmarks, arrows, bars, labels, logos, app icons or screens with text in a picture — the video adds every figure and every label itself, in its own graphics. A phone or laptop shows a blank glowing screen.",
+  "still_suffix": " Flat 2D cartoon illustration, minimal and clean: the main character and at most ONE prop, big simple shapes, a plain single-colour background with lots of empty space, soft cel shading, one red and one yellow accent. Absolutely no text, no numbers, no bars, no user interface, no charts, no logos, no signs. 16:9.",
+  "character": "THE MAIN CHARACTER is the young man from the reference image, and he is in EVERY frame: early twenties, short dark hair, a simple flat cartoon face with small dark eyes, a plain white t-shirt, dark jeans, white sneakers. Always this exact man, drawn exactly this way. In a close-up he is still there — his hand on the laptop, his shoulder in the foreground. Anyone else who returns keeps the same face and clothes every time.",
+  "placement": "story",
+  "every_s": 7.0,
+  "channel": "Side hustles, online business and money explainers with the energy of the best young creators: footage on a dark glossy stage with a glow and a drop shadow, big two-to-four-word captions popping in the middle with the key word in red, DIFFICULTY LEVEL bars filling segment by segment, glossy 3D icons with one word, money raining over the footage, corner titles with a glossy blob logo, counters rolling up to the figure, one option versus another on scored bars, checklists ticked one by one. Fast cuts, punchy grade."
+ },
+ "captions": {
+  "mode": "pop",
+  "font": "Poppins ExtraBold",
+  "size": 110,
+  "accent": "#E8232A",
+  "words": 4,
+  "y": 940,
+  "hold": 0.12
+ },
+ "caption_accent": "&H2A23E8&"
+}

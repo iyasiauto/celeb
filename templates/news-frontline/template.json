@@ -1,0 +1,191 @@
+{
+ "id": "news-frontline",
+ "name": "News",
+ "version": 1,
+ "source": "Frontier styles/news.json",
+ "theme": "news-frontline",
+ "grade": "eq=contrast=1.06:saturation=0.95:gamma=1.0",
+ "grain": 1.2,
+ "xfade": 0.45,
+ "sfx_style": "full",
+ "best_for": "geopolitics & news explainers",
+ "look": "Wars, crises and elections explained like a newsroom's best segment: real news footage full frame with a breaking band and a crawling ticker, relief maps with the story's country pale cyan, the neighbours salmon, red heat and yellow dots where it burns, arrows of movement between named places, boxed place labels pinned on the footage, the same public figure in panels across the years, real quotes from real reports as lower thirds, figures counting up with their source, real article pages. No captions; the labels do the talking.",
+ "tagline": "A newsroom's best segment: heat maps, arrows, tickers, panels over time.",
+ "examples": [
+  "templates/news-frontline/demo_build.py"
+ ],
+ "starter": "templates/news-frontline/README.md",
+ "preview_dir": "templates/news-frontline/previews",
+ "preview_sheet": "templates/news-frontline/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_news-frontline.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "ArchivoBlack.ttf",
+   "Garamond": "ArchivoBlack.ttf",
+   "Engr": "ArchivoBlack.ttf",
+   "Rec": "ArchivoBlack.ttf",
+   "GaramondI": "ArchivoBlack.ttf",
+   "RecI": "ArchivoBlack.ttf",
+   "Caveat": "ArchivoBlack.ttf",
+   "Barlow": "BarlowCondensed-SemiBoldItalic.ttf",
+   "Oswald": "BarlowCondensed-SemiBoldItalic.ttf",
+   "Label": "BarlowCondensed-SemiBoldItalic.ttf",
+   "BarlowB": "Oswald.ttf",
+   "OswaldB": "Oswald.ttf",
+   "LabelB": "Oswald.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "ArchivoBlack.ttf",
+   "Num": "ArchivoBlack.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#EEF0F2",
+   "gold": "#E0322B",
+   "mustard": "#E0322B",
+   "red": "#E0322B",
+   "cyan": "#BFE8E6",
+   "green": "#6E9B7B",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "224,50,43",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#E0322B",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#E0322B",
+   "hiLine": "rgba(224,50,43,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.3,
+  "max_gap_s": 62,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 5,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "news_newsbar",
+   "family": "over-footage",
+   "min_per_10min": 1.5,
+   "use": "a real quote or claim from a real report as a lower third over the footage (tag: BREAKING NEWS | LIVE | DEVELOPING | ANALYSIS) (can also sit on a clip: overlay frontier)"
+  },
+  {
+   "type": "news_timeline",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "3-5 real dated events with a short line each, for what happened when"
+  },
+  {
+   "type": "news_label",
+   "family": "over-footage",
+   "min_per_10min": 1.5,
+   "use": "a boxed place name pinned on the footage (can also sit on a clip: overlay frontier)"
+  },
+  {
+   "type": "news_arrows",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "2-4 movements between named places on a relief ground, hot = the places under pressure"
+  },
+  {
+   "type": "news_ticker",
+   "family": "heading",
+   "min_per_10min": 3,
+   "use": "a news headline with a crawling ticker of 2-4 real items and a time"
+  },
+  {
+   "type": "news_count",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "one real figure counting up with its unit, source and 3-8 trend values."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.6,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.8,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "news",
+  "kind": "kit",
+  "kit": "frontline",
+  "frame": "news",
+  "frame_every": 3
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: every 3-th shot sits in the news frame (frame='news'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).",
+  "This is a news explainer: the first minute opens on a ticker (the headline of the day with real items and the time) or a newsbar (a real quote from a real report) on the first reported fact, a map (heat) on the first country named, a label on the first city, an arrows graphic when forces, money or people move between named places, a count on the first figure that matters, a headline (the real article) on the first claim, a spotlight on the first public figure, and text labels on the footage for names and dates.",
+  "After the hook: news footage carries it, every third shot in the news band; a map with heat when the story moves country; a label on each new city; arrows for any movement between places; a newsbar for every real quote from an official, an outlet or a report; a count for every figure with a source; timeline when a public figure's position changed over the years (real dates); a headline for every real article or statement page; a spotlight on each new public figure. Something new every 12 to 18 seconds. A timeline (3-5 real dated events with a short line each) whenever the story lists what happened when.",
+  "NEWS: real news footage with a breaking band, relief maps with red heat, arrows of movement, boxed place labels, panels of a person over the years, real quotes as lower thirds, real article pages. No captions — the labels and lower thirds carry the words. Opens on three seconds of the channel's presenter at his desk (look.avatar)."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/news-frontline/README.md",
+ "captions": {
+  "font": "Inter SemiBold",
+  "size": 53,
+  "upper": false,
+  "karaoke": false,
+  "box": true,
+  "outline": 0.5,
+  "outline_colour": "&H2E000000",
+  "shadow": 0.0,
+  "line_chars": 48,
+  "margin_v": 130,
+  "mute_under_frames": true
+ },
+ "caption_accent": "&H2B32E0&"
+}

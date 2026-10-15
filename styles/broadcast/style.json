@@ -1,0 +1,151 @@
+{
+ "name": "Breaking-news broadcast",
+ "label": "Breaking-news broadcast — news-style updates, 'BREAKING', fast reveals",
+ "letter": "D",
+ "template": "broadcast",
+ "theme": "broadcast",
+ "blurb": "LIVE bug and ticker, BREAKING slab, fact-check meters, headline wall, segment bumpers.",
+ "tagline": "LIVE bug, BREAKING slab, ticker, fact-check meters - the story as a news broadcast.",
+ "points": [
+  "LIVE bug and ticker",
+  "BREAKING slab",
+  "Fact-check meters",
+  "Headline wall, segment bumpers"
+ ],
+ "best_for": "news-style updates, 'BREAKING', fast reveals",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "full",
+ "xfade": 0.0,
+ "look": {
+  "engine_theme": "broadcast",
+  "grade": "broadcast",
+  "grain": 1.5,
+  "xfade": 0.0,
+  "fonts": "the engine theme's own (docu/engine.js THEMES['broadcast'])",
+  "palette": "engine theme",
+  "captions": null
+ },
+ "pacing": {
+  "clip_share": [
+   0.15,
+   0.4
+  ],
+  "graphics_per_min": 1.6,
+  "max_gap_s": 35,
+  "max_plain_run": 3,
+  "chapter_every_s": 300,
+  "min_distinct_devices": 13,
+  "sfx_per_min": 5.0
+ },
+ "devices_summary": [
+  {
+   "type": "breaking",
+   "min_per_10min": 1,
+   "use": "BREAKING NEWS slab with the headline - the open and every big reveal."
+  },
+  {
+   "type": "segment",
+   "min_per_10min": 0.5,
+   "use": "Segment bumper between parts of the show."
+  },
+  {
+   "type": "ov:newslower",
+   "min_per_10min": 1.5,
+   "use": "News lower-third bars: who / where."
+  },
+  {
+   "type": "ov:ticker",
+   "min_per_10min": 1,
+   "use": "News ticker crawling at the bottom."
+  },
+  {
+   "type": "ov:bug",
+   "min_per_10min": 0.4,
+   "use": "LIVE bug in the corner."
+  },
+  {
+   "type": "map",
+   "min_per_10min": 3,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "geo",
+   "min_per_10min": 2,
+   "use": "A terrain / satellite close-up of a region with labels and a profile: mountains, valleys, where exactly."
+  },
+  {
+   "type": "split",
+   "min_per_10min": 1.5,
+   "use": "Two pictures side by side with labels: before / after, then / now, A vs B."
+  },
+  {
+   "type": "timeline",
+   "min_per_10min": 1,
+   "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+  },
+  {
+   "type": "measure",
+   "min_per_10min": 1,
+   "use": "A size comparison: the object against a known scale (people, buses, football fields)."
+  },
+  {
+   "type": "headlines",
+   "min_per_10min": 0.5,
+   "use": "Headlines slam in one after another - 'everyone reported it', a wave of coverage."
+  },
+  {
+   "type": "factcheck",
+   "min_per_10min": 0.4,
+   "use": "Fact-check meters: true / misleading / false."
+  },
+  {
+   "type": "echo",
+   "min_per_10min": 0.4,
+   "use": "A wall of headlines that collapses to one source."
+  },
+  {
+   "type": "columns",
+   "min_per_10min": 0.4,
+   "use": "Columns comparison in news style."
+  },
+  {
+   "type": "videowall",
+   "min_per_10min": 0.4,
+   "use": "A wall of screens; one pushes in to full frame."
+  },
+  {
+   "type": "newslist",
+   "min_per_10min": 0.4,
+   "use": "A numbered news list with status tags."
+  },
+  {
+   "type": "words",
+   "min_per_10min": 4,
+   "use": "Kinetic type: one to three big words slam in on the beat (items=[W_('...')]). The punch of a sentence, the question, the twist."
+  },
+  {
+   "type": "quote",
+   "min_per_10min": 1,
+   "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+  },
+  {
+   "type": "depth",
+   "min_per_10min": 1.5,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "spotlight",
+   "min_per_10min": 1.5,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  }
+ ],
+ "worked_examples": [
+  "projects/noahs_ark_breaking/build.py"
+ ],
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}

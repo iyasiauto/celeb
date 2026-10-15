@@ -1,0 +1,30 @@
+TITLE
+<main title - under 70 characters, the question or the claim>
+
+ALTERNATIVE TITLES (A/B)
+<variant 1>
+<variant 2>
+<variant 3>
+
+DESCRIPTION
+<2-3 sentence hook: the claim, the date, what is actually known>
+
+<1 paragraph: what the video does - separates what is proven / claimed / unknown>
+
+CHAPTERS
+0:00 <cold open>
+<m:ss> <part one>
+<m:ss> <part two>
+(take the times from the chapter scenes in <work>/scenes.json: "t0" of each type=chapter)
+
+TAGS
+<10-20 comma-separated tags>
+
+HASHTAGS
+#<Topic> #<Place> #Documentary
+
+UPLOAD CHECKLIST
+- Category: Education
+- Set the thumbnail before publishing
+- YouTube needs 0:00 as the first chapter timestamp
+- Check the licences of the music tracks used

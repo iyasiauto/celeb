@@ -1,0 +1,291 @@
+{
+ "id": "dark-psychology",
+ "name": "Carl Jung",
+ "version": 1,
+ "source": "Frontier styles/jung.json",
+ "theme": "dark-psychology",
+ "grade": "eq=brightness=-0.06:saturation=0.62:contrast=1.10,colortemperature=temperature=5200",
+ "grain": 1.0,
+ "xfade": 0.45,
+ "sfx_style": "full",
+ "best_for": "dark psychology",
+ "look": "The original Frontier look and the cheapest way to make long videos: stock footage, AI pictures and motion graphics under a calm narrator. Dark psychology in the tradition of Carl Jung — rewrite it for your own niche.",
+ "tagline": "The original Frontier look, built for long videos.",
+ "examples": [
+  "templates/dark-psychology/demo_build.py"
+ ],
+ "starter": "templates/dark-psychology/README.md",
+ "preview_dir": "templates/dark-psychology/previews",
+ "preview_sheet": "templates/dark-psychology/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_dark-psychology.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "EB-Garamond.ttf",
+   "Garamond": "EB-Garamond.ttf",
+   "Engr": "EB-Garamond.ttf",
+   "Rec": "EB-Garamond.ttf",
+   "GaramondI": "EB-Garamond-Italic.ttf",
+   "RecI": "EB-Garamond-Italic.ttf",
+   "Caveat": "EB-Garamond-Italic.ttf",
+   "Barlow": "Roboto-Condensed.ttf",
+   "Oswald": "Roboto-Condensed.ttf",
+   "Label": "Roboto-Condensed.ttf",
+   "BarlowB": "Roboto-Condensed.ttf",
+   "OswaldB": "Roboto-Condensed.ttf",
+   "LabelB": "Roboto-Condensed.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "InterDisplay-Black.ttf",
+   "Num": "InterDisplay-Black.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#F4EDDF",
+   "gold": "#C9B896",
+   "mustard": "#C9B896",
+   "red": "#8B7355",
+   "cyan": "#8FB3D9",
+   "green": "#6E9B7B",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "201,184,150",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#C9B896",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#C9B896",
+   "hiLine": "rgba(201,184,150,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.7,
+  "max_gap_s": 48,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 4,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "mg_title",
+   "family": "heading",
+   "min_per_10min": 2,
+   "use": "a title card for the idea of the moment (title + subtitle)"
+  },
+  {
+   "type": "mg_stat",
+   "family": "graphic",
+   "min_per_10min": 1,
+   "use": "one number that matters, big, with a line"
+  },
+  {
+   "type": "mg_bars",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "2-6 bars compared (items: label, value)"
+  },
+  {
+   "type": "mg_crowd",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a crowd of people filling in, some highlighted (count, highlight)"
+  },
+  {
+   "type": "mg_flow",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "an idea moving through 2-4 steps with icons and arrows"
+  },
+  {
+   "type": "mg_cards",
+   "family": "graphic",
+   "min_per_10min": 0.6,
+   "use": "2-4 cards with an icon, a label and a line"
+  },
+  {
+   "type": "mg_checklist",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "2-5 items ticked one by one"
+  },
+  {
+   "type": "mg_compare",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "two sides, before / after or this / that"
+  },
+  {
+   "type": "mg_steps",
+   "family": "graphic",
+   "min_per_10min": 0.4,
+   "use": "2-5 numbered steps"
+  },
+  {
+   "type": "mg_warning",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a warning sign with one line"
+  },
+  {
+   "type": "mg_reveal",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "items revealed one after another"
+  },
+  {
+   "type": "mg_image",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a picture with a caption"
+  },
+  {
+   "type": "mg_typing",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a line typed out"
+  },
+  {
+   "type": "mg_collage",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "paper stickers and cut-outs around a title"
+  },
+  {
+   "type": "mg_photonote",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a photo with a handwritten note"
+  },
+  {
+   "type": "mg_scatter",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "cut-outs scattered around a word"
+  },
+  {
+   "type": "mg_pillars",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "2-4 pillars of an idea"
+  },
+  {
+   "type": "mg_opener",
+   "family": "heading",
+   "min_per_10min": 0.3,
+   "use": "the opening card of the video"
+  },
+  {
+   "type": "mg_strikelist",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a list where items are struck through"
+  },
+  {
+   "type": "mg_icongrid",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a grid of icons"
+  },
+  {
+   "type": "mg_quotemark",
+   "family": "graphic",
+   "min_per_10min": 0.5,
+   "use": "a short quote in big quote marks"
+  },
+  {
+   "type": "mg_deckfan",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "cards fanned out like a deck"
+  },
+  {
+   "type": "mg_timeline",
+   "family": "graphic",
+   "min_per_10min": 0.4,
+   "use": "3-5 dated steps"
+  },
+  {
+   "type": "mg_splitreveal",
+   "family": "graphic",
+   "min_per_10min": 0.3,
+   "use": "a split screen revealing two sides"
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.6,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.8,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0.4,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "jung",
+  "kind": "motion",
+  "kit": "",
+  "frame": null,
+  "frame_every": 0
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).",
+  "The original look: stock footage, AI pictures with depth pop and animated graphics carry the video. YouTube footage and Vox scenes are available but off — they add real footage and collage at a higher cost per video."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/dark-psychology/README.md",
+ "ai_images": {
+  "scene_prompt": "You are the art director for a faceless YouTube video.\n\nCHANNEL: [INSERT CHANNEL HERE]\n\nBelow is the full spoken SCRIPT. Design [INSERT COUNT HERE] distinct background\nSCENES that carry this video visually.\n\nRULES\n- Each scene illustrates a MOMENT the narrator actually reaches. Read the script\n  and follow its order; scene 1 belongs at the start, the last at the end.\n- Atmospheric imagery, never text on screen. No words, letters or numbers.\n- No faces looking at camera unless the channel is built on a person.\n- One subject per scene, described concretely: what is in frame, the light, the\n  distance. \"A hand resting on a closed book, low window light\" — not \"wisdom\".\n- Vary the distance across the set: wide, middle, close. A pool of fifteen\n  medium shots edits like a slideshow.\n\nReturn ONLY a JSON array of [INSERT COUNT HERE] objects:\n\n  {\"text\": \"<the line of narration this scene belongs to>\",\n   \"prompt\": \"<a complete image-generation prompt>\"}\n\nSCRIPT:\n[INSERT SCRIPT HERE]\n",
+  "still_suffix": " Cinematic still, natural light, shallow depth of field, filmic grain, muted colour, no text, no watermark, no logo.",
+  "character": "",
+  "placement": "",
+  "every_s": 6.0,
+  "channel": "The original Frontier look and the cheapest way to make long videos: stock footage, AI pictures and motion graphics under a calm narrator. Dark psychology in the tradition of Carl Jung — rewrite it for your own niche."
+ }
+}

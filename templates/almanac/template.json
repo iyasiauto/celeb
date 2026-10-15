@@ -1,0 +1,147 @@
+{
+ "id": "almanac",
+ "name": "Heritage almanac",
+ "version": 2,
+ "theme": "almanac",
+ "grade": "almanac2",
+ "grain": 3.5,
+ "xfade": 0.55,
+ "sfx_style": "calm",
+ "best_for": "rural life, traditions, migrations, land and family stories, arguments built on numbers",
+ "look": "A county atlas / gazetteer: engraved caps on a letterpress plate over moving footage, didone figures, ledger slips, a surveyor's pencil, a plat map with a township grid. Slate ink on oatmeal paper.",
+ "examples": [
+  "projects/amish_two_states/build.py",
+  "projects/amish_leaving/build.py"
+ ],
+ "starter": "docu/templates/starter_almanac/build.py",
+ "preview_dir": "docu/templates/previews/almanac2",
+ "preview_sheet": "docu/templates/previews/sheet_almanac2.jpg",
+ "scene_files": [],
+ "theme_def": null,
+ "audit": {
+  "clip_share": [
+   0.28,
+   0.55
+  ],
+  "graphics_per_min": 0.9,
+  "max_gap_s": 75,
+  "max_plain_run": 6,
+  "chapter_every_s": 150,
+  "min_distinct_devices": 10,
+  "sfx_per_min": 0.8
+ },
+ "devices": [
+  {
+   "type": "ov:gzhead",
+   "family": "heading",
+   "min_per_10min": 4,
+   "use": "Chapter heading stamped over MOVING footage: plate stamp, engraved title, pencil note. One per act."
+  },
+  {
+   "type": "ov:gztag",
+   "family": "overlay",
+   "min_per_10min": 1,
+   "use": "Place cartouche over footage: where we are."
+  },
+  {
+   "type": "gzcard",
+   "family": "type",
+   "min_per_10min": 3,
+   "use": "A key point on a ledger slip (punched holes, double keyline) over a dimmed photo."
+  },
+  {
+   "type": "gzstat",
+   "family": "number",
+   "min_per_10min": 2,
+   "use": "One figure stamped between two hairlines with a pencil note."
+  },
+  {
+   "type": "gzversus",
+   "family": "compare",
+   "min_per_10min": 1.5,
+   "use": "Two things compared row by row (people / places / districts); each value counts up on its own word."
+  },
+  {
+   "type": "gzgiants",
+   "family": "compare",
+   "min_per_10min": 0.4,
+   "use": "One circle sized by its value beside a field of small dots - one big thing against many small ones."
+  },
+  {
+   "type": "gzdivide",
+   "family": "number",
+   "min_per_10min": 0.4,
+   "use": "One cell inside a boundary dividing into 2, 3, 10 - growth by division."
+  },
+  {
+   "type": "gzindex",
+   "family": "list",
+   "min_per_10min": 1,
+   "use": "Gazetteer index rows: name, dotted leader, figure; one row highlighted."
+  },
+  {
+   "type": "gzdelta",
+   "family": "number",
+   "min_per_10min": 0.8,
+   "use": "Then -> now with an arrow and the difference stamped (2015 -> 2025)."
+  },
+  {
+   "type": "almgrowth",
+   "family": "chart",
+   "min_per_10min": 0.4,
+   "use": "A line drawn across years on paper; each point appears on its words."
+  },
+  {
+   "type": "almsplit",
+   "family": "number",
+   "min_per_10min": 0.3,
+   "use": "A field fenced into equal strips: one whole divided among many."
+  },
+  {
+   "type": "almshare",
+   "family": "chart",
+   "min_per_10min": 0.6,
+   "use": "One bar split into shares that grow in turn: 'more than half...'."
+  },
+  {
+   "type": "almbars",
+   "family": "chart",
+   "min_per_10min": 0.4,
+   "use": "Columns that rise to their values on paper."
+  },
+  {
+   "type": "almdistrict",
+   "family": "number",
+   "min_per_10min": 0.3,
+   "use": "A ring of houses around a centre, with roles as tags: a community and its structure."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 1.5,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "depth",
+   "family": "photofx",
+   "min_per_10min": 0.5,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "spotlight",
+   "family": "photofx",
+   "min_per_10min": 0.3,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  }
+ ],
+ "also_available": "every engine device works in every template; the list above is this template's vocabulary and its minimums",
+ "rules": [
+  "Every sentence gets the picture that shows what it says, landing on its words ('@words' timing).",
+  "Never two plain shots of the same kind for long: break runs of clips/photos with the template's devices.",
+  "Every number the narrator stresses is SHOWN with a number device; every place named is SHOWN on a map; every quotation is set as a quote.",
+  "No clip or picture twice in the same video; no talking heads, influencers, watermarks or logos (QC enforces it).",
+  "Look at the preview of each device (docu/templates/previews/<theme>/<device>.jpg) and copy its gallery spec as the starting point.",
+  "Open on moving footage, never a still; headings stamp over clips.",
+  "Numbers that carry the argument get the gazetteer figures (gzversus, gzgiants, gzdelta...); everything else stays on footage."
+ ]
+}

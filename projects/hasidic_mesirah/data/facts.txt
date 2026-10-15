@@ -1,0 +1,55 @@
+FACTS USED — "How 20,000 Hasidic Jews Were Told To Stay Silent About Crime"
+Subject: MESIRAH (the halakhic prohibition on informing on a fellow Jew to secular authorities) and its collision with crime/child-abuse reporting in Brooklyn's Haredi/Hasidic community.
+Every concrete claim below is sourced and attributed in the script. Sensitive topic: handled with gravity, no lurid detail, non-demonizing, internal correction emphasized.
+
+NOTE ON THE TITLE NUMBER "20,000"
+- No sourced single event exists in which exactly 20,000 people were "told to stay silent." The 20,000 is a community-SCALE figure (title/thumbnail framing). The script does NOT assert a fabricated headcount event; it delivers the title's promise by establishing that the silence is a community-wide NORM reaching "tens of thousands," grounded in sourced facts. Do not state a precise "20,000 were told X" as fact.
+
+MESIRAH / DIN MOSER (concept & history)
+- Mesirah = "to hand over"; the person who informs on a Jew to non-rabbinic (secular) authorities is a MOSER. (Wikipedia: Mesirah; JewishEncyclopedia "Moser".)
+- Din moser (law of the informer) is treated as analogous to DIN RODEF (law of the pursuer); both, in theory, prescribe death for the offender. A habitual moser was classically placed in the category of a rodef — a man actively trying to kill you — and could, in theory, be stopped by any means.
+- Historical origin: Jews often lived under hostile/antisemitic governments where a Jew handed over could be robbed, imprisoned, tortured, or killed, and the community punished with him. The rule was a survival mechanism, not a shield for criminals.
+- Modern halakhic position (multiple sources): the prohibition does NOT apply to someone who endangers others (e.g., a violent criminal / abuser); in such cases one may — and per later rulings, must — inform.
+
+THE OFFICIAL RULINGS (2011)
+- July 2011: a rabbinical court (beis din) in the Chabad-Lubavitch community of Crown Heights ruled that where there is evidence of abuse, mesirah does NOT apply: "One is forbidden to remain silent in such situations." (JTA; jweekly.)
+- Rabbinical Council of America (RCA): "if one becomes aware of an instance of child abuse or endangerment, one is obligated to refer the matter to the secular authorities immediately, as the prohibition of mesirah does not apply in such a case."
+- Agudath Israel of America (a leading Haredi org; spokesperson Rabbi Chaim Dovid Zwiebel): guidance that an observant Jew should NOT report abuse allegations to police without first CONSULTING A RABBI to assess whether the suspicion is strong enough. (Someone who personally experienced/witnessed abuse could go directly; other allegations to be evaluated by a rabbi first.) Widely criticized as creating a rabbinic gatekeeper and delay. (Wikipedia; jweekly 2011.)
+
+THE WEBERMAN CASE (the proving example)
+- Nechemya Weberman: unlicensed youth counselor, Satmar community, Williamsburg. A girl referred to him by her religious school said he abused her over years of "counselling," beginning when she was ~12 (she was 17 at trial testimony).
+- Convicted December 10, 2012 on ALL 59 counts. Sentenced to 103 years in prison (later REDUCED on appeal — resentenced to 50 years in 2014).
+- Defense fundraiser held in Williamsburg (May 2012) drew hundreds of supporters.
+- Witness intimidation: Abraham Rubin (48) charged with bribery, witness tampering, coercion for offering the victim/family money (reportedly ~$500,000) to keep quiet. First time in ~2 decades Brooklyn DA charged Hasidic Jews with witness intimidation in a sex-abuse case.
+- Three brothers (Jacob, Joseph, Hertzka Berger) charged after threatening and removing the KOSHER CERTIFICATE from a restaurant run by the family of the victim's boyfriend (economic retaliation).
+- Three men arrested (judicial contempt) after court officers found photos on their phones of the victim testifying on the stand.
+(Sources: NYT; DNAinfo; Brooklyn Eagle; bishop-accountability archive; Wikipedia.)
+
+BROOKLYN DA / KOL TZEDEK PROGRAM
+- ~250,000 Haredim live in New York City, most in Brooklyn. (Wikipedia.)
+- 2009: Brooklyn DA Charles Hynes launched "Kol Tzedek" (Voice of Justice) to combat/encourage reporting of sex abuse in the Haredi community.
+- Hynes claimed ~95 arrests. A 2012 New York Times investigation concluded the office INFLATED the program's impact:
+  - Of ~53 closed cases: ~13 dismissed, ~35 plea deals, 5 went to trial (4 convictions, 1 acquittal). (Script rounds to "roughly fifty closed cases.")
+  - Of 38 closed cases, 14 resulted in jail time; ~24 got probation/minor pleas/dismissal — "often because victims or their parents backed out under community pressure."
+  - The Times could only match 47 of the 95 arrests to public records; more than half of those seemed to have little to do with the program.
+- Hynes's office did NOT publicize the names of Orthodox defendants, even convicted ones — a courtesy not extended to other defendants (stated reason: naming them could identify victims in a small community). Criticized as special/softer treatment. (Forward; NYT; JTA.)
+
+MECHANISM OF SOCIAL ENFORCEMENT
+- PASHKEVILIN: broadside posters pasted on walls/shopfronts in Haredi enclaves, historically the community's "front page"; used to publicly brand people as "mosrim" (informers). (Wikipedia: Pashkevil; JTA 2020.)
+- Shunning stakes are total: marriage prospects (arranged shidduchim), business/boycott, schooling, housing, belonging — all run through the community, so the label "moser" can close every door for a whole family.
+- "Consult a rabbi first" builds in DELAY, which degrades evidence and erodes a victim's will to proceed.
+- Exit is catastrophic for the insider: little English, minimal secular education, no outside network — leaving is like emigrating to a country whose language you were never taught. (Context: Footsteps-type orgs support leavers.)
+
+BALANCE / COUNTER-CASE (editorial fairness)
+- Community is not a monolith and not static: survivors have gone public under their own names; advocacy orgs support leavers (tutoring, job training, legal help); rabbis from inside condemned shielding abusers; the clearest "must report" rulings came from religious authorities, not outsiders. More report now than a decade ago.
+- The historical distrust of outside power was earned over centuries of genuine persecution — handle with humility, not contempt.
+
+UNIVERSALITY (the turn)
+- The dynamic is not unique: closed institutions everywhere (churches moving priests, universities burying assaults, police closing ranks, families silencing a child) punish the whistleblower. Mesirah is an unusually OLD, NAMED, written-down version of a universal institutional reflex.
+
+SOURCES CONSULTED (web research 2026-10-07)
+- Wikipedia: "Sexual abuse cases in Brooklyn's Haredi community"; "Mesirah"; "Pashkevil".
+- JTA / jweekly (2011): Orthodox groups clarify positions on reporting abuse; Crown Heights beis din ruling; RCA statement.
+- The Forward / St. Louis Jewish Light: Brooklyn DA inflated Kol Tzedek impact (NYT investigation summary).
+- DNAinfo / Brooklyn Eagle / bishop-accountability.org archive: Weberman conviction, intimidation charges, Berger brothers, courtroom photos.
+- JTA (2020): "The haredi Orthodox community has always shunned 'mosers'."

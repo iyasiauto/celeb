@@ -1,0 +1,7 @@
+# Deep — how it is edited
+
+- Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.
+- Footage: every 2-th shot sits in the monitor frame (frame='monitor'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).
+- This is a military or technical mystery: the first minute opens on a stencil (the date or the place of the cold open), a map (two-tone) on the first place, a cutaway of the vessel, aircraft, rocket or station the story is about the first time it is named, a readout of the mission's facts within the first 40 seconds, a spotlight on the first public person named, and text labels for depths, distances, speeds and dates.
+- After the hook: archive footage in the monitor carries it; a route when a journey or a distance is described; a sonar when contacts, detection or pursuit are described; a cutaway when the story goes inside a machine; a readout for any list of specifications or facts; a maproom when a plan, an operation or a headquarters is described; a stencil on every new date; a map when the story moves; a spotlight on each new public person. One graphic every 20 to 30 seconds, never the same twice in a row.
+- DEEP: real archive footage in a dark monitor, stencil datelines, sonar, cutaways, readouts, the map room, two-tone maps, and matte 3D renders drawn where no footage exists. No captions by default.

@@ -1,0 +1,179 @@
+{
+ "id": "finalreel",
+ "name": "Final Reel",
+ "version": 2,
+ "theme": "finalreel",
+ "grade": "reel",
+ "grain": 2.0,
+ "xfade": 0.6,
+ "sfx_style": "calm",
+ "best_for": "childhood nostalgia, familiar faces, child stars and celebrities, tragic endings, 'where are they now', memorial lists",
+ "look": "A film-archive memorial. Charcoal and ivory with a muted gold for what they were known for and one crimson for the ending. Names in Playfair, labels in condensed caps, dates on a typewriter. Portraits in ivory film frames with sprocket holes over the same photo blurred and dark; borrowed clips play inside the frame, never full screen. Fast cold open (1.5-2 s cuts, a wall of faces), then a slow documentary body: one person = castcard -> their roles (framed clips, photos) -> the turn -> ageclock -> memoriam.",
+ "examples": [
+  "projects/child_stars_15_last_days/build.py",
+"projects/child_stars_died_too_soon/build.py"
+ ],
+ "starter": "templates/finalreel/README.md",
+ "preview_dir": "templates/finalreel/previews",
+ "preview_sheet": "templates/finalreel/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_finalreel.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "Reel": "PlayfairDisplay.ttf",
+   "ReelI": "PlayfairDisplay-Italic.ttf",
+   "Label": "BarlowCondensed-SemiBold.ttf",
+   "LabelB": "BarlowCondensed-Bold.ttf",
+   "Mono": "CourierPrime.ttf",
+   "Anton": "PlayfairDisplay.ttf",
+   "DMSerif": "PlayfairDisplay.ttf",
+   "Garamond": "EB-Garamond.ttf",
+   "GaramondI": "PlayfairDisplay-Italic.ttf",
+   "Barlow": "BarlowCondensed-SemiBold.ttf",
+   "BarlowB": "BarlowCondensed-Bold.ttf",
+   "Oswald": "BarlowCondensed-SemiBold.ttf",
+   "OswaldB": "BarlowCondensed-Bold.ttf",
+   "Elite": "CourierPrime.ttf",
+   "Caveat": "PlayfairDisplay-Italic.ttf",
+   "Engr": "Cinzel.ttf",
+   "Stamp": "BarlowCondensed-Bold.ttf"
+  },
+  "pal": {
+   "ink": "#121110",
+   "cream": "#EDE6D6",
+   "gold": "#C9A45C",
+   "mustard": "#C9A45C",
+   "red": "#A3262A",
+   "cyan": "#6E8A96",
+   "green": "#7C8C6A",
+   "ash": "#8E887E",
+   "paperWash": "26,24,22",
+   "paperEdge": "rgba(0,0,0,.55)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#1A1816",
+   "bg1": "#0E0D0C",
+   "sea": "#16191B",
+   "rim": "rgba(237,230,214,.25)",
+   "grat": "rgba(237,230,214,.04)",
+   "land": "#2A2622",
+   "border": "rgba(237,230,214,.35)",
+   "admin": "237,230,214",
+   "hi": "201,164,92",
+   "hiA": 0.28,
+   "text": "#EDE6D6",
+   "sub": "#8E887E",
+   "dot": "#A3262A",
+   "dotText": "#EDE6D6",
+   "name": "rgba(237,230,214,.6)",
+   "shadow": "rgba(10,9,8,.95)",
+   "pin": "dot",
+   "route": "#C9A45C",
+   "hiLine": "rgba(163,38,42,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.25,
+   0.4
+  ],
+  "graphics_per_min": 2.2,
+  "max_gap_s": 40,
+  "max_plain_run": 5,
+  "chapter_every_s": 55,
+  "min_distinct_devices": 8,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "castcard",
+   "family": "heading",
+   "min_per_10min": 9,
+   "use": "Who this is - one per person: framed portrait, rank, name wiping in, the role they are remembered for, years, age chip."
+  },
+  {
+   "type": "ageclock",
+   "family": "number",
+   "min_per_10min": 6,
+   "use": "The age they died at, counting up, with the date and one line. Use on 'He was twenty-three.'"
+  },
+  {
+   "type": "memoriam",
+   "family": "card",
+   "min_per_10min": 4,
+   "use": "Closing card for the people whose story lands hardest: black-and-white portrait in an arch, years, one line."
+  },
+  {
+   "type": "rollcall",
+   "family": "intro",
+   "min_per_10min": 1,
+   "use": "A wall of faces filling in: the cold open ('thirty-five young performers'), the roll call at the end."
+  },
+  {
+   "type": "lifeline",
+   "family": "timeline",
+   "min_per_10min": 2,
+   "use": "A life on one line: born -> roles -> the end, each marker on its word. For lives with several turning points."
+  },
+  {
+   "type": "ov:reelframe",
+   "family": "clip",
+   "min_per_10min": 12,
+   "use": "Borrowed show / film clips play INSIDE the film frame (clip with inset=[x,y,w,h]), 2-4 s, silent, never full screen."
+  },
+  {
+   "type": "ov:nameplate",
+   "family": "label",
+   "min_per_10min": 6,
+   "use": "Name + role over a full-screen photo or B-roll when the face is not introduced by a castcard."
+  },
+  {
+   "type": "map",
+   "family": "place",
+   "min_per_10min": 1,
+   "use": "Where it happened (the Viper Room, London, New Orleans): a dark map with one pin."
+  },
+  {
+   "type": "quote",
+   "family": "quote",
+   "min_per_10min": 1,
+   "use": "A line they said or a line from their role, set as a quote."
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 2,
+   "use": "Depth pop on the best portrait of a person."
+  }
+ ],
+ "also_available": [
+  "spotlight",
+  "photo",
+  "card",
+  "split",
+  "collage",
+  "headlines",
+  "stat",
+  "timeline"
+ ],
+ "rules": [
+  "Cold open: first 45-60 s fast - 1.5-2 s cuts, framed clips and photos, a rollcall on the count of names. Then slow: 5-8 s shots, soft dissolves.",
+  "One person = castcard on their name -> the roles (framed clips 2-4 s, photos with slow pushes) -> the turn (photos, B-roll) -> ageclock on the age -> memoriam for the heaviest endings.",
+  "About 30 % moving footage (framed borrowed clips + B-roll), 70 % pictures and graphics.",
+  "Borrowed show / film clips: short (2-4 s), silent, inside the reelframe (or flipped / cropped), always under narration, never full screen.",
+  "Every age at death is an ageclock or the castcard's age chip; every named place of death that matters gets a map.",
+  "No interviews / talking heads, no thumbnails or memes, no logos or other channels' captions (QC people mode enforces it).",
+  "Facts only as the script states them; never show a living person as dead.",
+  "Motion stays calm: slow pushes (<= 4-5 %), no light-leak flashes, faint grain - nothing should pull the eye from the face.",
+  "A castcard starts on 'Number N' and its name wipes in on the spoken name (word timing), never before it."
+ ],
+ "qc_mode": "people",
+ "guide": "kit_docs/NICHE_NOSTALGIA.md"
+}

@@ -1,0 +1,232 @@
+{
+ "template": "frontier-documentary",
+ "style": "documentary",
+ "kind": "docgfx",
+ "kit": "",
+ "prefix": "doc",
+ "frame": null,
+ "frame_every": 0,
+ "types": {
+  "dateline": {
+   "scene": "doc_dateline",
+   "page": "doc_frontier_documentary",
+   "seconds": 5.0,
+   "example": {
+    "place": "SARAJEVO, BOSNIA",
+    "date": "June 28, 1914",
+    "note": "Archduke Franz Ferdinand arrives",
+    "duration": 5.0
+   },
+   "over_footage": true
+  },
+  "number": {
+   "scene": "doc_number",
+   "page": "doc_frontier_documentary",
+   "seconds": 6.0,
+   "example": {
+    "value": 600000000,
+    "decimals": 0,
+    "prefix": "",
+    "suffix": "",
+    "unit": "people watched it live",
+    "context": "about one in six people alive in 1969",
+    "source": "NASA",
+    "duration": 6.0
+   },
+   "over_footage": false
+  },
+  "chart": {
+   "scene": "doc_chart",
+   "page": "doc_frontier_documentary",
+   "seconds": 8.0,
+   "example": {
+    "title": "The world's tallest buildings",
+    "unit": " m",
+    "highlight": 0,
+    "source": "CTBUH",
+    "bars": [
+     {
+      "label": "Burj Khalifa",
+      "value": 828,
+      "color": ""
+     },
+     {
+      "label": "Merdeka 118",
+      "value": 679,
+      "color": ""
+     },
+     {
+      "label": "Shanghai Tower",
+      "value": 632,
+      "color": ""
+     },
+     {
+      "label": "Makkah Clock Tower",
+      "value": 601,
+      "color": ""
+     }
+    ],
+    "duration": 8.0
+   },
+   "over_footage": false
+  },
+  "timeline": {
+   "scene": "doc_timeline",
+   "page": "doc_frontier_documentary",
+   "seconds": 8.5,
+   "example": {
+    "title": "Apollo 11",
+    "duration": 8.5,
+    "events": [
+     {
+      "date": "July 16, 1969",
+      "label": "Launch from Cape Kennedy"
+     },
+     {
+      "date": "July 20",
+      "label": "The Eagle lands on the Moon"
+     },
+     {
+      "date": "July 21",
+      "label": "Armstrong's first step"
+     },
+     {
+      "date": "July 24",
+      "label": "Splashdown in the Pacific"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "quote": {
+   "scene": "doc_quote",
+   "page": "doc_frontier_documentary",
+   "seconds": 7.5,
+   "example": {
+    "quote": "That's one small step for man, one giant leap for mankind.",
+    "who": "Neil Armstrong",
+    "role": "Commander, Apollo 11",
+    "year": "1969",
+    "duration": 7.5
+   },
+   "over_footage": false
+  },
+  "pivot": {
+   "scene": "doc_pivot",
+   "page": "doc_frontier_documentary",
+   "seconds": 4.6,
+   "example": {
+    "line": "But the numbers were wrong.",
+    "duration": 4.6
+   },
+   "over_footage": true
+  },
+  "question": {
+   "scene": "doc_question",
+   "page": "doc_frontier_documentary",
+   "seconds": 4.2,
+   "example": {
+    "line": "So what went wrong?",
+    "duration": 4.2
+   },
+   "over_footage": true
+  },
+  "card": {
+   "scene": "doc_card",
+   "page": "doc_frontier_documentary",
+   "seconds": 5.6,
+   "example": {},
+   "over_footage": false
+  },
+  "step": {
+   "scene": "doc_step",
+   "page": "doc_frontier_documentary",
+   "seconds": 3.2,
+   "example": {},
+   "over_footage": false
+  },
+  "social": {
+   "scene": "doc_social",
+   "page": "doc_frontier_documentary",
+   "seconds": 5.2,
+   "example": {
+    "action": "unfollow",
+    "frm": "Lamine Yamal",
+    "to": "Alex Padilla",
+    "mutual": true,
+    "note": "late 2024",
+    "platform": "",
+    "duration": 5.2
+   },
+   "over_footage": false
+  },
+  "chapter": {
+   "scene": "doc_chapter",
+   "page": "doc_frontier_documentary",
+   "seconds": 3.8,
+   "example": {
+    "n": "2",
+    "kicker": "CHAPTER 2",
+    "title": "The Man Who Sued the League",
+    "episode": "",
+    "dark": true,
+    "duration": 3.8
+   },
+   "over_footage": false
+  },
+  "place": {
+   "scene": "doc_place",
+   "page": "doc_frontier_documentary",
+   "seconds": 4.4,
+   "example": {
+    "place": "CHICAGO",
+    "sub": "ILLINOIS",
+    "duration": 4.4
+   },
+   "over_footage": true
+  },
+  "pull": {
+   "scene": "doc_pull",
+   "page": "doc_frontier_documentary",
+   "seconds": 6.5,
+   "example": {
+    "text": "LaRue Martin Jr. went from the bright lights of the NBA to making truck deliveries for UPS.",
+    "outlet": "The Sun",
+    "byline": "Jim Sheridan",
+    "role": "US Sport Reporter",
+    "date": "21 Mar 2023",
+    "duration": 6.5
+   },
+   "over_footage": false
+  },
+  "table": {
+   "scene": "doc_table",
+   "page": "doc_frontier_documentary",
+   "seconds": 7.5,
+   "example": {
+    "title": "",
+    "columns": [
+     "Statistic",
+     "Career average / total"
+    ],
+    "source": "Basketball-Reference",
+    "rows": [
+     {
+      "label": "Games played",
+      "value": "67 games"
+     },
+     {
+      "label": "Points per game",
+      "value": "18.2"
+     },
+     {
+      "label": "Rebounds per game",
+      "value": "15.9"
+     }
+    ],
+    "duration": 7.5
+   },
+   "over_footage": false
+  }
+ }
+}

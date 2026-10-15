@@ -1,0 +1,16 @@
+{
+ "name": "Final Reel",
+ "letter": "R",
+ "template": "finalreel",
+ "theme": "finalreel",
+ "blurb": "Childhood nostalgia, familiar faces, tragic endings: a film-archive memorial - castcards, age counters, memoriam cards, a wall of faces, borrowed clips inside an ivory film frame.",
+ "example": "build.py",
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "calm",
+ "xfade": 0.6,
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}

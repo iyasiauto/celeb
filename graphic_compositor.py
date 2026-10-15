@@ -11,9 +11,24 @@ import os
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageOps
 
 FONT_DIR = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts")
-COUR_BOLD = os.path.join(FONT_DIR, "courbd.ttf")
-ARIAL_BOLD = os.path.join(FONT_DIR, "arialbd.ttf")
-GEORGIA_BOLD = os.path.join(FONT_DIR, "georgiab.ttf")
+LINUX_FONTS = "/usr/share/fonts/truetype"
+
+
+def _font_path(windows_name, *fallbacks):
+    """The Windows font when present, else the first metric-compatible Linux font."""
+    for cand in [os.path.join(FONT_DIR, windows_name)] + [
+            os.path.join(LINUX_FONTS, f) for f in fallbacks]:
+        if os.path.exists(cand):
+            return cand
+    return windows_name
+
+
+COUR_BOLD = _font_path("courbd.ttf", "liberation/LiberationMono-Bold.ttf",
+                       "dejavu/DejaVuSansMono-Bold.ttf")
+ARIAL_BOLD = _font_path("arialbd.ttf", "liberation/LiberationSans-Bold.ttf",
+                        "dejavu/DejaVuSans-Bold.ttf")
+GEORGIA_BOLD = _font_path("georgiab.ttf", "liberation/LiberationSerif-Bold.ttf",
+                          "dejavu/DejaVuSerif-Bold.ttf")
 
 BASE_W, BASE_H = 1920, 1080
 

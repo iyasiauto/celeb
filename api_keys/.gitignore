@@ -1,0 +1,5 @@
+# Real key files never go into git. Only the README and the example are tracked.
+*
+!.gitignore
+!README.md
+!keys.example.env

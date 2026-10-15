@@ -1,0 +1,137 @@
+{
+ "name": "Heritage almanac",
+ "label": "Heritage almanac — rural life, traditions, migrations, land and family stories, arguments built on numbers",
+ "letter": "F",
+ "template": "almanac",
+ "theme": "almanac",
+ "blurb": "Updated edition: engraved caps on a letterpress plate over moving footage, didone figures, ledger-slip key points, a surveyor's pencil for the notes, state-against-state comparisons, giants-against-dots, dividing districts, index pages, and a plat map with a township grid. Slate ink on oatmeal paper. Slow and calm.",
+ "tagline": "Engraved caps on a letterpress plate, didone figures, plat maps - slate ink on oatmeal paper.",
+ "points": [
+  "Engraved chapter plates over footage",
+  "Didone figures and ledger slips",
+  "State-against-state comparisons",
+  "Plat map with a township grid"
+ ],
+ "best_for": "rural life, traditions, migrations, land and family stories, arguments built on numbers",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "calm",
+ "xfade": 0.55,
+ "look": {
+  "engine_theme": "almanac",
+  "grade": "almanac2",
+  "grain": 3.5,
+  "xfade": 0.55,
+  "fonts": "the engine theme's own (docu/engine.js THEMES['almanac'])",
+  "palette": "engine theme",
+  "captions": null
+ },
+ "pacing": {
+  "clip_share": [
+   0.28,
+   0.55
+  ],
+  "graphics_per_min": 0.9,
+  "max_gap_s": 75,
+  "max_plain_run": 6,
+  "chapter_every_s": 150,
+  "min_distinct_devices": 10,
+  "sfx_per_min": 0.8
+ },
+ "devices_summary": [
+  {
+   "type": "ov:gzhead",
+   "min_per_10min": 4,
+   "use": "Chapter heading stamped over MOVING footage: plate stamp, engraved title, pencil note. One per act."
+  },
+  {
+   "type": "ov:gztag",
+   "min_per_10min": 1,
+   "use": "Place cartouche over footage: where we are."
+  },
+  {
+   "type": "gzcard",
+   "min_per_10min": 3,
+   "use": "A key point on a ledger slip (punched holes, double keyline) over a dimmed photo."
+  },
+  {
+   "type": "gzstat",
+   "min_per_10min": 2,
+   "use": "One figure stamped between two hairlines with a pencil note."
+  },
+  {
+   "type": "gzversus",
+   "min_per_10min": 1.5,
+   "use": "Two things compared row by row (people / places / districts); each value counts up on its own word."
+  },
+  {
+   "type": "gzgiants",
+   "min_per_10min": 0.4,
+   "use": "One circle sized by its value beside a field of small dots - one big thing against many small ones."
+  },
+  {
+   "type": "gzdivide",
+   "min_per_10min": 0.4,
+   "use": "One cell inside a boundary dividing into 2, 3, 10 - growth by division."
+  },
+  {
+   "type": "gzindex",
+   "min_per_10min": 1,
+   "use": "Gazetteer index rows: name, dotted leader, figure; one row highlighted."
+  },
+  {
+   "type": "gzdelta",
+   "min_per_10min": 0.8,
+   "use": "Then -> now with an arrow and the difference stamped (2015 -> 2025)."
+  },
+  {
+   "type": "almgrowth",
+   "min_per_10min": 0.4,
+   "use": "A line drawn across years on paper; each point appears on its words."
+  },
+  {
+   "type": "almsplit",
+   "min_per_10min": 0.3,
+   "use": "A field fenced into equal strips: one whole divided among many."
+  },
+  {
+   "type": "almshare",
+   "min_per_10min": 0.6,
+   "use": "One bar split into shares that grow in turn: 'more than half...'."
+  },
+  {
+   "type": "almbars",
+   "min_per_10min": 0.4,
+   "use": "Columns that rise to their values on paper."
+  },
+  {
+   "type": "almdistrict",
+   "min_per_10min": 0.3,
+   "use": "A ring of houses around a centre, with roles as tags: a community and its structure."
+  },
+  {
+   "type": "map",
+   "min_per_10min": 1.5,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "depth",
+   "min_per_10min": 0.5,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "spotlight",
+   "min_per_10min": 0.3,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  }
+ ],
+ "worked_examples": [
+  "projects/amish_two_states/build.py",
+  "projects/amish_leaving/build.py"
+ ],
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}

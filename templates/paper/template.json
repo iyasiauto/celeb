@@ -1,0 +1,171 @@
+{
+ "id": "paper",
+ "name": "Paper / Vox explainer",
+ "version": 2,
+ "theme": "paper",
+ "grade": "doc",
+ "grain": 4.5,
+ "xfade": 0.0,
+ "sfx_style": "full",
+ "best_for": "explainers, myths, history, 'how it works'",
+ "look": "A paper tabletop: prints, cut-outs with white keylines, typed strips, rubber stamps, newspapers, sticky notes, ledger arithmetic; things drop, slide and stamp in. Hard cuts, full sound design.",
+ "examples": [
+  "projects/noahs_ark/build.py"
+ ],
+ "starter": "docu/templates/starter/build.py",
+ "preview_dir": "docu/templates/previews/paper",
+ "preview_sheet": "docu/templates/previews/sheet_paper.jpg",
+ "scene_files": [],
+ "theme_def": null,
+ "audit": {
+  "clip_share": [
+   0.12,
+   0.35
+  ],
+  "graphics_per_min": 2.0,
+  "max_gap_s": 30,
+  "max_plain_run": 2,
+  "chapter_every_s": 330,
+  "min_distinct_devices": 12,
+  "sfx_per_min": 6.0
+ },
+ "devices": [
+  {
+   "type": "collage",
+   "family": "paper",
+   "min_per_10min": 8,
+   "use": "Paper tabletop: photo prints (pc), cut-out props (cutout), typed strips, rubber stamps, sticky notes, circles and arrows - each lands on its word. The workhorse of the paper look: most explanations happen here."
+  },
+  {
+   "type": "cutout",
+   "family": "paper",
+   "min_per_10min": 6,
+   "use": "Cut-out props inside collages (k='cut'): the kit has 47 in media/kit/cutouts (books, envelopes, labels, the newspaper globe...), or cut one from a photo with cutout(). Vox look references: media/kit/vox/*.jpg"
+  },
+  {
+   "type": "words",
+   "family": "type",
+   "min_per_10min": 5,
+   "use": "Kinetic type: one to three big words slam in on the beat (items=[W_('...')]). The punch of a sentence, the question, the twist."
+  },
+  {
+   "type": "stat",
+   "family": "number",
+   "min_per_10min": 2,
+   "use": "One big number that counts up, with a kicker and a note. Every important figure the narrator says."
+  },
+  {
+   "type": "baskets",
+   "family": "paper",
+   "min_per_10min": 0.8,
+   "use": "Claims sorted into folders: known / claimed / unknown. The video's argument made visible."
+  },
+  {
+   "type": "headlines",
+   "family": "paper",
+   "min_per_10min": 0.8,
+   "use": "Headlines slam in one after another - 'everyone reported it', a wave of coverage."
+  },
+  {
+   "type": "chapter",
+   "family": "heading",
+   "min_per_10min": 1.4,
+   "use": "Full-screen chapter card: number, kicker, title. One per act."
+  },
+  {
+   "type": "quote",
+   "family": "quote",
+   "min_per_10min": 1,
+   "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+  },
+  {
+   "type": "depth",
+   "family": "photofx",
+   "min_per_10min": 1.5,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "spotlight",
+   "family": "photofx",
+   "min_per_10min": 1,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 1.5,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "timeline",
+   "family": "time",
+   "min_per_10min": 1,
+   "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+  },
+  {
+   "type": "checklist",
+   "family": "list",
+   "min_per_10min": 1,
+   "use": "Points ticked off one by one: requirements, reasons, steps, 'three things...'."
+  },
+  {
+   "type": "measure",
+   "family": "number",
+   "min_per_10min": 0.5,
+   "use": "A size comparison: the object against a known scale (people, buses, football fields)."
+  },
+  {
+   "type": "newspaper",
+   "family": "paper",
+   "min_per_10min": 0.5,
+   "use": "A newspaper page with headline and photo; the camera moves into the article. 'It was reported that...'."
+  },
+  {
+   "type": "ledger",
+   "family": "number",
+   "min_per_10min": 0.5,
+   "use": "An account that adds up line by line to a total: costs, counts, a running sum."
+  },
+  {
+   "type": "tv",
+   "family": "archive",
+   "min_per_10min": 0.5,
+   "use": "The picture plays inside an old TV set and the camera pushes into the screen. 'Back then', archive, broadcast, 'on the news' moments. Mark archive shots archive=True to also get the vintage TV-gate overlay."
+  },
+  {
+   "type": "split",
+   "family": "compare",
+   "min_per_10min": 0.5,
+   "use": "Two pictures side by side with labels: before / after, then / now, A vs B."
+  },
+  {
+   "type": "card",
+   "family": "archive",
+   "min_per_10min": 0.4,
+   "use": "A document, scan, letter or clipping held as a card with a slow zoom: records, evidence, official papers."
+  },
+  {
+   "type": "geo",
+   "family": "map",
+   "min_per_10min": 0.4,
+   "use": "A terrain / satellite close-up of a region with labels and a profile: mountains, valleys, where exactly."
+  },
+  {
+   "type": "title",
+   "family": "heading",
+   "min_per_10min": 0.3,
+   "use": "The title card of the video."
+  }
+ ],
+ "also_available": "every engine device works in every template; the list above is this template's vocabulary and its minimums",
+ "rules": [
+  "Every sentence gets the picture that shows what it says, landing on its words ('@words' timing).",
+  "Never two plain shots of the same kind for long: break runs of clips/photos with the template's devices.",
+  "Every number the narrator stresses is SHOWN with a number device; every place named is SHOWN on a map; every quotation is set as a quote.",
+  "No clip or picture twice in the same video; no talking heads, influencers, watermarks or logos (QC enforces it).",
+  "Look at the preview of each device (docu/templates/previews/<theme>/<device>.jpg) and copy its gallery spec as the starting point.",
+  "Explain on paper: most explanations are collages built from prints, cut-out props and typed strips that land on their words.",
+  "Stamp the verdicts (CLAIMED, UNPROVEN...) and slam the punch words.",
+  "Hard cuts; sound on every drop, stamp and slam."
+ ]
+}

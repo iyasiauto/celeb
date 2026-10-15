@@ -1,0 +1,188 @@
+{
+ "id": "deep",
+ "name": "Deep",
+ "version": 1,
+ "source": "Frontier styles/deep.json",
+ "theme": "deep",
+ "grade": "colorbalance=rs=-0.12:gs=0.0:bs=0.10:rm=-0.06:bm=0.06,eq=saturation=0.78:contrast=1.12:brightness=-0.03",
+ "grain": 1.2,
+ "xfade": 0.45,
+ "sfx_style": "full",
+ "best_for": "military & tech mysteries",
+ "look": "Submarines, spy missions, lost aircraft, rockets and the machines behind them, told in teal and orange: real archive footage in a dark monitor with a timecode, stencilled datelines over the picture, an abstract route chart of the journey, a cutaway of the vessel with the crew as glowing figures and the ones the story follows in red, a sonar screen of contacts, a classified readout of the facts, the wall map of a headquarters the camera pushes into, two-tone maps with a white route, and pictures drawn as matte 3D renders where no footage exists. No captions.",
+ "tagline": "Teal and orange: stencil dates, sonar, cutaways, the map room.",
+ "examples": [
+  "templates/deep/demo_build.py"
+ ],
+ "starter": "templates/deep/README.md",
+ "preview_dir": "templates/deep/previews",
+ "preview_sheet": "templates/deep/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_deep.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "SairaStencilOne.ttf",
+   "Garamond": "SairaStencilOne.ttf",
+   "Engr": "SairaStencilOne.ttf",
+   "Rec": "SairaStencilOne.ttf",
+   "GaramondI": "SairaStencilOne.ttf",
+   "RecI": "SairaStencilOne.ttf",
+   "Caveat": "SairaStencilOne.ttf",
+   "Barlow": "BarlowCondensed-SemiBold.ttf",
+   "Oswald": "BarlowCondensed-SemiBold.ttf",
+   "Label": "BarlowCondensed-SemiBold.ttf",
+   "BarlowB": "BarlowCondensed-Bold.ttf",
+   "OswaldB": "BarlowCondensed-Bold.ttf",
+   "LabelB": "BarlowCondensed-Bold.ttf",
+   "Elite": "SpaceMono-Bold.ttf",
+   "Mono": "SpaceMono-Bold.ttf",
+   "Code": "SpaceMono-Bold.ttf",
+   "Anton": "SairaStencilOne.ttf",
+   "Num": "SairaStencilOne.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#D7E9EC",
+   "gold": "#E8532A",
+   "mustard": "#E8532A",
+   "red": "#FF3B30",
+   "cyan": "#4FE3FF",
+   "green": "#6E9B7B",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "232,83,42",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#E8532A",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#E8532A",
+   "hiLine": "rgba(232,83,42,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.4,
+  "max_gap_s": 57,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 5,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "deep_stencil",
+   "family": "heading",
+   "min_per_10min": 3,
+   "use": "a stencilled date, place or name over the footage (the way the story stamps a time)"
+  },
+  {
+   "type": "deep_route",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "an abstract chart of a journey between two named points with a distance or a length"
+  },
+  {
+   "type": "deep_cutaway",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a cross-section silhouette of a vessel, aircraft, rocket, station or building (shape: submarine | ship | plane | rocket | building | tunnel) with the crew as glowing figures and the ones the story follows in red"
+  },
+  {
+   "type": "deep_sonar",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "contacts on a sweeping screen (bearing 0-360, range 0-1)"
+  },
+  {
+   "type": "deep_readout",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "a classified file of 3-5 real facts"
+  },
+  {
+   "type": "deep_maproom",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "the wall map of a headquarters the camera pushes into, for the plan of an operation."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.6,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.8,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0.4,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "deep",
+  "kind": "kit",
+  "kit": "deep",
+  "frame": "monitor",
+  "frame_every": 2
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: every 2-th shot sits in the monitor frame (frame='monitor'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).",
+  "This is a military or technical mystery: the first minute opens on a stencil (the date or the place of the cold open), a map (two-tone) on the first place, a cutaway of the vessel, aircraft, rocket or station the story is about the first time it is named, a readout of the mission's facts within the first 40 seconds, a spotlight on the first public person named, and text labels for depths, distances, speeds and dates.",
+  "After the hook: archive footage in the monitor carries it; a route when a journey or a distance is described; a sonar when contacts, detection or pursuit are described; a cutaway when the story goes inside a machine; a readout for any list of specifications or facts; a maproom when a plan, an operation or a headquarters is described; a stencil on every new date; a map when the story moves; a spotlight on each new public person. One graphic every 20 to 30 seconds, never the same twice in a row.",
+  "DEEP: real archive footage in a dark monitor, stencil datelines, sonar, cutaways, readouts, the map room, two-tone maps, and matte 3D renders drawn where no footage exists. No captions by default."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/deep/README.md",
+ "captions": {
+  "font": "Barlow Condensed SemiBold",
+  "size": 48,
+  "upper": true,
+  "karaoke": false,
+  "outline": 0.5,
+  "shadow": 0.6,
+  "line_chars": 46,
+  "margin_v": 70
+ },
+ "caption_accent": "&H2A53E8&"
+}

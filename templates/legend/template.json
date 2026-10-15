@@ -1,0 +1,182 @@
+{
+ "id": "legend",
+ "name": "Legend",
+ "version": 1,
+ "source": "Frontier styles/legend.json",
+ "theme": "legend",
+ "grade": "eq=contrast=1.05:saturation=1.02:gamma=1.02,colorbalance=rs=0.04:gs=0.01:bs=-0.05",
+ "grain": 1.2,
+ "xfade": 0.45,
+ "sfx_style": "full",
+ "best_for": "told in the athlete's own voice",
+ "look": "\"John Daly Reveals the 5 Most Special Golfers He Ever Saw\" — told by John Daly. The film opens on a real clip of the athlete or star talking on camera, about twenty seconds; their voice is cloned from that very clip, and the story continues in the first person, in their voice, over real footage and real photos of every person named. They are never shown again. Warm memoir look: photos centred over a blurred copy with a cream keyline, a yellow-bordered close-up inset sliding in, numbered chapter cards for each person on the list, lower thirds, scorecards, the narrator's own line as a card, dated years. No captions.",
+ "tagline": "A real clip, then the story in the star's own cloned voice.",
+ "examples": [
+  "templates/legend/demo_build.py"
+ ],
+ "starter": "templates/legend/README.md",
+ "preview_dir": "templates/legend/previews",
+ "preview_sheet": "templates/legend/previews/sheet.jpg",
+ "scene_files": [
+  "scenes_legend.js"
+ ],
+ "requires": [
+  "docu/scenes_frontier.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "DMSerif": "DMSerifDisplay.ttf",
+   "Garamond": "DMSerifDisplay.ttf",
+   "Engr": "DMSerifDisplay.ttf",
+   "Rec": "DMSerifDisplay.ttf",
+   "GaramondI": "Lora-Italic.ttf",
+   "RecI": "Lora-Italic.ttf",
+   "Caveat": "Lora-Italic.ttf",
+   "Barlow": "BebasNeue.ttf",
+   "Oswald": "BebasNeue.ttf",
+   "Label": "BebasNeue.ttf",
+   "BarlowB": "BebasNeue.ttf",
+   "OswaldB": "BebasNeue.ttf",
+   "LabelB": "BebasNeue.ttf",
+   "Elite": "KodeMono.ttf",
+   "Mono": "KodeMono.ttf",
+   "Code": "KodeMono.ttf",
+   "Anton": "BebasNeue.ttf",
+   "Num": "BebasNeue.ttf"
+  },
+  "pal": {
+   "ink": "#0D0C0A",
+   "cream": "#F4EBDD",
+   "gold": "#C99A3B",
+   "mustard": "#C99A3B",
+   "red": "#B0322A",
+   "cyan": "#8FB3D9",
+   "green": "#2F6B3A",
+   "paperWash": "13,12,10",
+   "paperEdge": "rgba(0,0,0,.6)"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  },
+  "map": {
+   "bg0": "#16140F",
+   "bg1": "#0B0A08",
+   "sea": "#0F0E0B",
+   "rim": "rgba(243,238,228,.22)",
+   "grat": "rgba(243,238,228,.04)",
+   "land": "#24211B",
+   "border": "rgba(243,238,228,.32)",
+   "admin": "243,238,228",
+   "hi": "201,154,59",
+   "hiA": 0.3,
+   "text": "#F3EEE4",
+   "sub": "#A39C8E",
+   "dot": "#C99A3B",
+   "dotText": "#F3EEE4",
+   "name": "rgba(243,238,228,.6)",
+   "shadow": "rgba(8,7,6,.95)",
+   "pin": "dot",
+   "route": "#C99A3B",
+   "hiLine": "rgba(201,154,59,A)"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.75
+  ],
+  "graphics_per_min": 1.2,
+  "max_gap_s": 67,
+  "max_plain_run": 8,
+  "chapter_every_s": 210,
+  "min_distinct_devices": 5,
+  "sfx_per_min": 1.0
+ },
+ "devices": [
+  {
+   "type": "legend_chapter",
+   "family": "heading",
+   "min_per_10min": 3,
+   "use": "the numbered card for each person or item of the list, the first time they are named (n = their number, note = one real fact)"
+  },
+  {
+   "type": "legend_lower",
+   "family": "over-footage",
+   "min_per_10min": 1.5,
+   "use": "a name and a role over the footage the first time another real person appears (can also sit on a clip: overlay frontier)"
+  },
+  {
+   "type": "legend_scorecard",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "2-5 rows of real numbers (a round, a season, a record)"
+  },
+  {
+   "type": "legend_line",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "one short sentence the narrator himself says in the script, as a card in his name"
+  },
+  {
+   "type": "legend_years",
+   "family": "graphic",
+   "min_per_10min": 1.0,
+   "use": "2-5 real dated moments of a career."
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 0.2,
+   "use": "where it happens (the template's map colours)"
+  },
+  {
+   "type": "spotlight",
+   "family": "photo",
+   "min_per_10min": 0.8,
+   "use": "a real photo of a person named, in a pool of light"
+  },
+  {
+   "type": "depth",
+   "family": "photo",
+   "min_per_10min": 0,
+   "use": "a 2.5D push into a still"
+  }
+ ],
+ "also_available": [
+  "photo",
+  "clip",
+  "map",
+  "depth",
+  "spotlight"
+ ],
+ "frontier": {
+  "style": "legend",
+  "kind": "kit",
+  "kit": "legend",
+  "frame": "blurfill",
+  "frame_every": 1
+ },
+ "rules": [
+  "Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.",
+  "Footage: every 1-th shot sits in the blurfill frame (frame='blurfill'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).",
+  "This is a first-person memoir: the first minute (after the real clip) opens on the narrator's own footage, a line card on the first sentence worth framing, a chapter card with its number the first time a person on the list is named, a spotlight (a real photo) of every person named, a lower third on each new person who is not on the list, and a years card if a career is summed up.",
+  "After the hook: real footage of the people named carries it, every shot centred over its blurred copy; a chapter card each time the next person or item of the list is named (numbered in order); a spotlight on every person named — real photos only, never the same photo twice; a scorecard when scores, records or numbers of a round, a season or a career are given; a line card for one sentence per chapter the narrator himself says; a lower third for every other real person; years for a career summed up. Never a graphic in the first 3 seconds after a chapter card.",
+  "LEGEND: the video opens on a real interview clip of the person in the title, their voice is cloned from it (Algrow, one clone per person, remembered), and the story continues in their first person over real footage and a real photo of every person named. Titles like \"X Reveals the 5 ...\" or \"X on the day ...\" work best."
+ ],
+ "qc_mode": "faceless",
+ "guide": "templates/legend/README.md",
+ "captions": {
+  "font": "Lora",
+  "size": 54,
+  "upper": false,
+  "karaoke": false,
+  "outline": 0.5,
+  "shadow": 0.6,
+  "line_chars": 44,
+  "margin_v": 76
+ },
+ "caption_accent": "&H3B9AC9&"
+}

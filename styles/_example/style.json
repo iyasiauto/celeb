@@ -1,0 +1,12 @@
+{
+  "name": "Cold Case Files",
+  "letter": "G",
+  "theme": "forensic",
+  "blurb": "True-crime case files: evidence boards, typed reports, a timeline that fills in, calm narration.",
+  "example": "build.py",
+  "rules": "rules.md",
+  "preview": "preview.jpg",
+  "sample": "sample.mp4",
+  "sfx": "full",
+  "xfade": 0.0
+}

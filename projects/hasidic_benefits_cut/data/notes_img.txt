@@ -1,0 +1,588 @@
+# sheet:pos|tags|description   (picks worth using; quality ok)
+money_00:4|ebt,snap|hand holding a Minnesota EBT card
+money_00:6|ebt,child|girl holding a card by a door
+money_00:8|cash|stacks of banded cash
+money_00:12|tax|1040 forms with a calculator
+money_00:13|tax|TAX 2026 calculator with coins
+money_00:14|medicaid|Medicaid card on a form
+money_00:17|budget|hands with a calculator and a ledger
+money_00:18|ebt|Virginia EBT card in hand
+money_00:21|cash,budget|calculator with a stack of dollars
+money_00:23|ebt|Louisiana Purchase EBT card
+money_00:31|cash|fanned dollar bills
+money_00:39|housing|brick public housing complex
+money_00:40|housing|towers and a public housing complex
+money_00:43|tax|1040 with dollars and a pen
+money_00:48|housing|red-brick apartment building
+money_00:51|ebt|hand swiping a card at a terminal
+money_00:55|tax|1040 form with a calculator
+money_01:3|ebt,snap|NOW ACCEPT SNAP EBT sign
+money_01:7|housing|apartment building at dusk
+money_01:12|housing|new apartment building
+money_01:13|tax|1040 form and calculator
+money_01:20|ebt|Virginia EBT card close-up
+money_01:23|housing|aerial of a housing complex
+money_01:25|cash|bundles of dollar bills
+money_01:28|housing|old Brooklyn apartment building
+money_01:30|medicaid|Florida Medicaid card in hand
+money_01:33|housing|public housing towers in winter
+money_01:36|medicaid,map|Medicaid expansion map
+money_01:41|ebt|South Carolina EBT card in hand
+money_01:42|tax|tax papers, calculator, TAX TIME note
+money_01:43|tax|1040 with calculator and dollars
+money_01:45|ebt|Tennessee summer EBT card
+money_01:46|housing|aerial of a housing development
+money_01:48|tax|1040 2026 TAX TIME
+money_01:53|ebt|EBT card graphic (blue)
+money_02:0|ebt,snap|WE ACCEPT FOOD STAMPS EBT sign
+money_02:2|cash|stack of $100 bills
+money_02:6|cash|piles of cash
+money_02:11|cash|fanned dollars close-up
+money_02:13|tax|W-2, 1040, dollars
+money_02:20|housing|brick apartments with fire escapes
+money_02:21|cash|stacks of cash
+money_02:25|medicaid,map|percent covered by Medicaid map
+money_02:34|cash|dollar bills scattered
+money_02:38|housing|Cooper Park Houses NYCHA sign
+money_02:39|ebt,snap|EBT SNAP cards accepted sign
+money_02:43|medicaid|Medicaid.gov under a magnifier
+money_02:46|ebt|WE ACCEPT EBT sign in a store
+money_02:47|cash|cash in a money counter
+children_00:1|school,children|crowd of girls in school uniforms, school buses
+children_00:2|bus,street|school bus, mothers with strollers
+children_00:3|school,children|preschool boys on a carpet
+children_00:5|bus|yellow school bus on a Brooklyn street
+children_00:6|school|cheder classroom, teacher
+children_00:7|bus,school|row of school buses by a school building
+children_00:9|study|yeshiva study hall
+children_00:10|bus|two school buses, Hebrew lettering
+children_00:13|bus|school bus with Hebrew writing
+children_00:14|children,street|group of Hasidic kids by a graffiti wall
+children_00:19|family|father and mother with a smiling daughter
+children_00:21|children,holiday|boys in costumes on the street
+children_00:22|family,street|father with sons, men in tallit
+children_00:23|study,yeshiva|large yeshiva hall, rows of desks
+children_00:25|school|classroom of young children
+children_00:27|bus,street|Hasidim walking by a school bus
+children_00:29|bus|school bus
+children_00:32|family,street|father walking with small kids
+children_00:34|school|mother helping kids with homework
+children_00:35|school|boys studying at desks
+children_00:36|children|group of smiling boys
+children_00:37|bus|school bus by a brick building
+children_00:38|bus|school bus with Satmar lettering
+children_00:39|school|rebbe teaching young boys
+children_00:40|study|two boys studying together
+children_00:44|bus,street|school bus with a Hasid walking by
+children_00:45|school|preschool class at desks
+children_00:46|children,street|kids and a stroller by a brownstone
+children_00:52|bus|school bus by a yeshiva building
+children_00:53|children,portrait|smiling boy with books
+children_00:54|children,street|kids running down a Jerusalem alley
+children_01:2|bus|school bus, Hasid walking
+children_01:3|children,street|boys running across a street
+children_01:10|children|girls with backpacks lined up
+children_01:11|study,yeshiva|huge yeshiva hall from above
+children_01:13|children|boy writing at a table
+children_01:22|study|boys studying Talmud
+children_01:24|bus|school bus side with Hebrew lettering
+children_01:26|school|elderly teacher with small boys, alphabet charts
+children_01:28|children,street|kids in holiday costumes with father
+children_01:31|bus|school bus and man walking
+children_01:33|study|large study hall
+children_01:36|bus|school bus on street
+children_01:38|study,children|boy reading a holy book
+children_01:39|bus|bus with Hasid boarding
+children_01:42|family,street|family with kids on street
+children_01:43|school|preschool kids reading
+children_01:49|children|group of teenage boys smiling
+children_01:52|children,street|boys in black coats walking
+children_02:0|school|teacher and boys in a classroom
+children_02:1|bus,street|school bus on a brownstone street
+children_02:4|bus|bus on a street
+children_02:5|family,street|father with small kids crossing
+children_02:6|school|boys at a library shelf
+children_02:9|bus|school bus side
+children_02:14|bus|school bus, women and kids
+children_02:15|study|father and son studying
+children_02:18|family,portrait|big Hasidic family portrait
+children_02:25|children,portrait|smiling boy in kippah
+children_02:27|study|father and son with a Talmud
+children_02:31|study,yeshiva|large study hall
+children_02:34|children,street|kids from above crossing a street
+children_02:35|school|girls in uniforms singing
+children_02:37|bus,street|Hasid walking past a moving bus
+children_02:38|family,park|father and two boys walking in a park
+children_02:40|men,street|two Hasidim from behind, hands behind backs
+children_02:45|children|boy getting a haircut, smiling
+children_02:49|children,street|boys holding hands crossing
+children_02:53|study,yeshiva|packed yeshiva hall
+children_02:54|family,winter|father with two kids in snow
+street_00:0|770,exterior|770 Eastern Pkwy-style Tudor brick building
+street_00:1|historical,street|B&W old Lower East Side street, kids
+street_00:2|street|Hasidim walking in Williamsburg, crowd
+street_00:3|street|Hasidim crossing a street
+street_00:4|street,police|two Hasidim by an NYPD car
+street_00:7|street,night|crowded street at night
+street_00:9|street|Hasidim on a sidewalk, cones
+street_00:10|women,historical|B&W women on a Brooklyn street
+street_00:11|street,women|woman with stroller on a street
+street_00:12|street,housing|brownstone row
+street_00:13|street|Brooklyn street corner
+street_00:14|street,shop|street with shop signs, Hasid walking
+street_00:15|street,crowd|busy sidewalk
+street_00:17|street|brick building corner, Brooklyn
+street_00:18|street,sepia|sepia tree-lined street
+street_00:19|street|Hasidim walking, women
+street_00:22|street|autumn tree-lined street, Hasid
+street_00:23|street,police|Hasidim with police, masks
+street_00:24|suburb|suburban road
+street_00:25|housing|apartment buildings
+street_00:27|street|Hasid walking at night
+street_00:28|family,street|mother and children on a corner
+street_00:29|suburb,aerial|aerial of Kiryas Joel-style suburb
+street_00:30|historical|B&W 1960s street scene with Hasidim
+street_00:31|historical|B&W old street with houses
+street_00:32|street|Hasid crossing a street, girl
+street_00:34|street,bw|B&W Hasid by a taxi
+street_00:35|street|busy Brooklyn street, trees
+street_00:36|street,shop|street with shops and people
+street_00:37|street|tree-lined parkway
+street_00:39|street|Hasidim crossing in front of red brick
+street_00:43|street|Hasid walking, long coat
+street_00:44|suburb|Hasid walking in a suburb
+street_00:45|crowd,street|street festival crowd
+street_00:46|street,rain|rainy Williamsburg street
+street_00:47|synagogue|domed synagogue building
+street_00:50|suburb,aerial|aerial of a town in autumn
+street_00:51|street,crowd|Hasidim on a busy corner
+street_00:54|suburb,aerial|aerial of new housing development
+street_00:55|street|Hasid crossing a street with a bag
+street_01:1|street|Hasidim walking, backs
+street_01:2|synagogue|large classical synagogue building
+street_01:3|street,shop|Brooklyn avenue with kosher shops
+street_01:4|street,prayer|men in tallit on the street
+street_01:6|street|Hasidim in shtreimels walking
+street_01:8|street,shop|storefronts, Appel's
+street_01:9|historical|B&W old candy store
+street_01:12|street|Hasid crossing under an elevated train
+street_01:17|suburb,aerial|aerial of a village in the woods
+street_01:18|historical,children|B&W group of Hasidic children
+street_01:19|crowd,street|large crowd of Hasidim on a street
+street_01:21|street,shop|busy shopping street
+street_01:24|street,bus|Hasid by a school bus
+street_01:26|map,aerial|satellite view of city blocks
+street_01:27|street|Brooklyn street corner
+street_01:28|street|Hasidic couple crossing
+street_01:33|crowd|giant group photo of Hasidim
+street_01:38|street|Hasidim walking by a white wall
+street_01:39|street,housing|brownstone street
+street_01:44|family,street|family with children crossing
+street_01:45|street|men by a house
+street_01:48|children,street|line of little girls holding hands
+street_01:51|street,housing|brownstone row in summer
+street_01:52|street,shop|men with shopping bags
+street_01:53|housing|brownstones
+street_01:54|street|Hasidim with a stroller on a corner
+street_02:4|housing|row houses
+street_02:5|street|Hasidim walking together
+street_02:7|street,women|women walking with strollers
+street_02:9|children,street|boys on a street
+street_02:11|street,shop|shopping street
+street_02:17|children,street|boys in striped shirts
+street_02:18|street,mural|mural of a rebbe, visitors
+street_02:21|street,police|elderly Hasid crossing, police car
+street_02:23|street|street with families
+street_02:26|suburb|hillside town
+street_02:29|historical|B&W Hasid with child
+street_02:30|crowd|crowd of Hasidim outdoors
+street_02:31|historical|B&W woman with stroller and Hasid
+street_02:33|historical|B&W two Hasidim with bakery bags
+street_02:36|historical|B&W crowd with rabbi
+street_02:40|street|Hasidim crossing
+street_02:43|street|busy crossing in Williamsburg
+street_02:48|street|corner building
+street_02:49|landscape|mountain sunrise panorama
+street_02:52|street|Williamsburg street, bridge
+street_02:54|historical,street|old photo of market
+street_03:3|street|two Hasidim talking by a shutter
+street_03:4|street|street under an elevated train
+street_03:6|housing|brownstones
+street_03:10|family,street|family crossing
+street_03:13|housing|brownstone stoop
+street_03:14|street|Hasid from behind on a sidewalk
+street_03:19|housing|row houses and gardens
+street_03:21|housing|tree-lined brownstone street
+institutions_00:1|rabbis,meeting|rabbis around a conference table
+institutions_00:3|shomrim|Shomrim patrol SUV
+institutions_00:7|shomrim|Flatbush Shomrim command center truck
+institutions_00:9|hatzalah|Hatzalah ambulance on a street
+institutions_00:10|shomrim|Shomrim volunteers with a car
+institutions_00:13|hatzalah|Hatzalah ambulance at night
+institutions_00:14|shomrim|Shomrim car close-up
+institutions_00:15|rabbis|group of rabbis in an office
+institutions_00:17|hatzalah|Hatzalah ambulance, KEEP BACK
+institutions_00:18|rabbis|three rabbis seated
+institutions_00:21|hatzalah|Hatzalah ambulance, clean
+institutions_00:22|hatzalah|ambulances at night, lights
+institutions_00:24|hatzalah|Hatzalah ambulance by a grocery
+institutions_00:26|rabbi,portrait|rabbi in a library, portrait
+institutions_00:28|shomrim|Shomrim car with volunteers
+institutions_00:29|beth_din|Rabbinical Court building
+institutions_00:31|rabbis,meeting|rabbinical court session
+institutions_00:41|hatzalah|Hatzalah ambulance
+institutions_00:43|rabbis,meeting|rabbis at a long table
+institutions_00:44|beth_din|gavel
+institutions_00:51|rabbi|rabbi in a library
+institutions_01:1|beth_din|court room with Hebrew inscription
+institutions_01:6|hatzalah|volunteers by an ambulance
+institutions_01:7|beth_din,historical|sketch of a rabbinical court
+institutions_01:8|hatzalah|Hatzalah ambulance
+institutions_01:10|shomrim|Shomrim SUV
+institutions_01:14|hatzalah|Hatzalah ambulance with volunteers
+institutions_01:15|beth_din,painting|painting of rabbis at a court
+institutions_01:16|historical,painting|painting of poor Jewish family
+institutions_01:21|hatzalah|Hatzalah command center truck
+institutions_01:26|rabbis,meeting|beth din hearing
+institutions_01:30|hatzalah|Hatzalah ambulance, clean
+institutions_01:37|rabbis|rabbi addressing a room
+men_study_00:1|study|men in a yeshiva hall
+men_study_00:3|study,kollel|kollel hall, men studying
+men_study_00:4|study,kollel|large study hall
+men_study_00:5|study|man reading a holy book
+men_study_00:7|study|men studying in a library
+men_study_00:11|study|young man studying
+men_study_00:13|study,book|open Talmud on a stand
+men_study_00:14|study,portrait|Hasid in profile, dark
+men_study_00:15|books|shelves of holy books
+men_study_00:16|study,kollel|kollel hall
+men_study_00:17|study,kollel|packed study hall
+men_study_00:21|historical,study|sepia old men studying
+men_study_00:25|crowd|crowd of Hasidim
+men_study_00:32|crowd,celebration|men celebrating at night
+men_study_00:35|celebration|elderly Hasid dancing
+men_study_00:37|books|row of Talmud volumes
+men_study_00:40|study|men with piles of books
+men_study_00:41|books|library shelves
+men_study_00:47|study,kollel|huge study hall from above
+men_study_00:49|study,kollel|kollel hall with lamps
+men_study_00:50|study,kollel|packed study hall
+men_study_01:1|study|men studying with an elderly rabbi
+men_study_01:2|historical,study|B&W elderly men studying
+men_study_01:6|study,work|Hasid with a laptop
+men_study_01:9|historical,study|B&W old men studying
+men_study_01:13|study|man studying
+men_study_01:15|historical,study|sepia men studying
+men_study_01:23|synagogue|synagogue interior
+men_study_01:29|study|young men studying in pews
+men_study_01:31|rabbis|group of elderly rabbis
+men_study_01:32|books|Mishnah Berurah book
+men_study_01:35|historical,study|B&W study hall
+men_study_01:37|study|men studying in a library
+men_study_01:40|data,chart|chart: ultra-Orthodox study and work
+shabbat_00:0|food,shabbat|cholent pot with eggs
+shabbat_00:4|food,shabbat|challah loaves
+shabbat_00:10|shabbat|candles, challah and kiddush cup
+shabbat_00:14|shabbat|challah with candles and wine
+shabbat_00:19|shabbat|Shabbat elevator sign
+shabbat_00:23|shabbat,meal|Shabbat table with challah and salmon
+shabbat_00:29|shabbat|candles and challah, warm light
+shabbat_00:41|shabbat|wine, candles and challah
+shabbat_01:1|shabbat|two candles lit, close
+shabbat_01:4|shabbat|challah with wine on a set table
+shabbat_01:5|home,food|Hasid cooking at a stove
+shabbat_01:7|shabbat,women|woman covering eyes lighting candles
+shabbat_01:14|shabbat|challah on a table
+shabbat_01:17|shabbat|candles and silver menorah
+shabbat_01:26|shabbat,women|woman blessing candles
+shabbat_01:37|shabbat,women|mother and daughter lighting candles
+shabbat_01:38|holiday|many candles lit
+shabbat_01:39|shabbat|candles in warm light
+shabbat_01:41|shabbat,meal|hands around challah
+shabbat_01:46|shabbat,food|hands with challah
+shabbat_01:48|shabbat|Shabbat hot plate box
+shabbat_02:0|shabbat,family|family in an elevator
+shabbat_02:2|eruv,map|eruv map of Brooklyn
+shabbat_02:6|eruv,map|eruv map pamphlet
+shabbat_02:7|food,shabbat|challah on a board
+shabbat_02:30|food,shabbat|spread of Shabbat dishes from above
+shabbat_02:42|shabbat|silver candlesticks with challah
+shabbat_02:50|shabbat,children|girl setting a Shabbat table
+shabbat_03:1|shabbat|challah with kiddush cup
+shabbat_03:12|shabbat|candles in the dark
+shabbat_03:13|shabbat|candles with kiddush cup
+historical_00:1|historical,painting|painting of an Eastern European shtetl celebration
+historical_00:4|historical,bw|B&W Hasidim, rebbe
+historical_00:5|historical,shtetl|old shtetl market photo
+historical_00:6|historical,shtetl|old village street
+historical_00:7|historical,immigration|immigrants on a ship deck
+historical_00:8|historical,painting|painting of Lower East Side tenements
+historical_00:9|historical,immigration|immigrants seeing the Statue of Liberty (illustration)
+historical_00:12|historical,bw|B&W crowded tenement scene
+historical_00:15|historical,sepia|sepia crowded market
+historical_00:20|historical,bw|B&W young Hasid portrait
+historical_00:21|historical,bw|B&W Lower East Side pushcart market
+historical_00:24|historical|old photo of a crowded Lower East Side street
+historical_00:26|historical,bw|B&W tenement courtyard
+historical_00:27|historical,bw|B&W men with sacks
+historical_00:29|rebbe,portrait|color portrait of an elderly rebbe (Lubavitcher Rebbe)
+historical_00:30|historical,bw|B&W sweatshop
+historical_00:31|historical,sepia|sepia class photo of girls
+historical_00:32|historical,bw|B&W Ellis Island-style hall
+historical_00:34|historical,bw|B&W boy reading a Yiddish newspaper
+historical_00:38|historical,bw|B&W women immigrants in hats
+historical_00:41|historical,bw|B&W crowded market street
+historical_00:42|historical|Hasidim in a field, 1970s color photo
+historical_00:43|rebbe|rebbe addressing a crowd, microphones
+historical_00:45|historical,bw|B&W crowded New York street
+historical_00:46|historical,sepia|sepia shtetl street
+historical_00:48|historical,sepia|sepia group of men on a wall
+historical_00:50|historical,bw|B&W Lower East Side street from above
+historical_00:51|historical,bw|B&W two Hasidim walking in snow
+historical_00:52|historical,sepia|sepia class of children with a teacher
+historical_00:55|historical,immigration|blue-toned immigrants on a ship, Statue of Liberty
+historical_01:2|historical,bw|B&W men at a table
+historical_01:4|historical,sepia|sepia shtetl wooden houses
+historical_01:5|historical,bw|B&W man reading a newspaper with child
+historical_01:9|historical,bw|B&W Hasid walking on a Brooklyn sidewalk
+historical_01:15|historical,bw|B&W shtetl family by a house
+historical_01:16|historical,bw|B&W shtetl market
+historical_01:20|historical,bw|B&W crowded cafe
+historical_01:23|historical,sepia|sepia village street
+historical_01:29|historical,bw|B&W Hasidic kids on a street
+historical_01:31|historical,bw|B&W horse cart on a road
+historical_01:38|historical,bw|B&W Hasidim with candles
+historical_01:39|historical,illustration|engraving of a crowd
+maps_00:2|map,kiryas_joel|map of Kiryas Joel town boundaries
+maps_00:3|kiryas_joel|girls by a Kiryas Joel house
+maps_00:4|map,nyc|NYC boroughs map
+maps_00:9|kiryas_joel,aerial|aerial view of Kiryas Joel
+maps_00:11|map,nyc|NYC boroughs map, colored
+maps_00:12|map,nyc|NYC immigrant enclaves map
+maps_00:17|map|NYC and region map
+maps_00:20|kiryas_joel|Kiryas Joel housing on a hill
+maps_00:27|map,williamsburg|map of NYC with Williamsburg
+maps_00:28|map,nyc|NYC boroughs map, Brooklyn
+maps_00:29|map,brooklyn|Brooklyn neighborhoods map
+maps_00:35|kiryas_joel|couple on a stoop in Kiryas Joel
+maps_00:37|kiryas_joel,sign|Welcome to Kiryas Joel sign
+maps_00:39|crowd,night|big outdoor night gathering
+maps_00:40|kiryas_joel|couple overlooking Kiryas Joel
+maps_00:41|kiryas_joel,sign|Welcome to Kiryas Joel sign, rain
+maps_00:44|aerial|satellite of a town
+maps_00:47|map,brooklyn|Brooklyn neighborhoods map
+maps_01:1|kiryas_joel|Kiryas Joel street and houses
+food_kosher_00:0|food,grocery|grocery produce section
+food_kosher_00:3|food,grocery|modern kosher supermarket interior
+food_kosher_00:10|food,grocery|shelves of packaged goods
+food_kosher_00:12|food,grocery|Hasid in a grocery aisle
+food_kosher_00:13|food,grocery|supermarket deli counters
+food_kosher_00:16|food,grocery|Hasid shopping, phone, dairy aisle
+food_kosher_00:17|kosher|OU Kosher Certified logo
+food_kosher_00:29|food,bakery|bakers making matzah
+food_kosher_00:30|food,grocery|two shop owners in an aisle
+food_kosher_00:34|food,grocery|supermarket aisle
+food_kosher_00:36|food,butcher|butcher with meat
+food_kosher_00:37|food,grocery|supermarket with SALE signs
+food_kosher_00:39|food,butcher|meat counter
+food_kosher_00:40|food,butcher|butcher shop counter
+food_kosher_00:50|food,grocery|supermarket aisle
+food_kosher_00:51|food,shop|elderly shopkeeper
+food_kosher_00:55|food,grocery|supermarket freezer aisle
+food_kosher_01:3|food,grocery|freezer aisle
+food_kosher_01:4|food,shop|butcher counter with customers
+food_kosher_01:5|food,grocery|busy kosher supermarket (Hebrew sign)
+food_kosher_01:7|food,passover|box of shmura matzah
+food_kosher_01:21|food,grocery|dairy aisle
+food_kosher_01:29|food,butcher|meat case
+food_kosher_01:33|food,grocery|aisle
+food_kosher_01:38|food,grocery|crowded supermarket checkout
+food_kosher_01:44|food,grocery|supermarket aisle
+food_kosher_01:47|food,butcher|packs of meat
+food_kosher_01:49|food,grocery|supermarket meat section
+food_kosher_01:51|food,butcher|butchers working
+food_kosher_01:53|food,grocery|produce stand
+exterior_building_00:0|housing|colorful row houses
+exterior_building_00:1|housing,aerial|aerial of houses
+exterior_building_00:2|housing|red-brick corner building
+exterior_building_00:3|historical,nyc|B&W Manhattan skyline
+exterior_building_00:4|housing|brownstone row
+exterior_building_00:8|nyc,bridge|Brooklyn Bridge at night
+exterior_building_00:11|aerial|aerial of Brooklyn streets
+exterior_building_00:12|nyc|Manhattan skyline dusk
+exterior_building_00:16|historical,aerial|B&W aerial of Williamsburg
+exterior_building_00:17|aerial|aerial of row houses
+exterior_building_00:19|aerial|aerial of Brooklyn neighborhood
+exterior_building_00:20|nyc,bridge|Brooklyn Bridge day
+exterior_building_00:24|nyc,bridge|Brooklyn Bridge and skyline
+exterior_building_00:26|aerial|aerial of Brooklyn homes
+exterior_building_00:29|housing|brownstones in winter
+exterior_building_00:32|housing|row of townhouses
+exterior_building_00:35|aerial|aerial of Brooklyn neighborhood
+exterior_building_00:36|nyc,bridge|bridge at sunset
+exterior_building_00:43|aerial|aerial of Brooklyn blocks
+exterior_building_00:44|aerial|aerial of dense Brooklyn
+exterior_building_00:53|aerial|aerial panorama of Brooklyn
+exterior_building_00:55|nyc|Manhattan skyline from Brooklyn
+exterior_building_01:0|nyc|Manhattan at night from Brooklyn
+exterior_building_01:3|housing|red-brick row house
+exterior_building_01:8|nyc,bridge|Brooklyn Bridge with carousel
+exterior_building_01:12|housing|brick walk-up apartments
+exterior_building_01:21|aerial|aerial of Brooklyn brownstones
+exterior_building_01:24|aerial|aerial of Brooklyn street
+named_00:0|synagogue,historical|Eldridge Street synagogue facade
+named_00:2|street,shop|Borough Park storefronts (Weiss bakery)
+named_00:21|celebration,night|Hasidim dancing at night
+named_00:26|street,sign|Delancey St subway tiles
+named_00:38|street,bw|B&W Hasid climbing stoop
+named_00:39|synagogue|ornate synagogue interior, blue window
+named_00:43|crowd,street|street fair crowd
+named_00:44|man,portrait|Hasid portrait with taxis
+named_00:47|family,street|Hasidic family walking with stroller
+named_00:50|street,bw|B&W Hasidim on a Borough Park street
+named_00:52|man,portrait|B&W elderly Hasid portrait
+named_00:54|atmosphere|couple silhouetted by a lake
+named_01:6|family,prayer|father and sons in tallit walking
+named_01:19|work,office|Hasidic men in a call-center office
+named_01:20|rabbis,politics|rebbe meeting a politician
+named_01:23|synagogue|modern yeshiva building
+named_01:24|celebration|tish crowd around a table
+named_01:26|historical,bw|B&W Hasidim in long coats
+named_01:29|synagogue|synagogue interior, chandelier
+named_01:31|rabbis|Hasidim at a tish, rebbe
+named_01:32|historical,portrait|old portrait of a bearded rabbi
+named_01:54|family,street|Hasid with children on a street
+named_02:3|satmar,institution|Satmar yeshiva facade
+named_02:5|historical,crowd|old funeral crowd on a street
+named_02:8|synagogue|large synagogue facade, school bus
+named_02:30|bus,satmar|Satmar school bus
+named_02:37|torah|Torah scroll open on a table
+named_02:43|man,portrait|Hasid praying at the Wall
+named_02:44|770|770-style building
+named_03:4|prayer,crowd|huge crowd at the Western Wall
+named_03:5|crowd|sea of Hasidim in black hats
+named_03:7|crowd,celebration|thousands at a Hasidic gathering
+named_03:13|synagogue|ornate gold synagogue
+named_03:14|770|Tudor building
+named_03:22|rabbis|elderly rebbe in crowd
+named_03:25|prayer|men in tallit praying
+named_03:34|crowd,photo|giant group photo outside
+named_03:38|crowd,satmar|huge outdoor crowd, Williamsburg
+named_03:51|crowd,photo|group photo on a street
+women_00:0|man,street|Hasid walking past a shutter with papers
+women_00:3|women,wig|wig shop with mannequin heads
+women_00:5|women,street|women with strollers
+women_00:8|family,street|Hasid with a double stroller
+women_00:9|women,street|women walking with stroller by fence
+women_00:13|family,street|Hasid pushing a stroller
+women_00:14|family,street|Hasidic family, stroller, school bus
+women_00:16|family,street|Hasidic family on a sidewalk
+women_00:19|family,nyc|families watching Manhattan skyline
+women_00:20|family|large family with children outdoors
+women_00:29|family,street|family with strollers by mailbox
+women_00:30|street|elderly Hasid on a corner
+women_00:32|family,street|Hasidic couple walking with shopping bags
+doc_00:2|census,document|old census ledger page
+doc_00:3|document|old register book
+doc_00:13|map,historical|antique map of Brooklyn/Long Island
+doc_00:19|census,document|census record page
+doc_00:32|map,historical|antique framed map
+doc_00:33|torah,historical|Torah scroll
+doc_00:35|immigration,document|immigrant inspection card
+doc_00:44|map,historical|antique map of New York and Brooklyn
+p_00:1|money|stacks of cash (1920x1080 ready)
+p_00:4|money|cash in an envelope
+p_00:10|money,charity|hands with an envelope of cash
+p_00:12|money|hands holding cash
+p_00:18|money,charity|hand slipping cash into an envelope
+p_00:20|family,street|Hasidic family walking (ready)
+p_00:21|wedding|Jewish wedding under chuppah
+p_00:22|wedding|wedding couple with guests
+p_00:28|women|group of women in modest dress
+p_00:29|wedding|bride and groom under chuppah with rabbi
+p_00:33|wedding|bride and groom with rabbi
+p_00:34|technology,kosher_phone|old flip phones collection
+p_00:35|shabbat|Shabbat table with challah
+p_00:37|technology,kosher_phone|flip phones on paper
+p_00:39|technology,kosher_phone|hand holding flip phone vs smartphone
+p_00:41|shabbat|kiddush cup and challah
+p_00:43|shabbat|challah with candles
+p_00:44|shabbat|challah and candles, grey
+p_00:51|technology,kosher_phone|hand holding a basic phone
+arch_00:0|historical,immigration|B&W horse-drawn delivery wagon
+arch_00:2|historical,immigration|B&W pushcart peddlers
+arch_00:4|historical|B&W market street
+arch_00:6|historical|B&W crowded Lower East Side street
+arch_00:7|historical|B&W pushcart market with tenements
+arch_00:11|historical,wedding|B&W old wedding portrait
+arch_00:14|historical,family|sepia large family portrait
+arch_00:18|historical,synagogue|B&W synagogue interior
+arch_00:20|historical,synagogue|B&W synagogue interior
+arch_00:29|historical,study|B&W man studying at a desk
+arch_00:31|historical,ruins|B&W war-destroyed city
+arch_00:32|historical|B&W crowd receiving aid
+arch_00:34|historical,shtetl|B&W shtetl street with Hasidim
+arch_00:36|historical,family|B&W immigrant family
+arch_00:38|historical,synagogue|B&W Torah in synagogue
+arch_00:39|historical|B&W Hasid musician by fire escape
+arch_00:40|historical,immigration|B&W immigrants seeing the Statue of Liberty
+arch_00:41|historical,survivors|B&W refugees
+arch_00:43|historical,refugees|B&W refugee mothers and children
+arch_00:44|historical|B&W crowd at the Wall
+arch_00:45|historical,immigration|B&W family watching Statue of Liberty
+arch_00:46|historical,family|B&W family portrait
+arch_00:49|historical|B&W tenement family
+arch_00:52|historical,children|B&W smiling Hasidic boys
+arch_00:53|historical,study|B&W study hall
+arch_00:54|historical,children|B&W children reading
+p_01:2|shabbat|Shabbat table with candles, warm
+p_01:3|technology,kosher_phone|hands holding kosher phones
+p_01:4|shabbat,children|girl setting a Shabbat table
+p_01:6|technology,kosher_phone|hand with an old Nokia
+p_01:9|eruv|man fixing an eruv wire on a pole
+p_01:13|770|770 building
+p_01:15|770,prayer|770 with man in tallit
+p_01:21|770,crowd|crowd outside 770
+p_01:25|hatzalah|Hatzalah ambulance
+p_01:28|shomrim|Shomrim patrol car
+p_01:29|shomrim|Shomrim volunteers from behind
+p_01:30|hatzalah|Hatzalah ambulance by the river
+p_01:40|study|young men studying together
+p_01:41|study,school|boy at a school desk
+p_01:42|bus,street|Hasidim by a school bus
+p_01:43|school|boy studying in class
+p_01:45|women,street|women with a stroller
+p_01:47|man,portrait|two Hasidic men portrait
+p_01:48|torah|Torah scroll reading
+p_01:50|man|Hasid with arms outstretched
+p_01:51|man,wall|Hasid praying at the Wall
+p_01:53|study|men studying at a table
+p_01:54|street|Hasidim walking on a street
+p_02:0|study|teen boys studying
+p_02:1|prayer,street|men in tallit with boy
+p_02:4|man,portrait|elderly Hasid reading
+p_02:5|children,bw|B&W Hasidic children
+p_02:6|study|rabbi teaching at a table
+p_02:7|study,yeshiva|yeshiva hall
+p_02:9|family,street|father and son walking
+p_02:10|school,children|children by a school gate
+p_02:11|study|boys studying (from behind)
+p_02:13|men|group of Hasidim talking
+p_02:24|celebration|line of Hasidim dancing
+p_02:25|family|family with stroller and chicken (kapparot)
+p_02:27|family,street|father with small children in holiday dress
+ritual_prayer_00:2|wedding|Hasidic wedding dancing
+ritual_prayer_00:3|holiday|man blowing a shofar
+ritual_prayer_00:10|celebration|Hasidim dancing
+ritual_prayer_00:17|wedding,crowd|huge wedding hall crowd
+ritual_prayer_00:25|holiday,man|Hasid blowing a shofar
+ritual_prayer_00:31|crowd|sea of shtreimels
+ritual_prayer_00:36|wedding|Hasidic wedding mitzvah tantz
+ritual_prayer_00:44|wedding|rebbe dancing with bride's gartel
+signage_00:5|historical,bw|B&W Lower East Side signs
+signage_00:9|newspaper,yiddish|Yiddish newspaper front page
+signage_00:11|newspaper,yiddish|Yiddish newspaper headline
+signage_00:33|sign,street|Avenue of the Immigrants / Allen St sign
+signage_00:36|shop,books|Jewish bookstore sidewalk
+signage_00:48|historical|B&W old Lower East Side street
+signage_00:52|newspaper,yiddish|Yiddish newspaper masthead

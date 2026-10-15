@@ -1,0 +1,7 @@
+# Hustle — how it is edited
+
+- Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.
+- Footage: every 1-th shot sits in the stage frame (frame='stage'); clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).
+- This is a make-money explainer told with one 2D character: the first minute opens on a moneyrain (the figure the title promises) or a counter on the first sum, a headline with the REAL page of the first platform named (its url — etsy.com, upwork.com, fiverr.com, printify.com — photographed as it is), a bar (difficulty, risk or profit) on the first option rated, an icon3d with the key word of the first idea, and text labels for every figure.
+- After the hook: the 2D character's pictures carry it; a headline with the real page for every platform or tool named (give its url); a bar rating every option; a counter on every sum; a versus when two options are compared; a checklist for what is needed; an icon3d on the key word of each idea; a real object (a product, a device) only when one is named. Something new every 8 to 12 seconds.
+- HUSTLE: footage on a glossy dark stage, big pop captions with the key word in red, difficulty bars, glossy icons, money rain, counters, versus bars, checklists. Stock footage is on by default for the lifestyle shots; YouTube footage for real products and creators.

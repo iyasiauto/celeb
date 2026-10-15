@@ -1,0 +1,79 @@
+{
+ "id": "_example",
+ "name": "My new template",
+ "version": 1,
+ "theme": "my_theme",
+ "grade": "doc",
+ "grain": 2.0,
+ "xfade": 0.4,
+ "sfx_style": "calm",
+ "best_for": "what kind of video this look suits",
+ "look": "one paragraph: type, colours, motion, what makes it different",
+ "examples": [],
+ "starter": "docu/templates/starter/build.py",
+ "preview_dir": "templates/_example/previews",
+ "preview_sheet": "templates/_example/preview.jpg",
+ "scene_files": [
+  "scenes_example.js"
+ ],
+ "theme_def": {
+  "fonts": {
+   "Anton": "BebasNeue.ttf",
+   "DMSerif": "DMSerifDisplay.ttf",
+   "Garamond": "Lora.ttf",
+   "GaramondI": "Lora-Italic.ttf",
+   "Barlow": "BarlowCondensed-SemiBold.ttf",
+   "BarlowB": "BarlowCondensed-Bold.ttf"
+  },
+  "pal": {
+   "mustard": "#E0A84A",
+   "red": "#C8452F",
+   "gold": "#E0A84A",
+   "cyan": "#4FA3B5",
+   "green": "#5FA36B",
+   "ink": "#16181A",
+   "cream": "#F1ECE2"
+  },
+  "grounds": {
+   "paper": "paper_tan.jpg",
+   "map": "paper_map.jpg",
+   "cork": "studio_dark.jpg",
+   "parchment": "parchment.jpg"
+  }
+ },
+ "audit": {
+  "clip_share": [
+   0.2,
+   0.45
+  ],
+  "graphics_per_min": 1.0,
+  "max_gap_s": 45,
+  "max_plain_run": 4,
+  "chapter_every_s": 300,
+  "min_distinct_devices": 8,
+  "sfx_per_min": 2.0
+ },
+ "devices": [
+  {
+   "type": "exhead",
+   "family": "heading",
+   "min_per_10min": 2,
+   "use": "this template's own chapter heading (scenes_example.js)"
+  },
+  {
+   "type": "map",
+   "family": "map",
+   "min_per_10min": 1,
+   "use": "places"
+  },
+  {
+   "type": "stat",
+   "family": "number",
+   "min_per_10min": 1.5,
+   "use": "figures"
+  }
+ ],
+ "rules": [
+  "write how this template is edited"
+ ]
+}

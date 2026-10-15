@@ -1,0 +1,117 @@
+{
+ "template": "atlas",
+ "style": "atlas",
+ "kind": "kit",
+ "kit": "atlas",
+ "prefix": "atlas",
+ "frame": "paper",
+ "frame_every": 2,
+ "types": {
+  "timemachine": {
+   "scene": "atlas_timemachine",
+   "page": "atlas",
+   "seconds": 6.0,
+   "example": {
+    "from_year": 2026,
+    "to_year": -753,
+    "label": "Rome is founded"
+   },
+   "over_footage": false
+  },
+  "flipchart": {
+   "scene": "atlas_flipchart",
+   "page": "atlas",
+   "seconds": 7.0,
+   "example": {
+    "pages": [
+     {
+      "year": "753 BC",
+      "label": "A VILLAGE",
+      "colour": "green"
+     },
+     {
+      "year": "509 BC",
+      "label": "THE REPUBLIC",
+      "colour": "blue"
+     },
+     {
+      "year": "27 BC",
+      "label": "THE EMPIRE",
+      "colour": "red"
+     }
+    ]
+   },
+   "over_footage": false
+  },
+  "watch": {
+   "scene": "atlas_watch",
+   "page": "atlas",
+   "seconds": 3.8,
+   "example": {
+    "year": "1912"
+   },
+   "over_footage": false
+  },
+  "stamp": {
+   "scene": "atlas_stamp",
+   "page": "atlas",
+   "seconds": 3.8,
+   "example": {
+    "text": "HISTORICALLY FACTS",
+    "sub": "PART 19"
+   },
+   "over_footage": false
+  },
+  "wave": {
+   "scene": "atlas_wave",
+   "page": "atlas",
+   "seconds": 2.4,
+   "example": {
+    "colour": "yellow"
+   },
+   "over_footage": false
+  },
+  "scoreboard": {
+   "scene": "atlas_scoreboard",
+   "page": "atlas",
+   "seconds": 6.0,
+   "example": {
+    "left": {
+     "name": "ROME",
+     "value": 80000,
+     "unit": "soldiers",
+     "colour": "red"
+    },
+    "right": {
+     "name": "CARTHAGE",
+     "value": 50000,
+     "unit": "soldiers",
+     "colour": "blue"
+    }
+   },
+   "over_footage": false
+  },
+  "signpost": {
+   "scene": "atlas_signpost",
+   "page": "atlas",
+   "seconds": 4.5,
+   "example": {
+    "arrows": [
+     {
+      "text": "GAUL",
+      "dir": "left"
+     },
+     {
+      "text": "EGYPT",
+      "dir": "right"
+     },
+     {
+      "text": "BRITANNIA",
+      "dir": "left"
+     }
+    ]
+   },
+   "over_footage": false
+  }
+ }
+}

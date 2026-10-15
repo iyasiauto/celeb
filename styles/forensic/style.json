@@ -1,0 +1,146 @@
+{
+ "name": "Forensic lab report",
+ "label": "Forensic lab report — 'is this claim true?', evidence checks, debunks",
+ "letter": "B",
+ "template": "forensic",
+ "theme": "forensic",
+ "blurb": "Observed / Claimed / Confirmed filter, certainty gauge, scans, one-source network.",
+ "tagline": "Observed / Claimed / Confirmed: a lab report on a claim, with a certainty gauge.",
+ "points": [
+  "Observed / Claimed / Confirmed filter",
+  "Certainty gauge",
+  "Scans and one-source network",
+  "Lab-report headings"
+ ],
+ "best_for": "'is this claim true?', evidence checks, debunks",
+ "example": null,
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "full",
+ "xfade": 0.0,
+ "look": {
+  "engine_theme": "forensic",
+  "grade": "cool",
+  "grain": 2.0,
+  "xfade": 0.0,
+  "fonts": "the engine theme's own (docu/engine.js THEMES['forensic'])",
+  "palette": "engine theme",
+  "captions": null
+ },
+ "pacing": {
+  "clip_share": [
+   0.12,
+   0.35
+  ],
+  "graphics_per_min": 1.6,
+  "max_gap_s": 35,
+  "max_plain_run": 3,
+  "chapter_every_s": 330,
+  "min_distinct_devices": 12,
+  "sfx_per_min": 5.0
+ },
+ "devices_summary": [
+  {
+   "type": "collage",
+   "min_per_10min": 4,
+   "use": "Paper tabletop: photo prints (pc), cut-out props (cutout), typed strips, rubber stamps, sticky notes, circles and arrows - each lands on its word. The workhorse of the paper look: most explanations happen here."
+  },
+  {
+   "type": "words",
+   "min_per_10min": 4,
+   "use": "Kinetic type: one to three big words slam in on the beat (items=[W_('...')]). The punch of a sentence, the question, the twist."
+  },
+  {
+   "type": "stat",
+   "min_per_10min": 2,
+   "use": "One big number that counts up, with a kicker and a note. Every important figure the narrator says."
+  },
+  {
+   "type": "filter",
+   "min_per_10min": 0.4,
+   "use": "Claims fall through a filter into OBSERVED / CLAIMED / CONFIRMED."
+  },
+  {
+   "type": "gauge",
+   "min_per_10min": 0.4,
+   "use": "A certainty ring that falls from 100 % - how sure can we be."
+  },
+  {
+   "type": "network",
+   "min_per_10min": 1,
+   "use": "Many reports traced back to a single source."
+  },
+  {
+   "type": "cells",
+   "min_per_10min": 0.4,
+   "use": "A grid of cells filling to show a proportion."
+  },
+  {
+   "type": "valley",
+   "min_per_10min": 0.4,
+   "use": "A cross-section / terrain profile of where something lies."
+  },
+  {
+   "type": "timeline",
+   "min_per_10min": 1.5,
+   "use": "Dates on a line; events appear in order. Any 'in 1990... by 2000... today' passage."
+  },
+  {
+   "type": "map",
+   "min_per_10min": 1.5,
+   "use": "The animated map: the camera flies between places, pins drop, routes draw, regions light up. Every place the narration names gets one (group nearby places into one map scene)."
+  },
+  {
+   "type": "geo",
+   "min_per_10min": 1.5,
+   "use": "A terrain / satellite close-up of a region with labels and a profile: mountains, valleys, where exactly."
+  },
+  {
+   "type": "headlines",
+   "min_per_10min": 1,
+   "use": "Headlines slam in one after another - 'everyone reported it', a wave of coverage."
+  },
+  {
+   "type": "quote",
+   "min_per_10min": 1,
+   "use": "A quotation set large with who said it and highlighted words. Every time the script quotes someone."
+  },
+  {
+   "type": "checklist",
+   "min_per_10min": 2,
+   "use": "Points ticked off one by one: requirements, reasons, steps, 'three things...'."
+  },
+  {
+   "type": "depth",
+   "min_per_10min": 1,
+   "use": "Depth pop: the subject is cut out of the photo and grows while the ground darkens and blurs. Use when the narration names a real person, place or object - never private people."
+  },
+  {
+   "type": "spotlight",
+   "min_per_10min": 1,
+   "use": "Everything but one circle darkens and blurs; a label points at the subject. 'Look here' moments: the detail that matters in a photo."
+  },
+  {
+   "type": "measure",
+   "min_per_10min": 1,
+   "use": "A size comparison: the object against a known scale (people, buses, football fields)."
+  },
+  {
+   "type": "split",
+   "min_per_10min": 0.5,
+   "use": "Two pictures side by side with labels: before / after, then / now, A vs B."
+  },
+  {
+   "type": "chapter",
+   "min_per_10min": 1.4,
+   "use": "Full-screen chapter card: number, kicker, title. One per act."
+  }
+ ],
+ "worked_examples": [
+  "projects/noahs_ark_100/build.py"
+ ],
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}

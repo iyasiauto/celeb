@@ -1,0 +1,22 @@
+{
+  "id": "noah",
+  "name": "Noah's Ark / Durupinar (Turkey)",
+  "description": "Durupinar site, Mount Ararat, drilling, researchers, viral posts, geology. 10 long source videos cut into shots, approved + candidate pictures.",
+  "drive": "1HstYp4jR91BpL8QzGuBKUdaRqNpBOEar",
+  "download_to": "footage",
+  "footage": "footage",
+  "source_video": "footage/source_video",
+  "images": "footage/images/approved",
+  "picks": "footage/picks",
+  "image_dirs": [
+    "footage/picks",
+    "footage/images/approved",
+    "work/ind",
+    "footage/images/candidates"
+  ],
+  "catalog_from": "projects/noahs_ark_breaking/data",
+  "clip_share": 20,
+  "default_style": "paper",
+  "needs_image_catalog": true,
+  "map_hint": "Durupinar site (44.234, 39.440), Mount Ararat (44.298, 39.702), Dogubayazit (44.083, 39.547), Mount Cudi / Al-Judi (42.35, 37.37). Turkey country id TUR."
+}

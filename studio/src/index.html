@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' file: data:; media-src 'self' file:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+  <title>Docu Studio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="titlebar"><div class="drag"></div></div>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 32 32"><rect x="3" y="7" width="26" height="18" rx="4"/><path d="M14 12.5v7l6-3.5z"/></svg></div>
+      <div><div class="brand-name">Docu Studio</div><div class="brand-sub">Faceless documentary engine</div></div>
+    </div>
+    <nav>
+      <a data-page="create" class="active"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Create video</a>
+      <a data-page="runs"><svg viewBox="0 0 24 24"><path d="M4 12h4l2-6 4 12 2-6h4"/></svg>Productions<span class="nav-badge" id="runs-badge" hidden></span></a>
+      <a data-page="library"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Library</a>
+      <a data-page="niches"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>Niches & assets</a>
+      <a data-page="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</a>
+    </nav>
+    <div class="side-status" id="side-status"></div>
+  </aside>
+
+  <main>
+    <!-- ======================================================== CREATE -->
+    <section class="page active" id="page-create">
+      <header class="page-head">
+        <div><h1>Create a video</h1><p>Pick the niche and the look, give it a script and a voice. The studio does the rest, the same way the channel's videos are made by hand.</p></div>
+      </header>
+
+      <div class="step card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Niche pipeline <span class="hint">footage, pictures and catalog this video draws on</span></div>
+          <div class="grid niches-grid" id="niche-choices"></div>
+        </div>
+      </div>
+
+      <div class="step card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Template style <span class="hint">new template folders and Frontier styles appear here automatically</span>
+            <button class="btn ghost tiny" id="btn-refresh-styles" style="margin-left:auto">Refresh</button></div>
+          <div id="style-choices"></div>
+        </div>
+      </div>
+
+      <div class="step card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Script & voice</div>
+          <div class="form-row">
+            <label class="field grow"><span>Video title</span><input id="f-title" placeholder="What Happens If…" /></label>
+          </div>
+          <div class="form-row">
+            <div class="field grow">
+              <span>Script (.txt)</span>
+              <div class="file-pick" id="pick-script"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="fp-label">Choose the script file…</span></div>
+              <div class="sub" id="script-info"></div>
+            </div>
+          </div>
+          <div class="seg" id="voice-mode">
+            <button data-v="famespeak" class="on">Generate with FameSpeak</button>
+            <button data-v="file">Use my recording</button>
+            <button data-v="frontier" id="vm-frontier" hidden>Frontier's own voice</button>
+          </div>
+          <div id="voice-famespeak" class="voice-panel">
+            <div class="form-row">
+              <label class="field"><span>ElevenLabs voice ID</span><input id="f-voice" placeholder="e.g. JBFqnCBsd6RMkjVDRZzb" /></label>
+              <label class="field small"><span>Language (optional)</span><input id="f-lang" placeholder="en" /></label>
+              <button class="btn ghost" id="btn-check-voice">Check voice</button>
+            </div>
+            <div class="sub" id="voice-info">The script is read by this voice; the MP3 and the SRT subtitles are downloaded and saved with the video.</div>
+          </div>
+          <div id="voice-frontier" class="voice-panel" hidden>
+            <div class="sub">Frontier makes the voiceover itself, with the FameSpeak voice and key in its own .env, and writes the subtitles.</div>
+          </div>
+          <div id="voice-file" class="voice-panel" hidden>
+            <div class="form-row">
+              <div class="field grow"><span>Voiceover (.mp3 / .wav)</span><div class="file-pick" id="pick-mp3"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span class="fp-label">Choose the voiceover…</span></div></div>
+              <div class="field grow"><span>Subtitles .srt (optional, faster)</span><div class="file-pick" id="pick-srt"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 13h4M13 13h4M7 16h10"/></svg><span class="fp-label">Choose the SRT…</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Edit settings</div>
+          <div class="form-row">
+            <label class="field grow"><span>Footage clips vs pictures <b id="clip-share-val">30 %</b></span>
+              <input type="range" id="f-clips" min="10" max="50" step="1" value="30" />
+              <div class="range-legend"><span>more pictures & graphics</span><span>more footage</span></div>
+            </label>
+          </div>
+          <div class="options">
+            <div class="opt">
+              <div><b>Shot list</b><div class="sub" id="shotlist-sub">who picks the visuals for every sentence</div></div>
+              <div class="seg compact" id="shotlist-mode"><button data-v="ai" class="on">AI editor</button><button data-v="auto">Offline rules</button></div>
+            </div>
+            <label class="opt toggle"><div><b>AI visual QA</b><div class="sub" id="qa-sub">your vision AI checks the stills; the AI editor fixes what it finds before rendering</div></div><input type="checkbox" id="f-qa" checked /><i></i></label>
+            <label class="opt toggle"><div><b>Upload to gofile</b><div class="sub">download link with an md5 check; size kept under the limit</div></div><input type="checkbox" id="f-upload" checked /><i></i></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="launch">
+        <div class="launch-summary" id="launch-summary"></div>
+        <button class="btn primary big" id="btn-start"><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg>Start production</button>
+      </div>
+    </section>
+
+    <!-- ======================================================== RUNS -->
+    <section class="page" id="page-runs">
+      <header class="page-head"><div><h1>Productions</h1><p>Every stage of every video, live.</p></div></header>
+      <div class="runs-layout">
+        <div class="runs-list" id="runs-list"></div>
+        <div class="run-detail card" id="run-detail"><div class="empty">Start a video on the Create page.</div></div>
+      </div>
+    </section>
+
+    <!-- ======================================================== LIBRARY -->
+    <section class="page" id="page-library">
+      <header class="page-head"><div><h1>Library</h1><p>Every video in the workspace, with its look and its files.</p></div>
+        <button class="btn ghost" id="btn-refresh-lib">Refresh</button></header>
+      <div class="grid lib-grid" id="library"></div>
+    </section>
+
+    <!-- ======================================================== NICHES -->
+    <section class="page" id="page-niches">
+      <header class="page-head"><div><h1>Niches & assets</h1><p>Each niche is a footage folder with its catalog. Point a niche at a folder on this PC (or download it once from a Drive link).</p></div></header>
+      <div class="card kit-card" id="kit-card"></div>
+      <div class="grid niche-admin" id="niche-admin"></div>
+      <div class="card add-niche">
+        <div class="step-title">Add a niche</div>
+        <div class="form-row">
+          <label class="field grow"><span>Name</span><input id="n-name" placeholder="Ancient Egypt mysteries" /></label>
+          <div class="field"><span>Footage source</span><div class="seg compact" id="n-source"><button data-v="folder" class="on">Folder on this PC</button><button data-v="drive">Drive link</button></div></div>
+        </div>
+        <div class="form-row" id="n-folder-row">
+          <div class="field grow"><span>Footage folder (videos and pictures; sub-folders like clips/ and images/ are found)</span><div class="file-pick" id="pick-niche-folder"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="fp-label">Choose the folder…</span></div></div>
+          <div class="field grow"><span>Your tags file (optional .json, e.g. ASSET_TAGS_JSON)</span><div class="file-pick" id="pick-niche-tags"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span class="fp-label">Choose tags.json…</span></div></div>
+        </div>
+        <div class="form-row" id="n-drive-row" hidden>
+          <label class="field grow"><span>Google Drive folder link (Anyone with the link)</span><input id="n-drive" placeholder="https://drive.google.com/drive/folders/…" /></label>
+        </div>
+        <div class="form-row">
+          <label class="field"><span>Default style</span><select id="n-style"></select></label>
+          <label class="field small"><span>Clips %</span><input id="n-clips" type="number" min="10" max="50" value="30" /></label>
+          <label class="field grow"><span>Places for maps (optional)</span><input id="n-map" placeholder="Giza (31.13, 29.98), Luxor (32.64, 25.69)" /></label>
+        </div>
+        <div class="row-end"><button class="btn primary" id="btn-add-niche">Add niche</button></div>
+      </div>
+    </section>
+
+    <!-- ======================================================== SETTINGS -->
+    <section class="page" id="page-settings">
+      <header class="page-head"><div><h1>Settings</h1><p>Keys are encrypted with your system keychain and never written into the project folder.</p></div></header>
+      <div class="settings-grid">
+        <div class="card">
+          <div class="step-title">API keys</div>
+          <div id="keys"></div>
+        </div>
+        <div class="card">
+          <div class="step-title">Engine</div>
+          <label class="field"><span>Workspace folder</span><div class="inline"><input id="s-ws" readonly /><button class="btn ghost" id="btn-ws">Change</button></div></label>
+          <label class="field"><span>Python</span><div class="inline"><input id="s-py" /><button class="btn ghost" id="btn-py">Browse</button></div></label>
+          <div class="form-row">
+            <label class="field small"><span>Render workers</span><input id="s-workers" type="number" min="1" max="16" /></label>
+            <label class="field small"><span>Size limit (GB)</span><input id="s-limit" type="number" step="0.1" min="0.2" /></label>
+          </div>
+          <div class="row-end"><button class="btn ghost" id="btn-setup">Install / repair engine</button><button class="btn primary" id="btn-save-settings">Save</button></div>
+        </div>
+        <div class="card span2">
+          <div class="step-title">AI <span class="hint">optional · without it the offline rules make the shot list · keys can also come from your Frontier .env</span></div>
+          <div class="form-row">
+            <label class="field grow"><span>AI editor (shot list, fixes, metadata)</span><select id="s-editor"></select></label>
+            <label class="field grow"><span>Editor model</span><input id="s-editor-model" placeholder="default" /></label>
+            <label class="field grow"><span>AI vision (visual QA, cataloging)</span><select id="s-vision"></select></label>
+            <label class="field grow"><span>Vision model</span><input id="s-vision-model" placeholder="default" /></label>
+          </div>
+          <div class="form-row">
+            <label class="field grow"><span>Antigravity router URL (your Antigravity / Gemini account via cli-proxy-api)</span><input id="s-agy-url" placeholder="http://127.0.0.1:8317/v1" /></label>
+            <label class="field grow"><span>Custom OpenAI-compatible URL (optional)</span><input id="s-custom-url" placeholder="http://127.0.0.1:1234/v1" /></label>
+            <label class="field small"><span>Effort</span><select id="s-effort"><option>medium</option><option>high</option><option>xhigh</option></select></label>
+          </div>
+          <div class="sub" id="ai-status"></div>
+          <div class="row-end"><button class="btn primary" id="btn-save-ai">Save AI settings</button></div>
+        </div>
+        <div class="card span2">
+          <div class="step-title">Frontier <span class="hint">all its styles show on Create; they run on Frontier's own engine and its .env · its keys and assets are used here too</span></div>
+          <div class="form-row">
+            <label class="field grow"><span>Frontier folder</span><div class="inline"><input id="s-frontier" placeholder="the folder with make_video.py, styles/ and samples/" /><button class="btn ghost" id="btn-frontier">Browse</button></div></label>
+            <label class="field grow"><span>Python for Frontier (optional)</span><input id="s-fpy" placeholder="same as above" /></label>
+          </div>
+          <div class="sub" id="frontier-status"></div>
+          <div class="row-end">
+            <button class="btn ghost" id="btn-frontier-fetch">Download Frontier from Drive</button>
+            <select id="s-kit" style="width:auto"><option>dossier</option><option>kinetic</option><option>atlas</option><option>deep</option><option>frontline</option><option>legend</option><option>hustle</option><option>all</option></select>
+            <button class="btn ghost" id="btn-frontier-kits">Preview look kit</button>
+            <button class="btn ghost" id="btn-frontier-open">Open Frontier app</button>
+          </div>
+        </div>
+        <div class="card span2">
+          <div class="step-title">System check <button class="btn ghost tiny" id="btn-doctor">Run again</button></div>
+          <div id="doctor" class="doctor"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox" hidden><img id="lightbox-img" alt="" /><video id="lightbox-video" controls hidden></video></div>
+  <div class="toast" id="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

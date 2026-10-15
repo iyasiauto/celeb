@@ -1,0 +1,119 @@
+{
+ "template": "hustle",
+ "style": "hustle",
+ "kind": "kit",
+ "kit": "hustle",
+ "prefix": "hustle",
+ "frame": "stage",
+ "frame_every": 1,
+ "types": {
+  "bar": {
+   "scene": "hustle_bar",
+   "page": "hustle",
+   "seconds": 5.5,
+   "example": {
+    "label": "DIFFICULTY LEVEL:",
+    "value": 11,
+    "max": 14
+   },
+   "over_footage": false
+  },
+  "icon3d": {
+   "scene": "hustle_icon3d",
+   "page": "hustle",
+   "seconds": 4.5,
+   "example": {
+    "icon": "search",
+    "word": "NICHE"
+   },
+   "over_footage": false
+  },
+  "moneyrain": {
+   "scene": "hustle_moneyrain",
+   "page": "hustle",
+   "seconds": 4.5,
+   "example": {
+    "text": "$4,200 / month"
+   },
+   "over_footage": true
+  },
+  "corner": {
+   "scene": "hustle_corner",
+   "page": "hustle",
+   "seconds": 4.0,
+   "example": {
+    "top": "FINDING MY",
+    "bottom": "NICHE"
+   },
+   "over_footage": true
+  },
+  "counter": {
+   "scene": "hustle_counter",
+   "page": "hustle",
+   "seconds": 5.0,
+   "example": {
+    "value": 4200,
+    "prefix": "$",
+    "label": "in the first month",
+    "note": "before tax"
+   },
+   "over_footage": false
+  },
+  "versus": {
+   "scene": "hustle_versus",
+   "page": "hustle",
+   "seconds": 6.0,
+   "example": {
+    "a": {
+     "name": "DROPSHIPPING",
+     "stats": [
+      {
+       "label": "startup cost",
+       "value": 3
+      },
+      {
+       "label": "time to first sale",
+       "value": 6
+      },
+      {
+       "label": "competition",
+       "value": 9
+      }
+     ]
+    },
+    "b": {
+     "name": "FREELANCING",
+     "stats": [
+      {
+       "label": "startup cost",
+       "value": 1
+      },
+      {
+       "label": "time to first sale",
+       "value": 3
+      },
+      {
+       "label": "competition",
+       "value": 7
+      }
+     ]
+    }
+   },
+   "over_footage": false
+  },
+  "checklist": {
+   "scene": "hustle_checklist",
+   "page": "hustle",
+   "seconds": 6.0,
+   "example": {
+    "title": "WHAT YOU NEED",
+    "items": [
+     "a laptop",
+     "one skill",
+     "30 days"
+    ]
+   },
+   "over_footage": false
+  }
+ }
+}

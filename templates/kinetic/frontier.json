@@ -1,0 +1,127 @@
+{
+ "template": "kinetic",
+ "style": "kinetic",
+ "kind": "kit",
+ "kit": "kinetic",
+ "prefix": "kinetic",
+ "frame": "board",
+ "frame_every": 3,
+ "types": {
+  "bigword": {
+   "scene": "kinetic_bigword",
+   "page": "kinetic",
+   "seconds": 3.6,
+   "example": {
+    "words_big": [
+     "where",
+     "at?"
+    ]
+   },
+   "over_footage": false
+  },
+  "board": {
+   "scene": "kinetic_board",
+   "page": "kinetic",
+   "seconds": 6.5,
+   "example": {
+    "line": "are we in the middle of a good man shortage?",
+    "inner": "ARE WE IN A 'GOOD MAN' SHORTAGE",
+    "source": "The Social, CTV"
+   },
+   "over_footage": false
+  },
+  "doodle": {
+   "scene": "kinetic_doodle",
+   "page": "kinetic",
+   "seconds": 4.5,
+   "example": {
+    "icon": "lightbulb",
+    "text": "a good idea"
+   },
+   "over_footage": false
+  },
+  "phones": {
+   "scene": "kinetic_phones",
+   "page": "kinetic",
+   "seconds": 7.5,
+   "example": {
+    "cards": [
+     "WHERE ARE ALL THE GOOD MEN",
+     "CHILLING OR WAITING",
+     "SO WHERE ARE THE SINGLE 30+ MEN"
+    ],
+    "title": "Where Are All The Good Men?",
+    "sub": "a Modern Wisdom production",
+    "mark": "Good Men?"
+   },
+   "over_footage": false
+  },
+  "comment": {
+   "scene": "kinetic_comment",
+   "page": "kinetic",
+   "seconds": 6.0,
+   "example": {
+    "handle": "@user",
+    "text": "I'm trapped in a generation where I don't know whether to buy her flowers, or ignore her, to get her to like me",
+    "marks": [
+     "buy her flowers",
+     "ignore her"
+    ]
+   },
+   "over_footage": false
+  },
+  "scroll": {
+   "scene": "kinetic_scroll",
+   "page": "kinetic",
+   "seconds": 5.5,
+   "example": {
+    "items": [
+     {
+      "headline": "Where Have All the Good Men Gone?",
+      "outlet": "The Atlantic"
+     },
+     {
+      "headline": "The Good Men are still here, they're just tired",
+      "outlet": "Vox"
+     }
+    ],
+    "bold": [
+     "Good Men"
+    ]
+   },
+   "over_footage": false
+  },
+  "mosaic": {
+   "scene": "kinetic_mosaic",
+   "page": "kinetic",
+   "seconds": 4.0,
+   "example": {
+    "caption": "what they actually post",
+    "labels": [
+     "exhibit A",
+     "exhibit B"
+    ]
+   },
+   "over_footage": true
+  },
+  "sources": {
+   "scene": "kinetic_sources",
+   "page": "kinetic",
+   "seconds": 5.5,
+   "example": {
+    "title": "the studies",
+    "items": [
+     {
+      "text": "Pew Research, 2023 — 63% of men under 30 are single",
+      "who": "Pew"
+     },
+     {
+      "text": "...",
+      "who": "..."
+     }
+    ]
+   },
+   "over_footage": false
+  }
+ }
+}

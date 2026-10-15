@@ -1,0 +1,16 @@
+{
+ "name": "The Record",
+ "letter": "D",
+ "template": "record",
+ "theme": "record",
+ "blurb": "Investigative documentary: the case assembled from the record - case files, transcript pages with marked lines, a lexicon of the terms, ledgers of numbers, the mechanism as a chain, redacted lists, stock inside an evidence viewer.",
+ "example": "build.py",
+ "rules": "rules.md",
+ "preview": "preview.jpg",
+ "sample": "sample.mp4",
+ "sfx": "full",
+ "xfade": 0.4,
+ "overrides": {},
+ "devices": {},
+ "audit": {}
+}
