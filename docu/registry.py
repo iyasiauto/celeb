@@ -220,8 +220,9 @@ def show(name, minutes=15.0):
           f"xfade={pb.get('xfade')}, sfx_style={pb.get('sfx_style')!r}" + (f", style={pb['style']!r}" if pb.get("style") else ""))
     if pb.get("preview_sheet"):
         print(f"Preview sheet (LOOK AT IT): {pb['preview_sheet']}")
-    if pb.get("examples"):
-        print("Worked examples (READ ONE IN FULL before writing): " + ", ".join(pb["examples"]))
+    ex_here = [e for e in pb.get("examples", []) if os.path.exists(os.path.join(ROOT, e))]
+    if ex_here:                                    # a kit without the channel's projects has only the demo builds
+        print("Worked examples (READ ONE IN FULL before writing): " + ", ".join(ex_here))
     if pb.get("starter"):
         print(f"Starter skeleton: {pb['starter']}")
     if a:
