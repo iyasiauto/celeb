@@ -180,6 +180,14 @@
  ],
  "qc_mode": "faceless",
  "guide": "templates/atlas/README.md",
+ "ai_images": {
+  "scene_prompt": "You are the art director for a faceless YouTube video.\n\nCHANNEL: [INSERT CHANNEL HERE]\n\nBelow is the full spoken SCRIPT. Design [INSERT COUNT HERE] distinct background\nSCENES that carry this video visually.\n\nRULES\n- Each scene illustrates a MOMENT the narrator actually reaches. Read the script\n  and follow its order; scene 1 belongs at the start, the last at the end.\n- Atmospheric imagery, never text on screen. No words, letters or numbers.\n- No faces looking at camera unless the channel is built on a person.\n- One subject per scene, described concretely: what is in frame, the light, the\n  distance. \"A hand resting on a closed book, low window light\" — not \"wisdom\".\n- Vary the distance across the set: wide, middle, close. A pool of fifteen\n  medium shots edits like a slideshow.\n\nReturn ONLY a JSON array of [INSERT COUNT HERE] objects:\n\n  {\"text\": \"<the line of narration this scene belongs to>\",\n   \"prompt\": \"<a complete image-generation prompt>\"}\n\nSCRIPT:\n[INSERT SCRIPT HERE]\n",
+  "still_suffix": " Flat 2D cartoon illustration with thick confident black outlines, bold simple shapes, cel shading, a warm yellowed-paper palette with red, green and blue accents, characters with simple faces and big expressive gestures, everything readable at a glance, 16:9. Text appears only when it is itself the subject of the shot — a sign, a banner, a date on a scroll — exactly as the prompt spells it. No captions, no watermark, no logo, no photographic realism.",
+  "character": "",
+  "placement": "",
+  "every_s": 6.0,
+  "channel": "History explained in a thick-outline cartoon world: every picture drawn flat with bold black outlines and a yellowed-paper palette, a TIME MACHINE bar at the bottom when the story jumps in time, a flipchart of eras and dynasties, a wristwatch showing the year, a bouncy title card, paint-wave wipes between chapters, scoreboards of armies and gold, a signpost of where the story could go, cartoon maps with thick outlines and handwritten names, and comic captions. Playful narration, real facts."
+ },
  "captions": {
   "mode": "comic",
   "font": "Lilita One",

@@ -116,6 +116,9 @@ Final QC checks every shot against its sentence: replace flagged shots and re-re
   `F.g(type, **fields)`, `F.over(...)` on a clip, `F.every(clip(...))` for the footage frame). `registry.py show`
   prints every type's fields; `templates/<id>/demo_build.py` has one line per device. Their captions burn at `final`
   (`docu/captions.py`).
+- Drawn-picture templates (template.json `ai_images`: stories-2d, dark-psychology, ai-presenter, modern-homes,
+  hasidic-frontier): draw the pictures first with `python docu/tools/ai_pictures.py --template <id> --script <script>
+  --out media/<niche>/ai_images` (Frontier's Gemini browser tool, docu/gemini_images.py), add the folder to the niche.
 - Re-import after Frontier changes: `python docu/tools/frontier_import.py --frontier <folder>`; previews and samples:
   `python docu/tools/template_reel.py <id>`; the choosing page: `python docu/tools/template_catalog.py`.
 

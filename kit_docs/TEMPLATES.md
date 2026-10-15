@@ -231,6 +231,12 @@ at(cue, clip(14, overlays=[F.over("stamp", at=0.4, text="2021", sub="Kabul")]))
 mein har device ki ek line hai. Frontier folder update ho to: `python docu/tools/frontier_import.py --frontier <folder>`
 (templates dobara ban jaate hain), phir `python docu/tools/template_reel.py <id>` (preview + sample).
 
+Drawn pictures (2D Stories, Carl Jung, AI Presenter, Modern Homes, Hasidic): Frontier ki tarah **Gemini browser
+tool** se banti hain — `python docu/tools/ai_pictures.py --template stories-2d --script <script.txt> --out media/<niche>/ai_images`.
+Tool kit root ke `gemini_image\` folder mein ho (Frontier wala folder copy kar dein) ya Frontier folder mein; Node.js
+aur Google profiles wahi jo Frontier mein hain. Har frame ka prompt AI art director likhta hai (Docu Studio ki AI),
+cast ka description har prompt mein word for word jaata hai, taake wahi character har tasveer mein aaye.
+
 Captions: in templates ki caption style (typewriter, stack, comic, pop, karaoke, box, upper) `docu/captions.py` se
 `final` par burn hoti hai; band karni ho to `DOCU_CAPTIONS=0`.
 

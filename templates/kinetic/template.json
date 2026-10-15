@@ -186,6 +186,14 @@
  ],
  "qc_mode": "faceless",
  "guide": "templates/kinetic/README.md",
+ "ai_images": {
+  "scene_prompt": "You are the art director for a faceless YouTube video.\n\nCHANNEL: [INSERT CHANNEL HERE]\n\nBelow is the full spoken SCRIPT. Design [INSERT COUNT HERE] distinct background\nSCENES that carry this video visually.\n\nRULES\n- Each scene illustrates a MOMENT the narrator actually reaches. Read the script\n  and follow its order; scene 1 belongs at the start, the last at the end.\n- Atmospheric imagery, never text on screen. No words, letters or numbers.\n- No faces looking at camera unless the channel is built on a person.\n- One subject per scene, described concretely: what is in frame, the light, the\n  distance. \"A hand resting on a closed book, low window light\" — not \"wisdom\".\n- Vary the distance across the set: wide, middle, close. A pool of fifteen\n  medium shots edits like a slideshow.\n\nReturn ONLY a JSON array of [INSERT COUNT HERE] objects:\n\n  {\"text\": \"<the line of narration this scene belongs to>\",\n   \"prompt\": \"<a complete image-generation prompt>\"}\n\nSCRIPT:\n[INSERT SCRIPT HERE]\n",
+  "still_suffix": " Drawn EXACTLY like the reference: white hand-drawn marker lines on a pure black background, a single confident but imperfect hand, wobbly line weight, small gaps and overshoots, no shading, one small scribble of yellow or orange at most, no text, plenty of empty black space around the drawing, 16:9. Only the subject described, nothing else.",
+  "character": "",
+  "placement": "",
+  "every_s": 14.0,
+  "channel": "Essays where the words are the picture: one huge word on a turn, the clip pinned to a chalkboard with the line written under it in chalk, chalk line drawings that draw themselves (a lightbulb, a brain, an arrow, a clock, a target), white line-drawn stills that sketch themselves on, phone cards stacking then scattering round a serif title, a real comment with its phrases highlighted, headlines scrolling by, sources typed with a cursor. Lowercase techno-mono captions at the bottom, the key word yellow."
+ },
  "captions": {
   "mode": "stack",
   "font": "Kode Mono",

@@ -279,5 +279,13 @@
   "The original look: stock footage, AI pictures with depth pop and animated graphics carry the video. YouTube footage and Vox scenes are available but off — they add real footage and collage at a higher cost per video."
  ],
  "qc_mode": "faceless",
- "guide": "templates/dark-psychology/README.md"
+ "guide": "templates/dark-psychology/README.md",
+ "ai_images": {
+  "scene_prompt": "You are the art director for a faceless YouTube video.\n\nCHANNEL: [INSERT CHANNEL HERE]\n\nBelow is the full spoken SCRIPT. Design [INSERT COUNT HERE] distinct background\nSCENES that carry this video visually.\n\nRULES\n- Each scene illustrates a MOMENT the narrator actually reaches. Read the script\n  and follow its order; scene 1 belongs at the start, the last at the end.\n- Atmospheric imagery, never text on screen. No words, letters or numbers.\n- No faces looking at camera unless the channel is built on a person.\n- One subject per scene, described concretely: what is in frame, the light, the\n  distance. \"A hand resting on a closed book, low window light\" — not \"wisdom\".\n- Vary the distance across the set: wide, middle, close. A pool of fifteen\n  medium shots edits like a slideshow.\n\nReturn ONLY a JSON array of [INSERT COUNT HERE] objects:\n\n  {\"text\": \"<the line of narration this scene belongs to>\",\n   \"prompt\": \"<a complete image-generation prompt>\"}\n\nSCRIPT:\n[INSERT SCRIPT HERE]\n",
+  "still_suffix": " Cinematic still, natural light, shallow depth of field, filmic grain, muted colour, no text, no watermark, no logo.",
+  "character": "",
+  "placement": "",
+  "every_s": 6.0,
+  "channel": "The original Frontier look and the cheapest way to make long videos: stock footage, AI pictures and motion graphics under a calm narrator. Dark psychology in the tradition of Carl Jung — rewrite it for your own niche."
+ }
 }

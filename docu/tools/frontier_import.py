@@ -58,7 +58,7 @@ ALIAS_ROLES = {
 def _load_frontier(fdir):
     sys.path.insert(0, fdir)
     mods = {}
-    for m in ("kits", "docgfx", "motion"):
+    for m in ("kits", "docgfx", "motion", "prompts"):
         try:
             mods[m] = importlib.import_module(m)
         except Exception as e:            # noqa: BLE001
@@ -469,6 +469,18 @@ def build(fdir, mods, sname, sty, force=False, kit_dir=None):
         "qc_mode": "faceless",
         "guide": f"templates/{tid}/README.md",
     }
+    feats_on = set((sty.get("features") or {}).get("on") or [])
+    if "ai_images" in feats_on or kind == "motion":
+        # pictures drawn for the words (Frontier's ai_images): docu/tools/ai_pictures.py with the Gemini browser tool
+        pr = mods.get("prompts")
+        tj["ai_images"] = {
+            "scene_prompt": look.get("scene_prompt") or (getattr(pr, "SCENE_PROMPT", "") if pr else ""),
+            "still_suffix": look.get("still_suffix") or (getattr(pr, "SCENE_STYLE_SUFFIX", "") if pr else ""),
+            "character": look.get("character") or "",
+            "placement": look.get("placement") or "",
+            "every_s": float(pacing.get("photo_every_s") or 6.0),
+            "channel": sty.get("description", ""),
+        }
     if look.get("captions"):
         # the channel's burned-in captions (docu/captions.py at `final`; DOCU_CAPTIONS=0 turns them off)
         tj["captions"] = dict(look["captions"])

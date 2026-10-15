@@ -58,3 +58,17 @@ at(cue, clip(14, overlays=[F.over("title", at=0.4, ...)]))   # a graphic over fo
 - Every graphic shows a real fact the voice gives at that moment (a name, a date, a place, a figure, a quote) - times come from the word timing, never before the narrator says it.
 - Footage: clips under 5 s, chained when a line is longer; no talking heads, influencers or logos (QC).
 - The original look: stock footage, AI pictures with depth pop and animated graphics carry the video. YouTube footage and Vox scenes are available but off — they add real footage and collage at a higher cost per video.
+
+## Drawn pictures (Gemini)
+
+This template's pictures are drawn for the words, the way Frontier draws them - with Frontier's Gemini browser tool
+(`gemini_image/`, no paid API):
+
+```
+python docu/tools/ai_pictures.py --template dark-psychology --script projects/<slug>/data/script.txt --out media/<niche>/ai_images
+```
+
+The AI art director (Docu Studio's AI) cuts the script into one frame every ~6.0 s and writes each prompt with the
+channel's look; Gemini draws them all in one session into `media/<niche>/ai_images/ai_001.png ...`.
+Add that folder to the niche's pictures and use them like any picture. Own prompts: `--prompts my_prompts.json`.
+The tool is found at `<kit>/gemini_image`, `$GEMINI_IMAGE_DIR` or `<Frontier folder>/gemini_image`.
